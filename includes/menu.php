@@ -2,65 +2,51 @@
 
 echo '<body>
 
-       <div id="banniere">
+          <div id="page">
 
-		     <span> je suis une baniiere vide </span>
+		      <div id="banniere">
 
-	  </div>
+		             <h1> Site Du Savoir </h1>
+		             
+		             <form method="GET" action="">
 
-<div id="menu">        
+		                <div id="form">
+		                <p>
+		                   <input type="text" placeholder="Rechercher"/>
+		                </p>
+		               
+		              </div>
+		              </form>
 
-	<div class="element_menu">
+					 <div class="element_menu">
 
-		<h3>Menu</h3>
+					    <ul>
+				            <li><a href="../forum">Forum</a></li>
+				            <li><a href="#">Tutoriels</a></li>
+							<li> <a href="#">Extras </a></li>
+							<li> <a href="#">Generales </a>
+							<li> <a href="#">Blog</a></li>
+						</ul>
 
-		<ul>
+				</div>        
 
-		<li><a href="../connexion.php"> Se connecter </a></li>
-
-		<li><a href="../register.php"> S\'inscrire</a></li>
-
-		<li> <a href="../deconnexion.php"> Se de connecter </a></li>
-
-
-		</ul>
-
-   </div>       
-
-    <div class="element_menu">
-
-		<h3>Navigation</h3>
-
-		<ul>
-
-		<li><a href="../forum">Forum</a></li>
-
-		<li><a href="">Tutoriels</a></li>
-		<li> <a href="">Extras </a></li>
-
-		</ul>
-
-   </div>        
-
-</div>
-
-';
+		     </div>';
 
 
-     if(isset($_SESSION['flash'])): ?>
+		     if(isset($_SESSION['flash'])): ?>
 
-      <?php foreach($_SESSION['flash'] as $cle => $message): ?>
+		      <?php foreach($_SESSION['flash'] as $cle => $message): ?>
 
-        <div class="alert alert-<?=$cle ?>">
-           <?= $message; ?>
-           </div>
+		        <div class="alert alert-<?=$cle ?>">
+		           <?= $message; ?>
+		           </div>
 
-        <?php endforeach; ?>
+		        <?php endforeach; ?>
 
-        <?php unset($_SESSION['flash']); ?>
-        <?php endif; ?>   
+		        <?php unset($_SESSION['flash']); ?>
+		        <?php endif; ?>   
 
-<div id="corps_forum">
+		<div id="corps_forum">
 
 
 

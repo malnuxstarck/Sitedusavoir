@@ -1,3 +1,23 @@
-p{
-  color: blue;
+/*proprietes Globales au site web Site du Savoir
+Auteur : Malnux Starck
+*/
+body
+{
+	background-color: #ccdee7;
+}
+
+#page
+{
+	width: 1000px;
+	margin: auto;
+}
+
+ul
+{
+	list-style : none;
+}
+
+a
+{
+	text-decoration : none;
 }
