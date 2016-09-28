@@ -32,7 +32,7 @@ $mess = $_POST['mess'];
 $titre = $_POST['titre'];
 //ici seulement, maintenant qu'on est sur qu'elle existe, onrécupère la valeur de la variable f
 $forum = (int) $_GET['f'];
-$temps = time();
+
 if (empty($message) || empty($titre))
 {
 echo'<p>Votre message ou votre titre est vide,
@@ -44,12 +44,12 @@ else //Si jamais le message n'est pas vide
 //On entre le topic dans la base de donnée en laissant
 //le champ topic_last_post à 0
 $query=$bdd->prepare('INSERT INTO forum_topic (forum_id, topic_titre, topic_createur, topic_vu, topic_time,
-topic_genre) VALUES (:forum, :titre, :id, 1, :temps, :mess)');
+topic_genre) VALUES (:forum, :titre, :id, 1, NOW(), :mess)');
 $query->bindValue(':forum', $forum, PDO::PARAM_INT);
 $query->bindValue(':titre', $titre, PDO::PARAM_STR);
 
 $query->bindValue(':id', $id, PDO::PARAM_INT);
-$query->bindValue(':temps', $temps, PDO::PARAM_INT);
+
 $query->bindValue(':mess', $mess, PDO::PARAM_STR);
 $query->execute();
 
@@ -114,7 +114,7 @@ case "repondre":
 $message = $_POST['message'];
 //ici seulement, maintenant qu'on est sur qu'elle existe, on récupère la valeur de la variable t
 $topic = (int) $_GET['t'];
-$temps = time();
+
 if (empty($message))
 {
 echo'<p>Votre message est vide, cliquez <a
@@ -133,10 +133,10 @@ $forum = $data['forum_id'];
 //Puis on entre le message
 $query=$bdd->prepare('INSERT INTO forum_post
 (post_createur, post_texte, post_time, topic_id, post_forum_id)
-VALUES(:id,:mess,:temps,:topic,:forum)');
+VALUES(:id,:mess,NOW(),:topic,:forum)');
 $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->bindValue(':mess', $message, PDO::PARAM_STR);
-$query->bindValue(':temps', $temps, PDO::PARAM_INT);
+
 $query->bindValue(':topic', $topic, PDO::PARAM_INT);
 $query->bindValue(':forum', $forum, PDO::PARAM_INT);
 $query->execute();
@@ -188,16 +188,15 @@ case "repondremp": //Si on veut répondre
 //On récupère le titre et le message
 $message = $_POST['message'];
 $titre = $_POST['titre'];
-$temps = time();
+
 //On récupère la valeur de l'id du destinataire
 $dest = (int) $_GET['dest'];
 //Enfin on peut envoyer le message
-$query= $bdd->prepare('INSERT INTO forum_mp (mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu) VALUES(:id, :dest, :titre, :txt, :tps, 0)');
+$query= $bdd->prepare('INSERT INTO forum_mp (mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu) VALUES(:id, :dest, :titre, :txt, NOW(), 0)');
 $query->bindValue(':id',$id,PDO::PARAM_INT);
 $query->bindValue(':dest',$dest,PDO::PARAM_INT);
 $query->bindValue(':titre',$titre,PDO::PARAM_STR);
 $query->bindValue(':txt',$message,PDO::PARAM_STR);
-$query->bindValue(':tps',$temps,PDO::PARAM_INT);
 $query->execute();
 $query->CloseCursor();
 echo'<p>Votre message a bien été envoyé!<br />
@@ -215,7 +214,6 @@ case "nouveaump": //On envoie un nouveau mp
 //On récupère le titre et le message
 $message = $_POST['message'];
 $titre = $_POST['titre'];
-$temps = time();
 $dest = $_POST['to'];
 //On récupère la valeur de l'id du destinataire
 //Il faut déja vérifier le nom
@@ -230,13 +228,13 @@ if($data = $query->fetch())
 {
 $query=$bdd->prepare('INSERT INTO forum_mp
 (mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu)
-VALUES(:id, :dest, :titre, :txt, :tps, :lu)');
+VALUES(:id, :dest, :titre, :txt, NOW(), :lu)');
 $query->bindValue(':id',$id,PDO::PARAM_INT);
 $query->bindValue(':dest',(int)
 $data['membre_id'],PDO::PARAM_INT);
 $query->bindValue(':titre',$titre,PDO::PARAM_STR);
 $query->bindValue(':txt',$message,PDO::PARAM_STR);
-$query->bindValue(':tps',$temps,PDO::PARAM_INT);
+
 $query->bindValue(':lu','0',PDO::PARAM_STR);
 $query->execute();
 $query->CloseCursor();

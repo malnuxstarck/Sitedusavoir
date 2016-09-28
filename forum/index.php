@@ -134,7 +134,7 @@ while($data = $query->fetch())
 
          echo'<td class="derniermessage">
 
-         '.date('H\hi \l\e d/M/Y',$data['post_time']).'<br />
+         '.$data['post_time'].'<br />
 
          <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($data['membre_id'])).'&amp;action=consulter">'.$data['membre_pseudo'].'</a>
 
