@@ -1,5 +1,7 @@
 <?php
    session_start();
+
+   $titre="Connexion";
    include_once './includes/identifiants.php';
    include_once'./includes/debut.php';
    include_once './includes/menu.php';
@@ -72,17 +74,7 @@ else
     {
 
 
-        if($_POST['souvenir'])
-    	{
-
-    		$cookie = str_random(250);
-    		
-    		$req = $bdd->prepare('UPDATE users SET cookie = :cookie WHERE id = :id');
-    		$req->execute(array('cookie'=> $cookie, 'id' => $user['id']));
-
-    		setcookie('souvenir',$user['id'].'=='.$cookie.sha1($user['id'].'MALNUX667'),time() + 60 * 60 *24 *7 );
-    	}
-
+        
 
 		if ($data['membre_rang'] == 0) //Le membre est banni
 	     {
@@ -92,13 +84,27 @@ else
 
 	    else
 	    {
-			$_SESSION['pseudo'] = $data['membre_pseudo'];
-			$_SESSION['level'] = $data['membre_rang'];
-			$_SESSION['id'] = $data['membre_id'];
 
-			$message = '<p>Bienvenue '.$data['membre_pseudo'].', vous êtes maintenant connecté!</p>
 
-			<p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil</p>';
+	        if(isset($_POST['souvenir']))
+	    	{
+
+	    		$cookie = str_random(250);
+	    		
+	    		$req = $bdd->prepare('UPDATE users SET cookie = :cookie WHERE id = :id');
+	    		$req->execute(array('cookie'=> $cookie, 'id' => $user['id']));
+
+	    		setcookie('souvenir',$user['id'].'=='.$cookie.sha1($user['id'].'MALNUX667'),time() + 60 * 60 *24 *7 );
+	    	}
+
+
+				$_SESSION['pseudo'] = $data['membre_pseudo'];
+				$_SESSION['level'] = $data['membre_rang'];
+				$_SESSION['id'] = $data['membre_id'];
+
+				$message = '<p>Bienvenue '.$data['membre_pseudo'].', vous êtes maintenant connecté!</p>
+
+				<p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil</p>';
 	    }
 	}
 

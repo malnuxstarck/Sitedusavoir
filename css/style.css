@@ -6,6 +6,12 @@ body
 	background-color: #ccdee7;
 }
 
+body,html
+{
+	margin: 0px;
+	padding: 0px;
+}
+
 #page
 {
 	width: 1000px;
@@ -20,4 +26,113 @@ ul
 a
 {
 	text-decoration : none;
+}
+
+/* Proprietes^pour l'en tete du site */
+
+#banniere
+{
+	margin-top: -21px;
+	height:182px;
+	width:1000px;
+	background-color : #14394d;
+	border-radius : 5px;
+}
+
+.menu
+{
+	
+	background-color: #627884;
+	height: 53px;
+	border-radius: 5px;
+	
+}
+
+
+.menu li
+{
+	display: inline-block;
+	height:53px;
+	width: 101px;
+	margin-left:20px;
+	line-height: 50px;
+	padding-left:25px;
+	
+	
+	
+}
+
+.menu li  a 
+{
+	display: block;
+	width:120px;
+	height:53px;
+	font-family: Lucida Console;
+	font-size: 20px;
+	color: white;
+	text-align: center;
+}
+
+a:hover
+{
+	background-color:#628090;
+	color:blue;
+}
+	
+#accueil
+{
+	display: inline-block;
+	height: 20px;
+	margin-top: 10px;
+	
+}
+
+#titre,#form
+{
+	display: inline-block;
+	height: 52px;
+	width: 40%;
+	margin-top: 40px;
+	text-align:center;
+
+}
+
+#titre
+{
+	color: white;
+	font-family: cursive;
+	font-weight: bold;
+	text-shadow: 2px 2px 10px black;
+}
+
+#form
+{
+	float:right;
+}
+
+#form p
+{
+	display: inline-block;
+}
+
+.alert-danger
+{
+	background-color: #e51c23;
+}
+
+.alert-success
+{
+	background-color: #4caf50;
+}
+
+/*Corps de la page Index */
+
+
+/*Pied de la page */
+
+footer
+{
+	background: #14394d;
+	height: 80px;
+	border-radius: 5px;
 }

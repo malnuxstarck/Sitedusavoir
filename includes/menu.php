@@ -6,26 +6,29 @@ echo '<body>
 
 		      <div id="banniere">
 
-		             <h1> Site Du Savoir </h1>
-		             
-		             <form method="GET" action="">
+		             <h1 id="titre"> Site Du Savoir </h1>
 
-		                <div id="form">
-		                <p>
-		                   <input type="text" placeholder="Rechercher"/>
-		                </p>
+		             <form id ="form" method="GET" action="search.php">
+
+			             <p>
+			                 <input type="text" placeholder="Rechercher"/>
+			             </p>
+
+			             <p>
+			                <button type="submit"><img src="images/recherche.png" alt="recherche"/></button>
+			             </p>
 		               
-		              </div>
-		              </form>
+		             </form>
 
-					 <div class="element_menu">
+					 <div class="menu">
 
 					    <ul>
+					        <li><a href="#"><img src="images/accueil.png" id="accueil" alt="Accueil"/> Accueil</a></li>
 				            <li><a href="../forum">Forum</a></li>
 				            <li><a href="#">Tutoriels</a></li>
 							<li> <a href="#">Extras </a></li>
 							<li> <a href="#">Generales </a>
-							<li> <a href="#">Blog</a></li>
+							<li> <a href="http://blog.sitedusavoir.com">Blog</a></li>
 						</ul>
 
 				</div>        
