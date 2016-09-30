@@ -53,30 +53,29 @@ a
 {
 	display: inline-block;
 	height:53px;
-	width: 101px;
+	width: 120px;
 	margin-left:20px;
-	line-height: 50px;
-	padding-left:25px;
-	
-	
-	
 }
 
-.menu li  a 
+.menu li a 
 {
 	display: block;
 	width:120px;
 	height:53px;
 	font-family: Lucida Console;
 	font-size: 20px;
+	text-align:center;
+	line-height: 50px;
 	color: white;
-	text-align: center;
+	
+	
 }
 
-a:hover
+li a:hover
 {
-	background-color:#628090;
-	color:blue;
+	transition: all 0.10s;
+	background-color:#576c78;
+	color: #14394d;
 }
 	
 #accueil
@@ -135,4 +134,136 @@ footer
 	background: #14394d;
 	height: 80px;
 	border-radius: 5px;
+}
+
+#aconnexion /*aside conneion */
+{
+	display: inline-block;
+	width: 28.5%;
+	height:350px;
+    background: #f0efef;
+    margin-top: 20px;
+	border: 5px solid #f0efef;
+	border-radius: 10px;
+	vertical-align: top;
+	margin-bottom: 20px;
+	font-size: 17px;
+}
+
+#fildariane
+{
+	display: inline-block;
+	vertical-align: top;
+	background: #f0efef;
+	width:97%;
+	height:40px;
+	margin-left:10px;
+	margin-top: 2px;
+	line-height: 35px;
+	border:5px solid #f0efef;
+	border-radius: 5px;
+	font-family: Cursive;
+	font-size: 18px;
+	color:#607078;
+}
+
+#presentation
+{
+	margin-left:10px;
+	background:#f0efef;
+	height:288px;
+	border-radius: 5px;
+}
+
+#arianepresentation
+{
+	
+    display: inline-block;
+    width:70%;
+    height:308px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#seconnecter p /*formulaire*/
+{
+  text-align: center;
+}
+
+#connexion /*titre*/
+{
+	margin-top:0;
+	height:40px;
+	width:97%;
+	font-family: Arial;
+	font-weight: normal;
+	color: white;
+    text-align:center;
+	background:  #14394d;
+	border: 5px solid #14394d;
+	border-radius: 5px;
+	line-height: 35px;
+}
+
+#seconnecter p:nth-child(3)
+{
+	font-size: 18px;
+	font-family:Trebuchet MS;
+
+}
+input[type="text"],input[type="password"]
+{
+	font-size: 18px;
+	height: 40px;
+	width:210px;
+	border: 2px solid #3f3d3d;
+	border-radius: 5px;
+}
+
+input[type="submit"]
+{
+	font-size:16px;
+	font-weight: bold;
+	color: #14394d;
+
+	width: 120px;
+	height:40px;
+	background: #d3d1d2;
+	border:0;
+	border-radius: 5px;
+	cursor:pointer;
+}
+
+button
+{
+    
+    padding-top: -3px;
+	height:45px;
+	width:61px;
+	border:0;
+	border-radius: 5px;
+}
+
+input[type="submit"]:active
+{
+	background: #9a999a;
+}
+
+#nouveau
+{
+	width: 200px;
+	height:50px;
+	background: #0f2736;
+	text-align:center;
+	margin:auto;
+	margin-top: 20px;
+	border-radius: 5px;
+	line-height: 45px;
+	font-family: Arial;
+	font-weight : bold;
+	color:white;
+}
+#nouveau a
+{
+	color: white;
 }

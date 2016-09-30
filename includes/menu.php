@@ -2,8 +2,7 @@
 
 echo '<body>
 
-          <div id="page">
-
+         <div id="page">
 		      <div id="banniere">
 
 		             <h1 id="titre"> Site Du Savoir </h1>
@@ -11,7 +10,7 @@ echo '<body>
 		             <form id ="form" method="GET" action="search.php">
 
 			             <p>
-			                 <input type="text" placeholder="Rechercher"/>
+			                 <input type="text" name="q" placeholder="Rechercher"/>
 			             </p>
 
 			             <p>
@@ -27,7 +26,7 @@ echo '<body>
 				            <li><a href="../forum">Forum</a></li>
 				            <li><a href="#">Tutoriels</a></li>
 							<li> <a href="#">Extras </a></li>
-							<li> <a href="#">Generales </a>
+							<li> <a href="#">Social</a>
 							<li> <a href="http://blog.sitedusavoir.com">Blog</a></li>
 						</ul>
 
