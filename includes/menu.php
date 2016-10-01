@@ -14,7 +14,7 @@ echo '<body>
 			             </p>
 
 			             <p>
-			                <button type="submit"><img src="images/recherche.png" alt="recherche"/></button>
+			                <input type="submit" value="Recherche"/>
 			             </p>
 		               
 		             </form>
@@ -22,7 +22,7 @@ echo '<body>
 					 <div class="menu">
 
 					    <ul>
-					        <li><a href="#"><img src="images/accueil.png" id="accueil" alt="Accueil"/> Accueil</a></li>
+					        <li><a href="#"><img src="../images/accueil.png" id="accueil" alt="Accueil"/> Accueil</a></li>
 				            <li><a href="../forum">Forum</a></li>
 				            <li><a href="#">Tutoriels</a></li>
 							<li> <a href="#">Extras </a></li>
@@ -33,22 +33,30 @@ echo '<body>
 				</div>        
 
 		     </div>';
+		     ?>
 
+            
+          <div id="corps_forum">
+          
+          <?php if (session_status() == PHP_SESSION_NONE)
+          session_start();
+          ?>
+           <?php if(isset($_SESSION['flash'])): ?>
 
-		     if(isset($_SESSION['flash'])): ?>
+      <?php foreach($_SESSION['flash'] as $cle => $message): ?>
 
-		      <?php foreach($_SESSION['flash'] as $cle => $message): ?>
+        <div class="alert alert-<?=$cle ?>">
+           <?= $message; ?>
+           </div>
 
-		        <div class="alert alert-<?=$cle ?>">
-		           <?= $message; ?>
-		           </div>
+        <?php endforeach; ?>
 
-		        <?php endforeach; ?>
+        <?php unset($_SESSION['flash']); ?>
 
-		        <?php unset($_SESSION['flash']); ?>
-		        <?php endif; ?>   
+        <?php endif; ?>   
 
-		<div id="corps_forum">
+        
+
 
 
 

@@ -91,7 +91,7 @@
    </div>
 
    
-   <button type="submit" class="btn btn-primary"> Envoyer </button>
+   <input type="submit" class="btn btn-primary" value="Envoyer"/>
   
 
 

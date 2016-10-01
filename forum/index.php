@@ -1,6 +1,6 @@
 <?php
 session_start();
-$titre ="Index du Forum";
+$titre ="Forum";
 
 include("../includes/identifiants.php");
 include("../includes/debut.php");
@@ -10,7 +10,7 @@ include("../includes/menu.php");
 
 <?php
 
-echo '<i> Vous etes ici : </i><a href="index.php">Index du Forum </a>'
+echo '<section id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a></section>'
 ?>
     <h1> Forum Site du savoir </h1>
 

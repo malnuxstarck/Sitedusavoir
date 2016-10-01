@@ -1,9 +1,7 @@
 <?php
 session_start();
-$titre="Voir un sujet";
+
 include("../includes/identifiants.php");
-include("../includes/debut.php");
-include("../includes/menu.php");
 include("../includes/bbcode.php"); //On verra plus tard ce qu'est cefichier
 //On récupère la valeur de t
 
@@ -13,7 +11,7 @@ else
   $topic = 1 ;
 //A partir d'ici, on va compter le nombre de messages pourn'afficher que les 15 premiers
 
-$query=$bdd->prepare('SELECT topic_titre, topic_post, forum_topic.forum_id , topic_last_post,
+$query = $bdd->prepare('SELECT topic_titre, topic_post, forum_topic.forum_id , topic_last_post,
 forum_name, auth_view, auth_topic, auth_post
 FROM forum_topic
 LEFT JOIN forum ON forum_topic.forum_id = forum.forum_id WHERE topic_id = :topic');
@@ -22,6 +20,11 @@ $query->execute();
 
 $data = $query->fetch();
 
+$titre= $data['topic_titre'];
+
+
+include("../includes/debut.php");
+include("../includes/menu.php");
 
 if (!verif_auth($data['auth_view']))
 {
@@ -37,7 +40,7 @@ $nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 ?>
 
 <?php
-echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->
+echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> -->
 <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
 --> <a href="./voirtopic.php?
 t='.$topic.'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>';
@@ -152,7 +155,7 @@ while ($data = $query->fetch())
 	}
 	else
 	{
-	echo'<td>Posté à '.date('H\hi \l\e d M y',$data['post_time']).'
+	echo'<td>Posté à '.$data['post_time'].'
 	</td></tr>';
 	}
 

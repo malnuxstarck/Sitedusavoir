@@ -10,6 +10,19 @@
 
 </head>
 <?php include_once('includes/menu.php');
+    
+            if(isset($_SESSION['level'],$_SESSION['id'],$_SESSION['pseudo']))
+            {
+            $lvl = (int)$_SESSION['level'];
+            $id = (int)$_SESSION['id'];
+            $pseudo = $_SESSION['pseudo'];
+            }
+            else
+            {
+            $lvl = 1;
+            $id = 0;
+            $pseudo = '';
+            }
    ?>
     
     <aside id="aconnexion">
@@ -32,6 +45,9 @@
                <input type="submit" value="Se connecter"/>
         	</p>
         </form>
+          <p id="oubli">
+             <a href="oublie.php">Mot de passe perdu </a>
+          </p>
           <p id="nouveau">
               <a href="register.php"> Nouveau , Inscivez Vous</a>
           </p>
@@ -41,7 +57,7 @@
     <div id="arianepresentation">
 
 			    <section id="fildariane">
-			         <i> Vous etes ici --> <a href="index.php">  Accueil </a> --> Moi meme chez vous --> chez eux --> Hahah </i>
+			         <i> Vous etes ici --> <a href="index.php">  Accueil </a></i>			    
 			    </section>
 
 
@@ -49,13 +65,15 @@
 			    <section id="presentation">
 			                <h1> SDS KEZAKO ? </h1>
 			                <p>
-			                    SDS ou plus communement site du savoir est un site cumunautaire. Il a pour but de regrouper les informaticiens ( debutants , intermediaire , expert, confirmer) afin de partager nos Experiences , nos savoirs faire et nos astuces .
+			                    SDS ou plus communement Site Du Savoir est un site cumunautaire. Il a pour but de regrouper les informaticiens ( debutants , intermediaires , experts, confirmés) afin de partager nos Experiences , nos savoirs faire et nos astuces.
 			                </p>
 
 			                <h1 id="but"> De quoi est composé SDS </h1>
 
-			                <p>
-			                   EXTRAS : pour les cours hors informatiques) , Tutoriels(cours informatiques, et tutos) , Forum (en cas de problemes ) et Generales pour se retrouver et discuter avec des inconnus une sorte de superchat globale).
+			                <p> 
+
+			                   <a href="#">EXTRAS</a> : Section Pouvr voir l'ensemble des tutos informatiques. 
+			                   Section Tutoriels pour les tutos informatiques  Astuces(Programmation,Conception, partages experiences) ,Secti Forum (en cas de problemes ) et Generales pour se retrouver et discuter avec des inconnus une sorte de superchat globale).
 
 			                </p>
 
@@ -67,10 +85,11 @@
      </div>
     
     <footer>
+          <p> Voir mon site web perso <a href="http://malnuxstarck.alwaysdata.net">Malnux Starck </a></p>
+          <p> Site du savoir Copyright &copy; 2016 Tous droits reservés </p>
     
 
-
-    </footer>
+   </footer>
 
   
      

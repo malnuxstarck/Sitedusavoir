@@ -27,6 +27,7 @@ exit('</div></body></html>');
 
 //On passe le message dans une série de fonction
 $message = $_POST['message'];
+
 $mess = $_POST['mess'];
 //Pareil pour le titre
 $titre = $_POST['titre'];
@@ -84,7 +85,7 @@ $query->CloseCursor();
 
 
 //Enfin on met à jour les tables forum_forum et forum_membres
-$query=$bdd->prepare('UPDATE forum SET forum_post =
+$query = $bdd->prepare('UPDATE forum SET forum_post =
 forum_post + 1 ,forum_topic = forum_topic + 1,
 forum_last_post_id = :nouveaupost
 WHERE forum_id = :forum');
@@ -169,7 +170,9 @@ $query->CloseCursor();
 //Et un petit message
 $nombreDeMessagesParPage = 15;
 $nbr_post = $data['topic_post']+1;
-$page = ceil($nbr_post / $nombreDeMessagesParPage);
+
+$page = ceil( $nbr_post / $nombreDeMessagesParPage );
+
 echo'<p>Votre message a bien été ajouté!<br /><br />
 Cliquez <a href="./index.php">ici</a> pour revenir à l index du
 forum<br />

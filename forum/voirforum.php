@@ -170,8 +170,7 @@ if ($query->rowCount()>0)
 		/></td>
 		<td class="titre">
 		<strong><a href="./voirtopic.php?t='.$data['topic_id'].'"
-		title="Topic commencé à
-		'.date('H\hi \l\e d M,y',$data['topic_time']).'">
+		title="Topic commencé à '.$data['topic_time'].'">
 		'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a></strong></td>
 		<td class="nombremessages">'.$data['topic_post'].'</td>
 		<td class="nombrevu">'.$data['topic_vu'].'</td>
@@ -187,7 +186,7 @@ if ($query->rowCount()>0)
 		'.stripslashes(htmlspecialchars($data['membre_pseudo_last_posteur'])).'</a><br
 		/>
 		A <a href="./voirtopic.php?
-		t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">'.date('H\hi\l\e d M y',$data['post_time']).'</a></td></tr>';
+		t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">'.$data['post_time'].'</a></td></tr>';
 	}
 
 

@@ -46,6 +46,7 @@
     		
 
     		$_SESSION['flash']['danger'] = "Aucune email ne correspond a cette adresse";
+        header('Location:oublie.php');
     	}
 
     	

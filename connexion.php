@@ -5,13 +5,18 @@
    include_once './includes/identifiants.php';
    include_once'./includes/debut.php';
    include_once './includes/menu.php';
+
    echo '<p><i>Vous êtes ici</i> : <a href="../index.php">Accueil </a> --> Connexion';
 ?>
+
 <?php
 
 	echo '<h1>Connexion</h1>';
 
-	if ($id != 0) erreur(ERR_IS_CO);
+	if ($id != 0) 
+	{
+			erreur(ERR_IS_CO);
+	}
 
 	 $page='index.php';
 
@@ -37,6 +42,7 @@ echo '<form method="post" action="connexion.php">
 </form>
 
 <a href="./register.php">Pas encore inscrit ?</a>
+</div>
 </div>
 </body>
 </html>';
@@ -112,19 +118,19 @@ else
 	{
 
 		$message = '<p>Une erreur s\'est produite
-		pendant votre identification. <p> Le mot de passe ou le pseudo
+		pendant votre identification ou vous n\'avez pas confirmer votre compte. <p> Le mot de passe ou le pseudo
 		entré n\'est pas correcte.</p><p>Cliquez <a
 		href="./connexion.php">ici</a>
 		pour revenir à la page précédente
 		Cliquez <a href="./index.php">ici</a>
 		pour revenir à la page d accueil</p>';
 		
-		}
+	}
 
 	$query->CloseCursor();
 
 	}
-	echo $message.'</div></body></html>';
+	echo $message.'</div></div></body></html>';
 }
 ?>
 

@@ -12,13 +12,16 @@
                   }
                   ?>
                   <meta charset="UTF-8"/>
-                  <link rel="stylesheet" type="text/css" href="design.css"/>
+                  <link rel="stylesheet" type="text/css" href="css/style.css"/>
                   <meta name="author" content="MalnuxStarck"/>
                   <meta name="viewport" content="width=device-width,initial-scale=0"/>
             </head>
+
             <?php
+
             if(isset($_SESSION['level'],$_SESSION['id'],$_SESSION['pseudo']))
             {
+                  
             $lvl = (int)$_SESSION['level'];
             $id = (int)$_SESSION['id'];
             $pseudo = $_SESSION['pseudo'];
