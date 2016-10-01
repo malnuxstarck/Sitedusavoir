@@ -63,6 +63,7 @@
 
 
 			    <section id="presentation">
+          
 			                <h1> SDS KEZAKO ? </h1>
 			                <p>
 			                    SDS ou plus communement Site Du Savoir est un site cumunautaire. Il a pour but de regrouper les informaticiens ( debutants , intermediaires , experts, confirmés) afin de partager nos Experiences , nos savoirs faire et nos astuces.
@@ -72,8 +73,9 @@
 
 			                <p> 
 
-			                   <a href="#">EXTRAS</a> : Section Pouvr voir l'ensemble des tutos informatiques. 
-			                   Section Tutoriels pour les tutos informatiques  Astuces(Programmation,Conception, partages experiences) ,Secti Forum (en cas de problemes ) et Generales pour se retrouver et discuter avec des inconnus une sorte de superchat globale).
+			                   <a href="#">Extras</a> : Section Pour  l'ensemble des tutos hors informatiques. </br>
+			                   <a href=""/>Tutoriels</a> Pour les tutos informatiques  Astuces(Programmation,Conception, partages experiences).</br>
+                         <a href="./Forum">Forum </a> Pour tous les problemes ou pour se presenter. </br> <a href="">Social</a> pour se retrouver et discuter avec des inconnus une sorte de superchat globale.
 
 			                </p>
 

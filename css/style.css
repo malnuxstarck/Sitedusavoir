@@ -164,7 +164,24 @@ li a:hover
 	background:#f1f0f0;
 	height:337px;
 	border-radius: 5px;
+	margin-top: 20px;
 
+}
+
+#presentation p
+{
+	font-size: 20px;
+	color:#14394d;
+	padding: 10px;
+	padding-top:0;
+	
+}
+
+#presentation h1
+{
+	margin-bottom: -10px;
+	margin-top: 10px;
+	text-align: center;
 }
 
 #arianepresentation
@@ -206,6 +223,7 @@ li a:hover
 {
 	font-size: 18px;
 	font-family:Trebuchet MS;
+	color:#14394d;
 
 }
 input[type="text"],input[type="password"]
@@ -266,7 +284,14 @@ input[type="submit"]:active
 
 #oubli
 {
+	
 	margin-left:20px;
+}
+
+#oubli a
+{
+	color:#e42026;
+	font-weight:bold;
 }
 
 /*Pied de la page */
