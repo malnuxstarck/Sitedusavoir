@@ -3,7 +3,7 @@ Auteur : Malnux Starck
 */
 body
 {
-	background-color: #ccdee7;
+	background-color: #b7cad3;
 }
 
 body,html
@@ -36,7 +36,8 @@ a
 	height:182px;
 	width:1000px;
 	background-color : #14394d;
-	border-radius : 5px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
 }
 
 .menu
@@ -44,8 +45,8 @@ a
 	
 	background-color: #627884;
 	height: 53px;
-	border-radius: 5px;
-	
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
 }
 
 
@@ -126,24 +127,14 @@ li a:hover
 
 /*Corps de la page Index */
 
-
-/*Pied de la page */
-
-footer
-{
-	background: #14394d;
-	height: 80px;
-	border-radius: 5px;
-}
-
-#aconnexion /*aside conneion */
+#aconnexion /*aside connexion */
 {
 	display: inline-block;
-	width: 28.5%;
-	height:350px;
-    background: #f0efef;
+	width: 27.5%;
+	height:400px;
+    background: #f1f0f0;
     margin-top: 20px;
-	border: 5px solid #f0efef;
+	border: 5px solid #f1f0f0;
 	border-radius: 10px;
 	vertical-align: top;
 	margin-bottom: 20px;
@@ -154,14 +145,14 @@ footer
 {
 	display: inline-block;
 	vertical-align: top;
-	background: #f0efef;
+	background: #f1f0f0;
 	width:97%;
 	height:40px;
 	margin-left:10px;
 	margin-top: 2px;
 	line-height: 35px;
-	border:5px solid #f0efef;
-	border-radius: 5px;
+	border:5px solid #f1f0f0;
+	border-radius: 8px;
 	font-family: Cursive;
 	font-size: 18px;
 	color:#607078;
@@ -170,9 +161,10 @@ footer
 #presentation
 {
 	margin-left:10px;
-	background:#f0efef;
-	height:288px;
+	background:#f1f0f0;
+	height:337px;
 	border-radius: 5px;
+
 }
 
 #arianepresentation
@@ -183,20 +175,25 @@ footer
     height:308px;
     margin-top: 20px;
     margin-bottom: 20px;
+    margin-left: 10px;
 }
 
 #seconnecter p /*formulaire*/
 {
+	/*
   text-align: center;
+  */
+  margin-left:17px;
 }
 
 #connexion /*titre*/
 {
 	margin-top:0;
 	height:40px;
-	width:97%;
+	width:96%;
 	font-family: Arial;
 	font-weight: normal;
+	font-size: 25px;
 	color: white;
     text-align:center;
 	background:  #14394d;
@@ -213,36 +210,27 @@ footer
 }
 input[type="text"],input[type="password"]
 {
-	font-size: 18px;
-	height: 40px;
-	width:210px;
+	font-size: 16px;
+	height: 35px;
+	width:237px;
 	border: 2px solid #3f3d3d;
 	border-radius: 5px;
 }
 
 input[type="submit"]
 {
-	font-size:16px;
+	font-size:15px;
 	font-weight: bold;
 	color: #14394d;
 
 	width: 120px;
-	height:40px;
+	height:39px;
 	background: #d3d1d2;
 	border:0;
 	border-radius: 5px;
 	cursor:pointer;
 }
 
-button
-{
-    
-    padding-top: -3px;
-	height:45px;
-	width:61px;
-	border:0;
-	border-radius: 5px;
-}
 
 input[type="submit"]:active
 {
@@ -266,4 +254,28 @@ input[type="submit"]:active
 #nouveau a
 {
 	color: white;
+}
+
+.reste
+{
+  height: 400px;
+  background-color: #f1f0f0;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+#oubli
+{
+	margin-left:20px;
+}
+
+/*Pied de la page */
+
+footer
+{
+	background: #14394d;
+	height: 80px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
 }
