@@ -179,9 +179,15 @@ li a:hover
 
 #presentation h1
 {
+	text-decoration: underline;
 	margin-bottom: -10px;
-	margin-top: 10px;
+	margin-top: 20px;
 	text-align: center;
+}
+
+#presentation a
+{
+	text-decoration: underline;
 }
 
 #arianepresentation
@@ -302,5 +308,4 @@ footer
 	height: 80px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-}
 }
