@@ -22,7 +22,7 @@ echo '<body>
 					 <div class="menu">
 
 					    <ul>
-					        <li><a href="#"><img src="../images/accueil.png" id="accueil" alt="Accueil"/> Accueil</a></li>
+					        <li><a href="#"><img src="../images/accueil.png" id="accueil" alt="A"/> Accueil</a></li>
 				            <li><a href="../forum">Forum</a></li>
 				            <li><a href="#">Tutoriels</a></li>
 							<li> <a href="#">Extras </a></li>
@@ -36,7 +36,7 @@ echo '<body>
 		     ?>
 
             
-          <div id="corps_forum">
+        
           
           <?php if (session_status() == PHP_SESSION_NONE)
           session_start();

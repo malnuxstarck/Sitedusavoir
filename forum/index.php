@@ -8,11 +8,13 @@ include("../includes/menu.php");
 
 ?>
 
+ 
 <?php
 
-echo '<section id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a></section>'
+echo '<section id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a></section>';
 ?>
     <h1> Forum Site du savoir </h1>
+
 
     <?php
 
