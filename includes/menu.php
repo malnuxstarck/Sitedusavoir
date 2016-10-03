@@ -2,27 +2,37 @@
 
 echo '<body>
 
-         <div id="page">
+           <div id="page">
+
 		      <div id="banniere">
 
 		             <h1 id="titre"> Site Du Savoir </h1>
 
-		             <form id ="form" method="GET" action="search.php">
+		             <div id ="form">';
 
-			             <p>
-			                 <input type="text" name="q" placeholder="Rechercher"/>
-			             </p>
+		             if($id)
+		             {
+		             	echo 
+		             	'<p> <a href="membre/voirprofil.php?id='.$id.'">Mon compte </a>
+		             	</p>';
 
-			             <p>
-			                <input type="submit" value="Recherche"/>
-			             </p>
-		               
-		             </form>
+		             	echo '<p><a href="deconnexion.php" style="background-color:white;"> Se deconnecter </a><p>';
 
-					 <div class="menu">
+		             	echo '</div>';
+
+		             }
+
+		             else
+		             {
+		             	echo '</div>';
+		             }
+
+		             echo
+
+					 '<div class="menu">
 
 					    <ul>
-					        <li><a href="#"><img src="../images/accueil.png" id="accueil" alt="A"/> Accueil</a></li>
+					        <li><a href="#"><img src="images/accueil.png" id="accueil" alt="A"/> Accueil</a></li>
 				            <li><a href="../forum">Forum</a></li>
 				            <li><a href="#">Tutoriels</a></li>
 							<li> <a href="#">Extras </a></li>
@@ -33,6 +43,7 @@ echo '<body>
 				</div>        
 
 		     </div>';
+
 		     ?>
 
             

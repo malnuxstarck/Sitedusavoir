@@ -44,7 +44,7 @@ echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> -->
 <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
 --> <a href="./voirtopic.php?
 t='.$topic.'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>';
-echo '<h1>'.stripslashes(htmlspecialchars($data['topic_titre'])).'</h1><br/><br />';
+echo '<h1 class="titre">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</h1><br/><br />';
 ?>
 
 <?php
@@ -144,8 +144,7 @@ while ($data = $query->fetch())
 	ce code un peu plus tard ! */
 	if ($id == $data['post_createur'])
 	{
-	echo'<td id=p_'.$data['post_id'].'>Posté à '.date('H\hi \l\e d M
-	y',$data['post_time']).'
+	echo'<td id=p_'.$data['post_id'].'>Posté à '.$data['post_time'].'
 	<a href="./poster.php?p='.$data['post_id'].'&amp;action=delete">
 	<img src="../images/supprimer.gif" alt="Supprimer"
 	title="Supprimer ce message" /></a>

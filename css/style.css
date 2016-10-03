@@ -117,11 +117,17 @@ li a:hover
 
 .alert-danger
 {
+	margin-top: 10px;
+	width:auto;
+	border-radius:5px;
 	background-color: #e51c23;
 }
 
 .alert-success
 {
+	margin-top:10px;
+	width:auto;
+	border-radius:5px;
 	background-color: #4caf50;
 }
 
@@ -213,7 +219,7 @@ li a:hover
 {
 	margin-top:0;
 	height:40px;
-	width:96%;
+	width:auto;
 	font-family: Arial;
 	font-weight: normal;
 	font-size: 25px;
@@ -223,6 +229,46 @@ li a:hover
 	border: 5px solid #14394d;
 	border-radius: 5px;
 	line-height: 35px;
+}
+
+#formulaire
+{
+	width: 600px;
+	padding: 10px;
+	margin:auto;
+	background-color:  #627884;
+	border-radius: 10px;
+}
+
+.titre
+{
+	font-family: Trebuchet MS;
+	color: #14394d;
+}
+
+table
+{
+	width: 1000px;
+	margin-top:20px;
+}
+
+td,tr,th
+{
+	border: 2px solid   #14394d;
+	background-color:  #f1f0f0;
+	border-radius: 3px;
+
+}
+
+
+label
+{
+	display:inline-block;
+	width:155px;
+	text-align:center;
+	font-size: 18px;
+	font-family: cursive;
+	color: white;
 }
 
 #seconnecter p:nth-child(3)

@@ -2,7 +2,7 @@
 
    session_start();
 
-$titre = "Inscription sur le site du savoir";
+$titre = "Inscription | Sitedusavoir.com";
 
 require_once("./includes/identifiants.php");
 
@@ -21,35 +21,35 @@ if ($id != 0)
 if (empty($_POST['pseudo'])) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
 {
   
-        echo '<h1 class="titre">Inscription 1/2</h1>';
+        echo '<h1 class="titre">Inscription</h1>';
 
 
-       echo'<form method="post" action="" enctype="multipart/form-data">
+       echo'<form method="post" action="" enctype="multipart/form-data" id="formulaire">
 
              
               <p>
-                <label for="pseudo">* Pseudo :</label> 
-                <input name="pseudo" type="text" id="pseudo" />(le pseudo doit contenir entre 3 et 15 caractères, sans espace) 
+                <label for="pseudo">* Pseudo </label> 
+                <input name="pseudo" type="text" id="pseudo" required />(doit contenir entre 3 et 15 caractères, sans espace) 
               </p>
 
               <p>  
-                   <label for="password">* Mot de Passe :</label>
-                   <input type="password" name="password" id="password" /> 
+                   <label for="password">* Mot de Passe </label>
+                   <input type="password" name="password" id="password" required/> 
               </p>
 
               <p>
-                  <label for="confirm">* Confirmer le mot de passe :</label>
-                  <input type="password" name="confirm" id="confirm"/>
+                  <label for="confirm">* Confirmer le mot de passe </label>
+                  <input type="password" name="confirm" id="confirm" required/>
               </p>
 
 
               <p>
-                  <label for="email">* Votre adresse Mail :</label>
-                  <input type="text" name="email" id="email" />
+                  <label for="email">* Votre adresse Mail </label>
+                  <input type="text" name="email" id="email" required/>
               </p>
 
                <p>
-                  <label for="avatar">Choisissez votre avatar :</label>
+                  <label for="avatar">Choisissez votre avatar </label>
                   <input type="file" name="avatar" id="avatar"/>(Taille max : 1mo)
               </p>
 
@@ -61,7 +61,7 @@ if (empty($_POST['pseudo'])) // Si on la variable est vide, on peutconsidérer q
   </form>
 </div>
 </body>
-      </html>';
+ </html>';
 
 }
 

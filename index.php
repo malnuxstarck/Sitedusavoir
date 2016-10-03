@@ -1,3 +1,6 @@
+<?php if(session_status() == PHP_SESSION_NONE)
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +12,7 @@
 	<link rel="icon" href="logo.png"/>
 
 </head>
-<?php include_once('includes/menu.php');
+<?php 
     
             if(isset($_SESSION['level'],$_SESSION['id'],$_SESSION['pseudo']))
             {
@@ -23,9 +26,44 @@
             $id = 0;
             $pseudo = '';
             }
+
+            include_once('includes/menu.php');
+            include_once('includes/identifiants.php');
    ?>
     
-    <aside id="aconnexion">
+   
+
+    <?php if ($id)
+    {
+
+      $req = $bdd->prepare('SELECT membre_pseudo,membre_avatar,membre_email FROM membres WHERE membre_id = :id');
+      $req->execute(array('id' => $id));
+      $data = $req->fetch();
+
+
+      echo ' <aside id="aconnexion"> 
+      <h2 id="connexion">'.$data['membre_pseudo'].' </h2>
+       
+          <div id="avatar">
+             <img src="images/avatars/'.$data['membre_avatar'].'" alt="Pas davatar"/>
+          </div>
+
+          <p><a href="mailto:'.$data['membre_email'].'">'.$data['membre_email'].'</a>
+          <p>
+          
+          <p> <a href="membre/voirmonprofil.php?id='.$id.'"> Voir son profil </a></p>
+
+          <p> <a href="membre/editerprofil.php?id='.$id.'">Editer profil </a></p>
+          <p>
+              <a href="deconnexion.php"> Se deconnecter </a>
+          </p>
+
+          </aside>';
+}
+
+ else{
+  ?>
+      <aside id="aconnexion">
 
         <h2 id="connexion"> Connexion </h2>
         <form id="seconnecter" method="POST" action="connexion.php">
@@ -51,8 +89,13 @@
           <p id="nouveau">
               <a href="register.php"> Nouveau , Inscivez Vous</a>
           </p>
+
+           </aside>
+        <?php 
+      }
+        ?>  
         
-    </aside>
+   
 
     <div id="arianepresentation">
 
@@ -83,6 +126,7 @@
      </div>
 
      <div class="reste">
+        
 
      </div>
     

@@ -13,7 +13,7 @@ include("../includes/menu.php");
 
 echo '<section id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a></section>';
 ?>
-    <h1> Forum Site du savoir </h1>
+    <h1 class="titre"> Forum Site du savoir </h1>
 
 
     <?php
@@ -49,8 +49,8 @@ $query->execute();
 
 ?>
 
-
 <table>
+
 
 <?php
 
@@ -60,116 +60,124 @@ while($data = $query->fetch())
 
 {
 
-    //On affiche chaque catégorie
+        //On affiche chaque catégorie
 
-    if( $categorie != $data['cat_id'] )
+        if( $categorie != $data['cat_id'] )
 
-    {
+        {
+          
+            //Si c'est une nouvelle catégorie on l'affiche
 
-        //Si c'est une nouvelle catégorie on l'affiche
+           ?> 
 
-       
-
-        $categorie = $data['cat_id'];
-
-        ?>
-
-        <tr>
-
-        <th></th>
-
-        <th class="titre"><strong><?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
-
-        </strong></th>             
-
-        <th class="nombremessages"><strong>Sujets</strong></th>       
-
-        <th class="nombresujets"><strong>Messages</strong></th>       
-
-        <th class="derniermessage"><strong>Dernier message</strong></th>   
-
-        </tr>
-
-        <?php
-}
-?>
-
-<?php
-
-    // Ce super echo de la mort affiche tous
-
-    // les forums en détail : description, nombre de réponses etc...
+             </table>
+             <table>
+           <?php
 
 
-    echo'<tr><td><img src="./images/message.gif" alt="message"/></td>
+            $categorie = $data['cat_id'];
 
-    <td class="titre"><strong>
+            ?>
 
-    <a href="./voirforum.php?f='.$data['forum_id'].'">
+            <tr>
 
-    '.stripslashes(htmlspecialchars($data['forum_name'])).'</a></strong>
+            <th></th>
 
-    <br />'.nl2br(stripslashes(htmlspecialchars($data['forum_desc']))).'</td>
+            <th class="titre"><strong><?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
 
-    <td class="nombresujets">'.$data['forum_topic'].'</td>
+            </strong></th>             
 
-    <td class="nombremessages">'.$data['forum_post'].'</td>';
+            <th class="nombremessages"><strong>Sujets</strong></th>       
+
+            <th class="nombresujets"><strong>Messages</strong></th>       
+
+            <th class="derniermessage"><strong>Dernier message</strong></th>   
+
+            </tr>
+
+            <?php
+        }
+
+       ?>
+            
+    <?php
+
+        // Ce super echo de la mort affiche tous
+
+        // les forums en détail : description, nombre de réponses etc...
 
 
-    // Deux cas possibles :
+        echo'<tr><td><img src="./images/message.gif" alt="message"/></td>
 
-    // Soit il y a un nouveau message, soit le forum est vide
+        <td class="titre"><strong>
 
-    if (!empty($data['forum_post']))
+        <a href="./voirforum.php?f='.$data['forum_id'].'">
 
-    {
+        '.stripslashes(htmlspecialchars($data['forum_name'])).'</a></strong>
 
-         //Selection dernier message
+        <br />'.nl2br(stripslashes(htmlspecialchars($data['forum_desc']))).'</td>
 
-     $nombreDeMessagesParPage = 15;
+        <td class="nombresujets">'.$data['forum_topic'].'</td>
 
-         $nbr_post = $data['topic_post'] +1;
+        <td class="nombremessages">'.$data['forum_post'].'</td>';
 
-     $page = ceil ($nbr_post / $nombreDeMessagesParPage);
+
+
+
+        // Deux cas possibles :
+
+        // Soit il y a un nouveau message, soit le forum est vide
+
+        if (!empty($data['forum_post']))
+
+        {
+
+             //Selection dernier message
+
+         $nombreDeMessagesParPage = 15;
+
+             $nbr_post = $data['topic_post'] +1;
+
+         $page = ceil ($nbr_post / $nombreDeMessagesParPage);
+
+             
+
+             echo'<td class="derniermessage">
+
+             '.$data['post_time'].'<br />
+
+             <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($data['membre_id'])).'&amp;action=consulter">'.$data['membre_pseudo'].'</a>
+
+       <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">
+
+             <img src="./images/go.gif" alt="go" /></a></td></tr>';
+
+
+    ?>
+
+
+
+    <?php
+
+
+         }
+
+         else
+
+         {
+
+             echo'<td class="nombremessages">Pas de message</td></tr>';
+
+         }
+
 
          
 
-         echo'<td class="derniermessage">
-
-         '.$data['post_time'].'<br />
-
-         <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($data['membre_id'])).'&amp;action=consulter">'.$data['membre_pseudo'].'</a>
-
-   <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">
-
-         <img src="./images/go.gif" alt="go" /></a></td></tr>';
-
-
-?>
-
-
-
-<?php
-
-
-     }
-
-     else
-
-     {
-
-         echo'<td class="nombremessages">Pas de message</td></tr>';
-
-     }
-
-
-     
-
-     $totaldesmessages += $data['forum_post'];
+         $totaldesmessages += $data['forum_post'];
 
 }
 
-echo '</table></div>';
+echo '</table>';
 
 $query->CloseCursor();
 
@@ -182,9 +190,9 @@ $query->CloseCursor();
 
 //Le pied de page ici :
 
-echo'<div id="footer">
+echo'
 
-<h2>
+<h2 class="titre">
 
 Qui est en ligne ?
 
@@ -206,16 +214,15 @@ $data = $query->fetch();
 $derniermembre = stripslashes(htmlspecialchars($data['membre_pseudo']));
 
 
-echo'<p>Le total des messages du forum est <strong>'.$totaldesmessages.'</strong>.<br />';
+echo'<footer><p>Le total des messages du forum est <strong>'.$totaldesmessages.'</strong>.<br />';
 
 echo'Le site et le forum comptent <strong>'.$TotalDesMembres.'</strong> membres.<br />';
 
-echo'Le dernier membre est <a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">'.$derniermembre.'</a>.</p>';
+echo'Le dernier membre est <a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">'.$derniermembre.'</a>.</p> </footer>';
 
 $query->CloseCursor();
 
 ?>
-
 </div>
 
 </body>

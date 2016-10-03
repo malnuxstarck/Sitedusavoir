@@ -11,11 +11,17 @@
 
 <?php
 
-	echo '<h1>Connexion</h1>';
+	echo '<h1 class="titre">Connexion</h1>';
 
 	if ($id != 0) 
-	{
+	{ 
+		?>
+		<div class="alert-danger">
+		<?php
 			erreur(ERR_IS_CO);
+		?></div>
+
+		<?php
 	}
 
 	 $page='index.php';
@@ -26,14 +32,14 @@
 
 if (!isset($_POST['pseudo'])) //On est dans la page de formulaire
 {
-echo '<form method="post" action="connexion.php">
+echo '<form method="post" action="connexion.php" id="formulaire">
 
 <p>
-  <label for="pseudo">Pseudo :</label><input name="pseudo" type="text" id="pseudo" /> 
+  <label for="pseudo">Pseudo </label><input name="pseudo" type="text" id="pseudo" /> 
 </p>
 
 <p>
-	<label for="password">Mot de Passe :</label><input type="password" name="password" id="password" />
+	<label for="password">Mot de Passe </label><input type="password" name="password" id="password" />
 </p>
 
 <p> <input type="checkbox" name="souvenir"> <label for="souvenir"> Se souvenir de Moi </label> 

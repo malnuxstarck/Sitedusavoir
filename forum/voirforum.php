@@ -30,7 +30,7 @@ $nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 
 <?php
 
-echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a>--><a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>';
+echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> --> <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>';
 
 $page = (isset($_GET['page']))?intval($_GET['page']):1;
 //On affiche les pages 1-2-3, etc.
@@ -51,7 +51,7 @@ echo '</p>';
 
 $premierMessageAafficher = ($page - 1) * $nombreDeMessagesParPage;
 //Le titre du forum
-echo '<h1>'.stripslashes(htmlspecialchars($data['forum_name'])).'</h1><br
+echo '<h1 class="titre">'.stripslashes(htmlspecialchars($data['forum_name'])).'</h1><br
 /><br />';
 //Et le bouton pour poster
 
@@ -66,7 +66,7 @@ nouveau topic"></a>';
 
 
 $query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre,
-topic_createur, topic_vu, topic_post, topic_time, topic_last_post,
+topic_createur, topic_vu, topic_post, DATE_FORMAT(topic_time,\'%d/%m/%Y %h:%i:%s\') AS topic_time, topic_last_post,
 Mb.membre_pseudo AS membre_pseudo_createur, post_createur,
 post_time, Ma.membre_pseudo AS membre_pseudo_last_posteur, post_id
 FROM forum_topic
@@ -122,7 +122,7 @@ echo '<td class="derniermessage">Par
 <a href="./voirprofil.php?m='.$data['post_createur'].'
 &amp;action=consulter">
 '.stripslashes(htmlspecialchars($data['membre_pseudo_last_posteur'])).'</a><br/>
-A <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">'.date('H\hi\l\e d M y',$data['post_time']).'</a></td></tr>';
+A <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">'.$data['post_time'].'</a></td></tr>';
 }
 ?>
 </table>
@@ -133,7 +133,7 @@ A <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data[
 
 <?php
 //On prend tout ce qu'on a sur les topics normaux du forum
-$query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre, topic_createur,topic_vu, topic_post, topic_time, topic_last_post,
+$query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre, topic_createur,topic_vu, topic_post, DATE_FORMAT(topic_time, \'%d/%m/%Y %h:%i:%s\') AS topic_time ,topic_last_post,
 Mb.membre_pseudo AS membre_pseudo_createur, post_id, post_createur, post_time,
 Ma.membre_pseudo AS membre_pseudo_last_posteur FROM forum_topic
 LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
