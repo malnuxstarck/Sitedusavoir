@@ -2,6 +2,8 @@
 
 session_start();
 
+$titre = "Editer profil | Sitedusavoir.com";
+
 
 require_once("../includes/identifiants.php");
 
@@ -9,14 +11,13 @@ require_once("../includes/debut.php");
 
 require_once("../includes/menu.php");
 
-$titre = "Editer profil | Sitedusavoir.com";
 
 
 echo '<p><i>Vous êtes ici</i> : <a href="../index.php"> Accueil </a> --> Editer profil de '.$pseudo ;
 
-$idet = (int)$_GET['id'];
 
-if ($id != $idet)
+
+if ($id != $_GET['id'])
 { 
 	$_SESSION['flash']['danger'] = "Vous ne pouvez pas Acceder a cette zone";
 
@@ -24,7 +25,15 @@ if ($id != $idet)
 }
 
 
-elseif (!empty($idet)) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
+if(empty($_GET))
+{
+	$_SESSION['flash']['danger'] = "Erreur : Vous tentez d'acceder a une partie securisé";
+	header('Location: ../index.php');
+}
+
+
+
+if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
 {
   
         echo '<h1 class="titre">Modification Infos : '.$pseudo .'</h1>';
@@ -55,6 +64,7 @@ elseif (!empty($idet)) // Si on la variable est vide, on peutconsidérer qu'on e
               </p>
 
               <p>
+                  <label for="signature">Votre signature </label>
                   <textarea name="signature" placeholder="Votre signature"></textarea>
               </p>
 
@@ -68,10 +78,8 @@ elseif (!empty($idet)) // Si on la variable est vide, on peutconsidérer qu'on e
       <p>Les champs précédés d un * sont obligatoires</p>
       <p><input type="submit" value="Modifier"/></p>
 
-  </form>
-</div>
-</body>
- </html>';
+    </form>';
+ 
 
 }
 
@@ -243,7 +251,7 @@ else
 	else
 	{
 
-		echo'<h1>Inscription interrompue</h1>';
+		echo'<h1>Modification interrompue</h1>';
 		echo'<p>Une ou plusieurs erreurs se sont produites pendant l
 		incription</p>';
 		echo'<p>'.$i.' erreur(s)</p>';
@@ -259,7 +267,7 @@ else
 		echo'<p>'.$avatar_erreur2.'</p>';
 		echo'<p>'.$avatar_erreur3.'</p>';
 
-		echo'<p>Cliquez <a href="./register.php">ici</a> pour recommencer</p>';
+		echo'<p>Cliquez <a href="./editerprofil.php?id='.$id.'">ici</a> pour recommencer</p>';
 	}
 
 

@@ -26,8 +26,8 @@ $query = $bdd->prepare('SELECT mp_expediteur, mp_receveur,
 mp_titre,
 mp_time, mp_text, mp_lu, membre_id, membre_pseudo, membre_avatar,
 membre_localisation, membre_inscrit, membre_post, membre_signature
-FROM forum_mp
-LEFT JOIN forum_membres ON membre_id = mp_expediteur
+FROM mp
+LEFT JOIN membres ON membre_id = mp_expediteur
 WHERE mp_id = :id');
 $query->bindValue(':id',$id_mess,PDO::PARAM_INT);
 $query->execute();
@@ -74,7 +74,7 @@ echo code(nl2br(stripslashes(htmlspecialchars($data['mp_text'])))).'
 if ($data['mp_lu'] == 0) //Si le message n'a jamais été lu
 {
 $query->CloseCursor();
-$query=$bdd->prepare('UPDATE forum_mp SET mp_lu = :lu
+$query=$bdd->prepare('UPDATE mp SET mp_lu = :lu
 WHERE mp_id= :id');
 $query->bindValue(':id',$id_mess, PDO::PARAM_INT);
 $query->bindValue(':lu','1', PDO::PARAM_STR);
