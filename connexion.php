@@ -103,7 +103,7 @@ else
 
 	    		$cookie = str_random(250);
 	    		
-	    		$req = $bdd->prepare('UPDATE users SET cookie = :cookie WHERE id = :id');
+	    		$req = $bdd->prepare('UPDATE membres SET cookie = :cookie WHERE membre_id = :id');
 	    		$req->execute(array('cookie'=> $cookie, 'id' => $user['id']));
 
 	    		setcookie('souvenir',$user['id'].'=='.$cookie.sha1($user['id'].'MALNUX667'),time() + 60 * 60 *24 *7 );
@@ -113,6 +113,12 @@ else
 				$_SESSION['pseudo'] = $data['membre_pseudo'];
 				$_SESSION['level'] = $data['membre_rang'];
 				$_SESSION['id'] = $data['membre_id'];
+
+				$requete = $bdd->prepare('UPDATE membres SET membre_derniere_visite = NOW() WHERE membre_id = :id');
+
+				$requete->bindValue(':id',$data['membre_id'],PDO::PARAM_INT);
+				$requete->execute();
+
 
 				$message = '<p>Bienvenue '.$data['membre_pseudo'].', vous êtes maintenant connecté!</p>
 
