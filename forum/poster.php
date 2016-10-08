@@ -9,16 +9,19 @@ include("../includes/menu.php");
 ?>
 
 <?php
+
 //Qu'est ce qu'on veut faire ? poster, répondre ou éditer ?
+
 $action = (isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 //Il faut être connecté pour poster !
+
 if ($id==0) erreur(ERR_IS_CO);
 //Si on veut poster un nouveau topic, la variable f se trouve dans l'url,
 //On récupère certaines valeurs
 if (isset($_GET['f']))
 {
 
-$forum = (int) $_GET['f'];
+$forum = (int)$_GET['f'];
 $query= $bdd->prepare('SELECT forum_id ,forum_name, auth_view, auth_post, auth_topic,auth_annonce, auth_modo
 FROM forum WHERE forum_id =:forum');
 
@@ -105,22 +108,22 @@ onClick="javascript:bbcode('[s]', '[/s]');return(false)" />
 <input type="button" id="lien" name="lien" value="Lien"
 onClick="javascript:bbcode('[url]', '[/url]');return(false)" />
 <br /><br />
-<img src="./images/smileys/heureux.gif" title="heureux"
+<img src="../images/smileys/heureux.gif" title="heureux"
 alt="heureux" onClick="javascript:smilies(' :D ');return(false)" />
-<img src="./images/smileys/lol.gif" title="lol" alt="lol"
+<img src="../images/smileys/lol.gif" title="lol" alt="lol"
 onClick="javascript:smilies(' :lol: ');return(false)" />
-<img src="./images/smileys/triste.gif" title="triste" alt="triste" onClick="javascript:smilies(' :triste: ');return(false)" />
-<img src="./images/smileys/cool.gif" title="cool" alt="cool"
+<img src="../images/smileys/triste.gif" title="triste" alt="triste" onClick="javascript:smilies(' :triste: ');return(false)" />
+<img src="../images/smileys/cool.gif" title="cool" alt="cool"
 onClick="javascript:smilies(' :frime: ');return(false)" />
-<img src="./images/smileys/rire.gif" title="rire" alt="rire"
+<img src="../images/smileys/rire.gif" title="rire" alt="rire"
 onClick="javascript:smilies(' XD ');return(false)" />
-<img src="./images/smileys/confus.gif" title="confus" alt="confus"
+<img src="../images/smileys/confus.gif" title="confus" alt="confus"
 onClick="javascript:smilies(' :s ');return(false)" />
-<img src="./images/smileys/choc.gif" title="choc" alt="choc"
+<img src="../images/smileys/choc.gif" title="choc" alt="choc"
 onClick="javascript:smilies(' :o ');return(false)" />
-<img src="./images/smileys/question.gif" title="?" alt="?"
+<img src="../images/smileys/question.gif" title="?" alt="?"
 onClick="javascript:smilies(' :interrogation: ');return(false)" />
-<img src="./images/smileys/exclamation.gif" title="!" alt="!"
+<img src="../images/smileys/exclamation.gif" title="!" alt="!"
 onClick="javascript:smilies(' :exclamation: ');return(false)" />
 </fieldset>
 <fieldset><legend>Message</legend><textarea cols="80" rows="8"

@@ -27,7 +27,7 @@ echo '<section id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum
 
 //Cette requête permet d'obtenir tout sur le forum
 
-$query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,  forum_topic.topic_post, post_id, post_time, post_createur, membre_pseudo, membre_id 
+$query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,  forum_topic.topic_post, post_id, DATE_FORMAT(post_time,\'%d/%m/%Y %h:%i:%s\') AS post_time, post_createur, membre_pseudo, membre_id 
 
 FROM categorie
 
@@ -70,8 +70,9 @@ while($data = $query->fetch())
 
            ?> 
 
-             </table>
-             <table>
+          </table>
+
+           <table>
            <?php
 
 

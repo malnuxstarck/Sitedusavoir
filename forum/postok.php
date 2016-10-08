@@ -4,6 +4,7 @@ $titre="Poster";
 include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
+include('../includes/bbcode.php');
 //On récupère la valeur de la variable action
 $action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 // Si le membre n'est pas connecté, il est arrivé ici par erreur
@@ -32,7 +33,7 @@ $mess = $_POST['mess'];
 //Pareil pour le titre
 $titre = $_POST['titre'];
 //ici seulement, maintenant qu'on est sur qu'elle existe, onrécupère la valeur de la variable f
-$forum = (int) $_GET['f'];
+$forum = (int)$_GET['f'];
 
 if (empty($message) || empty($titre))
 {
@@ -54,17 +55,16 @@ $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->bindValue(':mess', $mess, PDO::PARAM_STR);
 $query->execute();
 
-$nouveautopic = $bdd->lastInsertId(); //Notre fameuse fonction !
+$nouveautopic = $bdd->lastInsertId();
+ //Notre fameuse fonction !
 $query->CloseCursor();
 
 
 //Puis on entre le message
-$query=$bdd->prepare('INSERT INTO forum_post
-(post_createur, post_texte, post_time, topic_id, post_forum_id)
-VALUES (:id, :mess, :temps, :nouveautopic, :forum)');
+$query=$bdd->prepare('INSERT INTO forum_post(post_createur, post_texte, post_time, topic_id, post_forum_id)
+VALUES (:id, :mess, NOW(), :nouveautopic, :forum)');
 $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->bindValue(':mess', $message, PDO::PARAM_STR);
-$query->bindValue(':temps', $temps,PDO::PARAM_INT);
 $query->bindValue(':nouveautopic', (int) $nouveautopic,PDO::PARAM_INT);
 $query->bindValue(':forum', $forum, PDO::PARAM_INT);
 $query->execute();
@@ -73,13 +73,12 @@ $nouveaupost = $bdd->lastInsertId(); //Encore notre fameuse fonction !
 $query->CloseCursor();
 
 //Ici on update comme prévu la valeur de topic_last_post et de topic_first_post
-$query=$bdd->prepare('UPDATE forum_topic
+$query = $bdd->prepare('UPDATE forum_topic
 SET topic_last_post = :nouveaupost,
 topic_first_post = :nouveaupost
 WHERE topic_id = :nouveautopic');
-$query->bindValue(':nouveaupost', (int) $nouveaupost,
-PDO::PARAM_INT);
-$query->bindValue(':nouveautopic', (int) $nouveautopic,PDO::PARAM_INT);
+$query->bindValue(':nouveaupost', (int)$nouveaupost,PDO::PARAM_INT);
+$query->bindValue(':nouveautopic', (int)$nouveautopic,PDO::PARAM_INT);
 $query->execute();
 $query->CloseCursor();
 

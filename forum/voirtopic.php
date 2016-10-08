@@ -40,7 +40,7 @@ $nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 ?>
 
 <?php
-echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> -->
+echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> -->
 <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
 --> <a href="./voirtopic.php?
 t='.$topic.'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>';
@@ -56,11 +56,11 @@ for ($i = 1 ; $i <= $nombreDePages ; $i++)
 {
 if ($i == $page) //On affiche pas la page actuelle en lien
 {
-echo $i;
+echo '<span id="actupg">'.$i.'</span>';
 }
 else
 {
-echo '<a href="voirtopic.php?t='.$topic.'&page='.$i.'">
+echo '<a href="voirtopic.php?t='.$topic.'&page='.$i.'" id="pagination">
 ' . $i . '</a> ';
 }
 
