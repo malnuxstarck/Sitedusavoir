@@ -28,7 +28,8 @@ a
 	text-decoration : none;
 }
 
-/* Proprietes^pour l'en tete du site */
+
+/* Proprietes pour l'en tete du site */
 
 #banniere
 {
@@ -87,7 +88,7 @@ li a:hover
 	
 }
 
-#titre,#form
+#titre,#infos
 {
 	display: inline-block;
 	height: 52px;
@@ -105,30 +106,64 @@ li a:hover
 	text-shadow: 2px 2px 10px black;
 }
 
-#form
+#infos
 {
 	float:right;
 }
 
-#form p
+#infos p
 {
+   
 	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 120px;
+	height: 40px;
+	background-color: #627884;
+	border-radius: 5px;
 }
+
+#infos p a
+{
+  display:block;
+  height:38px;
+  width:120px;
+  color:white;
+  text-align:center;
+  line-height: 35px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
 
 .alert-danger
 {
-	margin-top: 10px;
+	margin-top: 20px;
 	width:auto;
 	border-radius:5px;
 	background-color: #e51c23;
+    padding:15px;
+	border:1px solid transparent;
+	border-radius:3px;
+	color: white;
+	font-family:Arial;
+
 }
+
+
 
 .alert-success
 {
-	margin-top:10px;
+	margin-top:20px;
 	width:auto;
 	border-radius:5px;
 	background-color: #4caf50;
+	padding:15px;
+	border:1px solid transparent;
+	border-radius:3px;
+	color: white;
+	font-family:Arial;
 }
 
 /*Corps de la page Index */
@@ -145,6 +180,7 @@ li a:hover
 	vertical-align: top;
 	margin-bottom: 20px;
 	font-size: 17px;
+	color: white;
 }
 
 #fildariane
@@ -236,7 +272,7 @@ li a:hover
 	width: 600px;
 	padding: 10px;
 	margin:auto;
-	background-color:  #627884;
+    background-color:  #627884;
 	border-radius: 10px;
 }
 
@@ -258,8 +294,8 @@ td,tr,th
 	background-color:  #f1f0f0;
 	border-radius: 3px;
 
-}
 
+}
 
 label
 {
@@ -287,7 +323,7 @@ input[type="text"],input[type="password"]
 	border-radius: 5px;
 }
 
-input[type="submit"]
+input[type="submit"],input[type="reset"]
 {
 	font-size:15px;
 	font-weight: bold;
@@ -321,9 +357,12 @@ input[type="submit"]:active
 	font-weight : bold;
 	color:white;
 }
+
 #nouveau a
 {
+	display:block;
 	color: white;
+	height:50px;
 }
 
 .reste
@@ -350,8 +389,10 @@ input[type="submit"]:active
 
 footer
 {
+	
 	background: #14394d;
-	height: 80px;
+	height: 100px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 }
+
