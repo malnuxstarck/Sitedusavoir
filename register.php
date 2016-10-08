@@ -58,10 +58,7 @@ if (empty($_POST['pseudo'])) // Si on la variable est vide, on peutconsidérer q
       <p>Les champs précédés d un * sont obligatoires</p>
       <p><input type="submit" value="Inscription"/></p>
 
-  </form>
-</div>
-</body>
- </html>';
+  </form>';
 
 }
 
@@ -195,7 +192,7 @@ else
 		}
 
 
-		if ($i==0)
+		if ($i == 0)
 		   {
          
               $token = str_random(60);
@@ -227,7 +224,7 @@ else
 			
        mail($email,"Confirmation de Votre compte","Cliquer ou copier sur le lien\n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
 
-          $_SESSION['flash']['success'] = "Un mail de confirmation vous a ete envoyer" ;
+          $_SESSION['flash']['success'] = "Un mail de confirmation vous a été envoyer. Merci de verifier votre boite email" ;
 
 			$query->CloseCursor();
 
