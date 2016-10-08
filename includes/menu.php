@@ -8,15 +8,14 @@ echo '<body>
 
 		             <h1 id="titre"> Site Du Savoir </h1>
 
-		             <div id ="form">';
+		             <div id ="infos">';
 
 		             if($id)
 		             {
 		             	echo 
-		             	'<p> <a href="membre/voirprofil.php?id='.$id.'">Mon compte </a>
-		             	</p>';
+		             	'<p> <a href="membre/voirmonprofil.php?id='.$id.'">Mon compte </a></p>';
 
-		             	echo '<p><a href="deconnexion.php" style="background-color:white;"> Se deconnecter </a><p>';
+		             	echo '<p><a href="deconnexion.php"> Se deconnecter </a></p>';
 
 		             	echo '</div>';
 

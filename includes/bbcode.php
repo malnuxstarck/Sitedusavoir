@@ -9,10 +9,10 @@ title="heureux" alt="heureux" />', $texte);
 $texte = str_replace(':lol: ', '<img src="./images/smileys/lol.gif"
 title="lol" alt="lol" />', $texte);
 $texte = str_replace(':triste:', '<img
-src="./images/smileys/triste.gif" title="triste" alt="triste" />',
+src="../images/smileys/triste.gif" title="triste" alt="triste" />',
 $texte);
 $texte = str_replace(':frime:', '<img
-src="./images/smileys/cool.gif" title="cool" alt="cool" />',
+src="../images/smileys/cool.gif" title="cool" alt="cool" />',
 $texte);
 $texte = str_replace(':rire:', '<img src="./images/smileys/rire.gif"
 title="rire" alt="rire" />', $texte);
@@ -33,8 +33,7 @@ $texte);
 //souligné
 $texte = preg_replace('`\[s\](.+)\[/s\]`isU', '<u>$1</u>', $texte);
 //lien
-$texte = preg_replace('#http://[a-z0-9._/-]+#i', '<a
-href="$0">$0</a>', $texte);
+$texte = preg_replace('#http://[a-z0-9._/-]+#i', '<a href="$0">$0</a>', $texte);
 //etc., etc.
 //On retourne la variable texte
 return $texte;
