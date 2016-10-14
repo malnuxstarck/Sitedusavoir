@@ -41,7 +41,7 @@ LEFT JOIN membres ON membres.membre_id = forum_post.post_createur
 
 WHERE auth_view <= :lvl 
 
-ORDER BY cat_ordre, forum_ordre DESC');
+ORDER BY cat_ordre, forum_ordre ASC');
 
 $query->bindValue(':lvl',$lvl,PDO::PARAM_INT);
 
@@ -151,7 +151,7 @@ while($data = $query->fetch())
 
        <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">
 
-             <img src="./images/go.gif" alt="go" /></a></td></tr>';
+            <img src="../images/go.png" alt="go" /></a></td></tr>';
 
 
     ?>

@@ -1,10 +1,7 @@
 <?php
 session_start();
-$titre="Voir un forum";
 include("../includes/identifiants.php");
-include("../includes/debut.php");
-include("../includes/menu.php");
-//On récupère la valeur de f
+
 $forum = (int) $_GET['f'];
 //A partir d'ici, on va compter le nombre de messages
 //pour n'afficher que les 25 premiers
@@ -14,6 +11,12 @@ auth_topic FROM forum WHERE forum_id = :forum');
 $query->bindValue(':forum',$forum,PDO::PARAM_INT);
 $query->execute();
 $data = $query->fetch();
+
+
+$titre ='Forum | '.$data['forum_name'];
+
+include("../includes/debut.php");
+include("../includes/menu.php");
 
 
 if (!verif_auth($data['auth_view']))
@@ -67,8 +70,7 @@ nouveau topic"></a>';
 
 $query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre,
 topic_createur, topic_vu, topic_post, DATE_FORMAT(topic_time,\'%d/%m/%Y %h:%i:%s\') AS topic_time, topic_last_post,
-Mb.membre_pseudo AS membre_pseudo_createur, post_createur,
-post_time, Ma.membre_pseudo AS membre_pseudo_last_posteur, post_id
+Mb.membre_pseudo AS membre_pseudo_createur, post_createur,DATE_FORMAT(post_time,\'%d/%m/%Y %h:%i:%s\') AS post_time, Ma.membre_pseudo AS membre_pseudo_last_posteur, post_id
 FROM forum_topic
 LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
 LEFT JOIN forum_post ON forum_topic.topic_last_post =
@@ -89,7 +91,7 @@ if ($query->rowCount()>0)
 
 <table>
 <tr>
-<th><img src="./images/annonce.gif" alt="Annonce" /></th>
+<th><img src="../images/annonce.png" alt="Annonce" /></th>
 <th class="titre"><strong>Titre</strong></th>
 <th class="nombremessages"><strong>Réponses</strong></th>
 <th class="nombrevu"><strong>Vus</strong></th>
@@ -102,12 +104,12 @@ while ($data=$query->fetch())
 //Pour chaque topic :
 //Si le topic est une annonce on l'affiche en haut
 //mega echo de bourrain pour tout remplir
-echo'<tr><td><img src="../images/annonce.gif" alt="Annonce"
+echo'<tr><td><img src="../images/annonce.png" alt="Annonce"
 /></td>
 <td id="titre"><strong>Annonce : </strong>
 <strong><a href="./voirtopic.php?t='.$data['topic_id'].'"
 title="Topic commencé à
-'.date('H\hi \l\e d M,y',$data['topic_time']).'">
+'.$data['topic_time'].'">
 '.stripslashes(htmlspecialchars($data['topic_titre'])).'</a></strong></td>
 <td class="nombremessages">'.$data['topic_post'].'</td>
 <td class="nombrevu">'.$data['topic_vu'].'</td>
@@ -134,7 +136,7 @@ A <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data[
 <?php
 //On prend tout ce qu'on a sur les topics normaux du forum
 $query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre, topic_createur,topic_vu, topic_post, DATE_FORMAT(topic_time, \'%d/%m/%Y %h:%i:%s\') AS topic_time ,topic_last_post,
-Mb.membre_pseudo AS membre_pseudo_createur, post_id, post_createur, post_time,
+Mb.membre_pseudo AS membre_pseudo_createur, post_id, post_createur, DATE_FORMAT(post_time,\'%d/%m/%Y %h:%i:%s\') AS post_time,
 Ma.membre_pseudo AS membre_pseudo_last_posteur FROM forum_topic
 LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
 LEFT JOIN forum_post ON forum_topic.topic_last_post = forum_post.post_id

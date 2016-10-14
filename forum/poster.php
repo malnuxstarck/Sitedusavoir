@@ -186,13 +186,13 @@ onClick="javascript:smilies(':exclamation:');return(false)"
 if (verif_auth($data['auth_annonce']))
 {
 ?>
-<label><input type="radio" name="mess" value="Annonce"
-/>Annonce</label>
-<label><input type="radio" name="mess" value="Message"
-checked="checked" />Topic</label><br />
+<label><input type="radio" name="mess" value="Annonce"/>Annonce</label>
 <?php
 }
+
 ?>
+<label><input type="radio" name="mess" value="Message" checked="checked" />Topic</label><br />
+
 <input type="submit" name="submit" value="Envoyer" />
 <input type="reset" name ="Effacer" value ="Effacer" />
 </form></p>

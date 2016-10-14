@@ -44,7 +44,7 @@ session_start();
       echo ' <aside id="aconnexion"> 
       <h2 id="connexion">'.$data['membre_pseudo'].' </h2>
        
-          <div id="avatar">
+          <div id="profil">
              <img src="images/avatars/'.$data['membre_avatar'].'" alt="Pas davatar"/>
           </div>
 
