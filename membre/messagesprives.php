@@ -16,8 +16,7 @@ switch($action) //On switch sur $action
 
 
 case "consulter": //Si on veut lire un message
-echo'<p><i>Vous êtes ici</i> : <a href="./index.php">Index du
-forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
+echo'<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
 -> Consulter un message</p>';
 $id_mess = (int) $_GET['id']; //On récupère la valeur de l'id
 echo '<h1>Consulter un message</h1><br /><br />';
@@ -51,15 +50,15 @@ title="Répondre à ce message" /></a></p>';
 <?php echo'<strong>
 <a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">
 '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a></strong></td>
-<td>Posté à '.date('H\hi \l\e d M Y',$data['mp_time']).'</td>';
+<td>Posté à '.$data['mp_time'].'</td>';
 ?>
 </tr>
 <tr>
 <td>
 <?php
 //Ici des infos sur le membre qui a envoyé le mp
-echo'<p><img src="./images/avatars/'.$data['membre_avatar'].'" alt="" />
-<br />Membre inscrit le '.date('d/m/Y',$data['membre_inscrit']).'
+echo'<p><img src="../images/avatars/'.$data['membre_avatar'].'" alt="" />
+<br />Membre inscrit le '.$data['membre_inscrit'].'
 <br />Messages : '.$data['membre_post'].'
 <br />Localisation :
 '.stripslashes(htmlspecialchars($data['membre_localisation'])).'</p>
@@ -91,7 +90,7 @@ forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
 echo '<h1>Répondre à un message privé</h1><br /><br />';
 $dest = (int) $_GET['dest'];
 ?>
-<form method="post" action="postok.php?action=repondremp&amp;dest=<?php echo $dest ?>" name="formulaire">
+<form method="post" action="./messok.php?action=repondremp&amp;dest=<?php echo $dest ?>" name="formulaire">
 <p>
 <label for="titre">Titre : </label><input type="text" size="80"
 id="titre" name="titre" />
@@ -143,7 +142,7 @@ forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
 -> Ecrire un message</p>';
 echo '<h1>Nouveau message privé</h1><br /><br />';
 ?>
-<form method="post" action="postok.php?action=nouveaump" name="formulaire">
+<form method="post" action="./messok.php?action=nouveaump" name="formulaire">
 <p>
 <label for="to">Envoyer à : </label>
 <input type="text" size="30" id="to" name="to" />
@@ -197,8 +196,8 @@ echo'<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->
 echo '<h1>Messagerie Privée</h1><br /><br />';
 $query=$bdd->prepare('SELECT mp_lu, mp_id, mp_expediteur, mp_titre, mp_time,
 membre_id, membre_pseudo
-FROM forum_mp
-LEFT JOIN forum_membres ON forum_mp.mp_expediteur = forum_membres.membre_id
+FROM mp
+LEFT JOIN membres ON mp.mp_expediteur = membres.membre_id
 WHERE mp_receveur = :id ORDER BY mp_id DESC');
 $query->bindValue(':id',$id,PDO::PARAM_INT);
 $query->execute();
@@ -237,7 +236,7 @@ echo'<td id="mp_titre">
 <td id="mp_expediteur">
 <a href="./voirprofil.php?action=consulter&amp;m='.$data['membre_id'].'">
 '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a></td>
-<td id="mp_time">'.date('H\hi \l\e d M Y',$data['mp_time']).'</td>
+<td id="mp_time">'.$data['mp_time'].'</td>
 <td>
 <a href="./messagesprives.php?action=supprimer&amp;id='.$data['mp_id'].'&amp;sur=0">supprimer</a></td></tr>';
 } //Fin de la boucle
