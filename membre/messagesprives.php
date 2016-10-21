@@ -7,16 +7,21 @@ include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/bbcode.php");
 include("../includes/menu.php");
-$action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
-?>
 
-<?php
+$action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
+
+if($id == 0 || !isset($id))
+{
+	header('Location: ../index.php');
+}
+
+
 switch($action) //On switch sur $action
 {
 
 
 case "consulter": //Si on veut lire un message
-echo'<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
+echo'<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
 -> Consulter un message</p>';
 $id_mess = (int) $_GET['id']; //On récupère la valeur de l'id
 echo '<h1>Consulter un message</h1><br /><br />';
@@ -137,7 +142,7 @@ name="message"></textarea>
 
 
 case "nouveau": //Nouveau mp
-echo'<p><i>Vous êtes ici</i> : <a href="./index.php">Index du
+echo'<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Index du
 forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
 -> Ecrire un message</p>';
 echo '<h1>Nouveau message privé</h1><br /><br />';
@@ -191,9 +196,9 @@ name="message"></textarea>
 //Si rien n'est demandé ou s'il y a une erreur dans l'url
 //On affiche la boite de mp.
 default: 
-echo'<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->
+echo'<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->
 <a href="./messagesprives.php">Messagerie privée</a>';
-echo '<h1>Messagerie Privée</h1><br /><br />';
+echo '<h1 class="titre">Messagerie Privée</h1><br /><br />';
 $query=$bdd->prepare('SELECT mp_lu, mp_id, mp_expediteur, mp_titre, mp_time,
 membre_id, membre_pseudo
 FROM mp
@@ -224,12 +229,12 @@ echo'<tr>';
 //Mp jamais lu, on affiche l'icone en question
 if($data['mp_lu'] == 0)
 {
-echo'<td><img src="./images/message_non_lu.gif" alt="Non lu"
+echo'<td><img src="../images/message_non_lu.gif" alt="Non lu"
 /></td>';
 }
 else //sinon une autre icone
 {
-echo'<td><img src="./images/message.gif" alt="Déja lu" /></td>';
+echo'<td><img src="../images/message.gif" alt="Déja lu" /></td>';
 }
 echo'<td id="mp_titre">
 <a href="./messagesprives.php?action=consulter&amp;id='.$data['mp_id'].'">'.stripslashes(htmlspecialchars($data['mp_titre'])).'</a></td>
@@ -246,7 +251,7 @@ echo '</table>';
 else
 {
 echo'<p>Vous n avez aucun message privé pour l instant, cliquez
-<a href="./index.php">ici</a> pour revenir à la page d index</p>';
+<a href="../index.php">ici</a> pour revenir à la page d index</p>';
 }
 } //Fin du switch
 ?>

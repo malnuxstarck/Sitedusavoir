@@ -40,7 +40,7 @@ $query->bindValue(':txt',$message,PDO::PARAM_STR);
 $query->execute();
 $query->CloseCursor();
 echo'<p>Votre message a bien été envoyé!<br />
-<br />Cliquez <a href="./index.php">ici</a> pour revenir à l index
+<br />Cliquez <a href="../index.php">ici</a> pour revenir à l index
 du
 forum<br />
 <br />Cliquez <a href="./messagesprives.php">ici</a> pour retourner
@@ -79,7 +79,7 @@ echo'<p>Votre message a bien été envoyé!
 <br /><br />Cliquez <a href="./index.php">ici</a> pour revenir à l
 index du
 forum<br />
-<br />Cliquez <a href="./messagesprives.php">ici</a> pour retourner
+<br />Cliquez <a href="../messagesprives.php">ici</a> pour retourner
 àl
 a messagerie</p>';
 }
