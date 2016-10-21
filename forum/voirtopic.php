@@ -26,6 +26,7 @@ $titre= $data['topic_titre'];
 include("../includes/debut.php");
 include("../includes/menu.php");
 
+
 if (!verif_auth($data['auth_view']))
 {
 	erreur(ERR_AUTH_VIEW);
@@ -56,11 +57,11 @@ for ($i = 1 ; $i <= $nombreDePages ; $i++)
 {
 if ($i == $page) //On affiche pas la page actuelle en lien
 {
-echo '<span id="actupg">'.$i.'</span>';
+echo $i;
 }
 else
 {
-echo '<a href="voirtopic.php?t='.$topic.'&page='.$i.'" id="pagination">
+echo '<a href="voirtopic.php?t='.$topic.'&page='.$i.'">
 ' . $i . '</a> ';
 }
 
@@ -93,8 +94,8 @@ $query->CloseCursor();
 
 <?php
 $query=$bdd->prepare('SELECT post_id , post_createur , post_texte ,
-post_time ,
-membre_id, membre_pseudo, membre_inscrit, membre_avatar,
+DATE_FORMAT(post_time ,\'%d/%m/%Y %H:%i:%s\') AS post_time,
+membre_id, membre_pseudo, DATE_FORMAT(membre_inscrit, \'%d/%m/%Y %H:%i:%s\') AS membre_inscrit, membre_avatar,
 membre_localisation, membre_post, membre_signature
 FROM forum_post
 LEFT JOIN membres ON membres.membre_id =
@@ -154,8 +155,7 @@ while ($data = $query->fetch())
 	}
 	else
 	{
-	echo'<td>Posté à '.$data['post_time'].'
-	</td></tr>';
+	echo'<td>Posté à '.$data['post_time'].'</td></tr>';
 	}
 
 	echo'<tr><td>

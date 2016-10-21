@@ -1,6 +1,6 @@
 <?php
 session_start();
-$titre ="Forum";
+$titre ="Forum | Sitedusavoir.com";
 
 include("../includes/identifiants.php");
 include("../includes/debut.php");
@@ -8,13 +8,11 @@ include("../includes/menu.php");
 
 ?>
 
- 
 <?php
 
-echo '<section id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a></section>';
+echo '<p id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a></p>';
 ?>
-    <h1 class="titre"> Forum Site du savoir </h1>
-
+    <h1> Forum </h1>
 
     <?php
 
@@ -27,7 +25,7 @@ echo '<section id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum
 
 //Cette requête permet d'obtenir tout sur le forum
 
-$query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,  forum_topic.topic_post, post_id, DATE_FORMAT(post_time,\'%d/%m/%Y %h:%i:%s\') AS post_time, post_createur, membre_pseudo, membre_id 
+$query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,  forum_topic.topic_post, post_id, DATE_FORMAT(post_time, \'%d/%m/%Y %H:%i:%s\') AS post_time  , post_createur, membre_pseudo, membre_id 
 
 FROM categorie
 
@@ -41,7 +39,7 @@ LEFT JOIN membres ON membres.membre_id = forum_post.post_createur
 
 WHERE auth_view <= :lvl 
 
-ORDER BY cat_ordre, forum_ordre ASC');
+ORDER BY cat_ordre, forum_ordre DESC');
 
 $query->bindValue(':lvl',$lvl,PDO::PARAM_INT);
 
@@ -49,8 +47,8 @@ $query->execute();
 
 ?>
 
-<table>
 
+<table>
 
 <?php
 
@@ -60,13 +58,19 @@ while($data = $query->fetch())
 
 {
 
-        //On affiche chaque catégorie
+    //On affiche chaque catégorie
 
-        if( $categorie != $data['cat_id'] )
+    if( $categorie != $data['cat_id'] )
 
-        {
-          
-            //Si c'est une nouvelle catégorie on l'affiche
+    {
+
+        //Si c'est une nouvelle catégorie on l'affiche
+
+       
+
+        $categorie = $data['cat_id'];
+
+
 
            ?> 
 
@@ -76,109 +80,104 @@ while($data = $query->fetch())
            <?php
 
 
-            $categorie = $data['cat_id'];
+        ?>
 
-            ?>
+        <tr>
 
-            <tr>
+        <th></th>
 
-            <th></th>
+        <th class="titre"><strong><?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
 
-            <th class="titre"><strong><?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
+        </strong></th>             
 
-            </strong></th>             
+        <th class="nombremessages"><strong>Sujets</strong></th>       
 
-            <th class="nombremessages"><strong>Sujets</strong></th>       
+        <th class="nombresujets"><strong>Messages</strong></th>       
 
-            <th class="nombresujets"><strong>Messages</strong></th>       
+        <th class="derniermessage"><strong>Dernier message</strong></th>   
 
-            <th class="derniermessage"><strong>Dernier message</strong></th>   
+        </tr>
 
-            </tr>
+        <?php
+}
+?>
 
-            <?php
-        }
+<?php
 
-       ?>
-            
-    <?php
+    // Ce super echo de la mort affiche tous
 
-        // Ce super echo de la mort affiche tous
-
-        // les forums en détail : description, nombre de réponses etc...
+    // les forums en détail : description, nombre de réponses etc...
 
 
-        echo'<tr><td><img src="./images/message.gif" alt="message"/></td>
+    echo'<tr><td><img src="../images/message.gif" alt="message"/></td>
 
-        <td class="titre"><strong>
+    <td class="titre"><strong>
 
-        <a href="./voirforum.php?f='.$data['forum_id'].'">
+    <a href="./voirforum.php?f='.$data['forum_id'].'">
 
-        '.stripslashes(htmlspecialchars($data['forum_name'])).'</a></strong>
+    '.stripslashes(htmlspecialchars($data['forum_name'])).'</a></strong>
 
-        <br />'.nl2br(stripslashes(htmlspecialchars($data['forum_desc']))).'</td>
+    <br />'.nl2br(stripslashes(htmlspecialchars($data['forum_desc']))).'</td>
 
-        <td class="nombresujets">'.$data['forum_topic'].'</td>
+    <td class="nombresujets">'.$data['forum_topic'].'</td>
 
-        <td class="nombremessages">'.$data['forum_post'].'</td>';
-
-
+    <td class="nombremessages">'.$data['forum_post'].'</td>';
 
 
-        // Deux cas possibles :
+    // Deux cas possibles :
 
-        // Soit il y a un nouveau message, soit le forum est vide
+    // Soit il y a un nouveau message, soit le forum est vide
 
-        if (!empty($data['forum_post']))
+    if (!empty($data['forum_post']))
 
-        {
+    {
 
-             //Selection dernier message
+         //Selection dernier message
 
-         $nombreDeMessagesParPage = 15;
+     $nombreDeMessagesParPage = 15;
 
-             $nbr_post = $data['topic_post'] +1;
+         $nbr_post = $data['topic_post'] +1;
 
-         $page = ceil ($nbr_post / $nombreDeMessagesParPage);
-
-             
-
-             echo'<td class="derniermessage">
-
-             '.$data['post_time'].'<br />
-
-             <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($data['membre_id'])).'&amp;action=consulter">'.$data['membre_pseudo'].'</a>
-
-       <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">
-
-            <img src="../images/go.png" alt="go" /></a></td></tr>';
-
-
-    ?>
-
-
-
-    <?php
-
-
-         }
-
-         else
-
-         {
-
-             echo'<td class="nombremessages">Pas de message</td></tr>';
-
-         }
-
+     $page = ceil ($nbr_post / $nombreDeMessagesParPage);
 
          
 
-         $totaldesmessages += $data['forum_post'];
+         echo'<td class="derniermessage">
+
+         '.$data['post_time'].'<br />
+
+         <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($data['membre_id'])).'&amp;action=consulter">'.$data['membre_pseudo'].'</a>
+
+   <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">
+
+         <img src="./images/go.gif" alt="go" /></a></td></tr>';
+
+
+?>
+
+
+
+<?php
+
+
+     }
+
+     else
+
+     {
+
+         echo'<td class="nombremessages">Pas de message</td></tr>';
+
+     }
+
+
+     
+
+     $totaldesmessages += $data['forum_post'];
 
 }
 
-echo '</table>';
+echo '</table></div>';
 
 $query->CloseCursor();
 
@@ -191,7 +190,7 @@ $query->CloseCursor();
 
 //Le pied de page ici :
 
-echo'
+echo'<div id="footer">
 
 <h2 class="titre">
 
@@ -215,16 +214,17 @@ $data = $query->fetch();
 $derniermembre = stripslashes(htmlspecialchars($data['membre_pseudo']));
 
 
-echo'<footer><p>Le total des messages du forum est <strong>'.$totaldesmessages.'</strong>.<br />';
+echo'<p>Le total des messages du forum est <strong>'.$totaldesmessages.'</strong>.<br />';
 
 echo'Le site et le forum comptent <strong>'.$TotalDesMembres.'</strong> membres.<br />';
 
-echo'Le dernier membre est <a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">'.$derniermembre.'</a>.</p> </footer>';
+echo'Le dernier membre est <a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">'.$derniermembre.'</a>.</p>';
 
 $query->CloseCursor();
 
 ?>
 </div>
+
 
 </body>
 

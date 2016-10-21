@@ -17,14 +17,16 @@ switch($action)
 //Si c'est "consulter"
 case "consulter":
 //On récupère les infos du membre
-$query = $bdd->prepare('SELECT membre_pseudo, membre_avatar,membre_email , membre_signature, membre_siteweb, membre_post,membre_inscrit, membre_localisation
+$query = $bdd->prepare('SELECT membre_pseudo, membre_avatar,
+membre_email , membre_signature, membre_siteweb, membre_post,
+DATE_FORMAT(membre_inscrit,\'%d/%m/%Y %h:%i:%s\') AS membre_inscrit,membre_localisation
 FROM membres WHERE membre_id = :membre');
 
 $query->bindValue(':membre',$membre, PDO::PARAM_INT);
 $query->execute();
 $data = $query->fetch();
 //On affiche les infos sur le membre
-echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->profil de '.stripslashes(htmlspecialchars($data['membre_pseudo']));
+echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->profil de '.stripslashes(htmlspecialchars($data['membre_pseudo']));
 echo'<h1>Profil de '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</h1>';
 echo'<img src="../images/avatars/'.$data['membre_avatar'].'" alt="Ce membre n a pas d avatar" />';
 echo'<p><strong>Adresse E-Mail : </strong>
