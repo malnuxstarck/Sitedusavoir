@@ -41,7 +41,7 @@
 
          
 
-          header('Location: membre/voirmonprofil.php');
+          header('Location: ./index.php');
 
           exit();
 
@@ -91,7 +91,7 @@
    </div>
 
    
-   <input type="submit" class="btn btn-primary" value="Envoyer"/>
+   <button type="submit" class="btn btn-primary"> Envoyer </button>
   
 
 

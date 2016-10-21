@@ -66,7 +66,7 @@
    </div>
 
    
-   <button type="submit" class="btn btn-primary"> Renouveler </button>
+   <input type="submit" class="btn btn-primary" value="Renouveler"/>
   
 
 </form>

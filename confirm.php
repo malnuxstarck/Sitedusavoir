@@ -16,12 +16,9 @@ session_start();
 
 if($user AND $user['token'] == $token)
 {
-	if(session_status() == PHP_SESSION_NONE)
-	  session_start();
+	session_start();
 
-	
-	
-	$_SESSION['flash']['success'] =" votre compte a ete validee ! Vous pouvez vous connecter";
+	$_SESSION['flash']['success'] =" votre compte a ete validee,Vous pouvez vous connecter maintenant";
 
 	$req = $bdd->prepare('UPDATE membres SET token = NULL, membre_inscrit = NOW() WHERE membre_id = :id ');
 
@@ -31,8 +28,8 @@ if($user AND $user['token'] == $token)
 }
 else
 {
-	$_SESSION['flash']['danger'] = "Token plus valide";
-
 	header('Location:connexion.php');
+
+	$_SESSION['flash']['danger'] = "Cet Token n'est plus valide !!";
 
 }

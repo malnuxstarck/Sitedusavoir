@@ -192,7 +192,7 @@ else
 		}
 
 
-		if ($i == 0)
+		if ($i==0)
 		   {
          
               $token = str_random(60);
@@ -224,7 +224,7 @@ else
 			
        mail($email,"Confirmation de Votre compte","Cliquer ou copier sur le lien\n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
 
-          $_SESSION['flash']['success'] = "Un mail de confirmation vous a été envoyer. Merci de verifier votre boite email" ;
+          $_SESSION['flash']['success'] = "Un mail de confirmation vous a ete envoyer" ;
 
 			$query->CloseCursor();
 

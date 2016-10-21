@@ -53,7 +53,7 @@ echo '<body>
           ?>
            <?php if(isset($_SESSION['flash'])): ?>
 
-      <?php foreach($_SESSION['flash'] as $cle => $message): ?>
+         <?php foreach($_SESSION['flash'] as $cle => $message): ?>
 
         <div class="alert alert-<?=$cle ?>">
            <?= $message; ?>
