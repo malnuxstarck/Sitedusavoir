@@ -116,9 +116,10 @@ session_start();
 
 			                <p> 
 
-			                   <a href="#">Extras</a> : Section Pour  l'ensemble des tutos hors informatiques. </br>
-			                   <a href=""/>Tutoriels</a> Pour les tutos informatiques  Astuces(Programmation,Conception, partages experiences).</br>
-                         <a href="./Forum">Forum </a> Pour tous les problemes ou pour se presenter. </br> <a href="">Social</a> pour se retrouver et discuter avec des inconnus une sorte de superchat globale.
+			                <a href="#">Extras</a> : Section Pour l'ensemble des tutos hors informatique.<br />
+					<a href="">Tutoriels</a> : Pour les tutos informatiques  Astuces( programmation, conception, partage d'experiences ).<br />
+                         		<a href="./Forum">Forum</a> : Pour tous les problèmes ou pour se présenter.<br />
+	    				<a href="">Social</a> : pour se retrouver et discuter avec des inconnus une sorte de superchat global.
 
 			                </p>
 
