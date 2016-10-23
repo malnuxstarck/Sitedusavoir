@@ -85,7 +85,7 @@ $query->execute();
 $query->CloseCursor();
 
 
-//Enfin on met à jour les tables forum_forum et forum_membres
+//Enfin on met à jour les tables forum et membres
 $query=$bdd->prepare('UPDATE forum SET forum_post =
 forum_post + 1 ,forum_topic = forum_topic + 1,
 forum_last_post_id = :nouveaupost
@@ -180,128 +180,302 @@ t='.$topic.'&amp;page='.$page.'#p_'.$nouveaupost.'">ici</a> pour le
 voir</p>';
 }//Fin du else
 break;
-?>
 
-<?php
-break;
-
-
-case "repondremp": //Si on veut répondre
-//On récupère le titre et le message
+case "edit": //Si on veut éditer le post
+//On récupère la valeur de p
+$post = (int)$_GET['p'];
+//On récupère le message
 $message = $_POST['message'];
-$titre = $_POST['titre'];
-
-//On récupère la valeur de l'id du destinataire
-$dest = (int) $_GET['dest'];
-//Enfin on peut envoyer le message
-$query= $bdd->prepare('INSERT INTO forum_mp (mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu) VALUES(:id, :dest, :titre, :txt, NOW(), 0)');
-$query->bindValue(':id',$id,PDO::PARAM_INT);
-$query->bindValue(':dest',$dest,PDO::PARAM_INT);
-$query->bindValue(':titre',$titre,PDO::PARAM_STR);
-$query->bindValue(':txt',$message,PDO::PARAM_STR);
+//Ensuite on vérifie que le membre a le droit d'être ici (soit le créateur soit un modo/admin)
+$query=$bdd->prepare('SELECT post_createur, post_texte,
+post_time, topic_id, auth_modo
+FROM forum_post
+LEFT JOIN forum ON forum_post.post_forum_id = forum.forum_id
+WHERE post_id=:post');
+$query->bindValue(':post',$post,PDO::PARAM_INT);
 $query->execute();
-$query->CloseCursor();
-echo'<p>Votre message a bien été envoyé!<br />
-<br />Cliquez <a href="./index.php">ici</a> pour revenir à l index
-du
-forum<br />
-<br />Cliquez <a href="./messagesprives.php">ici</a> pour retourner
-à la messagerie</p>';
-break;
-?>
+$data1 = $query->fetch();
+$topic = $data1['topic_id'];
+//On récupère la place du message dans le topic (pour le lien)
 
-
-<?php
-case "nouveaump": //On envoie un nouveau mp
-//On récupère le titre et le message
-$message = $_POST['message'];
-$titre = $_POST['titre'];
-$dest = $_POST['to'];
-//On récupère la valeur de l'id du destinataire
-//Il faut déja vérifier le nom
-$query=$bdd->prepare('SELECT membre_id FROM forum_membres
-WHERE LOWER(membre_pseudo) = :dest');
-$query->bindValue(':dest',strotolower($dest),PDO::PARAM_STR);
+$query = $bdd->prepare('SELECT COUNT(*) AS nbr FROM forum_post WHERE topic_id = :topic AND post_time < :temps');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->bindValue(':temps',$data1['post_time'],PDO::PARAM_STR);
 $query->execute();
+$data2=$query->fetch();
 
-?>
-<?php
-if($data = $query->fetch())
+if (!verif_auth($data1['auth_modo'])&& $data1['post_createur']!= $id)
 {
-$query=$bdd->prepare('INSERT INTO forum_mp
-(mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu)
-VALUES(:id, :dest, :titre, :txt, NOW(), :lu)');
-$query->bindValue(':id',$id,PDO::PARAM_INT);
-$query->bindValue(':dest',(int)
-$data['membre_id'],PDO::PARAM_INT);
-$query->bindValue(':titre',$titre,PDO::PARAM_STR);
-$query->bindValue(':txt',$message,PDO::PARAM_STR);
-
-$query->bindValue(':lu','0',PDO::PARAM_STR);
-$query->execute();
-$query->CloseCursor();
-echo'<p>Votre message a bien été envoyé!
-<br /><br />Cliquez <a href="./index.php">ici</a> pour revenir à l
-index du
-forum<br />
-<br />Cliquez <a href="./messagesprives.php">ici</a> pour retourner
-àl
-a messagerie</p>';
+// Si cette condition n'est pas remplie ça va barder :o
+erreur('ERR_AUTH_EDIT');
 }
-//Sinon l'utilisateur n'existe pas !
-else
+
+else //Sinon ça roule et on continue
 {
-echo'<p>Désolé ce membre n existe pas, veuillez vérifier et
-réessayez à nouveau.</p>';
+
+$query=$bdd->prepare('UPDATE forum_post SET post_texte =
+:message WHERE post_id = :post');
+$query->bindValue(':message',$message,PDO::PARAM_STR);
+$query->bindValue(':post',$post,PDO::PARAM_INT);
+$query->execute();
+$nombreDeMessagesParPage = 15;
+
+$nbr_post = $data2['nbr']+1;
+
+$page = ceil($nbr_post / $nombreDeMessagesParPage);
+
+echo'<p>Votre message a bien été édité!<br /><br />
+Cliquez <a href="./index.php">ici</a> pour revenir à l index du
+forum<br />
+Cliquez <a href="./voirtopic.php?t='.$topic.'&amp;page='.$page.'#p_'.$post.'">ici</a> pour le voir</p>';
+$query->CloseCursor();
 }
+
 break;
-?>
 
-<?php
-
-case "supprimer":
-//On récupère la valeur de l'id
-$id_mess = (int) $_GET['id'];
-//Il faut vérifier que le membre est bien celui qui a reçu le message
-$query=$db->prepare('SELECT mp_receveur
-FROM forum_mp WHERE mp_id = :id');
-$query->bindValue(':id',$id_mess,PDO::PARAM_INT);
+case "delete": //Si on veut supprimer le post
+//On récupère la valeur de p
+$post = (int) $_GET['p'];
+$query=$bdd->prepare('SELECT post_createur, post_texte, forum_id,
+topic_id, auth_modo
+FROM forum_post
+LEFT JOIN forum ON forum_post.post_forum_id =
+forum.forum_id
+WHERE post_id=:post');
+$query->bindValue(':post',$post,PDO::PARAM_INT);
 $query->execute();
 $data = $query->fetch();
-//Sinon la sanction est terrible :p
-if ($id != $data['mp_receveur']) erreur(ERR_WRONG_USER);
-$query->CloseCursor();
-
-$sur = (int) $_GET['sur'];
-//Pas encore certain
-if ($sur == 0)
+$topic = $data['topic_id'];
+$forum = $data['forum_id'];
+$poster = $data['post_createur'];
+//Ensuite on vérifie que le membre a le droit d'être ici
+//(soit le créateur soit un modo/admin)
+if (!verif_auth($data['auth_modo']) && $poster != $id)
 {
-echo'<p>Etes-vous certain de vouloir supprimer ce message ?<br
-/>
-<a href="./messagesprives.php?
-action=supprimer&amp;id='.$id_mess.'&amp;sur=1">
-Oui</a> - <a href="./messagesprives.php">Non</a></p>';
+// Si cette condition n'est pas remplie ça va barder :o
+erreur('ERR_AUTH_DELETE');
 }
-//Certain
-else
+else //Sinon ça roule et on continue
 {
-$query=$bdd->prepare('DELETE from forum_mp WHERE mp_id =
-:id');
-$query->bindValue(':id',$id_mess,PDO::PARAM_INT);
+//Ici on vérifie plusieurs choses :
+//est-ce un premier post ? Dernier post ou post classique ?
+$query = $bdd->prepare('SELECT topic_first_post,
+topic_last_post FROM forum_topic
+WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$data_post=$query->fetch();
+//On distingue maintenant les cas
+if ($data_post['topic_first_post']==$post) //Si le message est le premier
+{
+//Les autorisations ont changé !
+//Normal, seul un modo peut décider de supprimer tout un topic
+if (!verif_auth($data['auth_modo']))
+{
+erreur('ERR_AUTH_DELETE_TOPIC');
+}
+
+//Il faut s'assurer que ce n'est pas une erreur
+echo'<p>Vous avez choisi de supprimer un post.
+Cependant ce post est le premier du topic. Voulez vous supprimer le
+topic ? <br />
+<a href="./postok.php?action=delete_topic&amp;t='.$topic.'">oui</a>
+- <a href="./voirtopic.php?t='.$topic.'">non</a>
+</p>';
+$query->CloseCursor();
+}
+elseif ($data_post['topic_last_post']==$post) //Si le message est le dernier
+{
+//On supprime le post
+$query=$bdd->prepare('DELETE FROM forum_post WHERE
+post_id = :post');
+$query->bindValue(':post',$post,PDO::PARAM_INT);
 $query->execute();
 $query->CloseCursor();
-echo'<p>Le message a bien été supprimé.<br />
-Cliquez <a href="./messagesprives.php">ici</a> pour revenir à la
-boite
-de messagerie.</p>';
+//On modifie la valeur de topic_last_post pour cela on
+//récupère l'id du plus récent message de ce topic
+$query=$bdd->prepare('SELECT post_id FROM forum_post
+WHERE topic_id = :topic
+ORDER BY post_id DESC LIMIT 0,1');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$data=$query->fetch();
+$last_post_topic=$data['post_id'];
+$query->CloseCursor();
+//On fait de même pour forum_last_post_id
+$query=$bdd->prepare('SELECT post_id FROM forum_post
+WHERE post_forum_id = :forum
+ORDER BY post_id DESC LIMIT 0,1');
+$query->bindValue(':forum',$forum,PDO::PARAM_INT);
+$query->execute();
+$data=$query->fetch();
+$last_post_forum=$data['post_id'];
+$query->CloseCursor();
+//On met à jour la valeur de topic_last_post
+$query=$bdd->prepare('UPDATE forum_topic SET
+topic_last_post = :last
+WHERE topic_last_post = :post');
+$query->bindValue(':last',$last_post_topic,PDO::PARAM_INT);
+$query->bindValue(':post',$post,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//On enlève 1 au nombre de messages du forum et on met à
+//jour forum_last_post
+$query=$bdd->prepare('UPDATE forum SET forum_post =
+forum_post - 1, forum_last_post_id = :last
+WHERE forum_id = :forum');
+$query->bindValue(':last',$last_post_forum,PDO::PARAM_INT);
+$query->bindValue(':forum',$forum,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//On enlève 1 au nombre de messages du topic
+$query=$bdd->prepare('UPDATE forum_topic SET topic_post =
+topic_post - 1 WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+
+$query->execute();
+$query->CloseCursor();
+//On enlève 1 au nombre de messages du membre
+$query=$bdd->prepare('UPDATE membres SET
+membre_post = membre_post - 1
+WHERE membre_id = :id');
+$query->bindValue(':id',$poster,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//Enfin le message
+echo'<p>Le message a bien été supprimé !<br />
+Cliquez <a href="./voirtopic.php?t='.$topic.'">ici</a> pour
+retourner au topic<br />
+Cliquez <a href="./index.php">ici</a> pour revenir à l index du
+forum</p>';
+}
+else // Si c'est un post classique
+{
+//On supprime le post
+$query=$bdd->prepare('DELETE FROM forum_post WHERE
+post_id = :post');
+$query->bindValue(':post',$post,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//On enlève 1 au nombre de messages du forum
+$query=$bdd->prepare('UPDATE forum SET forum_post =
+forum_post - 1 WHERE forum_id = :forum');
+$query->bindValue(':forum',$forum,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//On enlève 1 au nombre de messages du topic
+$query=$bdd->prepare('UPDATE forum_topic SET topic_post =
+topic_post - 1
+WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//On enlève 1 au nombre de messages du membre
+$query=$bdd->prepare('UPDATE membres SET
+membre_post = membre_post - 1
+WHERE membre_id = :id');
+$query->bindValue(':id',$data['post_createur'],PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//Enfin le message
+echo'<p>Le message a bien été supprimé !<br />
+Cliquez <a href="./voirtopic.php?t='.$topic.'">ici</a> pour
+retourner au topic<br />
+Cliquez <a href="./index.php">ici</a> pour revenir à l index du
+forum</p>';
+}
+
+} //Fin du else
+
+break;
+
+
+case "delete_topic":
+$topic = (int) $_GET['t'];
+$query=$bdd->prepare('SELECT forum_topic.forum_id, auth_modo
+FROM forum_topic
+LEFT JOIN forum ON forum_topic.forum_id = forum.forum_id
+WHERE topic_id=:topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$data = $query->fetch();
+$forum = $data['forum_id'];
+
+//Ensuite on vérifie que le membre a le droit d'être ici
+//c'est-à-dire si c'est un modo / admin
+if (!verif_auth($data['auth_modo']))
+{
+erreur('ERR_AUTH_DELETE_TOPIC');
+}
+else //Sinon ça roule et on continue
+{
+$query->CloseCursor();
+//On compte le nombre de post du topic
+$query=$bdd->prepare('SELECT topic_post FROM forum_topic
+WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$data = $query->fetch();
+$nombrepost = $data['topic_post'] + 1;
+
+$query->CloseCursor();
+//On supprime le topic
+$query=$bdd->prepare('DELETE FROM forum_topic
+WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+
+
+$query=$bdd->prepare('SELECT post_createur, COUNT(*) AS
+nombre_mess FROM forum_post
+WHERE topic_id = :topic GROUP BY post_createur');
+
+$query->execute(array('topic' => $topic));
+
+while($data1 = $query->fetch())
+{
+
+$req=$bdd->prepare('UPDATE membres SET membre_post = membre_post-:mess WHERE membre_id = :id');
+
+$req->execute(array('mess' => $data1['nombre_mess'],'id' => $data1['post_createur']));
+
+
+}
+
+$req->CloseCursor();
+// Les post du topic
+
+$query=$bdd->prepare('DELETE FROM forum_post WHERE topic_id =
+:topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//Dernière chose, on récupère le dernier post du forum
+$query=$bdd->prepare('SELECT post_id FROM forum_post WHERE post_forum_id = :forum ORDER BY post_id DESC LIMIT 0,1');
+$query->bindValue(':forum',$forum,PDO::PARAM_INT);
+$query->execute();
+$data = $query->fetch();
+//Ensuite on modifie certaines valeurs :
+$query = $bdd->prepare('UPDATE forum
+SET forum_topic = forum_topic - 1, forum_post = forum_post - :nbr,
+forum_last_post_id = :id
+WHERE forum_id = :forum');
+$query->bindValue(':nbr',$nombrepost,PDO::PARAM_INT);
+$query->bindValue(':id',$data['post_id'],PDO::PARAM_INT);
+$query->bindValue(':forum',$forum,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+
+
+
+//Enfin le message
+echo'<p>Le topic a bien été supprimé !<br />
+Cliquez <a href="./index.php">ici</a> pour revenir à l index du
+forum</p>';
 }
 break;
-?>
 
-
-
-
-<?php
 default;
 echo'<p>Cette action est impossible</p>';
 } //Fin du Switch

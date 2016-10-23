@@ -197,6 +197,113 @@ if (verif_auth($data['auth_annonce']))
 break;
 
 
+ case "edit": //Si on veut éditer le post
+//On récupère la valeur de p
+$post = (int) $_GET['p'];
+echo'<h1>Edition</h1>';
+//On lance enfin notre requête
+$query = $bdd->prepare('SELECT post_createur, post_texte, auth_modo
+FROM forum_post  LEFT JOIN forum ON forum_post.post_forum_id = forum.forum_id
+WHERE post_id=:post');
+$query->bindValue(':post',$post,PDO::PARAM_INT);
+$query->execute();
+$data = $query->fetch();
+$text_edit = $data['post_texte'];
+
+//On récupère le message
+//Ensuite on vérifie que le membre a le droit d'être ici (soit le créateur soit un modo/admin)
+
+if (!verif_auth($data['auth_modo']) && $data['post_createur'] != $id)
+{
+// Si cette condition n'est pas remplie ça va barder :o
+erreur(ERR_AUTH_EDIT);
+}
+else //Sinon ça roule et on affiche la suite
+{
+//Le formulaire de postage
+?>
+<form method="post" action="postok.php?action=edit&amp;p=<?php echo $post ?>" name="formulaire">
+<fieldset><legend>Mise en forme</legend>
+<input type="button" id="gras" name="gras" value="Gras"
+onClick="javascript:bbcode('[g]', '[/g]');return(false)" />
+<input type="button" id="italic" name="italic"
+value="Italic" onClick="javascript:bbcode('[i]',
+'[/i]');return(false)" />
+<input type="button" id="souligné" name="souligné"
+value="Souligné" onClick="javascript:bbcode('[s]',
+'[/s]');return(false)"/>
+<input type="button" id="lien" name="lien" value="Lien" onClick="javascript:bbcode('[url]', '[/url]');return(false)" />
+<br /><br />
+<img src="./images/smileys/heureux.gif" title="heureux"
+alt="heureux" onClick="javascript:smilies(':D');return(false)" />
+<img src="./images/smileys/lol.gif" title="lol" alt="lol"
+onClick="javascript:smilies(':lol:');return(false)" />
+<img src="./images/smileys/triste.gif" title="triste"
+alt="triste" onClick="javascript:smilies(':triste:');return(false)"
+/>
+<img src="./images/smileys/cool.gif" title="cool" alt="cool"
+onClick="javascript:smilies(':frime:');return(false)" />
+<img src="./images/smileys/rire.gif" title="rire" alt="rire"
+onClick="javascript:smilies('XD');return(false)" />
+<img src="./images/smileys/confus.gif" title="confus"
+alt="confus" onClick="javascript:smilies(':s');return(false)" />
+<img src="./images/smileys/choc.gif" title="choc" alt="choc"
+onClick="javascript:smilies(':O');return(false)" />
+<img src="./images/smileys/question.gif" title="?" alt="?"
+onClick="javascript:smilies(':interrogation:');return(false)" />
+<img src="./images/smileys/exclamation.gif" title="!"
+alt="!" onClick="javascript:smilies(':exclamation:');return(false)"
+/>
+</fieldset>
+<fieldset><legend>Message</legend><textarea cols="80"
+rows="8" id="message" name="message"><?php echo $text_edit ?>
+</textarea>
+</fieldset>
+<p>
+<input type="submit" name="submit" value="Editer !" />
+<input type="reset" name = "Effacer" value = "Effacer"/></p>
+</form>
+
+<?php
+}
+break;
+
+case "delete": //Si on veut supprimer le post
+//On récupère la valeur de p
+$post = (int) $_GET['p'];
+//Ensuite on vérifie que le membre a le droit d'être ici
+echo'<h1>Suppression</h1>';
+
+$query=$bdd->prepare('SELECT post_createur, auth_modo
+FROM forum_post
+LEFT JOIN forum ON forum_post.post_forum_id =
+forum.forum_id
+WHERE post_id= :post');
+$query->bindValue(':post',$post,PDO::PARAM_INT);
+$query->execute();
+$data = $query->fetch();
+if (!verif_auth($data['auth_modo']) && $data['post_createur'] !=
+$id)
+{
+// Si cette condition n'est pas remplie ça va barder :o
+erreur(ERR_AUTH_DELETE);
+}
+else //Sinon ça roule et on affiche la suite
+{
+echo'<p>Êtes vous certains de vouloir supprimer ce post ?
+</p>';
+echo'<p><a href="./postok.php?
+action=delete&amp;p='.$post.'">Oui</a> ou <a
+href="./index.php">Non</a></p>';
+}
+$query->CloseCursor();
+break;
+
+
+
+
+
+
 
 default: //Si jamais c'est aucun de ceux là c'est qu'il y a eu unproblème :o
 echo'<p>Cette action est impossible</p>';
