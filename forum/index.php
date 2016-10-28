@@ -86,7 +86,7 @@ while($data = $query->fetch())
 
         <th></th>
 
-        <th class="titre"><strong><?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
+        <th class="titre1"><strong><?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
 
         </strong></th>             
 
@@ -111,7 +111,7 @@ while($data = $query->fetch())
 
     echo'<tr><td><img src="../images/message.gif" alt="message"/></td>
 
-    <td class="titre"><strong>
+    <td id="taillepr" class="titre"><strong>
 
     <a href="./voirforum.php?f='.$data['forum_id'].'">
 
