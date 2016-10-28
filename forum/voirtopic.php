@@ -68,6 +68,38 @@ echo '<a href="voirtopic.php?t='.$topic.'&page='.$i.'">
 }
 echo'</p>';
 
+
+if(verif_auth($data['auth_modo']))
+{
+
+	$query = $bdd->prepare('SELECT topic_locked FROM forum_topic WHERE
+	topic_id = :topic');
+	$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+	$query->execute();
+	$datas =$query->fetch();
+
+	if ($datas['topic_locked'] == 1) // Topic verrouillé !
+	{
+	echo'<a href="./postok.php?action=unlock&t='.$topic.'">
+	<img src="./images/unlock.gif" alt="deverrouiller"
+	title="Déverrouiller ce sujet" /></a>';
+	}
+
+	else //Sinon le topic est déverrouillé !
+	{
+	echo'<a href="./postok.php?action=lock&amp;t='.$topic.'">
+	<img src="./images/lock.gif" alt="verrouiller" title="Verrouiller ce
+	sujet" /></a>';
+	}
+
+	$query->CloseCursor();
+}
+
+
+
+
+
+
 $premierMessageAafficher = ($page - 1) * $nombreDeMessagesParPage;
 
 //On affiche l'image répondre

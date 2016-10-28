@@ -476,6 +476,79 @@ forum</p>';
 }
 break;
 
+case "lock": //Si on veut verrouiller le topic
+//On récupère la valeur de t
+$topic = (int) $_GET['t'];
+$query = $bdd->prepare('SELECT forum_topic.forum_id, auth_modo
+FROM forum_topic
+LEFT JOIN forum ON forum.forum_id = forum_topic.forum_id
+WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$data = $query->fetch();
+//Ensuite on vérifie que le membre a le droit d'être ici
+if (!verif_auth($data['auth_modo']))
+{
+// Si cette condition n'est pas remplie ça va barder :o
+   erreur(ERR_AUTH_VERR);
+}
+else //Sinon ça roule et on continue
+{
+//On met à jour la valeur de topic_locked
+	$query->CloseCursor();
+	$query=$bdd->prepare('UPDATE forum_topic SET topic_locked =
+	:lock WHERE topic_id = :topic');
+	$query->bindValue(':lock',1,PDO::PARAM_STR);
+	$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+	$query->execute();
+	$query->CloseCursor();
+	echo'<p>Le topic a bien été verrouillé ! <br />
+	Cliquez <a href="./voirtopic.php?t='.$topic.'">ici</a> pour
+	retourner au topic<br />
+	Cliquez <a href="./index.php">ici</a> pour revenir à l index du
+	forum</p>';
+}
+break;
+
+
+
+case "unlock": //Si on veut déverrouiller le topic
+//On récupère la valeur de t
+$topic = (int) $_GET['t'];
+$query = $bdd->prepare('SELECT forum_topic.forum_id, auth_modo
+FROM forum_topic
+LEFT JOIN forum ON forum.forum_id = forum_topic.forum_id
+WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$data = $query->fetch();
+//Ensuite on vérifie que le membre a le droit d'être ici
+if (!verif_auth($data['auth_modo']))
+{
+// Si cette condition n'est pas remplie ça va barder :o
+erreur(ERR_AUTH_VERR);
+}
+else //Sinon ça roule et on continue
+{
+//On met à jour la valeur de topic_locked
+$query->CloseCursor();
+$query=$bdd->prepare('UPDATE forum_topic SET topic_locked =:lock WHERE topic_id = :topic');
+$query->bindValue(':lock','0',PDO::PARAM_STR);
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+echo'<p>Le topic a bien été déverrouillé !<br />
+Cliquez <a href="./voirtopic.php?t='.$topic.'">ici</a> pour
+retourner au topic<br />
+Cliquez <a href="./index.php">ici</a> pour revenir à l index du
+forum</p>';
+}
+break;
+
+
+
+
+
 default;
 echo'<p>Cette action est impossible</p>';
 } //Fin du Switch
