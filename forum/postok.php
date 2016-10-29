@@ -546,7 +546,100 @@ forum</p>';
 break;
 
 
+case "deplacer":
+$topic = (int) $_GET['t'];
+$query= $bdd->prepare('SELECT forum_topic.forum_id, auth_modo
+FROM forum_topic
+LEFT JOIN forum
+ON forum.forum_id = forum_topic.forum_id
+WHERE topic_id =:topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
 
+$data=$query->fetch();
+
+if (!verif_auth($data['auth_modo']))
+{
+// Si cette condition n'est pas remplie ça va barder :o
+erreur(ERR_AUTH_MOVE);
+}
+else //Sinon ça roule et on continue
+{
+$query->CloseCursor();
+$destination = (int) $_POST['dest'];
+$origine = (int) $_POST['from'];
+//On déplace le topic
+$query=$bdd->prepare('UPDATE forum_topic SET forum_id = :dest
+WHERE topic_id = :topic');
+$query->bindValue(':dest',$destination,PDO::PARAM_INT);
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//On déplace les posts
+$query=$bdd->prepare('UPDATE forum_post SET post_forum_id =
+:dest
+WHERE topic_id = :topic');
+$query->bindValue(':dest',$destination,PDO::PARAM_INT);
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//On s'occupe d'ajouter / enlever les nombres de post /topic aux
+//forum d'origine et de destination
+//Pour cela on compte le nombre de post déplacé
+$query=$bdd->prepare('SELECT COUNT(*) AS nombre_post
+FROM forum_post WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$data = $query->fetch();
+$nombrepost = $data['nombre_post'];
+$query->CloseCursor();
+//Il faut également vérifier qu'on a pas déplacé un post qui été
+//l'ancien premier post du forum (champ forum_last_post_id)
+$query=$bdd->prepare('SELECT post_id FROM forum_post WHERE
+post_forum_id = :ori
+ORDER BY post_id DESC LIMIT 0,1');
+$query->bindValue(':ori',$origine,PDO::PARAM_INT);
+$query->execute();
+$data=$query->fetch();
+$last_post=$data['post_id'];
+$query->CloseCursor();
+//Puis on met à jour le forum d'origine
+$query=$bdd->prepare('UPDATE forum SET forum_post = forum_post - :nbr, forum_topic = forum_topic - 1,
+forum_last_post_id = :id WHERE forum_id = :ori');
+$query->bindValue(':nbr',$nombrepost,PDO::PARAM_INT);
+$query->bindValue(':ori',$origine,PDO::PARAM_INT);
+$query->bindValue(':id',$last_post,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//Avant de mettre à jour le forum de destination il faut
+//vérifier la valeur de forum_last_post_id
+$query=$bdd->prepare('SELECT post_id FROM forum_post WHERE
+post_forum_id = :dest
+ORDER BY post_id DESC LIMIT 0,1');
+$query->bindValue(':dest',$destination,PDO::PARAM_INT);
+$query->execute();
+$data=$query->fetch();
+$last_post=$data['post_id'];
+$query->CloseCursor();
+//Et on met à jour enfin !
+$query=$bdd->prepare('UPDATE forum SET forum_post =
+forum_post + :nbr,
+forum_topic = forum_topic + 1,
+forum_last_post_id = :last
+WHERE forum_id = :forum');
+$query->bindValue(':nbr',$nombrepost,PDO::PARAM_INT);
+$query->bindValue(':last',$last_post,PDO::PARAM_INT);
+$query->bindValue(':forum',$destination,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+//C'est gagné ! On affiche le message
+echo'<p>Le topic a bien été déplacé <br />
+Cliquez <a href="./voirtopic.php?t='.$topic.'">ici</a> pour revenir
+au topic<br />
+Cliquez <a href="./index.php">ici</a> pour revenir à l index du
+forum</p>';
+}
+break;
 
 
 default;

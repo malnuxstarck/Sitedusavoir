@@ -12,7 +12,7 @@ else
 //A partir d'ici, on va compter le nombre de messages pourn'afficher que les 15 premiers
 
 $query = $bdd->prepare('SELECT topic_titre, topic_post, forum_topic.forum_id , topic_last_post,
-forum_name, auth_view, auth_topic, auth_post
+forum_name, auth_view, auth_topic, auth_post,auth_modo
 FROM forum_topic
 LEFT JOIN forum ON forum_topic.forum_id = forum.forum_id WHERE topic_id = :topic');
 $query->bindValue(':topic',$topic,PDO::PARAM_INT);
@@ -71,6 +71,30 @@ echo'</p>';
 
 if(verif_auth($data['auth_modo']))
 {
+
+    $query=$bdd->prepare('SELECT forum_id, forum_name FROM forum
+WHERE forum_id <> :forum');
+$query->bindValue(':forum',$forum,PDO::PARAM_INT);
+$query->execute();
+//$forum a été définie tout en haut de la page !
+echo'<p>Déplacer vers :</p>
+<form method="post" action=postok.php?action=deplacer&amp;t='.$topic.'>
+<select name="dest">';
+while($data=$query->fetch())
+{
+echo'<option value='.$data['forum_id'].'
+id='.$data['forum_id'].'>'.$data['forum_name'].'</option>';
+}
+$query->CloseCursor();
+echo'
+</select>
+<input type="hidden" name="from" value='.$forum.'>
+<input type="submit" name="submit" value="Envoyer" />
+</form>';
+
+
+
+
 
 	$query = $bdd->prepare('SELECT topic_locked FROM forum_topic WHERE
 	topic_id = :topic');
