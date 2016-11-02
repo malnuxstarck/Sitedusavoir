@@ -38,22 +38,6 @@ et a posté <strong>'.$data['membre_post'].'</strong> messages
 $query->closeCursor();
 break;
 
-//Si on choisit de modifier son profil
-
-/*
-case "modifier":
-
-if (empty($_POST['sent'])) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
-{
-//On commence par s'assurer que le membre est connecté
-if ($id==0) 
-erreur(ERR_IS_NOT_CO);
-
-} 
-
-break;
-*/
-
 default: //Si jamais c'est aucun de ceux-là c'est qu'il y a eu un problème :o
 echo'<p>Cette action est impossible</p>';
 break;
