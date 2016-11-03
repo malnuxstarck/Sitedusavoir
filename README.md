@@ -19,11 +19,11 @@ Pour discuter tout simplement avec la communauté
 - PHP
 - C
 
-#jeux videos
+#Jeux videos
 Essentielement pour parler de jeux videos 
--Les jeux clashs(Clan , Royal)
--Commands and Conquer
--Autres jeux
+- Les jeux clashs(Clan , Royal)
+- Commands and Conquer
+- Autres jeux
 
 #Bugs et Suggestions
 - Bugs
@@ -32,3 +32,15 @@ Essentielement pour parler de jeux videos
 #Autres savoirs
 - Maths
 - Physique
+
+Une partie blog 
+
+# Blog sietdusavoir
+
+Il parlera de l'actualité informatique et aussi concernant de l'actualité du site meme
+
+Une partie Social
+
+# Social Informatique
+
+- Un reseau social ou un chat global
