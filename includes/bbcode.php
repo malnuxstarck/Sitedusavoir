@@ -33,8 +33,11 @@ $texte);
 //souligné
 $texte = preg_replace('`\[s\](.+)\[/s\]`isU', '<u>$1</u>', $texte);
 //lien
-$texte = preg_replace('#(http|https)://[a-z0-9._/?=-]+#i', '<a href="$0">$0</a>', $texte);
-//etc., etc.
+
+
+
+$texte = preg_replace('#\[url\]((http|https)://[a-z0-9._/?=-]+)\[/url\]#i', '<a href="$1">$1</a>', $texte);
+
 //On retourne la variable texte
 return $texte;
 }
