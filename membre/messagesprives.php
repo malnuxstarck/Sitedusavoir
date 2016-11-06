@@ -21,7 +21,7 @@ switch($action) //On switch sur $action
 
 
 case "consulter": //Si on veut lire un message
-echo'<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
+echo'<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> -
 -> Consulter un message</p>';
 $id_mess = (int) $_GET['id']; //On récupère la valeur de l'id
 echo '<h1>Consulter un message</h1><br /><br />';
