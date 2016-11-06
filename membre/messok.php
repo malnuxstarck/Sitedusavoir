@@ -76,10 +76,10 @@ $query->bindValue(':lu','0',PDO::PARAM_STR);
 $query->execute();
 $query->CloseCursor();
 echo'<p>Votre message a bien été envoyé!
-<br /><br />Cliquez <a href="./index.php">ici</a> pour revenir à l
+<br /><br />Cliquez <a href="../index.php">ici</a> pour revenir à l
 index du
 forum<br />
-<br />Cliquez <a href="../messagesprives.php">ici</a> pour retourner
+<br />Cliquez <a href="./messagesprives.php">ici</a> pour retourner
 àl
 a messagerie</p>';
 }
@@ -113,7 +113,7 @@ if ($sur == 0)
 {
 echo'<p>Etes-vous certain de vouloir supprimer ce message ?<br
 />
-<a href="./messagesprives.php?
+<a href="./messok.php?
 action=supprimer&amp;id='.$id_mess.'&amp;sur=1">
 Oui</a> - <a href="./messagesprives.php">Non</a></p>';
 }
