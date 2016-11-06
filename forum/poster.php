@@ -24,7 +24,7 @@ FROM forum WHERE forum_id =:forum');
 
 $query->bindValue(':forum',$forum,PDO::PARAM_INT);
 $query->execute();
-$data=$query->fetch();
+$data = $query->fetch();
 
 echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> --><a href="./voirforum.php?f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>--> Nouveau topic</p>';
 }

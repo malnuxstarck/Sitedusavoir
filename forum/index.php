@@ -222,6 +222,37 @@ echo'Le dernier membre est <a href="./voirprofil.php?m='.$data['membre_id'].'&am
 
 $query->CloseCursor();
 
+
+//Initialisation de la variable
+$count_online = 0;
+//Décompte des visiteurs
+$count_visiteurs=$bdd->query('SELECT COUNT(*) AS nbr_visiteurs FROM
+forum_whosonline WHERE online_id = 0')->fetchColumn();
+$query->CloseCursor();
+//Décompte des membres
+$texte_a_afficher = "<br />Liste des personnes en ligne : ";
+
+$query=$bdd->prepare('SELECT membre_id, membre_pseudo
+FROM forum_whosonline
+LEFT JOIN membres ON online_id = membre_id
+WHERE online_time > SUBDATE(NOW(), INTERVAL 5 MINUTE) AND online_id <> 0');
+$query->execute();
+$count_membres=0;
+while ($data = $query->fetch())
+{
+$count_membres ++;
+$texte_a_afficher .= '<a href="./voirprofil.php?
+m='.$data['membre_id'].'&amp;action=consulter">
+'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a> ,';
+}
+$texte_a_afficher = substr($texte_a_afficher, 0, -1);
+$count_online = $count_visiteurs + $count_membres;
+echo '<p>Il y a '.$count_online.' connectés ('.$count_membres.'
+membres et '.$count_visiteurs.' invités)';
+echo $texte_a_afficher.'</p>';
+$query->CloseCursor();
+
+
 ?>
 </div>
 

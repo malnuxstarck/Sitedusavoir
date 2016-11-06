@@ -26,7 +26,7 @@ $query->bindValue(':membre',$membre, PDO::PARAM_INT);
 $query->execute();
 $data = $query->fetch();
 //On affiche les infos sur le membre
-echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->profil de '.stripslashes(htmlspecialchars($data['membre_pseudo']));
+echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> -->profil de '.stripslashes(htmlspecialchars($data['membre_pseudo']));
 echo'<h1>Profil de '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</h1>';
 echo'<img src="../images/avatars/'.$data['membre_avatar'].'" alt="Ce membre n a pas d avatar" />';
 echo'<p><strong>Adresse E-Mail : </strong>

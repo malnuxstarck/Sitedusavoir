@@ -117,6 +117,22 @@ $message = $_POST['message'];
 //ici seulement, maintenant qu'on est sur qu'elle existe, on récupère la valeur de la variable t
 $topic = (int) $_GET['t'];
 
+
+$query=$bdd->prepare('SELECT topic_locked FROM forum_topic WHERE
+topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$data=$query->fetch();
+
+if ($data['topic_locked'] != 0)
+{
+erreur(ERR_TOPIC_VERR); //A vous d'afficher un message du genre : le topic est verrouillé qu'est ce que tu fous là !?
+}
+
+$query->CloseCursor();
+
+
+
 if (empty($message))
 {
 echo'<p>Votre message est vide, cliquez <a
