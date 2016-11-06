@@ -53,7 +53,7 @@ title="Répondre à ce message" /></a></p>';
 <tr>
 <td>
 <?php echo'<strong>
-<a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">
+<a href="../forum/voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">
 '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a></strong></td>
 <td>Posté à '.$data['mp_time'].'</td>';
 ?>
@@ -239,11 +239,11 @@ echo'<td><img src="../images/message.gif" alt="Déja lu" /></td>';
 echo'<td id="mp_titre">
 <a href="./messagesprives.php?action=consulter&amp;id='.$data['mp_id'].'">'.stripslashes(htmlspecialchars($data['mp_titre'])).'</a></td>
 <td id="mp_expediteur">
-<a href="./voirprofil.php?action=consulter&amp;m='.$data['membre_id'].'">
+<a href="../forum/voirprofil.php?action=consulter&amp;m='.$data['membre_id'].'">
 '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a></td>
 <td id="mp_time">'.$data['mp_time'].'</td>
 <td>
-<a href="./messagesprives.php?action=supprimer&amp;id='.$data['mp_id'].'&amp;sur=0">supprimer</a></td></tr>';
+<a href="./messok.php?action=supprimer&amp;id='.$data['mp_id'].'&amp;sur=0">supprimer</a></td></tr>';
 } //Fin de la boucle
 $query->CloseCursor();
 echo '</table>';

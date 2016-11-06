@@ -14,9 +14,9 @@ if ($id==0) erreur(ERR_IS_CO);
 
 $action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 
-$message = $_POST['message'];
+$message =(isset($_POST['message']))?htmlspecialchars($_POST['message']):'';
 
-$titre = $_POST['titre'];
+$titre = (isset($_POST['titre']))?htmlspecialchars($_POST['titre']):'';
 
 
 switch($action)
@@ -99,7 +99,7 @@ case "supprimer":
 $id_mess = (int) $_GET['id'];
 //Il faut vérifier que le membre est bien celui qui a reçu le message
 $query = $bdd->prepare('SELECT mp_receveur
-FROM forum_mp WHERE mp_id = :id');
+FROM mp WHERE mp_id = :id');
 $query->bindValue(':id',$id_mess,PDO::PARAM_INT);
 $query->execute();
 $data = $query->fetch();
@@ -120,7 +120,7 @@ Oui</a> - <a href="./messagesprives.php">Non</a></p>';
 //Certain
 else
 {
-$query=$bdd->prepare('DELETE from forum_mp WHERE mp_id =
+$query=$bdd->prepare('DELETE from mp WHERE mp_id =
 :id');
 $query->bindValue(':id',$id_mess,PDO::PARAM_INT);
 $query->execute();
