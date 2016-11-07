@@ -1,10 +1,9 @@
-./
 <?php
 function code($texte)
 {
 //Smileys
 
-$texte = str_replace(':D ', '<img src="../images/smileys/heureux.png"
+$texte = str_replace(':D', '<img src="../images/smileys/heureux.png"
 title="heureux" alt="heureux" />', $texte);
 $texte = str_replace(':lol: ', '<img src="./images/smileys/lol.png"
 title="lol" alt="lol" />', $texte);

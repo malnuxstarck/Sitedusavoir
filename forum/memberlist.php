@@ -1,9 +1,9 @@
 <?php
 session_start();
 $titre="Liste des membres";
-include("../includes/identifiants.php");
-include("../includes/debut.php");
-include("../includes/menu.php");
+include("includes/identifiants.php");
+include("includes/debut.php");
+include("includes/menu.php");
 
 //A partir d'ici, on va compter le nombre de members
 //pour n'afficher que les 25 premiers
@@ -28,7 +28,7 @@ $query->CloseCursor();
 $MembreParPage = 25;
 $NombreDePages = ceil($total / $MembreParPage);
 echo '<p><i>Vous êtes ici</i> : <a href="./index.php">
-Forum</a> -->
+Accueil</a> -->
 <a href="./memberlist.php">Liste des membres</a></p>';
 //Nombre de pages
 $page = (isset($_GET['page']))?intval($_GET['page']):1;
