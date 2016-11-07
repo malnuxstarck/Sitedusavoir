@@ -6,8 +6,7 @@ include("../includes/debut.php");
 include("../includes/menu.php");
 $action =
 isset($_GET['action'])?htmlspecialchars($_GET['action']):'';
-echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Index du
-forum</a> --> <a href="./amis.php">Gestion des amis</a>';
+echo '<p><i>Vous êtes ici</i> : <a href="../index.php">Accueil</a> --> <a href="./amis.php">Gestion des amis</a>';
 if ($id==0) erreur(ERR_IS_CO);
 //Le titre
 echo '<h1>Gestion des amis</h1><br /><br />';
