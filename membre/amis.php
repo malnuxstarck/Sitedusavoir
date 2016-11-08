@@ -45,7 +45,7 @@ Cliquez <a href="./amis.php?action=add">ici</a> pour réessayer</p>';
 $i++;
 }
 $query->CloseCursor();
-$query = $bdd->prepare('SELECT COUNT(*) AS nbr FROM forum_amis
+$query = $bdd->prepare('SELECT COUNT(*) AS nbr FROM amis
 WHERE ami_from = :id AND ami_to = :id_to
 OR ami_from = :id AND ami_to = :id_to');
 $query->bindValue(':id',$id,PDO::PARAM_INT);
@@ -70,7 +70,7 @@ $i++;
 }
 	if ($i == 0)
 	{
-		$query=$bdd->prepare('INSERT INTO forum_amis (ami_from, ami_to,
+		$query=$bdd->prepare('INSERT INTO amis (ami_from, ami_to,
 		ami_confirm, ami_date)
 		VALUES(:id, :id_to, :conf, :temps)');
 		$query->bindValue(':id',$id,PDO::PARAM_INT);
@@ -99,7 +99,7 @@ $add = (isset($_GET['add']))?htmlspecialchars($_GET['add']):0;
 
 if (empty($add))
 {
-	$query = $bdd->prepare('SELECT ami_from, ami_date, membre_pseudo FROM forum_amis
+	$query = $bdd->prepare('SELECT ami_from, ami_date, membre_pseudo FROM amis
 	LEFT JOIN membres ON membre_id = ami_from
 	WHERE ami_to = :id AND ami_confirm = :conf
 	ORDER BY ami_date DESC');
@@ -129,7 +129,7 @@ if (empty($add))
 else
 {
 $membre = (int) $_GET['m'];
-$query = $bdd->prepare('UPDATE forum_amis SET ami_confirm =
+$query = $bdd->prepare('UPDATE amis SET ami_confirm =
 :conf
 WHERE ami_from = :membre AND ami_to = :id');
 $query->bindValue(':conf','1',PDO::PARAM_STR);
@@ -160,13 +160,13 @@ href="./amis.php">non</a></p>';
 }
 else
 {
-$query = $bdd->prepare('DELETE FROM forum_amis WHERE ami_from
+$query = $bdd->prepare('DELETE FROM amis WHERE ami_from
 = :membre AND ami_to = :id');
 $query->bindValue(':membre',$membre,PDO::PARAM_INT);
 $query->bindValue(':id',$id,PDO::PARAM_INT);
 $query->execute();
 $query->closeCursor();
-$query = $bdd->prepare('DELETE FROM forum_amis WHERE ami_to =
+$query = $bdd->prepare('DELETE FROM amis WHERE ami_to =
 :membre AND ami_from = :id');
 $query->bindValue(':membre',$membre,PDO::PARAM_INT);
 $query->bindValue(':id',$id,PDO::PARAM_INT);
@@ -182,7 +182,7 @@ break;
 
 default:
 
-$query = $bdd->prepare('SELECT (ami_from + ami_to - :id) AS ami_id, ami_date,membre_pseudo, membre_id FROM forum_amis
+$query = $bdd->prepare('SELECT (ami_from + ami_to - :id) AS ami_id, ami_date,membre_pseudo, membre_id FROM amis
 LEFT JOIN membres ON membre_id = (ami_from + ami_to - :id)
 LEFT JOIN forum_whosonline ON online_id = membre_id WHERE (ami_from = :id OR ami_to = :id) AND ami_confirm = :conf ORDER BY membre_pseudo');
 $query->bindValue(':id',$id,PDO::PARAM_INT);
@@ -211,7 +211,7 @@ echo '</tr>';
 echo '</table>';
 $query->CloseCursor();
 //On compte le nombre de demande en cours et on met quelques liens
-$query=$bdd->prepare('SELECT COUNT(*) FROM forum_amis
+$query=$bdd->prepare('SELECT COUNT(*) FROM amis
 WHERE ami_to = :id AND ami_confirm = :conf');
 $query->bindValue(':id',$id,PDO::PARAM_INT);
 $query->bindValue(':conf','0', PDO::PARAM_STR);
