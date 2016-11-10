@@ -117,6 +117,29 @@ echo'
 	}
 
 	$query->CloseCursor();
+
+
+
+    echo'<form method="post" action=postok.php?action=autorep&amp;t='.$topic.'>
+<select name="rep">';
+
+$query=$bdd->query('SELECT automess_id, automess_titre FROM forum_automess');
+while ($data = $query->fetch())
+{
+echo '<option value="'.$data['automess_id'].'">
+'.$data['automess_titre'].'</option>';
+
+}
+echo '</select><input type="submit" name="submit" value="Envoyer" /></form>';
+$query->CloseCursor();
+
+
+
+
+
+
+
+
 }
 
 
