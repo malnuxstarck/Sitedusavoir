@@ -70,13 +70,12 @@ $i++;
 }
 	if ($i == 0)
 	{
-		$query=$bdd->prepare('INSERT INTO amis (ami_from, ami_to,
-		ami_confirm, ami_date)
-		VALUES(:id, :id_to, :conf, :temps)');
+		$query=$bdd->prepare('INSERT INTO amis (ami_from, ami_to,ami_confirm, ami_date)
+		VALUES(:id, :id_to, :conf,NOW())');
+
 		$query->bindValue(':id',$id,PDO::PARAM_INT);
 		$query->bindValue(':id_to', $id_to, PDO::PARAM_INT);
 		$query->bindValue(':conf','0',PDO::PARAM_STR);
-		$query->bindValue(':temps', time(), PDO::PARAM_INT);
 		$query->execute();
 		$query->CloseCursor();
 		echo '<p><a href="/voirprofil.php?
@@ -201,7 +200,7 @@ echo '<td colspan="4" align="center">Vous n avez aucun ami pour l instant</td>';
 while ($data = $query->fetch())
 {
 echo '<tr><td><a href="./voirprofil.php?m='.$data['ami_id'].'&amp;action=consulter">'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'
-<td>'.date('d/m/Y',$data['ami_date']).'</td>
+<td>'.$data['ami_date'].'</td>
 <td><a href="./messagesprives.php?action=repondre&amp;dest='.$data['ami_id'].'">Envoyer <a href="./amis.php?action=delete&m='.$data['ami_id'].'">Supprimer</a></td>';
 
 if (!empty($data['online_id'])) echo '<td>Oui</td>'; else echo '<td>Non</td>';
