@@ -14,6 +14,7 @@ Pour discuter tout simplement avec la communauté
 - Presentation
 - News
 - Discussions generales
+
 #Informatique
 - HTML/CSS
 - PHP
@@ -35,7 +36,7 @@ Essentielement pour parler de jeux videos
 
 Une partie blog 
 
-# Blog sietdusavoir
+#Blog sitedusavoir
 
 Il parlera de l'actualité informatique et aussi concernant de l'actualité du site meme
 
