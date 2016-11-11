@@ -1,4 +1,5 @@
 <?php
+if(session_status()== PHP_SESSION_NONE)
    session_start();
 
    $titre="Connexion";
@@ -7,6 +8,9 @@
    include_once './includes/menu.php';
 
    echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="../index.php">Accueil </a> --> Connexion';
+
+
+   reconnected_from_cookie();
 ?>
 
 <?php
@@ -103,10 +107,10 @@ else
 
 	    		$cookie = str_random(250);
 	    		
-	    		$req = $bdd->prepare('UPDATE users SET cookie = :cookie WHERE id = :id');
-	    		$req->execute(array('cookie'=> $cookie, 'id' => $user['id']));
+	    		$req = $bdd->prepare('UPDATE membres SET cookie = :cookie WHERE membre_id = :id');
+	    		$req->execute(array('cookie'=> $cookie, 'id' => $data['membre_id']));
 
-	    		setcookie('souvenir',$user['id'].'=='.$cookie.sha1($user['id'].'MALNUX667'),time() + 60 * 60 *24 *7 );
+	    		setcookie('souvenir',$data['membre_id'].'=='.$cookie.sha1($data['membre_id'].'MALNUX667'),time() + 60 * 60 *24 *7 );
 	    	}
 
 
