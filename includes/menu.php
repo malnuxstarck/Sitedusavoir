@@ -13,9 +13,9 @@ echo '<body>
 		             if($id)
 		             {
 		             	echo 
-		             	'<p> <a href="membre/voirmonprofil.php?id='.$id.'">Mon compte </a></p>';
+		             	'<p> <a href="../membre/voirmonprofil.php?id='.$id.'">Mon compte </a></p>';
 
-		             	echo '<p><a href="deconnexion.php"> Se deconnecter </a></p>';
+		             	echo '<p><a href="../deconnexion.php"> Se deconnecter </a></p>';
 
 		             	echo '</div>';
 
@@ -31,11 +31,11 @@ echo '<body>
 					 '<div class="menu">
 
 					    <ul>
-					        <li><a href="#"><img src="images/accueil.png" id="accueil" alt="A"/> Accueil</a></li>
+					        <li><a href="../index.php"><img src="../images/accueil.png" id="accueil" alt="A"/> Accueil</a></li>
 				            <li><a href="../forum">Forum</a></li>
-				            <li><a href="#">Tutoriels</a></li>
+				            <li><a href="../tutoriels">Tutoriels</a></li>
 							<li> <a href="#">Extras </a></li>
-							<li> <a href="#">Social</a>
+							<li> <a href="http://social.sitedusavoir.com">Social</a>
 							<li> <a href="http://blog.sitedusavoir.com">Blog</a></li>
 						</ul>
 
@@ -53,7 +53,7 @@ echo '<body>
           ?>
            <?php if(isset($_SESSION['flash'])): ?>
 
-         <?php foreach($_SESSION['flash'] as $cle => $message): ?>
+      <?php foreach($_SESSION['flash'] as $cle => $message): ?>
 
         <div class="alert alert-<?=$cle ?>">
            <?= $message; ?>

@@ -7,7 +7,7 @@ session_destroy();
 unset($_SESSION['flash']);
 unset($_COOKIE['souvenir']);
 
-setcookie('souvenir',NULL,-1);
+setcookie('souvenir',NULL,time()-1);
 
 include("./includes/identifiants.php");
 include_once('./includes/debut.php');
