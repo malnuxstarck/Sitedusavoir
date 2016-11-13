@@ -2,7 +2,7 @@
 
    session_start();
 
-$titre = "Inscription | Sitedusavoir.com";
+$titre = "Inscription | sitedusavoir.com";
 
 require_once("./includes/identifiants.php");
 
@@ -21,44 +21,44 @@ if ($id != 0)
 if (empty($_POST['pseudo'])) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
 {
   
-        echo '<h1 class="titre">Inscription</h1>';
+     echo '<h1 class="titre">Inscription</h1>';
 
 
-       echo'<form method="post" action="" enctype="multipart/form-data" id="formulaire">
+     echo'<form method="post" action="" enctype="multipart/form-data" id="formulaire">
 
-             
-              <p>
-                <label for="pseudo">* Pseudo </label> 
-                <input name="pseudo" type="text" id="pseudo" required />(doit contenir entre 3 et 15 caractères, sans espace) 
-              </p>
+		             
+		              <p>
+		                <label for="pseudo">* Pseudo </label> 
+		                <input name="pseudo" type="text" id="pseudo" required />(doit contenir entre 3 et 15 caractères, sans espace) 
+		              </p>
 
-              <p>  
-                   <label for="password">* Mot de Passe </label>
-                   <input type="password" name="password" id="password" required/> 
-              </p>
+		              <p>  
+		                   <label for="password">* Mot de Passe </label>
+		                   <input type="password" name="password" id="password" required/> 
+		              </p>
 
-              <p>
-                  <label for="confirm">* Confirmer le mot de passe </label>
-                  <input type="password" name="confirm" id="confirm" required/>
-              </p>
+		              <p>
+		                  <label for="confirm">* Confirmer le mot de passe </label>
+		                  <input type="password" name="confirm" id="confirm" required/>
+		              </p>
 
 
-              <p>
-                  <label for="email">* Votre adresse Mail </label>
-                  <input type="text" name="email" id="email" required/>
-              </p>
+		              <p>
+		                  <label for="email">* Votre adresse Mail </label>
+		                  <input type="text" name="email" id="email" required/>
+		              </p>
 
-               <p>
-                  <label for="avatar">Choisissez votre avatar </label>
-                  <input type="file" name="avatar" id="avatar"/>(Taille max : 1mo)
-              </p>
+		               <p>
+		                  <label for="avatar">Choisissez votre avatar </label>
+		                  <input type="file" name="avatar" id="avatar"/>(Taille max : 1mo)
+		              </p>
 
-     
+		     
 
-      <p>Les champs précédés d un * sont obligatoires</p>
-      <p><input type="submit" value="Inscription"/></p>
+		               <p>Les champs précédés d un * sont obligatoires</p>
+		               <p><input type="submit" value="Inscription"/></p>
 
-  </form>';
+        </form>';
 
 }
 
@@ -69,9 +69,11 @@ else
 	$pseudo_erreur1 = NULL;
 	$pseudo_erreur2 = NULL;
 	$mdp_erreur = NULL;
+
 	$email_erreur1 = NULL;
 	$email_erreur2 = NULL;
 	$avatar_erreur = NULL;
+
 	$avatar_erreur1 = NULL;
 	$avatar_erreur2 = NULL;
 	$avatar_erreur3 = NULL;
@@ -86,7 +88,7 @@ else
     $confirm = $_POST['confirm'];
 
 	
-  $query = $bdd->prepare('SELECT COUNT(*) AS nbr FROM membres WHERE membre_pseudo =:pseudo');
+    $query = $bdd->prepare('SELECT COUNT(*) AS nbr FROM membres WHERE membre_pseudo =:pseudo');
 
 	$query->bindValue(':pseudo',$pseudo, PDO::PARAM_STR);
 
@@ -106,7 +108,7 @@ else
 		if (strlen($pseudo) < 3 || strlen($pseudo) > 15  || !preg_match('#^[a-zA-Z0-9_]+$#',$pseudo))
 		{
 			$pseudo_erreur2 = "Votre pseudo est soit trop grand, soit trop petit, soit il ne respecte les caracteres autorisées";
-		  $i++;
+		    $i++;
 		}
 
 //Vérification du mdp
@@ -124,6 +126,7 @@ else
 
 		$query = $bdd->prepare('SELECT COUNT(*) AS nbr FROM membres WHERE membre_email =:mail');
 		$query->bindValue(':mail',$email, PDO::PARAM_STR);
+
 		$query->execute();
 		$mail_free=($query->fetchColumn()==0)?1:0;
 
@@ -138,11 +141,11 @@ else
         //On vérifie la forme maintenant
 
 		 if(empty($_POST['email']) || !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL))
-      {
+         {
 
     		$email_erreur2 = "Votre adresse E-Mail n'a pas un format valide";
     		$i++;
-		}
+		 }
 
 		
 	
@@ -163,14 +166,13 @@ else
 
     			if ($_FILES['avatar']['error'] > 0)
     			{
-      			$avatar_erreur = "Erreur lors du transfert de
-      			l'avatar : ";
+      			    $avatar_erreur = "Erreur lors du transfert de l'avatar : ";
     			}
 
     			if ($_FILES['avatar']['size'] > $maxsize)
     			{
-        			$i++;
-        			$avatar_erreur1 = "Le fichier est trop gros :(<strong>".$_FILES['avatar']['size']." Octets</strong> contre <strong>".$maxsize." Octets</strong>)";
+        			 $i++;
+        			 $avatar_erreur1 = "Le fichier est trop gros :(<strong>".$_FILES['avatar']['size']." Octets</strong> contre <strong>".$maxsize." Octets</strong>)";
     			}
 
     		   $image_sizes = getimagesize($_FILES['avatar']['tmp_name']);
@@ -186,8 +188,8 @@ else
 
     			if(!in_array($extension_upload,$extensions_valides) )
     			{
-      			$i++;
-      			$avatar_erreur3 = "Extension de l'avatar incorrecte";
+      			  $i++;
+      			  $avatar_erreur3 = "Extension de l'avatar incorrecte";
     			}
 		}
 
@@ -215,14 +217,14 @@ else
 			
 			$query->bindValue(':nomavatar', $nomavatar, PDO::PARAM_STR);
 
-      $query->bindValue(':token',$token,PDO::PARAM_STR) ;
+            $query->bindValue(':token',$token,PDO::PARAM_STR) ;
 			
 			$query->execute();
 			//Et on définit les variables de sessions
 
 				$id = $bdd->lastInsertId(); ;
 			
-       mail($email,"Confirmation de Votre compte","Cliquer ou copier sur le lien\n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
+            mail($email,"Confirmation de Votre compte","Cliquer ou copier sur le lien\n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
 
           $_SESSION['flash']['success'] = "Un mail de confirmation vous a ete envoyer" ;
 
@@ -235,8 +237,7 @@ else
 	{
 
 		echo'<h1>Inscription interrompue</h1>';
-		echo'<p>Une ou plusieurs erreurs se sont produites pendant l
-		incription</p>';
+		echo'<p>Une ou plusieurs erreurs se sont produites pendant l incription</p>';
 		echo'<p>'.$i.' erreur(s)</p>';
 		echo'<p>'.$pseudo_erreur1.'</p>';
 
@@ -247,6 +248,7 @@ else
 		echo'<p>'.$email_erreur2.'</p>';
 		echo'<p>'.$avatar_erreur.'</p>';
 		echo'<p>'.$avatar_erreur1.'</p>';
+		
 		echo'<p>'.$avatar_erreur2.'</p>';
 		echo'<p>'.$avatar_erreur3.'</p>';
 

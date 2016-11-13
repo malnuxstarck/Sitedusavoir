@@ -1,11 +1,21 @@
 <?php
-Include("includes/identifiants.php");
-Include("includes/debut.php");
-Include("includes/menu.php");
+include("includes/identifiants.php");
+include("includes/debut.php");
+include("includes/menu.php");
 
-If(!empty($_POST)
+if(!empty($_GET))
 {
 
+	$mots = $_GET['cherche'];
+
+	$mots = explode(' ',$mots);
+
+	
+}
+
+else
+{
+	header('Location:./index.php');
 }
 
 ?>
