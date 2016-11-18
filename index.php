@@ -32,7 +32,7 @@ session_start();
             $id = 0;
             $pseudo = '';
             }
-
+            include ('includes/constantes.php');
             include_once('includes/menu.php');
             include_once('includes/identifiants.php');
             reconnected_from_cookie();
@@ -43,7 +43,7 @@ session_start();
     <?php if ($id)
     {
 
-      $req = $bdd->prepare('SELECT membre_pseudo,membre_avatar,membre_email FROM membres WHERE membre_id = :id');
+      $req = $bdd->prepare('SELECT membre_pseudo,membre_avatar,membre_email,membre_rang FROM membres WHERE membre_id = :id');
       $req->execute(array('id' => $id));
       $data = $req->fetch();
 
@@ -65,7 +65,11 @@ session_start();
               <a href="deconnexion.php"> Se deconnecter </a>
           </p>
 
-          </aside>';
+         </aside>';
+
+          
+
+
 }
 
  else{
@@ -134,14 +138,23 @@ session_start();
 
      <div class="reste">
         
+              <?php
+
+           if(verif_auth(ADMIN))
+          {
+            echo '<a href="admin/index.php">Administration</a>';
+          }
+
+          ?>
+    
 
      </div>
     
     <footer>
           
           <p> Site du savoir Copyright &copy; 2016 Tous droits reservés </p>
-    
-
+          
+          
    </footer>
 
   

@@ -410,6 +410,27 @@ input[type="submit"]:active
 	font-weight:bold;
 }
 
+.billet
+{
+	display:block;
+	width:800px;
+	height:auto;
+	background:#f5f1f1;
+	margin-top:30px;
+	padding: 10px;
+	padding-top: 2px;
+	
+	border-radius: 10px;
+}
+
+.billet li
+{
+	display:inline-block;
+	margin: 5px;
+}
+
+
+
 /*Pied de la page */
 
 footer

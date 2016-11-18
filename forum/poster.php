@@ -47,7 +47,7 @@ $data=$query->fetch();
 
 $forum = $data['forum_id'];
 
-echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->
+echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> -->
 <a href="./voirforum.php?
 f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
 --> <a href="./voirtopic.php?
@@ -75,7 +75,7 @@ $data=$query->fetch();
 $topic = $data['topic_id'];
 $forum = $data['forum_id'];
 
-echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Index du forum</a> -->
+echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> -->
 <a href="./voirforum.php?
 f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
 --> <a href="./voirtopic.php?

@@ -9,7 +9,7 @@ include("../includes/menu.php");
 $cat = (isset($_GET['cat']))?htmlspecialchars($_GET['cat']):'';
 
 $action = (isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
-echo'<p><i>Vous êtes ici</i> : <a href="../index.php">
+echo'<p id="fildariane"><i>Vous êtes ici</i> : <a href="../index.php">
 Acceuil</a> --> <a href="./index.php">Administration du forum</a>';
 
 
