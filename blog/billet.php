@@ -26,7 +26,8 @@ if(verif_auth(MODO))
 	   <h1>Nouveau Article</h1>
 	     <form method="post" action="billetok.php?action=creer">
 		<fieldset><legend>Titre</legend>
-		<input type="text" size="80" id="titre" name="titre" /></fieldset>
+		<input type="text" size="80" id="titre" name="titre" />
+		 </fieldset>
 		<fieldset><legend>Mise en forme</legend>
 		<input type="button" id="gras" name="gras" value="Gras"
 		onClick="javascript:bbcode('[g]', '[/g]');return(false)" />
