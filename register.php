@@ -28,8 +28,8 @@ if (empty($_POST['pseudo'])) // Si on la variable est vide, on peutconsidérer q
 
 		             
 		              <p>
-		                <label for="pseudo">* Pseudo </label> 
-		                <input name="pseudo" type="text" id="pseudo" required />(doit contenir entre 3 et 15 caractères, sans espace) 
+		                  <label for="pseudo">* Pseudo </label> 
+		                  <input name="pseudo" type="text" id="pseudo" required />(doit contenir entre 3 et 15 caractères, sans espace) 
 		              </p>
 
 		              <p>  
@@ -197,38 +197,37 @@ else
 		if ($i==0)
 		   {
          
-              $token = str_random(60);
+	              $token = str_random(60);
 
 
 
-			echo'<h1>Inscription terminée</h1>';
-			echo'<p>Bienvenue '.stripslashes(htmlspecialchars($_POST['pseudo'])).' vous êtes maintenant inscrit sur le Site du savoir</p>
-			<p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil</p>';
-			//La ligne suivante sera commentée plus bas
-			
-			$nomavatar = (!empty($_FILES['avatar']['size']))?move_avatar($_FILES['avatar']):'';
+				echo'<h1>Inscription terminée</h1>';
+				echo'<p>Bienvenue '.stripslashes(htmlspecialchars($_POST['pseudo'])).' vous êtes maintenant inscrit sur le Site du savoir</p>
+				<p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil</p>';
+				//La ligne suivante sera commentée plus bas
+				
+				$nomavatar = (!empty($_FILES['avatar']['size']))?move_avatar($_FILES['avatar']):'default.png';
 
-			$query = $bdd->prepare('INSERT INTO membres (membre_pseudo,membre_mdp, membre_email, membre_avatar, membre_inscrit,token) VALUES (:pseudo, :pass, :email , :nomavatar, NULL, :token)');
+				$query = $bdd->prepare('INSERT INTO membres (membre_pseudo,membre_mdp, membre_email, membre_avatar, membre_inscrit,token) VALUES (:pseudo, :pass, :email , :nomavatar, NULL, :token)');
 
-			$query->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
-			$query->bindValue(':pass', $pass, PDO::PARAM_INT);
-			$query->bindValue(':email', $email, PDO::PARAM_STR);
-			
-			
-			$query->bindValue(':nomavatar', $nomavatar, PDO::PARAM_STR);
+				$query->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+				$query->bindValue(':pass', $pass, PDO::PARAM_INT);
+				$query->bindValue(':email', $email, PDO::PARAM_STR);
+				
+				
+				$query->bindValue(':nomavatar', $nomavatar, PDO::PARAM_STR);
 
-            $query->bindValue(':token',$token,PDO::PARAM_STR) ;
-			
-			$query->execute();
-			//Et on définit les variables de sessions
+	            $query->bindValue(':token',$token,PDO::PARAM_STR) ;
+				
+				$query->execute();
+				
+					$id = $bdd->lastInsertId(); ;
+				
+	            mail($email,"Confirmation de Votre compte","Cliquer ou copier sur le lien\n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
 
-				$id = $bdd->lastInsertId(); ;
-			
-            mail($email,"Confirmation de Votre compte","Cliquer ou copier sur le lien\n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
+	          $_SESSION['flash']['success'] = "Un mail de confirmation vous a ete envoyer" ;
 
-          $_SESSION['flash']['success'] = "Un mail de confirmation vous a ete envoyer" ;
-
-			$query->CloseCursor();
+				$query->CloseCursor();
 
 	      }
 
@@ -256,12 +255,6 @@ else
 	}
 
 
-			
-
-
-
-
-	
 }
 
 

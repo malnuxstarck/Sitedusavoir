@@ -36,26 +36,31 @@ if(session_status()== PHP_SESSION_NONE)
 
 if (!isset($_POST['pseudo'])) //On est dans la page de formulaire
 {
-echo '<form method="post" action="connexion.php" id="formulaire">
+			 echo  '<form method="post" action="connexion.php" id="formulaire">
 
-<p>
-  <label for="pseudo">Pseudo </label><input name="pseudo" type="text" id="pseudo" /> 
-</p>
+						<p>
+						    <label for="pseudo">Pseudo </label><input name="pseudo" type="text" id="pseudo" /> 
+						</p>
 
-<p>
-	<label for="password">Mot de Passe </label><input type="password" name="password" id="password" />
-</p>
+						<p>
+							<label for="password">Mot de Passe </label><input type="password" name="password" id="password" />
+						</p>
 
-<p> <input type="checkbox" name="souvenir"> <label for="souvenir"> Se souvenir de Moi </label> 
-<p><input type="submit" value="Connexion" /></p>
+						<p> 
+						     <input type="checkbox" name="souvenir"> <label for="souvenir"> Se souvenir de Moi </label> 
+						</p>
 
-</form>
+						<p>
+						     <input type="submit" value="Connexion"/>
+						</p>
 
-<a href="./register.php">Pas encore inscrit ?</a>
-</div>
-</div>
-</body>
-</html>';
+			       </form>
+
+			     <a href="./register.php">Pas encore inscrit ?</a>
+			   </div>
+			</div>
+		</body>
+	</html>';
 }
 
 else
@@ -65,10 +70,13 @@ else
 	//Oublie d'un champ
 	{
 
-	$message = '<p>une erreur s\'est produite pendant votre
-	identification.
-	Vous devez remplir tous les champs</p>
-	<p>Cliquez <a href="./connexion.php">ici</a> pour revenir</p>';
+	$message = '<p>
+	               une erreur s\'est produite pendant votreidentification. Vous devez remplir tous les champs
+	           </p>
+	<p>
+	    Cliquez <a href="./connexion.php">ici</a> pour revenir
+
+	</p>';
 	
 	}
 
@@ -93,10 +101,9 @@ else
         
 
 		if ($data['membre_rang'] == 0) //Le membre est banni
-	     {
-
-	      $message="<p>Vous avez été banni, impossible de vous connecter sur ce Site </p>";
-	     }
+	    {
+            $message="<p>Vous avez été banni, impossible de vous connecter sur ce Site </p>";
+	    }
 
 	    else
 	    {
@@ -133,29 +140,35 @@ else
 	else // Acces pas OK !
 	{
 
-		$message = '<p>Une erreur s\'est produite
-		pendant votre identification ou vous n\'avez pas confirmer votre compte. <p> Le mot de passe ou le pseudo
-		entré n\'est pas correcte.</p><p>Cliquez <a
-		href="./connexion.php">ici</a>
-		pour revenir à la page précédente
-		Cliquez <a href="./index.php">ici</a>
-		pour revenir à la page d accueil</p>';
+		$message ='<p>
+						Une erreur s\'est produite pendant votre identification ou vous n\'avez pas confirmer votre compte. <p> Le mot de passe ou le pseudo entré n\'est pas correcte.
+				   </p>
+
+				   <p>
+				       Cliquez <ahref="./connexion.php">ici</a> pour revenir à la page précédente Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil
+		           </p>';
 		
 	}
 
 	$query->CloseCursor();
 
 	}
-	echo $message.'</div></div></body></html>';
+	echo $message.'</div>
+	           </div>
+	       </body>
+	 </html>';
 }
+
 ?>
 
-<input type="hidden" name="page" value="<?php if(isset($_SERVER['HTTP_REFERER'])) echo $_SERVER['HTTP_REFERER']; ?>" />
+<input type="hidden" name="page" value="<?php 
+if(isset($_SERVER['HTTP_REFERER'])) 
+        echo $_SERVER['HTTP_REFERER']; ?>" />
 
 <?php
 if(isset($_POST['page']))
-$page = htmlspecialchars($_POST['page']);
-echo 'Cliquez <a href="./'.$page.'">ici</a> pour revenir à la page Precedente';
+        $page = htmlspecialchars($_POST['page']);
+         echo 'Cliquez <a href="./'.$page.'">ici</a> pour revenir à la page Precedente';
 ?>
 
 

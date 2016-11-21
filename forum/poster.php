@@ -94,8 +94,7 @@ case "repondre":
 ?>
 
 <h1>Poster une réponse</h1>
-<form method="post" action="postok.php?action=repondre&amp;t=<?php
-echo $topic ?>" name="formulaire">
+<form method="post" action="postok.php?action=repondre&amp;t=<?php echo $topic ?>" name="formulaire">
 <fieldset><legend>Mise en forme</legend>
 <input type="button" id="gras" name="gras" value="Gras"
 onClick="javascript:bbcode('[g]', '[/g]');return(false)" />

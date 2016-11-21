@@ -84,7 +84,7 @@
                   <label for="pseudo">Mot de passe</label>
                   <input type="password" name="password" class="form-control" />
 
-            </div>
+           </div>
 
             <div class="form-group">
 

@@ -102,11 +102,11 @@ membre_post + 1 WHERE membre_id = :id');
 $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->execute();
 $query->CloseCursor();
+
+$_SESSION['flash']['success'] = 'Vous venez de creer un nouveau topic';
 //Et un petit message
-echo'<p>Votre message a bien été ajouté!<br /><br />Cliquez
-<a href="./index.php">ici</a> pour revenir à l index du forum<br />
-Cliquez <a href="./voirtopic.php?t='.$nouveautopic.'">ici</a> pour
-le voir</p>';
+header('Location:./voirtopic.php?t='.$nouveautopic);
+;
 }
 break;
 
@@ -115,7 +115,7 @@ break;
 case "repondre":
 $message = $_POST['message'];
 //ici seulement, maintenant qu'on est sur qu'elle existe, on récupère la valeur de la variable t
-$topic = (int) $_GET['t'];
+$topic = (int)$_GET['t'];
 
 
 $query=$bdd->prepare('SELECT topic_locked FROM forum_topic WHERE
@@ -135,9 +135,9 @@ $query->CloseCursor();
 
 if (empty($message))
 {
-echo'<p>Votre message est vide, cliquez <a
-href="./poster.php?action=repondre&amp;t='.$topic.'">ici</a> pour
-recommencer</p>';
+	$_SESSION['flash']['danger'] = 'Votre message est vide';
+header('Location:./poster.php?action=repondre&t='.$topic);
+
 }
 else //Sinon, si le message n'est pas vide
 {
@@ -186,15 +186,16 @@ $query->execute();
 $query->CloseCursor();
 //Et un petit message
 $nombreDeMessagesParPage = 15;
+
 $nbr_post = $data['topic_post']+1;
 $page = ceil($nbr_post / $nombreDeMessagesParPage);
-echo'<p>Votre message a bien été ajouté!<br /><br />
-Cliquez <a href="./index.php">ici</a> pour revenir à l index du
-forum<br />
-Cliquez <a href="./voirtopic.php?
-t='.$topic.'&amp;page='.$page.'#p_'.$nouveaupost.'">ici</a> pour le
-voir</p>';
-}//Fin du else
+
+$_SESSION['flash']['success'] = 'Vous venez de repondre a un post';
+
+header('Location:./voirtopic.php?t='.$topic.'&page='.$page.'#p_'.$nouveaupost);
+
+}
+//Fin du else
 break;
 
 case "edit": //Si on veut éditer le post
@@ -229,7 +230,7 @@ erreur('ERR_AUTH_EDIT');
 else //Sinon ça roule et on continue
 {
 
-$query=$bdd->prepare('UPDATE forum_post SET post_texte =
+$query = $bdd->prepare('UPDATE forum_post SET post_texte =
 :message WHERE post_id = :post');
 $query->bindValue(':message',$message,PDO::PARAM_STR);
 $query->bindValue(':post',$post,PDO::PARAM_INT);

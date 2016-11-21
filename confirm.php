@@ -26,6 +26,7 @@ if($user AND $user['token'] == $token)
 
     header('Location:connexion.php');
 }
+
 else
 {
 	header('Location:connexion.php');

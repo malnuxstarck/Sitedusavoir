@@ -34,7 +34,6 @@ echo '<body>
 					        <li><a href="../index.php"><img src="../images/accueil.png" id="accueil" alt="A"/> Accueil</a></li>
 				            <li><a href="../forum">Forum</a></li>
 				            <li><a href="../tutoriels">Tutoriels</a></li>
-							<li> <a href="#">Extras </a></li>
 							<li> <a href="http://social.sitedusavoir.com">Social</a>
 							<li> <a href="http://blog.sitedusavoir.com">Blog</a></li>
 						</ul>

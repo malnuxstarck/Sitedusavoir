@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $titre = $_SESSION['pseudo'];
 
 include_once('../includes/identifiants.php');
@@ -24,16 +25,21 @@ $requete->execute(array('idmembre' => $membre));
 $reponse = $requete->fetch();
 
 
-echo '<h1 class="titre"> Bienvenue '.$reponse['membre_pseudo'].'</h1>
+echo '<fieldset>
 
-      <p> <span > Votre pseudo '.$reponse['membre_pseudo'].'
-    <div class="avatar"><img src="../images/avatars/'.$reponse['membre_avatar'].'"/></div>
+             <legend> Votre Profil</legend>
 
-    <h2 clas="titre"> Habite a : <span>'.$reponse['membre_localisation'].'</span></h2>
+		    <h1 class="titre"> Bienvenue '.$reponse['membre_pseudo'].'</h1>
 
-    <h2 class="titre"> Signature </h2><div id="signature">'.$reponse['membre_signature'].'</div>
+		      <p> <span > Votre pseudo '.$reponse['membre_pseudo'].'
+		    <div class="avatar"><img src="../images/avatars/'.$reponse['membre_avatar'].'"/></div>
 
-    <p id="vu"> Derniere visite : '.$reponse['membre_derniere_visite'].'</p>' 
+		    <h2 clas="titre"> Localisation : <span>'.$reponse['membre_localisation'].'</span></h2>
+
+		    <h2 class="titre"> Signature </h2><div id="signature">'.$reponse['membre_signature'].'</div>
+
+		    <p id="vu"> Derniere visite : '.$reponse['membre_derniere_visite'].'</p>
+	 </fieldset>' 
 
     
 
