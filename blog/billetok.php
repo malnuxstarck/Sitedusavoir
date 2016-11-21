@@ -25,7 +25,9 @@ switch($action)
 		$req->bindValue(':message',$message,PDO::PARAM_STR);
 
 		$req->execute();
+
         $billetid= $bdd->lastInsertId();
+        
 		$req->closeCursor();
 
 		$requete = $bdd->prepare('INSERT INTO auteurs (membre_id,billet_id) VALUES(:id,:billet)');

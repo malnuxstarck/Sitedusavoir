@@ -10,8 +10,7 @@ include("../includes/menu.php");
 
 
 ?>
-
-<h1> Bienvenue sur le Blog du sitedusavoir </h1>
+<p id="fildariane"><i> Vous etes ici </i> : <a href="../index.php">Accueil </a> --> <a href="./index.php">Blog </a>
 
 <?php
 
@@ -31,19 +30,29 @@ if($requete->rowcount() > 0)
    	$article = $billet['billet_id'];
 
      echo '<div class="billet"> 
-                <ul> 
+                <ul>';
+
+                 if(verif_auth(INSCRIT))
+                  {
+                    echo'
                   <li> 
                      <a href="billet.php?action=comment&billet='.$billet['billet_id'].'"> Commenter</a>
-                  <li>
+                  <li>';
+                  }
+
+                  if(verif_auth(MODO))
+                  {
+                    echo'
                   <li> 
                      <a href="billet.php?action=edit&billet='.$billet['billet_id'].'"> Editer le billet</a>
-                  <li>
-
+                  <li>';
+                  }
+                   echo'
                   <li> 
                      <a href="billet.php?action=voir&billet='.$billet['billet_id'].'"> Voir l\'article complet</a>
                   <li>
                  </ul>
-
+                 
                  <p id="contenu"> <span>'.$billet['billet_titre'].'</p><p id="contenu">'.$billet['billet_contenu'].'</p>
                  
                   ARTICLES PAR :';
@@ -53,12 +62,23 @@ if($requete->rowcount() > 0)
                  $auteur->bindValue(':billet',$article,PDO::PARAM_STR);
                  $auteur->execute();
 
+                 $nbre = $auteur->rowCount();
+                 
+                 $i=0;
+
                  while($auteurs = $auteur->fetch())
                  {
+                        
+                     	echo '<a href="../forum/voirprofil.php?action=consulter&m='.$auteurs['membre_id'].'"><span id="auteur">'.' '.$auteurs['membre_pseudo'].'</span></a>';
 
-                 	echo '<a href="../forum/voirprofil.php?action=consulter&m='.$auteurs['membre_id'].'"><span id="auteur">'.$auteurs['membre_pseudo'].'</span></a>  ';
+                      $i = $i+1;
+                      
+                      if($i < $nbre AND $nbre > 0)
+
+                           echo '  et';
+                     
                  }
-
+                 
             	echo '</div>';
    }
 
