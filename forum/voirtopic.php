@@ -38,6 +38,47 @@ $totalDesMessages = $data['topic_post'] + 1 ;
 $nombreDeMessagesParPage = 15;
 $nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 
+if($id!=0)
+{
+		$query=$bdd->prepare('SELECT COUNT(*) FROM forum_topic_view WHERE
+		tv_topic_id = :topic AND tv_id = :id');
+		$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+		$query->bindValue(':id',$id,PDO::PARAM_INT);
+		$query->execute();
+		$nbr_vu=$query->fetchColumn();
+		$query->CloseCursor();
+
+		if ($nbr_vu == 0) //Si c'est la première fois on insère une ligne entière
+		{
+		$query = $bdd->prepare('INSERT INTO forum_topic_view
+		(tv_id, tv_topic_id, tv_forum_id, tv_post_id)
+		VALUES (:id, :topic, :forum, :last_post)');
+		$query->bindValue(':id',$id,PDO::PARAM_INT);
+		$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+		$query->bindValue(':forum',$forum,PDO::PARAM_INT);
+		$query->bindValue(':last_post',$data['topic_last_post'],PDO::PARAM_INT);
+		$query->execute();
+		$query->CloseCursor();
+		}
+		else 
+		//Sinon, on met simplement à jour
+		{
+		$query= $bdd->prepare('UPDATE forum_topic_view SET tv_post_id =
+
+		:last_post WHERE tv_topic_id = :topic AND tv_id = :id');
+
+		$query->bindValue(':last_post',$data['topic_last_post'],PDO::PARAM_INT);
+		$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+		$query->bindValue(':id',$id,PDO::PARAM_INT);
+		$query->execute();
+		$query->CloseCursor();
+
+		}
+
+}
+
+
+
 ?>
 
 <?php
@@ -51,7 +92,9 @@ echo '<h1 class="titre">'.stripslashes(htmlspecialchars($data['topic_titre'])).'
 <?php
 //Nombre de pages
 $page = (isset($_GET['page']))?intval($_GET['page']):1;
+
 //On affiche les pages 1-2-3 etc...
+
 echo '<p>Page : ';
 for ($i = 1 ; $i <= $nombreDePages ; $i++)
 {
@@ -100,19 +143,19 @@ echo'
 	topic_id = :topic');
 	$query->bindValue(':topic',$topic,PDO::PARAM_INT);
 	$query->execute();
-	$datas =$query->fetch();
+	$datas = $query->fetch();
 
 	if ($datas['topic_locked'] == 1) // Topic verrouillé !
 	{
-	echo'<a href="./postok.php?action=unlock&t='.$topic.'">
-	<img src="./images/unlock.gif" alt="deverrouiller"
+	echo'<a href="./postok.php?action=unlock&t='.$topic.'">deverrouiller
+	<img src="../images/unlock.png" alt="deverrouiller"
 	title="Déverrouiller ce sujet" /></a>';
 	}
 
 	else //Sinon le topic est déverrouillé !
 	{
-	echo'<a href="./postok.php?action=lock&amp;t='.$topic.'">
-	<img src="./images/lock.gif" alt="verrouiller" title="Verrouiller ce
+	echo'<a href="./postok.php?action=lock&amp;t='.$topic.'">verrouiller
+	<img src="../images/lock.png" alt="verrouiller" title="Verrouiller ce
 	sujet" /></a>';
 	}
 

@@ -20,12 +20,31 @@ echo '<p id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a><
     $categorie = NULL;
 ?>
 
-   <?php
+<?php
+
+
+
+$add1='';
+
+$add2 ='';
+
+if ($id!=0) //on est connecté
+{
+
+//Premièrement, sélection des champs
+
+$add1 = ',tv_id, tv_post_id, tv_poste';
+//Deuxièmement, jointure
+$add2 = 'LEFT JOIN forum_topic_view
+ON forum_topic.forum_id = forum_topic_view.tv_forum_id AND
+forum_topic_view.tv_id = :id';
+
+}
 
 
 //Cette requête permet d'obtenir tout sur le forum
 
-$query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,  forum_topic.topic_post, post_id, DATE_FORMAT(post_time, \'%d/%m/%Y %H:%i:%s\') AS post_time  , post_createur, membre_pseudo, membre_id 
+$query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name,forum_last_post_id, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,  forum_topic.topic_post, post_id, DATE_FORMAT(post_time, \'%d/%m/%Y %H:%i:%s\') AS post_time  , post_createur, membre_pseudo, membre_id '.$add1.'
 
 FROM categorie
 
@@ -35,13 +54,18 @@ LEFT JOIN forum_post ON forum_post.post_id = forum.forum_last_post_id
 
 LEFT JOIN forum_topic ON forum_topic.topic_id = forum_post.topic_id
 
-LEFT JOIN membres ON membres.membre_id = forum_post.post_createur
+LEFT JOIN membres ON membres.membre_id = forum_post.post_createur '.$add2.'
 
 WHERE auth_view <= :lvl 
 
 ORDER BY cat_ordre, forum_ordre DESC');
 
 $query->bindValue(':lvl',$lvl,PDO::PARAM_INT);
+
+if($id!=0)
+    $query->bindValue(':id',$id,PDO::PARAM_INT);
+
+ 
 
 $query->execute();
 
@@ -84,7 +108,7 @@ while($data = $query->fetch())
 
         <tr>
 
-        <th></th>
+        <th><img src="../images/cat.png" alt="cat"/></th>
 
         <th class="titre1"><strong><?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
 
@@ -109,7 +133,61 @@ while($data = $query->fetch())
     // les forums en détail : description, nombre de réponses etc...
 
 
-    echo'<tr><td><img src="../images/message.gif" alt="message"/></td>
+     if (!empty($id)) // Si le membre est connecté
+     {
+        if ($data['tv_id'] == $id) //S'il a lu le topic
+        {
+                if ($data['tv_poste'] == '0') // S'il n'a pas posté
+                {
+                        if ($data['tv_post_id'] == $data['forum_last_post_id'])
+                        //S'il n'y a pas de nouveau message
+                        {
+                             $ico_mess = 'message.png';
+                        }
+
+                        else
+                        {
+                            $ico_mess = 'messagec_non_lus.png'; //S'il y a un nouveau message
+                        }
+                }
+
+                else // S'il a posté
+                {
+                        if ($data['tv_post_id'] == $data['forum_last_post_id'])
+                        //S'il n'y a pas de nouveau message
+                        {
+                             $ico_mess = 'messagep_lu.png';
+                        }
+                        else //S'il y a un nouveau message
+                        {
+                              $ico_mess = 'messagep_non_lu.png';
+                        }
+                }
+        }
+
+
+        else //S'il n'a pas lu le topic
+        {
+              $ico_mess = 'message_non_lu.png';
+
+        }
+}
+ //S'il n'est pas connecté
+else
+{
+    $ico_mess = 'message.png';
+}
+
+
+
+
+
+
+
+
+
+
+    echo'<tr><td><img src="../images/'.$ico_mess.'" alt="message"/></td>
 
     <td id="taillepr" class="titre"><strong>
 
@@ -224,15 +302,17 @@ $query->CloseCursor();
 
 
 //Initialisation de la variable
+
 $count_online = 0;
 //Décompte des visiteurs
 $count_visiteurs=$bdd->query('SELECT COUNT(*) AS nbr_visiteurs FROM
 forum_whosonline WHERE online_id = 0')->fetchColumn();
 $query->CloseCursor();
 //Décompte des membres
+
 $texte_a_afficher = "<br />Liste des personnes en ligne : ";
 
-$query=$bdd->prepare('SELECT membre_id, membre_pseudo
+$query = $bdd->prepare('SELECT membre_id, membre_pseudo
 FROM forum_whosonline
 LEFT JOIN membres ON online_id = membre_id
 WHERE online_time > SUBDATE(NOW(), INTERVAL 5 MINUTE) AND online_id <> 0');
@@ -245,6 +325,7 @@ $texte_a_afficher .= '<a href="./voirprofil.php?
 m='.$data['membre_id'].'&amp;action=consulter">
 '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a> ,';
 }
+
 $texte_a_afficher = substr($texte_a_afficher, 0, -1);
 $count_online = $count_visiteurs + $count_membres;
 echo '<p>Il y a '.$count_online.' connectés ('.$count_membres.'

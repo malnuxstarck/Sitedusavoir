@@ -65,20 +65,37 @@ nouveau topic"></a>';
 }
 
 
+$add1='';
+
+$add2 ='';
+
+if ($id!=0) //on est connecté
+{
+//Premièrement, sélection des champs
+
+$add1 = ',tv_id, tv_post_id, tv_poste';
+//Deuxièmement, jointure
+$add2 = 'LEFT JOIN forum_topic_view
+ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
+forum_topic_view.tv_id = :id';
+
+}
+
 $query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre,
-topic_createur, topic_vu, topic_post, DATE_FORMAT(topic_time,\'%d/%m/%Y %h:%i:%s\') AS topic_time, topic_last_post,
+topic_createur, topic_vu, topic_post, topic_time, topic_last_post,
 Mb.membre_pseudo AS membre_pseudo_createur, post_createur,
-post_time, Ma.membre_pseudo AS membre_pseudo_last_posteur, post_id
-FROM forum_topic
+post_time, Ma.membre_pseudo AS membre_pseudo_last_posteur,post_id '.$add1.' FROM forum_topic
 LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
-LEFT JOIN forum_post ON forum_topic.topic_last_post =
-forum_post.post_id
-LEFT JOIN membres Ma ON Ma.membre_id =
-forum_post.post_createur
-WHERE topic_genre = "Annonce" AND forum_topic.forum_id = :forum
-ORDER BY topic_last_post DESC');
-$query->bindValue(':forum',$forum,PDO::PARAM_INT);
+LEFT JOIN forum_post ON forum_topic.topic_last_post = forum_post.post_id
+LEFT JOIN membres Ma ON Ma.membre_id = forum_post.post_createur
+'.$add2.' WHERE topic_genre = "Annonce" AND forum_topic.forum_id =:forum ORDER BY topic_last_post DESC');
+
+$query->bindParam(':forum',$forum,PDO::PARAM_INT);
+
+if($id!=0)
+$query->bindParam(':id',$id,PDO::PARAM_INT);
 $query->execute();
+
 ?>
 
 <?php
@@ -89,7 +106,7 @@ if ($query->rowCount()>0)
 
 <table>
 <tr>
-<th><img src="./images/annonce.gif" alt="Annonce" /></th>
+<th><img src="../images/annonce.png" alt="Annonce" /></th>
 <th class="titre"><strong>Titre</strong></th>
 <th class="nombremessages"><strong>Réponses</strong></th>
 <th class="nombrevu"><strong>Vus</strong></th>
@@ -99,10 +116,66 @@ if ($query->rowCount()>0)
 <?php
 while ($data=$query->fetch())
 {
+
 //Pour chaque topic :
 //Si le topic est une annonce on l'affiche en haut
 //mega echo de bourrain pour tout remplir
-echo'<tr><td><img src="../images/annonce.gif" alt="Annonce"
+
+
+
+if (!empty($id)) // Si le membre est connecté
+{
+		if ($data['tv_id'] == $id) //S'il a lu le topic
+		{
+				if ($data['tv_poste'] == '0') // S'il n'a pas posté
+				{
+						if ($data['tv_post_id'] == $data['topic_last_post'])
+						//S'il n'y a pas de nouveau message
+						{
+						     $ico_mess = 'message.png';
+						}
+
+						else
+						{
+						    $ico_mess = 'messagec_non_lus.png'; //S'il y a un nouveau message
+						}
+				}
+
+				else // S'il a posté
+				{
+						if ($data['tv_post_id'] == $data['topic_last_post'])
+						//S'il n'y a pas de nouveau message
+						{
+						     $ico_mess = 'messagep_lu.png';
+						}
+						else //S'il y a un nouveau message
+						{
+						      $ico_mess = 'messagep_non_lu.png';
+						}
+				}
+        }
+
+
+		else //S'il n'a pas lu le topic
+		{
+		      $ico_mess = 'message_non_lu.png';
+
+		}
+}
+ //S'il n'est pas connecté
+else
+{
+    $ico_mess = 'message.png';
+}
+
+
+
+
+
+
+
+
+echo'<tr><td><img src="../images/'.$ico_mess.'" alt="Annonce"
 /></td>
 <td id="titre"><strong>Annonce : </strong>
 <strong><a href="./voirtopic.php?t='.$data['topic_id'].'"
@@ -130,18 +203,48 @@ A <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data[
  $query->CloseCursor();
 ?>
 
+
+
 <?php
+
+
+
+$add1='';
+
+$add2 ='';
+
+if ($id!=0) //on est connecté
+{
+//Premièrement, sélection des champs
+
+$add1 = ',tv_id, tv_post_id, tv_poste';
+//Deuxièmement, jointure
+$add2 = 'LEFT JOIN forum_topic_view
+ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
+forum_topic_view.tv_id = :id';
+
+}
+
+
+
 //On prend tout ce qu'on a sur les topics normaux du forum
 $query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre, topic_createur,topic_vu, topic_post,DATE_FORMAT(topic_time,\'%d/%m/%Y %h:%i:%s\') AS topic_time , topic_last_post,
 Mb.membre_pseudo AS membre_pseudo_createur, post_id, post_createur, post_time,
-Ma.membre_pseudo AS membre_pseudo_last_posteur FROM forum_topic
+Ma.membre_pseudo AS membre_pseudo_last_posteur '.$add1.' FROM forum_topic
 LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
 LEFT JOIN forum_post ON forum_topic.topic_last_post = forum_post.post_id
 LEFT JOIN membres Ma ON Ma.membre_id = forum_post.post_createur
+'.$add2.'
 WHERE topic_genre <> "Annonce" AND forum_topic.forum_id = :forum
 ORDER BY topic_last_post DESC
 LIMIT :premier ,:nombre');
 $query->bindValue(':forum',$forum,PDO::PARAM_INT);
+
+if($id!=0)
+{
+    $query->bindParam(':id',$id,PDO::PARAM_INT);
+}
+
 $query->bindValue(':premier',(int) $premierMessageAafficher,PDO::PARAM_INT);
 $query->bindValue(':nombre',(int) $nombreDeMessagesParPage,PDO::PARAM_INT);
 $query->execute();
@@ -152,7 +255,7 @@ if ($query->rowCount()>0)
 ?>
 	<table>
 	<tr>
-	<th><img src="../images/message.gif" alt="Message" /></th>
+	<th><img src="../images/sujet.png" alt="Message" /></th>
 	<th class="titre"><strong>Titre</strong></th>
 	<th class="nombremessages"><strong>Réponses</strong></th>
 	<th class="nombrevu"><strong>Vus</strong></th>
@@ -164,8 +267,58 @@ if ($query->rowCount()>0)
 	//On lance la boucle
 	while ($data = $query->fetch())
 	{
+
+       
+       if (!empty($id)) // Si le membre est connecté
+{
+		if ($data['tv_id'] == $id) //S'il a lu le topic
+		{
+				if ($data['tv_poste'] == '0') // S'il n'a pas posté
+				{
+						if ($data['tv_post_id'] == $data['topic_last_post'])
+						//S'il n'y a pas de nouveau message
+						{
+						     $ico_mess = 'message.png';
+						}
+
+						else
+						{
+						    $ico_mess = 'messagec_non_lus.png'; //S'il y a un nouveau message
+						}
+				}
+
+				else // S'il a posté
+				{
+						if ($data['tv_post_id'] == $data['topic_last_post'])
+						//S'il n'y a pas de nouveau message
+						{
+						     $ico_mess = 'messagep_lu.png';
+						}
+						else //S'il y a un nouveau message
+						{
+						      $ico_mess = 'messagep_non_lu.png';
+						}
+				}
+        }
+
+
+		else //S'il n'a pas lu le topic
+		{
+		      $ico_mess = 'message_non_lu.png';
+
+		}
+}
+ //S'il n'est pas connecté
+else
+{
+    $ico_mess = 'message.png';
+}
+
+
+
+
 	//Ah bah tiens... re vla l'echo de fou
-		echo'<tr><td><img src="../images/message.gif" alt="Message"
+		echo'<tr><td><img src="../images/'.$ico_mess.'" alt="Message"
 		/></td>
 		<td class="titre">
 		<strong><a href="./voirtopic.php?t='.$data['topic_id'].'"

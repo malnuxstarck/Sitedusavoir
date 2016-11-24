@@ -16,14 +16,7 @@ switch($action)
 //Premier cas : nouveau topic
 case "nouveautopic":
 
-/*
 
-if (!verif_auth($data['auth_annonce']) && isset($_POST['mess']))
-{
-exit('</div></body></html>');
-}
-
-*/
 
 //On passe le message dans une série de fonction
 $message = $_POST['message'];
@@ -102,6 +95,21 @@ membre_post + 1 WHERE membre_id = :id');
 $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->execute();
 $query->CloseCursor();
+
+
+$query=$bdd->prepare('INSERT INTO forum_topic_view
+(tv_id, tv_topic_id, tv_forum_id, tv_post_id, tv_poste)
+VALUES(:id, :topic, :forum, :post, :poste)');
+$query->bindValue(':id',$id,PDO::PARAM_INT);
+$query->bindValue(':topic',$nouveautopic,PDO::PARAM_INT);
+$query->bindValue(':forum',$forum ,PDO::PARAM_INT);
+$query->bindValue(':post',$nouveaupost,PDO::PARAM_INT);
+$query->bindValue(':poste','1',PDO::PARAM_STR);
+$query->execute();
+$query->CloseCursor();
+
+
+
 
 $_SESSION['flash']['success'] = 'Vous venez de creer un nouveau topic';
 //Et un petit message
@@ -189,6 +197,19 @@ $nombreDeMessagesParPage = 15;
 
 $nbr_post = $data['topic_post']+1;
 $page = ceil($nbr_post / $nombreDeMessagesParPage);
+
+
+$query= $bdd->prepare('UPDATE forum_topic_view
+SET tv_post_id = :post, tv_poste = :poste
+WHERE tv_id = :id AND tv_topic_id = :topic');
+$query->bindValue(':post',$nouveaupost,PDO::PARAM_INT);
+$query->bindValue(':poste','1',PDO::PARAM_STR);
+$query->bindValue(':id',$id,PDO::PARAM_INT);
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+$query->CloseCursor();
+
+
 
 $_SESSION['flash']['success'] = 'Vous venez de repondre a un post';
 
