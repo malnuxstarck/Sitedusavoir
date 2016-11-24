@@ -30,13 +30,12 @@ $add2 ='';
 
 if ($id!=0) //on est connecté
 {
-
 //Premièrement, sélection des champs
 
 $add1 = ',tv_id, tv_post_id, tv_poste';
 //Deuxièmement, jointure
 $add2 = 'LEFT JOIN forum_topic_view
-ON forum_topic.forum_id = forum_topic_view.tv_forum_id AND
+ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
 forum_topic_view.tv_id = :id';
 
 }

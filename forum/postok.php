@@ -114,7 +114,7 @@ $query->CloseCursor();
 $_SESSION['flash']['success'] = 'Vous venez de creer un nouveau topic';
 //Et un petit message
 header('Location:./voirtopic.php?t='.$nouveautopic);
-;
+
 }
 break;
 
