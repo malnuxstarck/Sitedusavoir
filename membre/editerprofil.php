@@ -15,21 +15,22 @@ require_once("../includes/menu.php");
 
 echo '<p><i>Vous êtes ici</i> : <a href="../index.php"> Accueil </a> --> Editer profil de '.$pseudo ;
 
+$identifiant = (isset($_GET['id']))?$_GET['id'] :0;
 
-
-if ($id != $_GET['id'])
+if ($id == 0)
 { 
-	$_SESSION['flash']['danger'] = "Vous ne pouvez pas Acceder a cette zone";
-
-    header('Location:../index.php');
+	
+   header('Location:../index.php');
 }
 
 
-if(empty($_GET))
-{
-	$_SESSION['flash']['danger'] = "Erreur : Vous tentez d'acceder a une partie securisé";
-	header('Location: ../index.php');
+
+if ($id != $identifiant)
+{ 
+	
+   header('Location:./editerprofil.php?id='.$id);
 }
+
 
 
 
