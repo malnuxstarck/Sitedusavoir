@@ -8,14 +8,17 @@ include_once ('../includes/debut.php');
 include_once('../includes/menu.php');
 
 
-
+if( $id == 0)
+{
+   header('Location:../index.php');
+}
 
 $membre = (int)$_GET['id'];
 
 if($membre != $id)
 {
 	
-header('Location:../index.php');
+header('Location:./voirmonprofil.php?id='.$id);
 
 }
 
@@ -25,13 +28,12 @@ $requete->execute(array('idmembre' => $membre));
 $reponse = $requete->fetch();
 
 
-echo '<fieldset>
+echo '
 
-             <legend> Votre Profil</legend>
 
 		    <h1 class="titre"> Bienvenue '.$reponse['membre_pseudo'].'</h1>
 
-		      <p> <span > Votre pseudo '.$reponse['membre_pseudo'].'
+		      <p> <span ><h2> Votre pseudo :</h2>'.$reponse['membre_pseudo'].'
 		    <div class="avatar"><img src="../images/avatars/'.$reponse['membre_avatar'].'"/></div>
 
 		    <h2 clas="titre"> Localisation : <span>'.$reponse['membre_localisation'].'</span></h2>
@@ -39,7 +41,7 @@ echo '<fieldset>
 		    <h2 class="titre"> Signature </h2><div id="signature">'.$reponse['membre_signature'].'</div>
 
 		    <p id="vu"> Derniere visite : '.$reponse['membre_derniere_visite'].'</p>
-	 </fieldset>' 
+	' 
 
     
 
