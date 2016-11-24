@@ -2,7 +2,7 @@
 
 session_start();
 
-$balises=true;
+$balises = true;
 $titre = 'Blog du Site du Savoir';
 include("../includes/identifiants.php");
 include("../includes/debut.php");
@@ -20,7 +20,7 @@ if(verif_auth(MODO))
 	echo '<p><a href="billet.php?action=creer">Voulez vous cree un billet</a></p>';
 }
 
-$requete = $bdd->query('SELECT datebillet,billets.billet_id,billet_titre,billet_contenu FROM billets ORDER BY billet_id DESC');
+$requete = $bdd->query('SELECT datebillet,billets.billet_id,billet_titre,billet_contenu,billet_logo FROM billets ORDER BY billet_id DESC');
 
 if($requete->rowcount() > 0)
 {
@@ -53,9 +53,11 @@ if($requete->rowcount() > 0)
                   <li>
                  </ul>
                  
-                 <p id="contenu"> <span>'.$billet['billet_titre'].'</p><p id="contenu">'.$billet['billet_contenu'].'</p>
+                      <p ><span>'.$billet['billet_titre'].'</p>
+                      <p id="cercle" style="background:url(\'./logo/'.$billet['billet_logo'].'\') no-repeat center;"/>
+                      <p id="contenu">'.$billet['billet_contenu'].'</p>
                  
-                  ARTICLES PAR :';
+                 </br> ARTICLES PAR :';
 
                  $auteur = $bdd->prepare('SELECT membre_pseudo,membres.membre_id AS membre_id FROM membres INNER JOIN auteurs ON auteurs.membre_id = membres.membre_id
                  	WHERE auteurs.billet_id = :billet');

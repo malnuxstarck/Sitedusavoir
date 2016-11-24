@@ -29,7 +29,7 @@ switch($action)
 						<fieldset><legend>Titre</legend>
 						
 						<label for="titre"> Titre * </label> 
-						<input type="text" size="80" id="titre" name="titre" />
+						<input type="text" size="80" id="titre" name="titre" required/>
 						
 						 </fieldset>
 						<fieldset><legend>Mise en forme</legend>
@@ -44,13 +44,13 @@ switch($action)
 						<br /><br />
 						<img src="../images/smileys/heureux.gif" title="heureux"
 						alt="heureux" onClick="javascript:smilies(':D');return(false)" />
-						<img src="../images/smileys/lol.gif" title="lol" alt="lol"
+						<img src="../images/smileys/lol.png" title="lol" alt="lol"
 						onClick="javascript:smilies(':lol:');return(false)" />
-						<img src="../images/smileys/triste.gif" title="triste" alt="triste"
+						<img src="../images/smileys/triste.png" title="triste" alt="triste"
 						onClick="javascript:smilies(':triste:');return(false)" />
-						<img src="../images/smileys/cool.gif" title="cool" alt="cool"
+						<img src="../images/smileys/cool.png" title="cool" alt="cool"
 						onClick="javascript:smilies(':frime:');return(false)" />
-						<img src="../images/smileys/rire.gif" title="rire" alt="rire"
+						<img src="../images/smileys/rire.png" title="rire" alt="rire"
 						onClick="javascript:smilies('XD');return(false)" />
 						<img src="../images/smileys/confus.gif" title="confus" alt="confus"
 						onClick="javascript:smilies(':s');return(false)" />
@@ -62,16 +62,16 @@ switch($action)
 						onClick="javascript:smilies(':exclamation:');return(false)"
 						/></fieldset>
 						<fieldset><legend>Contenu</legend>
-
-						<textarea cols=80 rows=8 id="message" name="message"></textarea>
+                         <label for="message"> Contenu *</label>
+						<textarea cols=80 rows=8 id="message" name="message" required ></textarea>
 						<br />  
 				        <p><label for="logo"> Un logo * </label>
-				        <input type="file" name="logo" value="Logo"/>
+				        <input type="file" name="logo" value="Logo" required />
 				        </p>
 				        </br>
 
 				        <p> 
-				          <label for="illustration">Illustration </label> <input type="file" name="illustration"/>
+				          <label for="banniere">Banniere </label> <input type="file" name="banniere"/>
 				         </p>
 				         </fieldset>
 						<button type="submit">Creer</button>
@@ -176,7 +176,8 @@ switch($action)
 		                           echo '  et';
 		                     
 		                 }
-		                      
+		                   if(verif_auth(INSCRIT))  
+		                  echo '<p><a href="billet.php?action=comment&billet='.$billet.'"/>Commmenter </a></p>';    
 
 		              echo '</p></div>';
 		           
@@ -202,7 +203,15 @@ switch($action)
 
 				 $billet  = htmlspecialchars($_GET['billet']);
 
-				 echo' <p id="fildariane"><i> Vous etes ici </i> : <a href="../index.php">Accueil </a> --> <a href="./index.php">Blog </a>-->Commenter un article';
+				 $req = $bdd->prepare('SELECT billet_titre FROM billets WHERE billet_id = :billet');
+
+				 $req->execute(array('billet' => $billet));
+
+				 $data = $req->fetch();
+
+
+
+				 echo' <p id="fildariane"><i> Vous etes ici </i> : <a href="../index.php">Accueil </a> --> <a href="./index.php">Blog </a> -->'.$data['billet_titre'];
 
 				 echo '<form method="POST" action=billetok.php?action=comment&billet='.$billet.'>
 		                <p> <textarea name="commentaire" rows="10" cols="80"> Votre commentaire </textarea></p>
@@ -211,7 +220,7 @@ switch($action)
 
 
 				 ';
-
+                 $req->closeCursor();
 
 
 				break;

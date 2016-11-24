@@ -14,19 +14,66 @@ switch($action)
 {
 	case "creer":
 
+	$titre = htmlspecialchars($_POST['titre']);
+	$message = htmlspecialchars($_POST['message']);
+
+	$logo = $_FILES['logo'];
+
+	$banniere = $_FILES['banniere'];
+
+	$taillemax = 100024;
+
+	
+
+	$extension_valides = array('png','jpeg','jpg','gif');
+
+	$infosfichiers = pathinfo($logo['name']);
+
+	$extension = $infosfichiers['extension'];
+
+
+	if(!in_array($extension,$extension_valides) OR $logo['error'] != 0)
+	{
+		echo '<p> Extension du logo invalide ou une erreur lors de l\'envoi du fichier</p>';
+	}
+
+	else
+	{
+
+		if($logo['size'] > $taillemax)
+		{
+			echo '<p>  Fichier trop lourd </p>';
+
+		}
+
+		
+     }
+
+
+		
+
 	if(verif_auth(MODO))
 	{
-		$titre = htmlspecialchars($_POST['titre']);
-		$message = htmlspecialchars($_POST['message']);
 
-		$req = $bdd->prepare('INSERT INTO billets (billet_titre,billet_contenu,datebillet) VALUES(:titre,:message,NOW())');
+        
+		    if(empty($logo) || empty($titre) || empty($message))
+			{
+				$_SESSION['flash']['danger'] = 'Vous devez remplir tous les champs suivis d\'etoile';
+				header('Location:billet.php?action=creer');
+			}
+
+
+           $nomlogo = move_logo($logo);
+
+		$req = $bdd->prepare('INSERT INTO billets (billet_titre,billet_contenu,datebillet,billet_logo) VALUES(:titre,:message,NOW(),:nomlogo)');
 
 		$req->bindValue(':titre',$titre,PDO::PARAM_STR);
 		$req->bindValue(':message',$message,PDO::PARAM_STR);
+		$req->bindValue(':nomlogo',$nomlogo,PDO::PARAM_STR);
 
 		$req->execute();
 
-        $billetid= $bdd->lastInsertId();
+        $billetid = $bdd->lastInsertId();
         
 		$req->closeCursor();
 
@@ -35,6 +82,8 @@ switch($action)
 		$requete->execute(array('id'=> $id, 'billet'=> $billetid));
 
 		$requete->closeCursor();
+
+		$_SESSION['flash']['danger'] = 'Vous avez creer un nouveau billet';
 
 		header('Location:index.php');
 
