@@ -16,17 +16,17 @@
 function move_avatar($avatar)
 {
 
-$extension_upload = strtolower(substr( strrchr($avatar['name'],'.') ,1));
+      $extension_upload = strtolower(substr( strrchr($avatar['name'],'.') ,1));
 
-$name = time();
+      $name = time();
 
-$nomavatar = str_replace(' ','',$name).".".$extension_upload;
+      $nomavatar = str_replace(' ','',$name).".".$extension_upload;
 
-$name = "./images/avatars/".str_replace('','',$name).".".$extension_upload;
+      $name = "./images/avatars/".str_replace('','',$name).".".$extension_upload;
 
-move_uploaded_file($avatar['tmp_name'],$name);
+      move_uploaded_file($avatar['tmp_name'],$name);
 
-  return $nomavatar;
+        return $nomavatar;
 
 }
 
@@ -34,17 +34,17 @@ move_uploaded_file($avatar['tmp_name'],$name);
 function move_logo($logo)
 {
 
-$extension_upload = strtolower(substr( strrchr($logo['name'],'.') ,1));
+      $extension_upload = strtolower(substr( strrchr($logo['name'],'.') ,1));
 
-$name = time();
+      $name = time();
 
-$nomlogo = str_replace(' ','',$name).".".$extension_upload;
+      $nomlogo = str_replace(' ','',$name).".".$extension_upload;
 
-$name = "./logo/".str_replace('','',$name).".".$extension_upload;
+      $name = "./logo/".str_replace('','',$name).".".$extension_upload;
 
-move_uploaded_file($logo['tmp_name'],$name);
+      move_uploaded_file($logo['tmp_name'],$name);
 
-  return $nomlogo;
+        return $nomlogo;
 
 }
 
@@ -64,6 +64,7 @@ function str_random($nombre)
 
 
 <?php
+
 function verif_auth($auth_necessaire)
 {
   $level=(isset($_SESSION['level']))?$_SESSION['level']:1;

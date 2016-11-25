@@ -625,66 +625,89 @@ switch($cat) //1er switch
 					break;
 
 				case "droits":
+
 					//Droits d'un membre (rang)
 
 					echo'<h1>Edition des droits d un membre</h1>';
+
 					if(!isset($_POST['membre']))
 					{
-					echo'De quel membre voulez-vous modifier les droits
-					?<br />';
+					echo'<p>De quel membre voulez-vous modifier les droits
+					?</p>';
 
-					echo'<br /><form method="post" action="./index.php?
-					cat=membres&action=droits">
-					<p><label for="membre">Inscrivez le pseudo : </label>
-					<input type="text" id="membre" name="membre">
-					<input type="submit" value="Chercher"></p></form>';
+					echo'<br />
+
+					<form method="post" action="./index.php?cat=membres&action=droits">
+							<p>
+									<label for="membre">Inscrivez le pseudo : </label>
+
+									<input type="text" id="membre" name="membre">
+
+									<input type="submit" value="Chercher">
+							</p>
+					</form>';
 					}
 
 					else
 					{
 
-					$pseudo_d = $_POST['membre'];
-					$query = $bdd->prepare('SELECT membre_pseudo,membre_rang
-					FROM membres WHERE LOWER(membre_pseudo) = :pseudo');
-					$query->bindValue(':pseudo',strtolower($pseudo_d),PDO::PARAM_STR);
-					$query->execute();
-					if ($data = $query->fetch())
-					{
-					echo'<form action="./adminok.php?
-					cat=membres&amp;action=droits" method="post">';
+							$pseudo_d = $_POST['membre'];
 
-					$rang = array
-					(0 => "Bannis",
-					1 => "Visiteur",
-					2 => "Membre",
-					3 => "Modérateur",
-					4 => "Administrateur"); //Ce tableau associe numéro de droit et nom
-					echo'<label>'.$data['membre_pseudo'].'</label>';
-					echo'<select name="droits">';
+							$query = $bdd->prepare('SELECT membre_pseudo,membre_rang FROM membres WHERE LOWER(membre_pseudo) = :pseudo');
+							$query->bindValue(':pseudo',strtolower($pseudo_d),PDO::PARAM_STR);
 
-					for($i=0;$i<5;$i++)
-					{
-					if ($i == $data['membre_rang'])
-					{
+							$query->execute();
 
-					echo'<option value="'.$i.'"
-					selected="selected">'.$rang[$i].'</option>';
+							if ($data = $query->fetch())
+							{
+								echo'<form action="./adminok.php?cat=membres&amp;action=droits" method="post">';
+
+											$rang = array(
+															0 => "Bannis",
+															1 => "Visiteur",
+															2 => "Membre",
+															3 => "Modérateur",
+															4 => "Administrateur"
+															); 
+
+															//Ce tableau associe numéro de droit et nom
+
+											echo'<label>'.$data['membre_pseudo'].'</label>';
+
+											echo'<select name="droits">';
+
+														for($i=0;$i<5;$i++)
+														{
+																if ($i == $data['membre_rang'])
+																{
+
+																	echo'<option value="'.$i.'"
+																	selected="selected">'.$rang[$i].'</option>';
+																}
+
+																else
+																{
+
+																echo'<option value="'.$i.'">'.$rang[$i].'</option>';
+
+																}
+														}
+
+											echo'</select>
+
+											<input type="hidden" value="'.stripslashes($pseudo_d).'" name="pseudo">
+											<input type="submit" value="Envoyer">
+									</form>';
+									$query->CloseCursor();
+							}
+
+							else echo' <p>
+											Erreur : Ce membre n existe pas, <br />
+										cliquez <a href="./index.php?cat=membres&amp;action=edit">ici</a>
+										pour réessayer
+							        </p>';
 					}
-					else
-					{
-					echo'<option value="'.$i.'">'.$rang[$i].'</option>';
-					}
-					}
-					echo'</select>
-					<input type="hidden" value="'.stripslashes($pseudo_d).'"
-					name="pseudo">
-					<input type="submit" value="Envoyer"></form>';
-					$query->CloseCursor();
-					}
-					else echo' <p>Erreur : Ce membre n existe pas, <br />
-					cliquez <a href="./index.php?cat=membres&amp;action=edit">ici</a>
-					pour réessayer</p>';
-					}
+
 					break;
 
 
@@ -698,31 +721,58 @@ switch($cat) //1er switch
 					//Bannissement
 					echo'<h1>Gestion du bannissement</h1>';
 					//Zone de texte pour bannir le membre
-					echo'Quel membre voulez-vous bannir ?<br />';
+					echo'<p>Quel membre voulez-vous bannir ?</p>';
+
 					echo'<br />
+
 					<form method="post" action="./adminok.php?cat=membres&amp;action=ban">
-					<label for="membre">Inscrivez le pseudo : </label>
-					<input type="text" id="membre" name="membre">
-					<input type="submit" value="Envoyer"><br />';
-					//Ici, on boucle : pour chaque membre banni, on affiche une checkbox
-					//Qui propose de le débannir
-					$query = $bdd->query('SELECT membre_id, membre_pseudo
-					FROM membres WHERE membre_rang = 0');
-					//Bien sur, on ne lance la suite que s'il y a des membres bannis !
-					if ($query->rowCount() > 0)
-						{
-					while($data = $query->fetch())
-					{
-					echo'<br /><label><a href="./voirprofil.php?
-					action=consulter&amp;m='.$data['membre_id'].'">
-					'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a></label>
-					<input type="checkbox" name="'.$data['membre_id'].'" />
-					Débannir<br />';
-					}
-					echo'<p><input type="submit" value="Go !" /></p></form>';
-					}
-					else echo' <p>Aucun membre banni pour le moment :p</p>';
+
+							<label for="membre">Inscrivez le pseudo : </label>
+
+							<input type="text" id="membre" name="membre">
+
+							<input type="submit" value="Envoyer">
+							<br />';
+							//Ici, on boucle : pour chaque membre banni, on affiche une checkbox
+							//Qui propose de le débannir
+							$query = $bdd->query('SELECT membre_id, membre_pseudo FROM membres WHERE membre_rang = 0');
+
+							//Bien sur, on ne lance la suite que s'il y a des membres bannis !
+
+							if ($query->rowCount() > 0)
+							{
+
+									while($data = $query->fetch())
+									{
+
+									echo'<br />
+									<label>
+											<a href="./voirprofil.php?action=consulter&amp;m='.$data['membre_id'].'">
+
+											'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a>
+									</label>
+
+									<input type="checkbox" name="'.$data['membre_id'].'" />
+
+									Débannir<br />';
+
+									}
+
+									echo'<p>
+									      <input type="submit" value="Go !" />
+									</p>
+
+							</form>';
+
+					        }
+
+					else 
+						echo' <p>
+					           Aucun membre banni pour le moment :p
+					       </p>';
+
 					$query->CloseCursor();
+					
 					break;
 
 
