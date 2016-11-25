@@ -412,7 +412,7 @@ input[type="submit"]:active
 
 .billet
 {
-	display:block;
+	display:inline-block;
 	width:800px;
 	height:auto;
 	background:#f5f1f1;
@@ -429,6 +429,27 @@ input[type="submit"]:active
 	margin: 5px;
 }
 
+#cercle
+{
+
+	display:inline-block;
+	width:150px;
+	height: 150px;
+	border-radius: 0px;
+	z-index: 500;
+	background-color: white;
+}
+
+#contenu
+{
+	display: inline-block;
+	width:600px;
+	height:150px;
+	overflow: hidden;
+	margin-left: 20px;
+	font-size: 20px;
+}
+
 
 
 /*Pied de la page */
@@ -442,3 +463,49 @@ footer
 	border-top-right-radius: 5px;
 }
 
+
+
+#infos > ul
+{
+   width: 151px;
+}
+
+#infos ul
+{
+	margin:0;
+	padding:0;
+	line-height:50px;
+	background-color: white;
+}
+
+#infos li
+{
+	display:inline-block;
+	position:relative;
+	border:1px solid black;
+	margin:0px;
+}
+
+#infos ul li a
+{
+	color:#000;
+	width:150px;
+	height:50px;
+	display:block;
+	text-align:center;
+}
+
+#infos ul ul
+{
+	position:absolute;
+	top:50px;
+	visibility:hidden;
+	transition: visibility 0.1s ease-out;
+	z-index:500;
+}
+
+#infos ul li:hover ul
+{
+	visibility:visible;
+	transition: all 0.8s;
+}
