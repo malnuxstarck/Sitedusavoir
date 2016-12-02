@@ -32,7 +32,13 @@ if ($id != $identifiant)
 }
 
 
+$req = $bdd->prepare('SELECT * FROM membres WHERE membre_id = :id');
 
+$req->bindParam(':id', $id, PDO::PARAM_INT);
+
+$req->execute();
+
+$membre = $req->fetch();
 
 if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
 {
@@ -40,12 +46,12 @@ if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est s
         echo '<h1 class="titre">Modification Infos : '.$pseudo .'</h1>';
 
 
-       echo'<form method="post" action="" enctype="multipart/form-data" id="formulaire">
+       echo '<form method="post" action="editerprofil.php?action=primaire" id="formulaire">
 
              
               <p>
                 <label for="pseudo">* Pseudo </label> 
-                <input name="pseudo" type="text" id="pseudo" required />(doit contenir entre 3 et 15 caractères, sans espace) 
+                <input name="pseudo" value="'.$membre['membre_pseudo'].'" type="text" id="pseudo" required />(doit contenir entre 3 et 15 caractères, sans espace) 
               </p>
 
               <p>  
@@ -59,22 +65,53 @@ if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est s
               </p>
 
 
+                <input type="submit" value="Modifier"/>
+
+              </form>
+
+             </br>
+
+
+             <form method="post" action="editerprofil.php?action=secondaire" id="formulaire">
+
               <p>
-                  <label for="email">* Votre adresse Mail </label>
-                  <input type="text" name="email" id="email" required/>
+                  <label for="localisation">Votre localisation </label>
+                  <input type="text" value ="'.$membre['membre_localisation'].'" name="email" id="localisation" required/>
               </p>
+
+              <p>
+                  <label for="email"> Votre email </label>
+                  <input type="email" name="email" value="'.$membre['membre_email'].'" id="email" required/>
+              </p>
+
+              <p>
+                  <label for="siteweb">Votre siteweb </label>
+                  <input type="text" value="'.$membre['membre_siteweb'].'" name="siteweb" placeholder="siteweb"/>
+              </p>
+
+              <p>
+                 <input type="submit" value="Modifier"/>
+              </p>
+            </form>
+
+            </br>
+
+               <form method="post" action="editerprofil.php?action=ternaire" id="formulaire">
 
               <p>
                   <label for="signature">Votre signature </label>
-                  <textarea name="signature" placeholder="Votre signature"></textarea>
+                  <textarea name="signature" value="'.$membre['membre_signature'].'" rows = "10" cols="50">'.$membre['membre_signature'].'
+                  </textarea>
               </p>
+
+
+              <p style="text-align:center;"><img src="../images/avatars/'.$membre['membre_avatar'].'" alt="pas davatar"/></p>
 
                <p>
-                  <label for="avatar">Choisissez votre avatar </label>
+                  <label for="avatar">Modifier avatar </label>
+
                   <input type="file" name="avatar" id="avatar"/>(Taille max : 1mo)
               </p>
-
-     
 
       <p>Les champs précédés d un * sont obligatoires</p>
       <p><input type="submit" value="Modifier"/></p>

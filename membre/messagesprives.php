@@ -27,7 +27,7 @@
 
 					echo'<p id="fildariane">
 							<i>Vous êtes ici </i> : 
-							<a href="./index.php">Forum</a> --> <a href="./messagesprives.php">Messagerie privée</a> --> Consulter un message
+							<a href="../index.php">Accueil</a> --> <a href="./messagesprives.php">Messagerie privée</a> --> Consulter un message
 					    </p>';
 
 					$id_mess = (int) $_GET['id']; 
@@ -115,7 +115,7 @@
 				//On veut répondre
 
 					echo'<p>
-					          <i>Vous êtes ici</i> : <a href="./index.php">Accueil</a> --> <a href="./messagesprives.php">Messagerie privée</a> --> Ecrire un message
+					          <i>Vous êtes ici</i> : <a href="../index.php">Accueil</a> --> <a href="./messagesprives.php">Messagerie privée</a> --> Ecrire un message
 					     </p>';
 
 					echo '<h1>Répondre à un message privé</h1><br /><br />';
