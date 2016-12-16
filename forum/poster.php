@@ -26,7 +26,7 @@ $query->bindValue(':forum',$forum,PDO::PARAM_INT);
 $query->execute();
 $data = $query->fetch();
 
-echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> --><a href="./voirforum.php?f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>--> Nouveau topic</p>';
+echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> --> <a href="./voirforum.php?f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a> --> Nouveau topic</p>';
 }
 
 //Sinon c'est un nouveau message, on a la variable t et
@@ -299,11 +299,6 @@ $query->CloseCursor();
 break;
 
 
-
-
-
-
-
 default: //Si jamais c'est aucun de ceux là c'est qu'il y a eu unproblème :o
 echo'<p>Cette action est impossible</p>';
 } //Fin du switch
@@ -311,6 +306,3 @@ echo'<p>Cette action est impossible</p>';
 </div>
 </body>
 </html>
-
-
-
