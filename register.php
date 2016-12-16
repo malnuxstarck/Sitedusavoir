@@ -18,7 +18,7 @@ if ($id != 0)
 }
 
 
-if (empty($_POST['pseudo'])) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
+if (empty($_POST['pseudo'])) // Si on la variable est vide, on peut considérer qu'on est sur la page de formulaire
 {
   
      echo '<h1 class="titre">Inscription</h1>';
@@ -55,7 +55,7 @@ if (empty($_POST['pseudo'])) // Si on la variable est vide, on peutconsidérer q
 
 		     
 
-		               <p>Les champs précédés d un * sont obligatoires</p>
+		               <p>Les champs précédés d\'un * sont obligatoires</p>
 		               <p><input type="submit" value="Inscription"/></p>
 
         </form>';
@@ -202,8 +202,8 @@ else
 
 
 				echo'<h1>Inscription terminée</h1>';
-				echo'<p>Bienvenue '.stripslashes(htmlspecialchars($_POST['pseudo'])).' vous êtes maintenant inscrit sur le Site du savoir</p>
-				<p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil</p>';
+				echo'<p>Bienvenue '.stripslashes(htmlspecialchars($_POST['pseudo'])).', vous êtes maintenant inscrit sur le Site du savoir</p>
+				<p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d\'accueil</p>';
 				//La ligne suivante sera commentée plus bas
 				
 				$nomavatar = (!empty($_FILES['avatar']['size']))?move_avatar($_FILES['avatar']):'default.png';
@@ -223,9 +223,9 @@ else
 				
 					$id = $bdd->lastInsertId(); ;
 				
-	            mail($email,"Confirmation de Votre compte","Cliquer ou copier sur le lien\n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
+	            mail($email,"Confirmation de Votre compte","Cliquez sur le lien ou copiez le : \n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
 
-	          $_SESSION['flash']['success'] = "Un mail de confirmation vous a ete envoyer" ;
+	          $_SESSION['flash']['success'] = "Un mail de confirmation vous a été envoyé" ;
 
 				$query->CloseCursor();
 
@@ -236,7 +236,7 @@ else
 	{
 
 		echo'<h1>Inscription interrompue</h1>';
-		echo'<p>Une ou plusieurs erreurs se sont produites pendant l incription</p>';
+		echo'<p>Une ou plusieurs erreurs se sont produites pendant l inscription</p>';
 		echo'<p>'.$i.' erreur(s)</p>';
 		echo'<p>'.$pseudo_erreur1.'</p>';
 
