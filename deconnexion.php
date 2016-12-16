@@ -28,7 +28,7 @@ $req->CloseCursor();
 if ($id == 0) 
 {
 	
-	$_SESSION['flash']['danger'] = 'Vous devez etre Connecter pour vous deconnecter';
+	$_SESSION['flash']['danger'] = 'Vous devez etre connecté pour vous déconnecter.';
 
 	header('Location:connexion.php');
 
@@ -36,7 +36,7 @@ if ($id == 0)
 
 else
 {
-	$_SESSION['flash']['success'] = 'Vous êtes à présent déconnecté';
+	$_SESSION['flash']['success'] = 'Vous êtes à présent déconnecté.';
 	header('Location:connexion.php');
 }
 
