@@ -12,7 +12,7 @@ include ('includes/session.php');
        <meta charset="utf-8"/>
   	<title>Site du Savoir | sitedusavoir.com</title>
   	<meta name="author" content="MalnuxStrck"/>
-  	<meta name="description" content="site de partages de connaissances,site d'apprentissages"/>
+  	<meta name="description" content="site de partages de connaissances,site d'apprentissage"/>
   	<link rel="stylesheet" type="text/css" href="css/style.css"/>
   	<link rel="icon" href="logo.png"/>
 
@@ -95,7 +95,7 @@ include ('includes/session.php');
             </p>
             
             <p id="nouveau">
-                <a href="register.php"> Nouveau , Inscivez Vous</a>
+                <a href="register.php"> Nouveau ? Inscrivez Vous</a>
             </p>
 
              </aside>
@@ -108,7 +108,7 @@ include ('includes/session.php');
       <div id="arianepresentation">
 
   			    <section id="fildariane">
-  			         <i> Vous etes ici --> <a href="index.php">  Accueil </a></i>			    
+  			         <i> Vous etes ici --> <a href="index.php"> Accueil </a></i>			    
   			    </section>
 
 
@@ -117,16 +117,16 @@ include ('includes/session.php');
             
   			                <h1> SDS KEZAKO ? </h1>
   			                <p>
-  			                    SDS ou plus communement Site Du Savoir est un site cumunautaire. Il a pour but de regrouper les informaticiens ( debutants , intermediaires , experts, confirmés) afin de partager nos Experiences , nos savoirs faire et nos astuces.
+  			                    SDS ou plus communement Site Du Savoir est un site cumunautaire. Il a pour but de regrouper les informaticiens (debutants, intermediaires, experts, confirmés) afin de partager nos Experiences, nos savoirs faire et nos astuces.
   			                </p>
 
   			                <h1 id="but"> De quoi est composé SDS </h1>
 
   			                <p> 
 
-  			                   <a href="#">Extras</a> : Section Pour  l'ensemble des tutos hors informatiques. </br>
+  			                   <a href="#">Extras</a> : Section Pour l'ensemble des tutos hors informatique. </br>
   			                   <a href=""/>Tutoriels</a> Pour les tutos informatiques  Astuces(Programmation,Conception, partages experiences).</br>
-                           <a href="./Forum">Forum </a> Pour tous les problemes ou pour se presenter. </br> <a href="">Social</a> pour se retrouver et discuter avec des inconnus une sorte de superchat globale.
+                           <a href="./Forum">Forum </a> Pour tous les problemes ou pour se presenter. </br> <a href="">Social</a> pour se retrouver et discuter avec des inconnus une sorte de superchat global.
 
   			                </p>
 
