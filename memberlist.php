@@ -36,7 +36,7 @@
 	$MembreParPage = 25;
 	$NombreDePages = ceil($total / $MembreParPage);
 
-	echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Acceuil</a> --><a href="./memberlist.php">Liste des membres</a></p>';
+	echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Acceuil</a> --> <a href="./memberlist.php">Liste des membres</a></p>';
 	//Nombre de pages
 	$page = (isset($_GET['page']))?intval($_GET['page']):1;
 
@@ -153,7 +153,7 @@
 	{
 
 	echo'<p>
-	       Ce le site et le forum ne contient aucun membre actuellement
+	       Le site et le forum ne contient aucun membre actuellement
 	    </p>';
 	}
 
