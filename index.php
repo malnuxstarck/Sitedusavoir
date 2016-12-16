@@ -117,7 +117,7 @@ include ('includes/session.php');
             
   			                <h1> SDS KEZAKO ? </h1>
   			                <p>
-  			                    SDS ou plus communement Site Du Savoir est un site cumunautaire. Il a pour but de regrouper les informaticiens (debutants, intermediaires, experts, confirmés) afin de partager nos Experiences, nos savoirs faire et nos astuces.
+  			                    SDS ou plus communement Site Du Savoir est un site communautaire. Il a pour but de regrouper les informaticiens (debutants, intermediaires, experts, confirmés) afin de partager nos Experiences, nos savoirs faire et nos astuces.
   			                </p>
 
   			                <h1 id="but"> De quoi est composé SDS </h1>
