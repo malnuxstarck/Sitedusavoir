@@ -32,10 +32,10 @@
             'id'  => $user['id'] 
           ));
 
-         mail($_POST['email'],"Reinitialisation de Votre mot de passe","Cliquer sur le lien\n\n http://www.sietdusavoir.com/reset.php?id={$user['id']}&token=$token");
+         mail($_POST['email'],"Réinitialisation de votre mot de passe","Cliquez sur le lien :\n\n http://www.sitedusavoir.com/reset.php?id={$user['id']}&token=$token");
 
     	
-    		$_SESSION['flash']['success'] = "Les instructions de rappel de mot de passe sont envoyé ";
+    		$_SESSION['flash']['success'] = "Les instructions de rappel de mot de passe sont envoyées.";
 
     		header('Location: connexion.php');
 
