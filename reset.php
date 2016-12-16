@@ -37,7 +37,7 @@
                       $_SESSION['level'] = $data['membre_rang'];
                       $_SESSION['id'] = $data['membre_id'];
 
-                      $_SESSION['flash']['success'] = "Mot de passe mis a jours";
+                      $_SESSION['flash']['success'] = "Mot de passe mis a jour";
 
                      
 
@@ -75,7 +75,7 @@
 
 
 
-<h1> Reinitialiser votre mot de passe </h1>
+<h1> Réinitialisez votre mot de passe </h1>
 
 <form action="" method="POST">
 
