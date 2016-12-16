@@ -71,10 +71,10 @@ else
 	{
 
 	$message = '<p>
-	               une erreur s\'est produite pendant votreidentification. Vous devez remplir tous les champs
+	               une erreur s\'est produite pendant votre identification. Vous devez remplir tous les champs.
 	           </p>
 	<p>
-	    Cliquez <a href="./connexion.php">ici</a> pour revenir
+	    Cliquez <a href="./connexion.php">ici</a> pour revenir.
 
 	</p>';
 	
@@ -102,7 +102,7 @@ else
 
 		if ($data['membre_rang'] == 0) //Le membre est banni
 	    {
-            $message="<p>Vous avez été banni, impossible de vous connecter sur ce Site </p>";
+            $message="<p>Vous avez été banni, impossible de vous connecter sur ce site. </p>";
 	    }
 
 	    else
@@ -141,11 +141,11 @@ else
 	{
 
 		$message ='<p>
-						Une erreur s\'est produite pendant votre identification ou vous n\'avez pas confirmer votre compte. <p> Le mot de passe ou le pseudo entré n\'est pas correcte.
+						Une erreur s\'est produite pendant votre identification ou vous n\'avez pas confirmer votre compte. <p> Le mot de passe ou le pseudo entré n\'est pas correct.
 				   </p>
 
 				   <p>
-				       Cliquez <ahref="./connexion.php">ici</a> pour revenir à la page précédente Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil
+				       Cliquez <a href="./connexion.php">ici</a> pour revenir à la page précédente, cliquez <a href="./index.php">ici</a> pour revenir à la page d\'accueil
 		           </p>';
 		
 	}
@@ -168,7 +168,7 @@ if(isset($_SERVER['HTTP_REFERER']))
 <?php
 if(isset($_POST['page']))
         $page = htmlspecialchars($_POST['page']);
-         echo 'Cliquez <a href="./'.$page.'">ici</a> pour revenir à la page Precedente';
+         echo 'Cliquez <a href="./'.$page.'">ici</a> pour revenir à la page précedente';
 ?>
 
 
