@@ -87,45 +87,44 @@ include ('includes/session.php');
 
   </aside>
   
-  <?php 
-    }
-  ?>  
-  
-  <div id="arianepresentation">
-  	<section id="fildariane">
-  		<i> Vous etes ici --> <a href="index.php"> Accueil </a></i>			    
-  	</section>
+<?php 
+  }
+?>
+
+<div id="arianepresentation">
+	<section id="fildariane">
+    <i> Vous etes ici --> <a href="index.php"> Accueil </a></i>
+  </section>
     
-  	<section id="presentation">     
-  		<h1> SDS KEZAKO ? </h1>
-  	  <p>
-  			SDS ou plus communement Site Du Savoir est un site communautaire. Il a pour but de regrouper les informaticiens (debutants, intermediaires, experts, confirmés) afin de partager nos Experiences, nos savoirs faire et nos astuces.
-  		</p>
+  <section id="presentation">
+  	<h1> SDS KEZAKO ? </h1>
+		<p>
+			SDS ou plus communement Site Du Savoir est un site communautaire. Il a pour but de regrouper les informaticiens (debutants, intermediaires, experts, confirmés) afin de partager nos Experiences, nos savoirs faire et nos astuces.
+		</p>
+     
+		<h1 id="but"> De quoi est composé SDS </h1>
+   
+		<p>
+			<a href="#">Extras</a> : Section Pour l'ensemble des tutos hors informatique. </br>
+			<a href=""/>Tutoriels</a> Pour les tutos informatiques  Astuces(Programmation,Conception, partages experiences).</br>
+			<a href="./Forum">Forum </a> Pour tous les problemes ou pour se presenter. </br> <a href="">Social</a> pour se retrouver et discuter avec des inconnus une sorte de superchat global.
+		</p>
+  </section>
+</div>
 
-  		<h1 id="but"> De quoi est composé SDS </h1>
-
-  		<p> 
-  			<a href="#">Extras</a> : Section Pour l'ensemble des tutos hors informatique. </br>
-  			<a href=""/>Tutoriels</a> Pour les tutos informatiques  Astuces(Programmation,Conception, partages experiences).</br>
-        <a href="./Forum">Forum </a> Pour tous les problemes ou pour se presenter. </br> <a href="">Social</a> pour se retrouver et discuter avec des inconnus une sorte de superchat global.
-  		</p>
-  	</section>
-  </div>
-
-  <div class="reste">
-          
-  <?php
-    if(verif_auth(ADMIN))
-    {
-      echo '<a href="admin/index.php">Administration</a>';
-    }
-  ?>    
+<div class="reste">
+<?php
+  if(verif_auth(ADMIN))
+  {
+    echo '<a href="admin/index.php">Administration</a>';
+  }
+?>
        
-  </div>
+</div>
       
-  <footer>          
-    <p> Site du savoir Copyright &copy; 2016 Tous droits reservés </p>        
-  </footer>
+<footer>
+  <p> Site du savoir Copyright &copy; 2016 Tous droits reservés </p>        
+</footer>
     
 </div>
 </body>
