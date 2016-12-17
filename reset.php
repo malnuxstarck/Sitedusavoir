@@ -2,26 +2,26 @@
   require_once './includes/identifiants.php';
   include_once './includes/debut.php';
 
-	include_once './includes/menu.php';
-	include_once './includes/fonctions.php';
+  include_once './includes/menu.php';
+  include_once './includes/fonctions.php';
  ?>
 
 <?php
-	if(isset($_GET['id'])  && isset($_GET['token']))
-	{
+  if(isset($_GET['id'])  && isset($_GET['token']))
+  {
 		
-		$req = $bdd->prepare('SELECT * FROM membres WHERE membre_id = :id AND reset = :reset AND reset_at IS NOT NULL AND reset_at > DATE_SUB(NOW(), INTERVAL 30 MINUTE)');
+    $req = $bdd->prepare('SELECT * FROM membres WHERE membre_id = :id AND reset = :reset AND reset_at IS NOT NULL AND reset_at > DATE_SUB(NOW(), INTERVAL 30 MINUTE)');
 
-		$req->execute(array('id' => $_GET['id'], 'reset' => $_GET['token']));
+    $req->execute(array('id' => $_GET['id'], 'reset' => $_GET['token']));
 
-		$user = $req->fetch();
+    $user = $req->fetch();
 
-		if($user)
+    if($user)
     {
 
-			if(!empty($_POST) && $_POST['password'] == $_POST['confirmation'])
-			{
-				$password = PASSWORD_HASH($_POST['password'],PASSWORD_BCRYPT);
+      if(!empty($_POST) && $_POST['password'] == $_POST['confirmation'])
+      {
+        $password = PASSWORD_HASH($_POST['password'],PASSWORD_BCRYPT);
         $req = $bdd->prepare('UPDATE membres SET membre_mdp = :pass, reset = NULL, reset_at = NULL');
         $req->execute(array('pass'=> $pasword));
 
@@ -37,21 +37,20 @@
 
         header('Location: ./index.php');
         exit();
-			}
-		}
+      }
+    }
     else
     {
       $_SESSION['flash'] = "Ce token n'est pas valide";
-   	  header('Location: connexion.php');
+      header('Location: connexion.php');
 
       exit();
-
-		}
+    }
   }
-	else
+  else
   {
 
-  	header('Location: connexion.php');
+    header('Location: connexion.php');
     exit();
 
   }
@@ -61,7 +60,7 @@
 
 <form action="" method="POST">
 
-	<div class="form-group">
+  <div class="form-group">
     <label for="pseudo">Mot de passe</label>
     <input type="password" name="password" class="form-control" />
   </div>
@@ -71,6 +70,6 @@
     <input type="password" name="confirmation" class="form-control" />
   </div>  
 	
-	<button type="submit" class="btn btn-primary"> Envoyer </button>
+  <button type="submit" class="btn btn-primary"> Envoyer </button>
         
 </form>
