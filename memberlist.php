@@ -27,8 +27,6 @@
   else 
     $tri = $convert_tri[0];
 
-
-
   $query=$bdd->query('SELECT COUNT(*) AS nbr FROM membres');
   $data = $query->fetch();
   $total = $data['nbr'] +1;
