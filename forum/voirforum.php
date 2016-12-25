@@ -264,7 +264,8 @@
   				}
   			}
   		}
-	    else //S'il n'a pas lu le topic	{
+	    else
+	      { //S'il n'a pas lu le topic	{
 		    $ico_mess = 'message_non_lu.png';
 		  }
     }

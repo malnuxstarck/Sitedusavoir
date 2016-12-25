@@ -1,8 +1,9 @@
-// Demarrerla session dans une page 
+
 
 
 <?php
 
+// Demarrer la session dans une page 
 
 $protocol = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
 

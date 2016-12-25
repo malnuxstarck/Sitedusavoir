@@ -84,7 +84,7 @@
   </aside>
 
   <?php
-    }
+    
   ?>
 
   <div id="arianepresentation">
