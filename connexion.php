@@ -1,7 +1,5 @@
 <?php
-  if(session_status()== PHP_SESSION_NONE)
-
-  session_start();
+  include './includes/session.php';
   $titre="Connexion";
   include_once './includes/identifiants.php';
   include_once'./includes/debut.php';

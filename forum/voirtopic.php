@@ -1,5 +1,5 @@
 <?php
-  session_start();
+  include '../includes/session.php';
 
   include("../includes/identifiants.php");
   include("../includes/bbcode.php"); //On verra plus tard ce qu'est cefichier
@@ -77,8 +77,7 @@
 <?php
   echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> -->
   <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
-  --> <a href="./voirtopic.php?
-  t='.$topic.'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>';
+  --> <a href="./voirtopic.php?t='.$topic.'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>';
   echo '<h1 class="titre">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</h1><br/><br />';
 ?>
 

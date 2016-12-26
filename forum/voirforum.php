@@ -1,5 +1,5 @@
 <?php
-	session_start();
+	include '../includes/session.php';
 	$titre="Voir un forum";
 	include("../includes/identifiants.php");
 	include("../includes/debut.php");
