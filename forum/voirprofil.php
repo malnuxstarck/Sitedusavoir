@@ -1,5 +1,6 @@
 <?php
-  session_start();
+  include '../includes/session.php';
+  
   $titre="Profil";
   include("../includes/identifiants.php");
   include("../includes/debut.php");
