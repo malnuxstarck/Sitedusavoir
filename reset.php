@@ -1,4 +1,6 @@
 <?php 
+  
+  include "./includes/session.php";
   require_once './includes/identifiants.php';
   include_once './includes/debut.php';
 
@@ -22,17 +24,12 @@
       if(!empty($_POST) && $_POST['password'] == $_POST['confirmation'])
       {
         $password = PASSWORD_HASH($_POST['password'],PASSWORD_BCRYPT);
-        $req = $bdd->prepare('UPDATE membres SET membre_mdp = :pass, reset = NULL, reset_at = NULL');
-        $req->execute(array('pass'=> $pasword));
+        $req = $bdd->prepare('UPDATE membres SET membre_mdp = :pass, reset = NULL, reset_at = NULL WHERE membre_id = :id');
+        $req->execute(array('pass'=> $password,'id'=> $user['membre_id']));
 
-        session_start();
+       
 
-
-        $_SESSION['pseudo'] = $data['membre_pseudo'];
-        $_SESSION['level'] = $data['membre_rang'];
-        $_SESSION['id'] = $data['membre_id'];
-
-        $_SESSION['flash']['success'] = "Mot de passe mis a jour";
+       $_SESSION['flash']['success'] = "Mot de passe mis a jour, vous pouvez vous connecter a present";
             
 
         header('Location: ./index.php');
@@ -41,7 +38,7 @@
     }
     else
     {
-      $_SESSION['flash'] = "Ce token n'est pas valide";
+      $_SESSION['flash']["danger"] = "Ce token n'est pas valide";
       header('Location: connexion.php');
 
       exit();

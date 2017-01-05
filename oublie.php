@@ -25,10 +25,11 @@
 
       $req->execute(array(
         'token'=> $token,
-        'id'  => $user['id'] 
+        'id'  => $user['membre_id'] 
       ));
 
-      mail($_POST['email'],"Réinitialisation de votre mot de passe","Cliquez sur le lien :\n\n http://www.sitedusavoir.com/reset.php?id={$user['id']}&token=$token");
+      mail($_POST['email'],"Réinitialisation de votre mot de passe",
+                           "Cliquez sur le lien ou copier coller dans votre navigateur :\n\n http://www.sitedusavoir.com/reset.php?id={$user['membre_id']}&token=$token");
 
       $_SESSION['flash']['success'] = "Les instructions de rappel de mot de passe sont envoyées.";
 
