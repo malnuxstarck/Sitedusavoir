@@ -1,7 +1,7 @@
 <?php
 
-  session_start();
-  $titre = "Inscription | sitedusavoir.com";
+  include "./includes/session.php";
+  $titre = "Inscription | SiteduSavoir.com";
   require_once("./includes/identifiants.php");
   require_once("./includes/debut.php");
   require_once("./includes/menu.php");
