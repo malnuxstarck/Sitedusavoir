@@ -1,6 +1,6 @@
 <?php
-  session_start();
-  $titre="Liste des membres | Sitedusavoir.com";
+include "./includes/session.php";
+  $titre="Liste des membres | SiteduSavoir.com";
   include("includes/identifiants.php");
   include("includes/debut.php");
   include("includes/menu.php");

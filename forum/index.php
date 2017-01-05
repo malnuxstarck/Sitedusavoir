@@ -1,6 +1,6 @@
 <?php
-session_start();
-$titre ="Forum | Sitedusavoir.com";
+include "../includes/session.php";
+$titre ="Forums | SiteduSavoir.com";
 
 include("../includes/identifiants.php");
 include("../includes/debut.php");
@@ -9,12 +9,12 @@ include("../includes/menu.php");
 ?>
 
 <?php
-
-echo '<p id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a></p>';
+      echo '<p id="fildariane"><i> Vous etes ici : </i><a href="index.php">Forum </a></p>';
 ?>
+    
     <h1> Forum </h1>
 
-    <?php
+<?php
 
     $totaldesmessages = 0;
     $categorie = NULL;
@@ -28,36 +28,40 @@ $add1='';
 
 $add2 ='';
 
-if ($id!=0) //on est connecté
+if($id != 0) //on est connecté
 {
-//Premièrement, sélection des champs
+    //Premièrement, sélection des champs
 
-$add1 = ',tv_id, tv_post_id, tv_poste';
-//Deuxièmement, jointure
-$add2 = 'LEFT JOIN forum_topic_view
-ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
-forum_topic_view.tv_id = :id';
+    $add1 = ',tv_id, tv_post_id, tv_poste';
+
+    //Deuxièmement, jointure
+
+    $add2 = 'LEFT JOIN 
+                    forum_topic_view
+            ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
+               forum_topic_view.tv_id = :id';
 
 }
 
 
 //Cette requête permet d'obtenir tout sur le forum
 
-$query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name,forum_last_post_id, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,  forum_topic.topic_post, post_id, DATE_FORMAT(post_time, \'%d/%m/%Y %H:%i:%s\') AS post_time  , post_createur, membre_pseudo, membre_id '.$add1.'
+$query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name,forum_last_post_id, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,
+                               forum_topic.topic_post, post_id, DATE_FORMAT(post_time, \'%d/%m/%Y %H:%i:%s\') AS post_time  , post_createur, membre_pseudo, membre_id '.$add1.'
 
-FROM categorie
+                        FROM categorie
 
-LEFT JOIN forum ON categorie.cat_id = forum.forum_cat_id
+                        LEFT JOIN forum ON categorie.cat_id = forum.forum_cat_id
 
-LEFT JOIN forum_post ON forum_post.post_id = forum.forum_last_post_id
+                        LEFT JOIN forum_post ON forum_post.post_id = forum.forum_last_post_id
 
-LEFT JOIN forum_topic ON forum_topic.topic_id = forum_post.topic_id
+                        LEFT JOIN forum_topic ON forum_topic.topic_id = forum_post.topic_id
 
-LEFT JOIN membres ON membres.membre_id = forum_post.post_createur '.$add2.'
+                        LEFT JOIN membres ON membres.membre_id = forum_post.post_createur '.$add2.'
 
-WHERE auth_view <= :lvl 
+                        WHERE auth_view <= :lvl 
 
-ORDER BY cat_ordre, forum_ordre DESC');
+                        ORDER BY cat_ordre, forum_ordre DESC');
 
 $query->bindValue(':lvl',$lvl,PDO::PARAM_INT);
 
@@ -107,17 +111,28 @@ while($data = $query->fetch())
 
         <tr>
 
-        <th><img src="../images/cat.png" alt="cat"/></th>
+            <th>
+                 <img src="../images/cat.png" alt="cat"/>
+            </th>
 
-        <th class="titre1"><strong><?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
+            <th class="titre1">
+                       <strong>
+                               <?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
+                                   
+                        </strong>
+            </th>             
 
-        </strong></th>             
+            <th class="nombremessages">
+                   <strong>Sujets</strong>
+            </th>       
 
-        <th class="nombremessages"><strong>Sujets</strong></th>       
+            <th class="nombresujets">
+                  <strong>Messages</strong>
+            </th>       
 
-        <th class="nombresujets"><strong>Messages</strong></th>       
-
-        <th class="derniermessage"><strong>Dernier message</strong></th>   
+            <th class="derniermessage">
+                  <strong>Dernier message</strong>
+            </th>   
 
         </tr>
 
@@ -177,28 +192,27 @@ else
     $ico_mess = 'message.png';
 }
 
+    echo'
+        <tr>
+            <td>
+                <img src="../images/'.$ico_mess.'" alt="message"/>
+            </td>
 
+        <td id="taillepr" class="titre">
+            <strong>
+                 <a href="./voirforum.php?f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
+            </strong>
 
+            <br />'.nl2br(stripslashes(htmlspecialchars($data['forum_desc']))).'
+        </td>
 
+        <td class="nombresujets">
+             '.$data['forum_topic'].'
+        </td>
 
-
-
-
-
-
-    echo'<tr><td><img src="../images/'.$ico_mess.'" alt="message"/></td>
-
-    <td id="taillepr" class="titre"><strong>
-
-    <a href="./voirforum.php?f='.$data['forum_id'].'">
-
-    '.stripslashes(htmlspecialchars($data['forum_name'])).'</a></strong>
-
-    <br />'.nl2br(stripslashes(htmlspecialchars($data['forum_desc']))).'</td>
-
-    <td class="nombresujets">'.$data['forum_topic'].'</td>
-
-    <td class="nombremessages">'.$data['forum_post'].'</td>';
+        <td class="nombremessages">
+              '.$data['forum_post'].'
+        </td>';
 
 
     // Deux cas possibles :
@@ -211,41 +225,43 @@ else
 
          //Selection dernier message
 
-     $nombreDeMessagesParPage = 15;
+        $nombreDeMessagesParPage = 15;
 
-         $nbr_post = $data['topic_post'] +1;
+        $nbr_post = $data['topic_post'] + 1;
 
-     $page = ceil ($nbr_post / $nombreDeMessagesParPage);
+        $page = ceil ($nbr_post / $nombreDeMessagesParPage);
 
          
 
-         echo'<td class="derniermessage">
+                 echo'<td class="derniermessage">
 
-         '.$data['post_time'].'<br />
+                         '.$data['post_time'].'<br />
 
-         <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($data['membre_id'])).'&amp;action=consulter">'.$data['membre_pseudo'].'</a>
+                          <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($data['membre_id'])).'&amp;action=consulter">'.$data['membre_pseudo'].'</a>
 
-   <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">
+                          <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">
 
-         <img src="./images/go.gif" alt="go" /></a></td></tr>';
-
-
-?>
-
+                         <img src="./images/go.gif" alt="go" /></a>
+                        </td>
+              </tr>';
 
 
-<?php
+        ?>
 
 
-     }
 
-     else
+        <?php
 
-     {
+
+    }
+
+    else
+
+    {
 
          echo'<td class="nombremessages">Pas de message</td></tr>';
 
-     }
+    }
 
 
      
@@ -304,29 +320,34 @@ $query->CloseCursor();
 
 $count_online = 0;
 //Décompte des visiteurs
-$count_visiteurs=$bdd->query('SELECT COUNT(*) AS nbr_visiteurs FROM
-forum_whosonline WHERE online_id = 0')->fetchColumn();
+$count_visiteurs=$bdd->query('SELECT COUNT(*) AS nbr_visiteurs
+                              FROM forum_whosonline 
+                              WHERE online_id = 0')->fetchColumn();
 $query->CloseCursor();
+
 //Décompte des membres
 
 $texte_a_afficher = "<br />Liste des personnes en ligne : ";
 
 $query = $bdd->prepare('SELECT membre_id, membre_pseudo
-FROM forum_whosonline
-LEFT JOIN membres ON online_id = membre_id
-WHERE online_time > SUBDATE(NOW(), INTERVAL 5 MINUTE) AND online_id <> 0');
+                        FROM forum_whosonline
+                        LEFT JOIN membres 
+                        ON online_id = membre_id
+                        WHERE online_time > SUBDATE(NOW(), INTERVAL 5 MINUTE) 
+                        AND online_id <> 0');
 $query->execute();
 $count_membres=0;
+
 while ($data = $query->fetch())
 {
-$count_membres ++;
-$texte_a_afficher .= '<a href="./voirprofil.php?
-m='.$data['membre_id'].'&amp;action=consulter">
-'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a> ,';
+    $count_membres ++;
+
+    $texte_a_afficher .= '<a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a> ,';
 }
 
 $texte_a_afficher = substr($texte_a_afficher, 0, -1);
 $count_online = $count_visiteurs + $count_membres;
+
 echo '<p>Il y a '.$count_online.' connectés ('.$count_membres.'
 membres et '.$count_visiteurs.' invités)';
 echo $texte_a_afficher.'</p>';

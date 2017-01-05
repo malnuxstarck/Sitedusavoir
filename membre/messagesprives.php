@@ -1,7 +1,7 @@
 			<?php
-			session_start();
+			include "../includes/session.php";
 
-			$titre="Messages Privés";
+			$titre="Messages Privés | SiteduSavoir.com";
 			$balises = true;
 
 			include("../includes/identifiants.php");

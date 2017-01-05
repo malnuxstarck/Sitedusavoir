@@ -1,8 +1,5 @@
 		<?php
-
-
-
-		session_start();
+        include "../includes/session.php";
 		$titre="Messagerie | Membres - Sitedusavoir";
 
 		include("../includes/identifiants.php");
@@ -10,7 +7,8 @@
 		include("../includes/menu.php");
 		include('../includes/bbcode.php');
 
-		if ($id==0) erreur(ERR_IS_CO);
+		if ($id==0) 
+			erreur(ERR_IS_CO);
 
 
 		$action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
@@ -27,9 +25,10 @@
 				//On récupère le titre et le message
 
 				//On récupère la valeur de l'id du destinataire
+            
 				$dest = (int) $_GET['dest'];
 				//Enfin on peut envoyer le message
-				$query=$bdd->prepare('INSERT INTO mp (mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu) VALUES(:id, :dest, :titre, :txt, NOW(),\'0\')');
+				$query = $bdd->prepare('INSERT INTO mp (mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu) VALUES(:id, :dest, :titre, :txt, NOW(),\'0\')');
 				$query->bindValue(':id',$id,PDO::PARAM_INT);
 				$query->bindValue(':dest',$dest,PDO::PARAM_INT);
 

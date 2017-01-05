@@ -1,6 +1,6 @@
 <?php
-session_start();
-$titre="Poster";
+include "../includes/session.php";
+$titre="Poster| SiteduSavoir.com";
 include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
