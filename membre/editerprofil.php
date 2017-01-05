@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include "../includes/session.php";
 
 $titre = "Editer profil | Sitedusavoir.com";
 
@@ -56,12 +56,12 @@ if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est s
 
               <p>  
                    <label for="password">* Mot de Passe </label>
-                   <input type="password" name="password" id="password" /> 
+                   <input type="password" name="password" id="password" required /> 
               </p>
 
               <p>
                   <label for="confirm">* Confirmer le mot de passe </label>
-                  <input type="password" name="confirm" id="confirm" />
+                  <input type="password" name="confirm" id="confirm" required />
               </p>
 
 
@@ -76,7 +76,7 @@ if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est s
 
               <p>
                   <label for="localisation">Votre localisation </label>
-                  <input type="text" value ="'.$membre['membre_localisation'].'" name="email" id="localisation" required/>
+                  <input type="text" value ="'.$membre['membre_localisation'].'" name="localisation" id="localisation" required/>
               </p>
 
               <p>
@@ -135,52 +135,84 @@ else
 
 	// Le cas ou on veut juste modifier son pseudo soit mot de passe ou les deux
 
-	$pseudo = (isset($_POST["pseudo"]))?$_POST["pseudo"]:"";
+		$pseudo = (isset($_POST["pseudo"]))?$_POST["pseudo"]:"";
 
-	$pass = (isset($_POST["password"]))?$_POST["password"]: "";
+		$pass = (isset($_POST["password"]))?$_POST["password"]: "";
 
-	$confirm = (isset($_POST["confirm"]))?$_POST["confirm"]:"";
+		$confirm = (isset($_POST["confirm"]))?$_POST["confirm"]:"";
 
-	if(empty($pseudo) AND empty($pass))
-	{
-		$_SESSION["flash"]["danger"] = "Au moins un des champs doit etre remplis . Vous pouvez reessayer";
+		if(empty($pseudo) AND empty($pass))
+		{
+			$_SESSION["flash"]["danger"] = "Au moins un des champs doit etre remplis . Vous pouvez reessayer";
+			header('Location:editerprofil.php?id='.$id);
+		}
+
+		if(!empty($confirm) && $pass == $confirm )
+	    {
+	    	
+
+	      $pass =  PASSWORD_HASH($pass,PASSWORD_BCRYPT);
+	      $req1 = $bdd->prepare('UPDATE membres SET membre_mdp = :pass WHERE membre_id =:id');
+	      $req1->execute(array('id'=> $id , 'pass' => $pass));
+		  
+		 }
+
+	   
+
+		$req = $bdd->prepare('UPDATE membres SET membre_pseudo = :pseudo WHERE membre_id =:id');
+	    $req->execute(array('pseudo'=> $pseudo , 'id' => $id));
+	    $req->closeCursor();
+
+		$_SESSION["flash"]["success"] = "Mot de passe et/ou pseudo mis a jours";
 		header('Location:editerprofil.php?id='.$id);
-	}
+		
+    break;
 
-	if(!empty($confirm) && $pass == $confirm )
-    {
-    	
+    case 2:
 
-      $pass =  PASSWORD_HASH($pass,PASSWORD_BCRYPT);
+	    $mail = $bdd->query("SELECT membre_email FROM membres WHERE membre_id = $id");
+        $mail = $mail->fetch();
+        $mail = $mail['membre_email'];
 
-      $req1 = $bdd->prepare('UPDATE membres SET membre_mdp = :pass WHERE membre_id =:id');
-
-
-	  $req1->execute(array('id'=> $id , 'pass' => $pass));
+	   
 	  
-	  $_SESSION["flash"]["success"] = "Mot de passe et/ou pseudo mis a jours";
+	    //Changer son email, siteweb , localisation
 
-    }
+	    $localisation = (!empty($_POST['localisation']))?$_POST['localisation']:"Non localisé";
+	    $siteweb      = (!empty($_POST['siteweb']))?$_POST['siteweb']:"Aucun siteweb";
+	    $email        = (!empty($_POST['email']))?$_POST['email']:$mail;
 
-   
 
-	$req = $bdd->prepare('UPDATE membres SET membre_pseudo = :pseudo WHERE membre_id =:id');
 
-	$req->execute(array('pseudo'=> $pseudo , 'id' => $id));
-    
+	    $modification = $bdd->prepare('UPDATE membres SET membre_email  = :email, membre_siteweb = :siteweb,membre_localisation = :localisation WHERE membre_id =:id');
 
-	$req->closeCursor();
+	    $modification->bindParam(':email',$email,PDO::PARAM_STR);
+	    $modification->bindParam(':siteweb',$siteweb,PDO::PARAM_STR);
+	    $modification->bindParam(':localisation',$localisation,PDO::PARAM_STR);
+	    $modification->bindParam(':id',$id,PDO::PARAM_INT);
 
-	$_SESSION["flash"]["success"] = "Mot de passe et/ou pseudo mis a jours";
-	header('Location:editerprofil.php?id='.$id);
+	    $modification->execute();
+	    $modification->closeCursor();
+
+	    $_SESSION['flash']['success'] = "Les modifications ont ete apportées .";
+
+	    header('Location:editerprofil.php?id='.$id);
+
 	
 
-		
-
 	break;
 
-	case 2:
+	case 3:
+
+	// dernier des cas si on veut modifier sa signature ou son avatar;
+
+	
 	break;
+
+	default:
+	$_SESSION["flash"]["danger"] = "Action invalide ";
+	header('Location:editerprofil.php?id='.$id);
+	
 
 	endswitch;
 
