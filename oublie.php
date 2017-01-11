@@ -29,7 +29,7 @@
       ));
 
       mail($_POST['email'],"Réinitialisation de votre mot de passe",
-                           "Cliquez sur le lien ou copier coller dans votre navigateur :\n\n http://www.sitedusavoir.com/reset.php?id={$user['membre_id']}&token=$token");
+                           "Cliquez sur le lien ou copier coller dans votre navigateur :\n\n http://www.sitedusavoir.com/reset.php?id={$user['membre_id']}&token=$token","SiteduSavoir.com");
 
       $_SESSION['flash']['success'] = "Les instructions de rappel de mot de passe sont envoyées.";
 

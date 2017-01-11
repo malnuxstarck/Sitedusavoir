@@ -197,7 +197,7 @@
 				
     $id = $bdd->lastInsertId(); ;
 				
-    mail($email,"Confirmation de Votre compte","Cliquez sur le lien ou copiez le : \n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token");
+    mail($email,"Confirmation de Votre compte","Cliquez sur le lien ou copiez le : \n\n http://www.sitedusavoir.com/confirm.php?id=$id&token=$token","SiteduSavoir.com");
 
     $_SESSION['flash']['success'] = "Un mail de confirmation vous a été envoyé" ;
 
