@@ -6,15 +6,17 @@
   //On récupère la valeur de t
 
   if(isset($_GET['t']))
-    $topic = (int)$_GET['t'];
+      $topic = (int)$_GET['t'];
   else
     $topic = 1 ;
     //A partir d'ici, on va compter le nombre de messages pour n'afficher que les 15 premiers
 
-    $query = $bdd->prepare('SELECT topic_titre, topic_post, forum_topic.forum_id , topic_last_post,
-    forum_name, auth_view, auth_topic, auth_post,auth_modo
-    FROM forum_topic
-    LEFT JOIN forum ON forum_topic.forum_id = forum.forum_id WHERE topic_id = :topic');
+    $query = $bdd->prepare('SELECT topic_titre, topic_post, forum_topic.forum_id , topic_last_post,forum_name, auth_view, auth_topic, auth_post,auth_modo
+                            FROM forum_topic
+                            LEFT JOIN forum 
+                            ON forum_topic.forum_id = forum.forum_id 
+                            WHERE topic_id = :topic');
+
     $query->bindValue(':topic',$topic,PDO::PARAM_INT);
     $query->execute();
 
@@ -38,19 +40,21 @@
 
     if($id!=0)
     {
-  		$query=$bdd->prepare('SELECT COUNT(*) FROM forum_topic_view WHERE
-  		tv_topic_id = :topic AND tv_id = :id');
+  		$query=$bdd->prepare('SELECT COUNT(*) 
+                            FROM forum_topic_view 
+                            WHERE tv_topic_id = :topic 
+                            AND tv_id = :id');
+
   		$query->bindValue(':topic',$topic,PDO::PARAM_INT);
   		$query->bindValue(':id',$id,PDO::PARAM_INT);
   		$query->execute();
-  		$nbr_vu=$query->fetchColumn();
+  		$nbr_vu = $query->fetchColumn();
   		$query->CloseCursor();
 
   		if ($nbr_vu == 0) //Si c'est la première fois on insère une ligne entière
   		{
-    		$query = $bdd->prepare('INSERT INTO forum_topic_view
-    		(tv_id, tv_topic_id, tv_forum_id, tv_post_id)
-    		VALUES (:id, :topic, :forum, :last_post)');
+    		$query = $bdd->prepare('INSERT INTO forum_topic_view (tv_id, tv_topic_id, tv_forum_id, tv_post_id)
+    		                        VALUES (:id, :topic, :forum, :last_post)');
     		$query->bindValue(':id',$id,PDO::PARAM_INT);
     		$query->bindValue(':topic',$topic,PDO::PARAM_INT);
     		$query->bindValue(':forum',$forum,PDO::PARAM_INT);
@@ -61,9 +65,10 @@
   		else
   		//Sinon, on met simplement à jour
   		{
-    		$query= $bdd->prepare('UPDATE forum_topic_view SET tv_post_id =
-
-    		:last_post WHERE tv_topic_id = :topic AND tv_id = :id');
+    		$query= $bdd->prepare('UPDATE forum_topic_view 
+                               SET tv_post_id = :last_post 
+                               WHERE tv_topic_id = :topic 
+                               AND tv_id = :id');
 
     		$query->bindValue(':last_post',$data['topic_last_post'],PDO::PARAM_INT);
     		$query->bindValue(':topic',$topic,PDO::PARAM_INT);
@@ -102,7 +107,9 @@
 
   if(verif_auth($data['auth_modo']))
   {
-    $query=$bdd->prepare('SELECT forum_id, forum_name FROM forum WHERE forum_id <> :forum');
+    $query=$bdd->prepare('SELECT forum_id, forum_name 
+                          FROM forum 
+                          WHERE forum_id <> :forum');
     $query->bindValue(':forum',$forum,PDO::PARAM_INT);
     $query->execute();
     //$forum a été définie tout en haut de la page !
@@ -111,12 +118,12 @@
          <select name="dest">';
     while($data=$query->fetch())
     {
-      echo'<option value='.$data['forum_id'].'
-          id='.$data['forum_id'].'>
+      echo'<option value='.$data['forum_id'].' id='.$data['forum_id'].'>
           '.$data['forum_name'].'
           </option>';
     }
     $query->CloseCursor();
+
     echo'</select>
          <input type="hidden" name="from" value='.$forum.'>
          <input type="submit" name="submit" value="Envoyer" />
@@ -166,10 +173,8 @@
   if (verif_auth($data['auth_topic']))
   {
     //On affiche l'image nouveau topic
-    echo'<a href="./poster.php?
-    action=nouveautopic&amp;f='.$data['forum_id'].'">
-    <img src="../images/nouveau.gif" alt="Nouveau topic"
-    title="Poster un nouveau topic"></a>';
+    echo'<a href="./poster.php?action=nouveautopic&amp;f='.$data['forum_id'].'">
+    <img src="../images/nouveau.gif" alt="Nouveau topic" title="Poster un nouveau topic"></a>';
   }
 
   $query->CloseCursor();
@@ -177,16 +182,13 @@
 ?>
 
 <?php
-  $query=$bdd->prepare('SELECT post_id , post_createur , post_texte ,
-  DATE_FORMAT(post_time ,\'%d/%m/%Y %H:%i:%s\') AS post_time,
-  membre_id, membre_pseudo, DATE_FORMAT(membre_inscrit, \'%d/%m/%Y %H:%i:%s\') AS membre_inscrit, membre_avatar,
+  $query=$bdd->prepare('SELECT post_id , post_createur , post_texte , DATE_FORMAT(post_time ,\'%d/%m/%Y %H:%i:%s\') AS post_time, membre_id, membre_pseudo, DATE_FORMAT(membre_inscrit, \'%d/%m/%Y %H:%i:%s\') AS membre_inscrit, membre_avatar,
   membre_localisation, membre_post, membre_signature
-  FROM forum_post
-  LEFT JOIN membres ON membres.membre_id =
-  forum_post.post_createur
-  WHERE topic_id =:topic
-  ORDER BY post_id
-  LIMIT :premier, :nombre');
+                       FROM forum_post
+                       LEFT JOIN membres ON membres.membre_id = forum_post.post_createur
+                       WHERE topic_id =:topic
+                       ORDER BY post_id
+                       LIMIT :premier, :nombre');
   
   $query->bindValue(':topic',$topic,PDO::PARAM_INT);
   $query->bindValue(':premier',(int)$premierMessageAafficher,PDO::PARAM_INT);
@@ -269,7 +271,9 @@
   }
   echo'</p>';
   //On ajoute 1 au nombre de visites de ce topic
-  $query=$bdd->prepare('UPDATE forum_topic SET topic_vu = topic_vu + 1 WHERE topic_id = :topic');
+  $query=$bdd->prepare('UPDATE forum_topic 
+                        SET topic_vu = topic_vu + 1 
+                        WHERE topic_id = :topic');
 
   $query->bindValue(':topic',$topic,PDO::PARAM_INT);
   $query->execute();
