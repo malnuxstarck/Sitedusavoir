@@ -1,13 +1,16 @@
 <?php
+
 include "../includes/session.php";
 $titre="Poster| SiteduSavoir.com";
 include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
+
 //On récupère la valeur de la variable action
 $action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 // Si le membre n'est pas connecté, il est arrivé ici par erreur
-if ($id==0) erreur(ERR_IS_CO);
+if ($id == 0) 
+	erreur(ERR_IS_CO);
 ?>
 
 <?php
@@ -666,16 +669,18 @@ echo'<p>Le topic a bien été déplacé <br />
 Cliquez <a href="./voirtopic.php?t='.$topic.'">ici</a> pour revenir au topic<br />
 Cliquez <a href="./index.php">ici</a> pour revenir à l\'index du forum</p>';
 }
+
 break;
 
 
 case "autorep":
 $topic = (int) $_GET['t'];
 
-$query=$bdd->prepare('SELECT forum_topic.forum_id, auth_modo,topic_locked
-FROM forum_topic
-LEFT JOIN forum ON forum.forum_id = forum_topic.forum_id
-WHERE topic_id = :topic');
+$query = $bdd->prepare('SELECT forum_topic.forum_id, auth_modo,topic_locked
+                        FROM forum_topic
+                        LEFT JOIN forum 
+                        ON forum.forum_id = forum_topic.forum_id
+                        WHERE topic_id = :topic');
 $query->bindValue(':topic',$topic,PDO::PARAM_INT);
 $query->execute();
 $data=$query->fetch();
@@ -697,7 +702,9 @@ $query->CloseCursor();
 
 $rep = (int) $_POST['rep'];
 
-$query=$bdd->prepare('SELECT automess_mess FROM forum_automess WHERE automess_id = :rep');
+$query=$bdd->prepare('SELECT automess_mess 
+	                  FROM forum_automess 
+	                  WHERE automess_id = :rep');
 
 $query->bindValue(':rep',$rep,PDO::PARAM_INT);
 $query->execute();
@@ -706,49 +713,62 @@ $message = $data['automess_mess'];
 $query->CloseCursor();
 
 
-$query=$bdd->prepare('INSERT INTO forum_post
-(post_createur, post_texte, post_time, topic_id, post_forum_id)
-VALUES(:id,:mess,NOW(),:topic,:forum)');
+$query=$bdd->prepare('INSERT INTO forum_post(post_createur, post_texte, post_time, topic_id, post_forum_id)
+                      VALUES(:id,:mess,NOW(),:topic,:forum)');
+
 $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->bindValue(':mess', $message, PDO::PARAM_STR);
 $query->bindValue(':topic', $topic, PDO::PARAM_INT);
 $query->bindValue(':forum', $forum, PDO::PARAM_INT);
 $query->execute();
+
 $nouveaupost = $bdd->lastInsertId();
 $query->CloseCursor();
+
 //On change un peu la table forum_topic
-$query=$bdd->prepare('UPDATE forum_topic SET topic_post = topic_post
-+ 1, topic_last_post = :nouveaupost WHERE topic_id =:topic');
-$query->bindValue(':nouveaupost', (int) $nouveaupost,
-PDO::PARAM_INT);
+
+$query = $bdd->prepare('UPDATE forum_topic 
+	                    SET topic_post = topic_post + 1, topic_last_post = :nouveaupost 
+	                    WHERE topic_id =:topic');
+
+$query->bindValue(':nouveaupost', (int) $nouveaupost,PDO::PARAM_INT);
 $query->bindValue(':topic', (int) $topic, PDO::PARAM_INT);
 $query->execute();
+
 $query->CloseCursor();
+
 //Puis même combat sur les 2 autres tables
-$query=$bdd->prepare('UPDATE forum SET forum_post = forum_post
-+ 1 , forum_last_post_id = :nouveaupost WHERE forum_id = :forum');
-$query->bindValue(':nouveaupost', (int) $nouveaupost,
-PDO::PARAM_INT);
+
+$query=$bdd->prepare('UPDATE forum 
+	                  SET forum_post = forum_post + 1 , forum_last_post_id = :nouveaupost 
+	                  WHERE forum_id = :forum');
+$query->bindValue(':nouveaupost', (int) $nouveaupost,PDO::PARAM_INT);
 $query->bindValue(':forum', (int) $forum, PDO::PARAM_INT);
 $query->execute();
 $query->CloseCursor();
-$query=$bdd->prepare('UPDATE membres SET membre_post =
-membre_post + 1 WHERE membre_id = :id');
+
+$query=$bdd->prepare('UPDATE membres 
+	                  SET membre_post = membre_post + 1 
+	                  WHERE membre_id = :id');
+
 $query->bindValue(':id', $id, PDO::PARAM_INT);
 $query->execute();
 $query->CloseCursor();
 
-$query=$bdd->prepare('UPDATE forum_topic
-SET topic_locked = :lock
-WHERE topic_id = :topic');
+$query = $bdd->prepare('UPDATE forum_topic
+                      SET topic_locked = :lock
+                      WHERE topic_id = :topic');
+
 $query->bindValue(':lock','1',PDO::PARAM_STR);
 $query->bindValue(':topic',$topic,PDO::PARAM_INT);
 $query->execute();
 $query->CloseCursor();
 
-echo '<p>La réponse automatique a bien été envoyée ! <br />
-Cliquez <a href="./voirtopic.php?t='.$topic.'">ici</a> pour revenir au topic<br />
-Cliquez <a href="./index.php">ici</a> pour revenir à l\'index du forum</p>';
+echo '<p>
+		La réponse automatique a bien été envoyée ! <br />
+		Cliquez <a href="./voirtopic.php?t='.$topic.'">ici</a> pour revenir au topic<br />
+		Cliquez <a href="./index.php">ici</a> pour revenir à l\'index du forum
+    </p>';
 
 break;
 

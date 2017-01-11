@@ -1,5 +1,5 @@
 <?php
-session_start();
+include "../includes/session.php";
 
 $titre = $_SESSION['pseudo'];
 
@@ -22,7 +22,10 @@ header('Location:./voirmonprofil.php?id='.$id);
 
 }
 
-$requete = $bdd->prepare('SELECT membre_pseudo ,membre_localisation, membre_email,membre_inscrit,membre_siteweb,membre_signature,DATE_FORMAT(membre_derniere_visite,\'le %d-%m-%Y à %Hh:%imin:%ssecs\') AS membre_derniere_visite,membre_avatar FROM membres WHERE membre_id = :idmembre');
+$requete = $bdd->prepare('SELECT membre_pseudo ,membre_localisation, membre_email,membre_inscrit,membre_siteweb,
+	                             membre_signature,DATE_FORMAT(membre_derniere_visite,\'le %d-%m-%Y à %Hh:%imin:%ssecs\') AS membre_derniere_visite,membre_avatar 
+	                      FROM membres
+	                      WHERE membre_id = :idmembre');
 $requete->execute(array('idmembre' => $membre));
 
 $reponse = $requete->fetch();

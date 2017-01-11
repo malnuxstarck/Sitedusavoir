@@ -4,12 +4,16 @@
 	include("../includes/identifiants.php");
 	include("../includes/debut.php");
 	include("../includes/menu.php");
+
 	//On récupère la valeur de f
 	$forum = (int) $_GET['f'];
+
 	//A partir d'ici, on va compter le nombre de messages
 	//pour n'afficher que les 25 premiers
-	$query = $bdd->prepare('SELECT forum_name, forum_topic, auth_view,
-	auth_topic FROM forum WHERE forum_id = :forum');
+
+	$query = $bdd->prepare('SELECT forum_name, forum_topic, auth_view,auth_topic 
+		                    FROM forum 
+		                    WHERE forum_id = :forum');
 
 	$query->bindValue(':forum',$forum,PDO::PARAM_INT);
 	$query->execute();
