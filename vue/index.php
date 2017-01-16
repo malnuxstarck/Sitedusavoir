@@ -11,16 +11,22 @@
   </head>
          
   <?php
+
+     
+    
+    include('controleur/index.php');
+    include "vue/includes/menu.php";
+    include "./controleur/includes/menu.php";
         
     if ($id)
     {
-          include "./modele/index.php";
+          include "modele/index.php";
 
       echo '<aside id="aconnexion">
               <h2 id="connexion">'.$data['membre_pseudo'].' </h2>
 
               <div id="avatar">
-                <img src="images/avatars/'.$data['membre_avatar'].'" alt="Pas davatar"/>
+                <img src="vue/images/avatars/'.$data['membre_avatar'].'" alt="Pas davatar"/>
               </div>
 
               <p><a href="mailto:'.$data['membre_email'].'">'.$data['membre_email'].'</a><p>
@@ -28,7 +34,7 @@
               <p> <a href="membre/voirmonprofil.php?id='.$id.'"> Voir son profil </a></p>
 
               <p> <a href="membre/editerprofil.php?id='.$id.'">Editer profil </a></p>
-              <p> <a href="deconnexion.php"> Se deconnecter </a> </p>
+              <p> <a href="controleur/deconnexion.php"> Se deconnecter </a> </p>
             </aside>';
     }
     else{
@@ -56,7 +62,7 @@
     </p>
 
     <p id="nouveau">
-      <a href="register.php"> Nouveau ? Inscrivez Vous</a>
+      <a href="controleur/register.php"> Nouveau ? Inscrivez Vous</a>
     </p>
 
   </aside>
@@ -65,12 +71,12 @@
     }
   ?>
 
-  <div class="arianepresentation">
-  	<section class="fildariane">
+  <div id="arianepresentation">
+  	<section id="fildariane">
   		<i> Vous etes ici --> <a href="index.php"> Accueil </a></i>
   	</section>
 
-  	<section class="presentation">
+  	<section id="presentation">
   		<h1> SDS KEZAKO ? </h1>
   	  <p>
   			SDS ou plus communement Site Du Savoir est un site communautaire. Il a pour but de regrouper les informaticiens (debutants, intermediaires, experts, confirmés) afin de partager nos Experiences, nos savoirs faire et nos astuces.

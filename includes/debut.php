@@ -9,7 +9,7 @@
 
                   else
                   {
-                      echo '<title> Sitedusavoir </title>';
+                      echo '<title> SiteduSavoir </title>';
                   }
 
                   ?>

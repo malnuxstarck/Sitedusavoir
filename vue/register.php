@@ -1,3 +1,4 @@
+
 <h1 class="titre">Inscription</h1>
 <form method="post" action="" enctype="multipart/form-data" class="formulaire">
           

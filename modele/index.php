@@ -1,5 +1,5 @@
 
-<?
+<?php
 
 $req = $bdd->prepare('SELECT membre_pseudo,membre_avatar,membre_email,membre_rang 
 	                  FROM membres 

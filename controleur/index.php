@@ -1,5 +1,5 @@
 <?php
-
+     
     if(isset($_SESSION['level'],$_SESSION['id'],$_SESSION['pseudo']))
     {
       $lvl = (int)$_SESSION['level'];
@@ -13,4 +13,4 @@
       $pseudo = '';
     }
 
-    ?>
+   
