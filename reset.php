@@ -32,7 +32,7 @@
        $_SESSION['flash']['success'] = "Mot de passe mis a jour, vous pouvez vous connecter a present";
             
 
-        header('Location: ./index.php');
+        header('Location: ../index.php');
         exit();
       }
     }

@@ -7,6 +7,13 @@
   include"./includes/fonctions.php";        // Des fonctions qui font des verifications , donc controleur
   include "../modele/includes/fonctions.php";    // des fonctions qui font du SQL
   require("./includes/debut.php");
+  include("./includes/constantes.php");
+  include ("../modele/includes/debut.php");
+  $balises=(isset($balises))?$balises:0;
+  if($balises)
+  {
+    include('../../vue/includes/debut.php');
+  }
   require("../vue/includes/menu.php");
   include("./includes/menu.php");
   
@@ -57,7 +64,7 @@
 	    	  	    {
 	    	  	  	  $cookie = str_random(250);
 
-	    	  		  cookietoken($cookie,$data['membre_id'],$bdd);
+	    	  		  cookieToken($cookie,$data['membre_id'],$bdd);
                       setcookie('souvenir',$data['membre_id'].'=='.$cookie.sha1($data['membre_id'].'MALNUX667'),time() + 60 * 60 *24 *7 );
 	  	    	  }
 

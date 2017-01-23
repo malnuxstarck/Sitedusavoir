@@ -9,6 +9,14 @@
 
   include "../modele/includes/fonctions.php";
   require("./includes/debut.php");
+  include("./includes/constantes.php");
+  include ("../modele/includes/debut.php");
+  $balises=(isset($balises))?$balises:0;
+  if($balises)
+  {
+    include('../../vue/includes/debut.php');
+  }
+
   require_once("../vue/includes/menu.php");
   require_once("./includes/menu.php");
 
@@ -143,7 +151,7 @@
 	    
 	      //La ligne suivante sera commentée plus bas
 
-	      $nomavatar = (!empty($_FILES['avatar']['size'])) ? move_avatar($_FILES['avatar']):'default.png';
+	      $nomavatar = (!empty($_FILES['avatar']['size'])) ? move_avatar($_FILES['avatar']):createAvatar($pseudo);
 
 	      include "../modele/register.php";
 

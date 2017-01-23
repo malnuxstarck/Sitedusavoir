@@ -59,11 +59,7 @@ function str_random($nombre)
    return substr(str_shuffle(str_repeat($alphabet,$nombre)) ,0, $nombre);
 }
 
-?>
 
-
-
-<?php
 
 function verif_auth($auth_necessaire)
 {
@@ -169,4 +165,3 @@ function reconnected_from_cookie()
 
 
 
-?>

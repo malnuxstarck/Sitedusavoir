@@ -1,5 +1,6 @@
 <?php
   include './includes/session.php';
+  
   session_destroy();
 
   unset($_SESSION['flash']);
