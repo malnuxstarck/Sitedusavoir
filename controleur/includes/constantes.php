@@ -12,4 +12,5 @@ define('ERR_AUTH_DELETE_TOPIC','Vous ne possedez pas les droits requit pour supp
 define('ERR_AUTH_VERR','Vous ne pouvez pas verrouiller un Topic');
 define('ERR_AUTH_EDIT','Vous ne pouvez editer ce message car vous n\'avez pas les droits requits');
 define('ERR_AUTH_DELETE','Vous ne pouvez pas supprimer le topic car vous n\' pas les droits');
+define('ERR_AUTH_VIEW', "Vous ne pouvez pas voir ce topic car vous n'avez pas les droits");
 ?>

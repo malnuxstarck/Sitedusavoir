@@ -7,7 +7,7 @@
                   else{echo '<title> Sitedusavoir </title>';}
                   ?>
                   <meta charset="UTF-8"/>
-                  <link rel="stylesheet" type="text/css" href="../vue/css/style.css"/>
+                  <link rel="stylesheet" type="text/css" href="../../vue/css/style.css"/>
                   <meta name="author" content="MalnuxStarck"/>
                   <meta name="viewport" content="width=device-width,initial-scale=0"/>
             </head>
@@ -32,13 +32,6 @@
             
 
          
-            include("constantes.php");
-            include ("../modele/includes/debut.php");
-
-$balises=(isset($balises))?$balises:0;
-if($balises)
-{
-  include('./vue/includes/debut.php');
-}
+            
 
 ?>

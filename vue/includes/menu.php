@@ -16,27 +16,27 @@
 
 		             	'<ul>
 			             	    <li> 
-			             	       <a href="../membre/voirmonprofil.php?id='.$id.'">Mon compte </a>
+			             	       <a href="../../controleur/membre/voirmonprofil.php?id='.$id.'">Mon compte </a>
 
 			             	       <ul>
                                           <li>
-                                               <a href="../membre/editerprofil.php?id='.$id.'">Parametres</a>
+                                               <a href="../../controleur/membre/editerprofil.php?id='.$id.'">Parametres</a>
                                           </li>
 
                                           <li>
-                                              <a href="../membre/amis.php">Amis</a>
+                                              <a href="../../../controleur/membre/amis.php">Amis</a>
                                           </li>
 
                                           <li>
-                                               <a href="../membre/messagesprives.php">Messages</a>
+                                               <a href="../../controleur/membre/messagesprives.php">Messages</a>
                                           </li>
 
                                           <li>
-                                                <a href="../membre/notifications.php">Notiffications </a>
+                                                <a href="../../controleur/membre/notifications.php">Notiffications </a>
                                           </li>
 
                                           <li>
-                                                <a href="../deconnexion.php"> Se deconnecter </a>
+                                                <a href="../../controleur/deconnexion.php"> Se deconnecter </a>
                                           </li>
 			             	       </ul>
 
@@ -62,22 +62,22 @@
 
 					    <ul>
 					        <li>
-					            <a href="../index.php"><img src="vue/images/accueil.png" id="accueil" alt="A"/> Accueil</a>
+					            <a href="../../index.php"><img src="../../vue/images/accueil.png" id="accueil" alt="A"/> Accueil</a>
 					        </li>
 
 				            <li>
-				                <a href="controleur/forum">Forum</a>
+				                <a href="../../controleur/forum">Forum</a>
 				            </li>
 
 				            <li>
-				                 <a href="controleur/tutoriels">Tutoriels</a>
+				                 <a href="../../controleur/tutoriels">Tutoriels</a>
 				            </li>
 
 							<li> 
-							     <a href="controleur/social">Social</a>
+							     <a href="../../controleur/social">Social</a>
 							</li>    
 							<li> 
-							    <a href="controleur/blog">Blog</a>
+							    <a href="../../controleur/blog">Blog</a>
 							</li>
 						</ul>
 
