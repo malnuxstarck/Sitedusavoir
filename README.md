@@ -1,13 +1,6 @@
 # Sitedusavoir
-
-# Genese
 Projet communautaire
-A la base je voulais creer un site d'apprentissage, mais il y'en deja assez je trouve. Donc je me suis penché sur la
-creation d'un site mixte. Un site ou on en discutera , partagera ses connaissances et astuces de programmers. Mon but est de reunir
-au tour de moi un maximum de programmers afin de pouvoir realiser des projets tous ensemble au fil du temps. Et pourquoi pas 
-revolutionner le monde de l'informatique :) 
-
-
+Une nouvelle communauté de programmeurs sympatique qui veut se former =)
 
 # Caracterisques de SDS
 SDS est essentielement programmé en PHP/MYSQL et HTML/CSS 
@@ -40,7 +33,7 @@ Essentielement pour parler de jeux videos
 - Physique
 
 
-#Blog sitedusavoir
+#Blog SiteduSavoir
 
 - Une partie blog 
 
@@ -50,4 +43,4 @@ Une partie Social
 
 # Social Informatique
 
-- Un reseau social ou un chat global
+- Un mini reseau social , on pourra y poster des photos , avoirs des amis , creer des status et des groupes
