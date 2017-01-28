@@ -263,12 +263,6 @@ ALTER TABLE `amis`
   ADD PRIMARY KEY (`ami_to`,`ami_from`);
 
 --
--- Index pour la table `auteurs`
---
-ALTER TABLE `auteurs`
-  ADD PRIMARY KEY (`membre_id`,`billet_id`);
-
---
 
 --
 -- Index pour la table `categorie`
