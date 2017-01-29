@@ -3,7 +3,7 @@
 - Comment faire fonctionner SDS en Local ?
 
 D'abord il faut verifier que vous avez un serveur installer correctement comme **WAMP**, **MAMP** ou **XAMPP**.
-Voici quelques vous permetant d'en telecharger
+Voici quelques liens vous permetant d'en telecharger
 
 1. [Wampserver](http://www.wampserver.com/fr/) . Si vous rencontrez des problemes aller voir cet tuto [Tuto installation wamp](https://zestedesavoir.com/tutoriels/612/wamp-developper-avec-php-ajax-html-sous-windows/381_utiliser-son-serveur/2836_ou-pour-des-besoins-specifiques/#2-9001_wamp-ses-modules-et-microsoft-visual-c)
 2. [XAMPP](https://www.apachefriends.org/index.html)
