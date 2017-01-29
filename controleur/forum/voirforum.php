@@ -6,7 +6,7 @@ require "../../modele/includes/fonctions.php";
 $forum = (int) $_GET['f'];
 $data = getForumInfos($forum , $bdd);
 
-$titre = $data['forum_name'] | .' SiteduSavoir.com'; 
+$titre = $data['forum_name'] .' | SiteduSavoir.com'; 
 
 
 require "../includes/debut.php";
@@ -22,13 +22,7 @@ require "../includes/menu.php";
 require "../includes/fonctions.php";
 
 
-
-
-
-	
-	
-
-	if (!verif_auth($data['auth_view']))
+   if (!verif_auth($data['auth_view']))
 	{
 		erreur(ERR_AUTH_VIEW);
 	}
@@ -36,14 +30,14 @@ require "../includes/fonctions.php";
 	$totalDesMessages = $data['forum_topic'] + 1;
 	$nombreDeMessagesParPage = 25;
 	$nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
-?>
 
-<?php
+
 	echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="./index.php">Forum</a> --> <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>';
 
 	$page = (isset($_GET['page']))?intval($_GET['page']):1;
 	//On affiche les pages 1-2-3, etc.
 	echo '<p>Page : ';
+
 	for ($i = 1 ; $i <= $nombreDePages ; $i++)
 	{
 		if ($i == $page) //On ne met pas de lien sur la page actuelle
@@ -69,38 +63,10 @@ require "../includes/fonctions.php";
 		echo'<a href="./poster.php?action=nouveautopic&amp;f='.$forum.'"><img src="../images/nouveau.gif" alt="Nouveau topic" title="Poster un nouveau topic"></a>';
 	}
 
-	$add1='';
-	$add2 ='';
+	$query = selectForumByForum('=' , $bdd , $forum , $id);
 
-	if ($id!=0) //on est connecté
-	{
-		//Premièrement, sélection des champs
-		$add1 = ',tv_id, tv_post_id, tv_poste';
-
-		//Deuxièmement, jointure
-		$add2 = 'LEFT JOIN forum_topic_view
-		ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
-		forum_topic_view.tv_id = :id';
-	}
-
-	$query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre,
-	topic_createur, topic_vu, topic_post, topic_time, topic_last_post,
-	Mb.membre_pseudo AS membre_pseudo_createur, post_createur,
-	post_time, Ma.membre_pseudo AS membre_pseudo_last_posteur,post_id '.$add1.' FROM forum_topic
-	LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
-	LEFT JOIN forum_post ON forum_topic.topic_last_post = forum_post.post_id
-	LEFT JOIN membres Ma ON Ma.membre_id = forum_post.post_createur
-	'.$add2.' WHERE topic_genre = "Annonce" AND forum_topic.forum_id =:forum ORDER BY topic_last_post DESC');
-
-	$query->bindParam(':forum',$forum,PDO::PARAM_INT);
-
-	if($id!=0)
-	$query->bindParam(':id',$id,PDO::PARAM_INT);
-	$query->execute();
-?>
-
-<?php
 	//On lance notre tableau seulement s'il y a des requêtes !
+	
 	if ($query->rowCount()>0)
 	{
 ?>
@@ -122,47 +88,9 @@ require "../includes/fonctions.php";
 	//Si le topic est une annonce on l'affiche en haut
 	//mega echo de bourrain pour tout remplir
 
-		if (!empty($id)) // Si le membre est connecté
-		{
-			if ($data['tv_id'] == $id) //S'il a lu le topic
-			{
-				if ($data['tv_poste'] == '0') // S'il n'a pas posté
-				{
-					if ($data['tv_post_id'] == $data['topic_last_post'])
-					//S'il n'y a pas de nouveau message
-					{
-						$ico_mess = 'message.png';
-					}
-					else
-					{
-						$ico_mess = 'messagec_non_lus.png'; //S'il y a un nouveau message
-					}
-				}
-				else // S'il a posté
-				{
-					if ($data['tv_post_id'] == $data['topic_last_post'])
-					//S'il n'y a pas de nouveau message
-					{
-						 $ico_mess = 'messagep_lu.png';
-					}
-					else //S'il y a un nouveau message
-					{
-						$ico_mess = 'messagep_non_lu.png';
-					}
-				}
-			}
-			else //S'il n'a pas lu le topic
-			{
-				$ico_mess = 'message_non_lu.png';
-			}
-		}
-		//S'il n'est pas connecté
-		else
-		{
-			$ico_mess = 'message.png';
-		}
+		$ico_mess = verifConnected($id,$data);
 
-		echo'<tr><td><img src="../images/'.$ico_mess.'" alt="Annonce"
+        echo'<tr><td><img src="../images/'.$ico_mess.'" alt="Annonce"
 		/></td>
 		<td id="titre"><strong>Annonce : </strong>
 		<strong><a href="./voirtopic.php?t='.$data['topic_id'].'"
@@ -188,46 +116,9 @@ require "../includes/fonctions.php";
 <?php
 	}
 	$query->CloseCursor();
-?>
-
-<?php
-
-	$add1='';
-	$add2 ='';
-
-	if ($id!=0) //on est connecté
-	{
-		//Premièrement, sélection des champs
-
-		$add1 = ',tv_id, tv_post_id, tv_poste';
-		//Deuxièmement, jointure
-		$add2 = 'LEFT JOIN forum_topic_view
-		ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
-		forum_topic_view.tv_id = :id';
-	}
 
 
-	//On prend tout ce qu'on a sur les topics normaux du forum
-	$query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre, topic_createur,topic_vu, topic_post,DATE_FORMAT(topic_time,\'%d/%m/%Y %h:%i:%s\') AS topic_time , topic_last_post,
-	Mb.membre_pseudo AS membre_pseudo_createur, post_id, post_createur, post_time,
-	Ma.membre_pseudo AS membre_pseudo_last_posteur '.$add1.' FROM forum_topic
-	LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
-	LEFT JOIN forum_post ON forum_topic.topic_last_post = forum_post.post_id
-	LEFT JOIN membres Ma ON Ma.membre_id = forum_post.post_createur
-	'.$add2.'
-	WHERE topic_genre <> "Annonce" AND forum_topic.forum_id = :forum
-	ORDER BY topic_last_post DESC
-	LIMIT :premier ,:nombre');
-	$query->bindValue(':forum',$forum,PDO::PARAM_INT);
-
-	if($id!=0)
-	{
-		$query->bindParam(':id',$id,PDO::PARAM_INT);
-	}
-
-	$query->bindValue(':premier',(int) $premierMessageAafficher,PDO::PARAM_INT);
-	$query->bindValue(':nombre',(int) $nombreDeMessagesParPage,PDO::PARAM_INT);
-	$query->execute();
+	$query = selectForumByForum('<>',$bdd,$forum , $id);
 
 	if ($query->rowCount()>0)
 	{
@@ -247,47 +138,11 @@ require "../includes/fonctions.php";
 	//On lance la boucle
 	while ($data = $query->fetch())
 	{
-  	if (!empty($id)) // Si le membre est connecté
-		{
-  		if ($data['tv_id'] == $id) //S'il a lu le topic
-  		{
-  			if ($data['tv_poste'] == '0') // S'il n'a pas posté
-  			{
-  				if ($data['tv_post_id'] == $data['topic_last_post'])
-  				//S'il n'y a pas de nouveau message
-  				{
-  					$ico_mess = 'message.png';
-  				}
-  				else
-  				{
-  					$ico_mess = 'messagec_non_lus.png'; //S'il y a un nouveau message
-  				}
-  			}
-  			else // S'il a posté
-  			{
-  				if ($data['tv_post_id'] == $data['topic_last_post'])
-  				//S'il n'y a pas de nouveau message
-  				{
-  					$ico_mess = 'messagep_lu.png';
-  				}
-  				else //S'il y a un nouveau message
-  				{
-  					$ico_mess = 'messagep_non_lu.png';
-  				}
-  			}
-  		}
-	    else
-	      { //S'il n'a pas lu le topic	{
-		    $ico_mess = 'message_non_lu.png';
-		  }
-    }
-    //S'il n'est pas connecté
-    else
-    {
-      $ico_mess = 'message.png';
-    }
+
+  	    $ico_mess = verifConnected($id,$data);
 
 	  //Ah bah tiens... re vla l'echo de fou
+
 		echo'<tr><td><img src="../images/'.$ico_mess.'" alt="Message"/></td>
 		<td class="titre">
 		<strong><a href="./voirtopic.php?t='.$data['topic_id'].'" title="Topic commencé à

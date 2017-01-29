@@ -168,7 +168,7 @@ function getTopicInfos($topic , $bdd)
 function getForumInfos($forum , $bdd)
 {
   
-  $query= $bdd->prepare('SELECT forum_id ,forum_name, auth_view, auth_post, auth_topic,auth_annonce, auth_modo
+  $query= $bdd->prepare('SELECT forum_id ,forum_name,forum_topic, auth_view, auth_post, auth_topic,auth_annonce, auth_modo
                          FROM forum 
                          WHERE forum_id =:forum');
 
@@ -257,4 +257,39 @@ function getAllForumsExceptHe($bdd ,$forum)
     $query->execute();
 
     return $query ;
+}
+
+function selectForumByForum($signe,$bdd,$forum,$id)
+{
+  $add1='';
+  $add2 ='';
+
+  if ($id!=0) //on est connecté
+  {
+    //Premièrement, sélection des champs
+    $add1 = ',tv_id, tv_post_id, tv_poste';
+
+    //Deuxièmement, jointure
+    $add2 = 'LEFT JOIN forum_topic_view
+    ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
+    forum_topic_view.tv_id = :id';
+  }
+
+  $query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre,
+  topic_createur, topic_vu, topic_post, topic_time, topic_last_post,
+  Mb.membre_pseudo AS membre_pseudo_createur, post_createur,
+  post_time, Ma.membre_pseudo AS membre_pseudo_last_posteur,post_id '.$add1.' FROM forum_topic
+  LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
+  LEFT JOIN forum_post ON forum_topic.topic_last_post = forum_post.post_id
+  LEFT JOIN membres Ma ON Ma.membre_id = forum_post.post_createur
+  '.$add2.' WHERE topic_genre '.$signe.' "Annonce" AND forum_topic.forum_id =:forum ORDER BY topic_last_post DESC');
+
+  $query->bindParam(':forum',$forum,PDO::PARAM_INT);
+
+  if($id!=0)
+  $query->bindParam(':id',$id,PDO::PARAM_INT);
+  $query->execute();
+
+  return $query;
+
 }

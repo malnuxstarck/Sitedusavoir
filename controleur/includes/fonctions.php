@@ -210,3 +210,48 @@ function createAvatar($chaine , $blocks = 5 , $size = 100)
 
 }
 
+function verifConnected($id,$data)
+{
+
+  if (!empty($id)) // Si le membre est connecté
+    {
+      if ($data['tv_id'] == $id) //S'il a lu le topic
+      {
+        if ($data['tv_poste'] == '0') // S'il n'a pas posté
+        {
+          if ($data['tv_post_id'] == $data['topic_last_post'])
+          //S'il n'y a pas de nouveau message
+          {
+            $ico_mess = 'message.png';
+          }
+          else
+          {
+            $ico_mess = 'messagec_non_lus.png'; //S'il y a un nouveau message
+          }
+        }
+        else // S'il a posté
+        {
+          if ($data['tv_post_id'] == $data['topic_last_post'])
+          //S'il n'y a pas de nouveau message
+          {
+             $ico_mess = 'messagep_lu.png';
+          }
+          else //S'il y a un nouveau message
+          {
+            $ico_mess = 'messagep_non_lu.png';
+          }
+        }
+      }
+      else //S'il n'a pas lu le topic
+      {
+        $ico_mess = 'message_non_lu.png';
+      }
+    }
+    //S'il n'est pas connecté
+    else
+    {
+      $ico_mess = 'message.png';
+    }
+
+    return $ico_mess ;
+}
