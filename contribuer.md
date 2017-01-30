@@ -197,10 +197,6 @@ CREATE TABLE `forum_topic_view` (
 
 -- --------------------------------------------------------
 
---
--- Structure de la table `forum_whosonline`
---
-
 CREATE TABLE `forum_whosonline` (
   `online_id` int(11) NOT NULL,
   `online_time` datetime NOT NULL,
@@ -208,7 +204,14 @@ CREATE TABLE `forum_whosonline` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
+-- Index pour les tables exportées
+--
 
+--
+-- Index pour la table `forum_whosonline`
+--
+ALTER TABLE `forum_whosonline`
+  ADD PRIMARY KEY (`online_ip`)
 
 --
 -- Structure de la table `membres`
