@@ -256,6 +256,108 @@ CREATE TABLE `mp` (
 
 --
 
+--
+-- Structure de la table `tutos`
+--
+
+CREATE TABLE `tutos` (
+  `tutos_id` int(11) NOT NULL,
+  `tutos_titre` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `tutos_banniere` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
+  `tutos_intro` text CHARACTER SET utf8 NOT NULL,
+  `tutos_conc` text CHARACTER SET utf8 NOT NULL,
+  `tutos_cat` int(11) NOT NULL,
+  `tutos_date` datetime NOT NULL,
+  `tutos_validation` enum('0','1') CHARACTER SET utf8 DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `tutos`
+--
+
+INSERT INTO `tutos` (`tutos_id`, `tutos_titre`, `tutos_banniere`, `tutos_intro`, `tutos_conc`, `tutos_cat`, `tutos_date`, `tutos_validation`) VALUES
+(1, 'Apprendre a se demerder seul', '350x150.png', 'Ceci est on introduction pas tres longue', 'ici , j\'ai conclu le travaille accomplir dessus', 2, '2017-01-30 18:49:42', NULL)
+
+-- cle primaire 
+
+ALTER TABLE `tutos`
+  ADD PRIMARY KEY (`tutos_id`);
+  
+  
+  
+  
+  --
+-- Structure de la table `tutos_parties`
+--
+
+CREATE TABLE `tutos_parties` (
+  `parties_id` int(11) NOT NULL,
+  `parties_titre` varchar(200) NOT NULL,
+  `parties_contenu` text NOT NULL,
+  `tutos_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `tutos_parties`
+--
+
+INSERT INTO `tutos_parties` (`parties_id`, `parties_titre`, `parties_contenu`, `tutos_id`) VALUES
+(1, 'La recherche sur Google ', 'La recherche sur google est un excellent exercice pour parfaire sa connaissance dans l\'informatique , notament lorsqu\'on programme on peut amener a faire des recherches', 1),
+(2, 'La recherche sur la doc', 'La recherche sur la doc est un excellent exercice pour parfaire sa connaissance dans l\'informatique , notament lorsqu\'on programme on peut amener a faire des recherches', 1);
+
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `tutos_parties`
+--
+ALTER TABLE `tutos_parties`
+  ADD PRIMARY KEY (`parties_id`),
+  ADD KEY `fk_tutos` (`tutos_id`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `tutos_parties`
+--
+ALTER TABLE `tutos_parties`
+  MODIFY `parties_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  
+
+
+--
+-- Structure de la table `tutos_par`
+--
+
+CREATE TABLE `tutos_par` (
+  `membre_id` int(11) NOT NULL,
+  `tutos_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `tutos_par`
+--
+
+INSERT INTO `tutos_par` (`membre_id`, `tutos_id`) VALUES
+(1, 1),
+(2, 1);
+
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `tutos_par`
+--
+ALTER TABLE `tutos_par`
+  ADD PRIMARY KEY (`membre_id`,`tutos_id`),
+  ADD KEY `fk_tutos_par` (`tutos_id`);
+
+
+
 -- Index pour les tables exportées
 --
 
