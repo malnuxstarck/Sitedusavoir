@@ -147,6 +147,12 @@ li a:hover
 }
 
 
+.tutos
+{
+   display: inline-block;
+   margin:10px;
+   background: #dadada;
+}
 
 .alert-danger
 {

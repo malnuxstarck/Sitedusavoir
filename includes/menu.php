@@ -1,19 +1,6 @@
 <?php
 
 
-/*
-
-
-if($id)
-{
-   echo 
-   '<p> <a href="../membre/voirmonprofil.php?id='.$id.'">Mon compte </a></p>';
-
-   echo '<p><a href="../deconnexion.php"> Se deconnecter </a></p>';
-
-   echo '</div>';
-*/
-
 echo '<body>
 
            <div id="page">
