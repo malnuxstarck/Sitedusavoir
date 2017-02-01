@@ -237,7 +237,7 @@ CREATE TABLE `membres` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
-
+ALTER TABLE membres ADD membre_avatar_mini VARCHAR(30);
 -- --------------------------------------------------------
 
 --
@@ -270,7 +270,7 @@ CREATE TABLE `tutos` (
   `tutos_date` datetime NOT NULL,
   `tutos_validation` enum('0','1') CHARACTER SET utf8 DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
+ALTER TABLE tutos ADD tutosèconfirm ENUM('0','1') DEFAULT '0' ;
 --
 -- Contenu de la table `tutos`
 --
