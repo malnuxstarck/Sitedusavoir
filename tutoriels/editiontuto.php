@@ -44,7 +44,7 @@ $tutoriel = $req->fetch();
 	     echo '<div class="input">
 	          <input type="text" name="titre" value="'.$tutoriel['tutos_titre'].'" required />
 	         </div>
-
+              <input type="hidden" name="tuto" value="'.$tuto.'"/>
 	         <div>
 	              <textarea name="intro" required>'.$tutoriel['tutos_intro'].'</textarea>
 	         </div>';
@@ -57,14 +57,22 @@ $tutoriel = $req->fetch();
 	     {
 	     	echo '<div class="partie>
 	     	               <div class="input">
-	     	                    <input type="text" value="'.$t['parties_titre'].'" name="parties_titre">
+	     	                    <h2>'.$t['parties_titre'].'</h2>
+	     	                    <ul>
+	     	                        <li> <a href="editerpartie.php?partie='.$t['parties_id'].'&action=edit&tuto='.$tuto.'"> Editer </a> </li>
+	     	                        <li> <a href="editerpartie.php?partie='.$t['parties_id'].'&action=sup&tuto='.$tuto.'"> Supprimer </a> </li>
+	     	                    </ul>
 	     	               </div>
 
 	     	               <div class="textarea">
-	     	                    <textarea name="parties_contenu">'.$t['parties_contenu'].'</textarea>
+	     	                   <p>'.$t['parties_contenu'].'</p>
 	     	               </div>
 	     	      </div>';
 	     }
+
+	     echo '<div>
+	              <textarea name="conc" required>'.$tutoriel['tutos_conc'].'</textarea>
+	         </div>';
 
 	     ?>
 
@@ -100,3 +108,35 @@ $tutoriel = $req->fetch();
         ?>
     </ul>
 </div>
+
+<?php
+
+if(!empty($_POST))
+{
+   $titre = (isset($_POST['titre']))?$_POST['titre']:"";
+   $introduction = (isset($_POST['intro']))?$_POST['intro']:"";
+   $conclusion = (isset($_POST['conc']))?$_POST['conc']:"";
+   $tuto = (isset($_POST['tuto']))?$_POST['tuto']:"";
+
+    if(empty($introduction) || empty($conclusion) || empty($titre))
+   {
+	   	$_SESSION['flash']['danger'] = "Soit le titre et/ou l'introduction et/ou la conclusion est vide";
+	   	header('Location:editiontuto.php?tuto='.$_POST['tuto']);
+   }
+   else
+   {
+   	$insertion = $bdd->prepare('UPDATE tutos 
+   		                        SET tutos_intro = :intro ,tutos_conc = :conc , tutos_titre = :titre 
+   		                        WHERE tutos_id = :tuto ');
+
+   	$insertion->execute(array('intro' => $introduction , 
+   		                      'titre' => $titre , 
+   		                      'conc' => $conclusion,
+   		                       'tuto' => $tuto));
+   	$insertion->closeCursor();
+
+   	$_SESSION['flash']['success'] = "Tutos mis a jour ";
+   }
+
+
+}

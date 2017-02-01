@@ -46,7 +46,7 @@ if(!$id)
 
 	<div class="input_fil">
 	      <p>
-	        <input type="file" name="banniere" content="Banniere"/>
+	        <input type="file" name="banniere"/>
 	      </p>  
 	</div>
 
@@ -80,7 +80,7 @@ if(!empty($_POST))
 	$titre = (isset($_POST['titre']))?$_POST['titre']:"";
 	$intro = (isset($_POST['intro']))?$_POST['intro']:"";
 	$conc = (isset($_POST['conc']))?$_POST['conc']:"";
-	$banniere = (isset($_POST["banniere"]))?$_POST['ban']:"350*150.png";
+	$banniere = (isset($_POST["banniere"]))?$_POST['ban']:"./tutos_ban/350x150.png";
 	$cat = (isset($_POST['cat']))?$_POST['cat']:"";
 
 	if(empty($_POST['titre']))
@@ -97,21 +97,122 @@ if(!empty($_POST))
       	$mess2 = "Votre introduction ou votre conclusion est vide .";
       }
 
-      if(empty($_POST['banniere']))
-      {
-
-      }
-
       if(empty($_POST['cat']))
       {
       	$i++;
       	$mess3 = "Une categorie doit etre selectionner .";
       }
+      
+
+      if(!empty($banniere))
+      {
+	      	$extension_autorisés = array('png','jpg','gif','jpeg');
+
+	      	$extension = substr(strrchr($banniere ,'.'),1);
+
+	      	if(!in_array($extension ,$extension_autorisés))
+	      	{
+		        $banniere = './tutos_ban/ban.png';
+		      	
+	            $source = imagecreatefrompng($banniere);
+		      	$destination = imagecreatetruecolor(300,150);
+
+		      	$largeur_s = imagex($source);
+		      	$hauteur_s = imagey($source);
+		      	$largeur_d = imagex($destination);
+		      	$hauteur_d = imagey($destination);
+
+		      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
+		      	$banniere = $id.'-'.time().'.png';
+
+		      	imagepng($destination,'./tutos_ban/'.$banniere);
+	        }
+	        else
+	        {
+		      	switch($extension)
+		      	{
+		      		case "png":
+
+		            $source = imagecreatefrompng($banniere);
+			      	$destination = imagecreatetruecolor(300,150);
+
+			      	$largeur_s = imagesx($source);
+			      	$hauteur_s = imagesy($source);
+			      	$largeur_d = imagesx($destination);
+			      	$hauteur_d = imagesy($destination);
+
+			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
+			      	$banniere = $id.'-'.time().'.png';
+
+			      	imagepng($destination,'./tutos_ban/'.$banniere);
+
+	                break;
+
+	                case "jpg":
+
+	                $source = imagecreatefromjpeg($banniere);
+			      	$destination = imagecreatetruecolor(300,150);
+
+			      	$largeur_s = imagesx($source);
+			      	$hauteur_s = imagesy($source);
+			      	$largeur_d = imagesx($destination);
+			      	$hauteur_d = imagesy($destination);
+
+			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
+			      	$banniere = $id.'-'.time().'.jpg';
+
+			      	imagepng($destination,'./tutos_ban/'.$banniere);
+
+	                break;
+
+	                case "gif":
+
+	                $source = imagecreatefromgif($banniere);
+			      	$destination = imagecreatetruecolor(300,150);
+
+			      	$largeur_s = imagesx($source);
+			      	$hauteur_s = imagesy($source);
+			      	$largeur_d = imagesx($destination);
+			      	$hauteur_d = imagesy($destination);
+
+			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
+			      	$banniere = $id.'-'.time().'.gif';
+
+			      	imagepng($destination,'./tutos_ban/'.$banniere);
+
+	                break;
+
+
+	                case "jpeg":
+
+	                $source = imagecreatefromjpeg($banniere);
+			      	$destination = imagecreatetruecolor(300,150);
+
+			      	$largeur_s = imagesx($source);
+			      	$hauteur_s = imagesy($source);
+			      	$largeur_d = imagesx($destination);
+			      	$hauteur_d = imagesy($destination);
+
+			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
+			      	$banniere = $id.'-'.time().'.jpg';
+
+			      	imagepng($destination,'./tutos_ban/'.$banniere);
+
+	                break;
+
+
+
+
+		      	}
+	      }
+
+       }
+
 
 
       if(!$i)
       {
-      	$req = $bdd->prepare('INSERT INTO tutos (tutos_titre , tutos_intro, tutos_conc ,tutos_banniere ,tutos_date,tutos_cat,tutos_validation
+      	$req = $bdd->prepare('INSERT INTO tutos (tutos_titre , tutos_intro, tutos_conc ,tutos_banniere ,tutos_date,tutos_cat,tutos_validation)
       		                  VALUES(:titre , :intro ,:conc ,:ban , NOW(), :cat , \'0\')');
       	$req->execute(array(
 
@@ -119,15 +220,15 @@ if(!empty($_POST))
               'intro'  => $intro,
               'conc'   => $conc,
               'ban'    => $banniere,
-              'cat'    => $cat
+              'cat'    => $cat,
 
 
       		));
 
       	$dernierid = $bdd->lastInsertId();
 
-      	$req1 = $bdd->prepare('INSERT INTO tutos_par (membre_id,tutos_id
-      		                  VALUES(:membre , :tuto');
+      	$req1 = $bdd->prepare('INSERT INTO tutos_par (membre_id,tutos_id)
+      		                  VALUES(:membre , :tuto)');
       	$req1->bindParam(':membre',$id,PDO::PARAM_INT);
       	$req1->bindParam(':tuto',$dernierid, PDO::PARAM_INT);
 
