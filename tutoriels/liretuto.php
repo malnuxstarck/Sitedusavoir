@@ -21,6 +21,9 @@ $tuto = $req->fetch();
 
 echo '<div class="tuto">
            <section class="tuto-t">
+                 <div class="icon">
+                      <img src="./tutos_ban/'.$tuto['tutos_banniere'].'" alt=""/>
+                 </div>
                 <h2 class="titre_tuto">'.$tuto['tutos_titre'].'</h2>
            </section>
            <section class="intro-t">

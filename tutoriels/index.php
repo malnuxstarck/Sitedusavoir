@@ -54,7 +54,7 @@ for($i = 1 ; $i <= $nbre_pages ; $i++)
 
 $premiertutos = ($page - 1) * $tutos_par_page ;
 
-$req = $bdd->prepare('SELECT tutos_titre , tutos_banniere ,membre_pseudo,cat_nom 
+$req = $bdd->prepare('SELECT tutos_titre ,tutos.tutos_id, tutos_banniere ,membre_pseudo,membres.membre_id,cat_nom 
 	                  FROM tutos
 	                  LEFT JOIN tutos_par
 	                  ON tutos.tutos_id = tutos_par.tutos_id
@@ -83,8 +83,8 @@ if($req->rowCount() > 0)
 	                <img src="tutos_ban/'.$tuto['tutos_banniere'].'" alt="banniere"/>
 	            </div>
 	            <div class="tutos_infos">
-	               <h3 class="tuto_titre" style="color:#2b8bad;">'.$tuto['tutos_titre'].'</h3>
-	               <span> Par '.$tuto['membre_pseudo'].'</span><span>'.$tuto['cat_nom'].'</span>
+	               <h3 class="tuto_titre" style="color:#2b8bad;"><a href="liretuto.php?&tuto='.$tuto['tutos_id'].'">'.$tuto['tutos_titre'].'</a></h3>
+	               <span> Par <a href="../forum/voirprofil.php?action=consulter&m='.$tuto['membre_id'].'">'.$tuto['membre_pseudo'].'</a></span><span>'.$tuto['cat_nom'].'</span>
 	            </div>  
 
 

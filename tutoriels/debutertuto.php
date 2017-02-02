@@ -47,6 +47,10 @@ if(!$id)
 	<div class="input_fil">
 	      <p>
 	        <input type="file" name="banniere"/>
+	      </p>
+	      <p>
+	        Nb/ En cas d'erreur d'envoie de fichier , ou de non rensiegnement une banniere a defaut vous est donner.
+	        vous pouvez ensuite modifier celle ci :D
 	      </p>  
 	</div>
 
@@ -80,8 +84,7 @@ if(!empty($_POST))
 	$titre = (isset($_POST['titre']))?$_POST['titre']:"";
 	$intro = (isset($_POST['intro']))?$_POST['intro']:"";
 	$conc = (isset($_POST['conc']))?$_POST['conc']:"";
-	$banniere = (isset($_POST["banniere"]))?$_POST['ban']:"./tutos_ban/350x150.png";
-	$cat = (isset($_POST['cat']))?$_POST['cat']:"";
+    $cat = (isset($_POST['cat']))?$_POST['cat']:"";
 
 	if(empty($_POST['titre']))
 	{
@@ -104,37 +107,25 @@ if(!empty($_POST))
       }
       
 
-      if(!empty($banniere))
-      {
-	      	$extension_autorisés = array('png','jpg','gif','jpeg');
+      if(isset($_FILES['banniere']) AND $_FILES['banniere']['error'] == 0)
+       {
+       	   $banniere = $_FILES['banniere'];
+           $extensions_valides  = array('png','jpg','jpeg','gif');
+           $extension = substr(strchr($banniere['name'],'.'),1);
 
-	      	$extension = substr(strrchr($banniere ,'.'),1);
+           if(in_array($extension,$extensions_valides))
+           {
 
-	      	if(!in_array($extension ,$extension_autorisés))
-	      	{
-		        $banniere = './tutos_ban/ban.png';
-		      	
-	            $source = imagecreatefrompng($banniere);
-		      	$destination = imagecreatetruecolor(300,150);
+	           	$nom_ban = $id.'-'.time().'.'.$extension;
+	           	move_uploaded_file($banniere['tmp_name'], './tutos_ban/'.$nom_ban);
 
-		      	$largeur_s = imagex($source);
-		      	$hauteur_s = imagey($source);
-		      	$largeur_d = imagex($destination);
-		      	$hauteur_d = imagey($destination);
 
-		      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
-		      	$banniere = $id.'-'.time().'.png';
-
-		      	imagepng($destination,'./tutos_ban/'.$banniere);
-	        }
-	        else
-	        {
-		      	switch($extension)
+	           	switch($extension)
 		      	{
 		      		case "png":
 
-		            $source = imagecreatefrompng($banniere);
-			      	$destination = imagecreatetruecolor(300,150);
+		            $source = imagecreatefrompng('./tutos_ban/'.$nom_ban);
+			      	$destination = imagecreatetruecolor(300,225);
 
 			      	$largeur_s = imagesx($source);
 			      	$hauteur_s = imagesy($source);
@@ -142,16 +133,14 @@ if(!empty($_POST))
 			      	$hauteur_d = imagesy($destination);
 
 			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
-			      	$banniere = $id.'-'.time().'.png';
-
-			      	imagepng($destination,'./tutos_ban/'.$banniere);
+			      	imagepng($destination,'./tutos_ban/'.$nom_ban);
 
 	                break;
 
 	                case "jpg":
 
-	                $source = imagecreatefromjpeg($banniere);
-			      	$destination = imagecreatetruecolor(300,150);
+	                $source = imagecreatefromjpeg('./tutos_ban/'.$nom_ban);
+			      	$destination = imagecreatetruecolor(300,225);
 
 			      	$largeur_s = imagesx($source);
 			      	$hauteur_s = imagesy($source);
@@ -159,16 +148,14 @@ if(!empty($_POST))
 			      	$hauteur_d = imagesy($destination);
 
 			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
-			      	$banniere = $id.'-'.time().'.jpg';
-
-			      	imagepng($destination,'./tutos_ban/'.$banniere);
+			        imagejpeg($destination,'./tutos_ban/'.$nom_ban);
 
 	                break;
 
 	                case "gif":
 
-	                $source = imagecreatefromgif($banniere);
-			      	$destination = imagecreatetruecolor(300,150);
+	                $source = imagecreatefromgif('./tutos_ban/'.$nom_ban);
+			      	$destination = imagecreatetruecolor(300,225);
 
 			      	$largeur_s = imagesx($source);
 			      	$hauteur_s = imagesy($source);
@@ -178,15 +165,15 @@ if(!empty($_POST))
 			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
 			      	$banniere = $id.'-'.time().'.gif';
 
-			      	imagepng($destination,'./tutos_ban/'.$banniere);
+			        imagegif($destination,'./tutos_ban/'.$nom_ban);
 
 	                break;
 
 
 	                case "jpeg":
 
-	                $source = imagecreatefromjpeg($banniere);
-			      	$destination = imagecreatetruecolor(300,150);
+	                $source = imagecreatefromjpeg('./tutos_ban/'.$nom_ban);
+			      	$destination = imagecreatetruecolor(300,225);
 
 			      	$largeur_s = imagesx($source);
 			      	$hauteur_s = imagesy($source);
@@ -194,19 +181,46 @@ if(!empty($_POST))
 			      	$hauteur_d = imagesy($destination);
 
 			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
-			      	$banniere = $id.'-'.time().'.jpg';
-
-			      	imagepng($destination,'./tutos_ban/'.$banniere);
+			        imagejpeg($destination,'./tutos_ban/'.$nom_ban);
 
 	                break;
 
 
 
+               }
 
-		      	}
-	      }
+
+
+
+
+           }
+
+
+           
 
        }
+       else
+       {
+       	   $banniere = './tutos_ban/ban.jpg';
+          $source = imagecreatefromjpeg($banniere);
+		   $destination = imagecreatetruecolor(300,225);
+
+			      	$largeur_s = imagesx($source);
+			      	$hauteur_s = imagesy($source);
+			      	$largeur_d = imagesx($destination);
+			      	$hauteur_d = imagesy($destination);
+
+			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
+
+			      	$nom_ban = $id.'-'.time().'.png';
+
+			      	imagejpeg($destination,'./tutos_ban/'.$nom_ban);
+
+       }
+
+     
+
+  
 
 
 
@@ -219,11 +233,13 @@ if(!empty($_POST))
               'titre'  => $titre,
               'intro'  => $intro,
               'conc'   => $conc,
-              'ban'    => $banniere,
+              'ban'    => $nom_ban,
               'cat'    => $cat,
 
 
       		));
+
+      	$req->closeCursor();
 
       	$dernierid = $bdd->lastInsertId();
 
@@ -234,13 +250,17 @@ if(!empty($_POST))
 
       	$req1->execute();
 
-      	$_SESSION['flash']['success'] = " Votre tuto a ien été creer , rendez vous dans la page edition pour l'editer et/ou l'achever";
+      	$_SESSION['flash']['success'] = " Votre tuto a bien été creer , rendez vous dans mes tutoriels pour le modifier et/ou l'achever";
+      	header('Location:debutertuto.php');
+
       }
       else
       {
       	$_SESSION['flash']['danger'] = $mess1 ."</br>".$mess2 ."</br>" . $mess3 ; 
       	header('Location:debutertuto.php');
       }	
+
+      
 }
 
 
