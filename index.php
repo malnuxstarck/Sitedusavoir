@@ -119,9 +119,9 @@
 
   </div>
 
-  <footer>
-    <p> Site du savoir Copyright &copy; 2016 Tous droits reservés </p>
-  </footer>
+ 
+          <?php include "./includes/footer.php"; ?>
+  
 
 
 </body>

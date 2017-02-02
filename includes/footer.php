@@ -10,7 +10,7 @@
 	{
 		background-color: #2480A0;
 	}
-	div
+	.footer
 	{
 		background-color: #2B8BAD;
 		color: white;
@@ -28,7 +28,7 @@ $nomDuSite="Site du savoir";
 
 ?>
 
-	<div>
+	<div class="footer">
 		<div class="div">
 		<h3>Qui est en ligne? </h3>
 		<?php 
