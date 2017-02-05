@@ -110,8 +110,9 @@
   				$requete->bindValue(':id',$data['membre_id'],PDO::PARAM_INT);
   				$requete->execute();
 
-  				$message = '<p>Bienvenue '.$data['membre_pseudo'].', vous êtes maintenant connecté !</p>
-                      <p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil</p>';
+  		  $_SESSION['flash']['success'] ='Bienvenue '.$data['membre_pseudo'].', vous êtes maintenant connecté ! ';
+        header('Location:index.php');
+                     
   	    }
     	}
 

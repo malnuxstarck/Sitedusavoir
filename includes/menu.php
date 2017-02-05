@@ -37,8 +37,13 @@ echo '<body>
                                           </li>
 
                                           <li>
+                                                <a href="../membre/mestutos.php"> Mes tutos </a>
+                                          </li>
+
+                                          <li>
                                                 <a href="../deconnexion.php"> Se deconnecter </a>
                                           </li>
+                                          
 			             	       </ul>
 
 	                           </li>
