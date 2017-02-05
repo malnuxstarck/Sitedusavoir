@@ -6,6 +6,8 @@ include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
+echo '<p id="fildariane"><i><a href="../index.php">Accueil</a>--><a href="./index.php">Social</a></i></p>';
+
 if(!$id)
 {
 	$_SESSION['flash']['danger'] = " Vous devez etre connecté pour voir cette partie";
@@ -38,7 +40,7 @@ echo '<aside class="aside-s">
            </section>
 
            <section class="groupes">
-               <h3> Groupes </h3>
+               <h3><a href="mesgroupes.php"> Groupes</a> </h3>
                <ul>';
 
 $listgroupes = $bdd->prepare('SELECT groupes_nom , social_groupes.groupes_id 
@@ -64,6 +66,10 @@ if($listgroupes->rowCount() > 0)
 	   	 }
    }
 }
+else
+   {
+    echo '<li>Aucun groupes </li>';
+   }
    echo'
     </ul>
     </section>
@@ -71,11 +77,11 @@ if($listgroupes->rowCount() > 0)
 </aside>
 <div class="fil">
          <section class="top">
-                 <form action =filok.php" method="POST" enctype="multipart/form-data">
+                 <form action="statutok.php?action=new" method="POST" enctype="multipart/form-data">
 
                  <span class="avatar"><img src="../images/avatar_min/'.$membre['membre_avatar_mini'].'" alt="pas davatar"/></span>
                  <div class="textarea">
-                    <textarea>Votre statut </textarea>
+                    <textarea name="statut">Votre statut </textarea>
                  </div>
                  <div class="fichier">
                        <input type="file" name="photo"/>
@@ -83,11 +89,27 @@ if($listgroupes->rowCount() > 0)
                  <div>
                       <input type="submit" value="Statuer"/>
                  </div>
+             </form>    
                     
          </section>
 
 
          <section class="actu">
+         ';
 
-         </section>
+         // Les status dans social_statut qui peuvent etre des pulications 
+
+         $actu = $bdd->prepare('SELECT * FROM social_statut 
+                                JOIN membres
+                                ON membres.membre_id = social_statut.membre_id 
+                                WHERE social.membres_id = :id 
+                               ');
+         echo '</section>
+
+         <section class="gerer">
+                  <ul>
+                      <li><a href="gerer.php?action=creer">Creer un groupe </a></li>
+                      <li><a href="gerer.php?action=admin">Gerer Vos groupes</a>
+                  </ul>
+         </secton>
 </div>';	                     
