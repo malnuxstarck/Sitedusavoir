@@ -65,13 +65,13 @@ $tutoriel = $req->fetch();
 	     	               </div>
 
 	     	               <div class="textarea">
-	     	                   <p>'.$t['parties_contenu'].'</p>
+	     	                   <p>'.htmlspecialchars($t['parties_contenu']).'</p>
 	     	               </div>
 	     	      </div>';
 	     }
 
 	     echo '<div>
-	              <textarea name="conc" required>'.$tutoriel['tutos_conc'].'</textarea>
+	              <textarea name="conc" required>'.htmlspecialchars($tutoriel['tutos_conc']).'</textarea>
 	         </div>';
 
 	     ?>

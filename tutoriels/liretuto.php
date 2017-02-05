@@ -24,7 +24,7 @@ echo '<div class="tuto">
                  <div class="icon">
                       <img src="./tutos_ban/'.$tuto['tutos_banniere'].'" alt=""/>
                  </div>
-                <h2 class="titre_tuto">'.$tuto['tutos_titre'].'</h2>
+                <h2 class="titre_tuto">'.htmlspecialchars($tuto['tutos_titre']).'</h2>
            </section>
            <section class="intro-t">
                     '.$tuto['tutos_intro'].'
@@ -41,7 +41,7 @@ $partie->execute();
 while($parties = $partie->fetch())
 {
     echo '<section class="corps-t">
-                     <h3 class="titre-sec">'.$parties['parties_titre'].'</h3>
+                     <h3 class="titre-sec">'.htmlspecialchars($parties['parties_titre']).'</h3>
                      <div class="contenu-part">
                           '.$parties['parties_contenu'].'
                      </div>

@@ -45,11 +45,11 @@ for($i = 1 ; $i <= $nbre_pages ; $i++)
 
 </p>
 
-<p><a href="debutertuto.php">Ecrire Un tuto </a></p>
-
-
-
 <?php
+
+if($id)
+	echo '<p><a href="debutertuto.php">Ecrire Un tuto </a></p>';
+
 
 
 $premiertutos = ($page - 1) * $tutos_par_page ;
@@ -83,7 +83,7 @@ if($req->rowCount() > 0)
 	                <img src="tutos_ban/'.$tuto['tutos_banniere'].'" alt="banniere"/>
 	            </div>
 	            <div class="tutos_infos">
-	               <h3 class="tuto_titre" style="color:#2b8bad;"><a href="liretuto.php?&tuto='.$tuto['tutos_id'].'">'.$tuto['tutos_titre'].'</a></h3>
+	               <h3 class="tuto_titre" style="color:#2b8bad;"><a href="liretuto.php?&tuto='.$tuto['tutos_id'].'">'.htmlspecialchars($tuto['tutos_titre']).'</a></h3>
 	               <span> Par <a href="../forum/voirprofil.php?action=consulter&m='.$tuto['membre_id'].'">'.$tuto['membre_pseudo'].'</a></span><span>'.$tuto['cat_nom'].'</span>
 	            </div>  
 

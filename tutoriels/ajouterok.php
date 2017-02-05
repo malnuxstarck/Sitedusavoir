@@ -2,6 +2,9 @@
 
 <?php
 
+
+// traitement des donnees envoyees par ajouter.php
+
 $titre="Traitement | SiteduSavoir.com";
 include ("../includes/session.php");
 include("../includes/identifiants.php");

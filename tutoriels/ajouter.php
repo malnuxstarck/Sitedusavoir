@@ -1,6 +1,8 @@
 
 <?php
 
+//Elle sert a ajouter un auteur a un tuto ou des parties
+
 $titre="Ajout (Partie Ou Membre) | SiteduSavoir.com";
 include ("../includes/session.php");
 include("../includes/identifiants.php");
