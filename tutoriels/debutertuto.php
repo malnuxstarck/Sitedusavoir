@@ -163,8 +163,7 @@ if(!empty($_POST))
 			      	$hauteur_d = imagesy($destination);
 
 			      	imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_d, $hauteur_d, $largeur_s, $hauteur_s);
-			      	$banniere = $id.'-'.time().'.gif';
-
+			      	
 			        imagegif($destination,'./tutos_ban/'.$nom_ban);
 
 	                break;

@@ -15,11 +15,17 @@ if(empty($action))
 	header('Location:index.php');
 }
 
+if(!$id)
+{
+	header('Location:../connexion.php');
+}
+
+
 
 switch($action)
 {
 	case "creer":
-
+             echo '<h2> Creer un groupe </h2>';
 	echo '<form action=gererok.php?action=creer method="POST" enctype="multipart/form-data">
               <div class="input">
                     <input type="text" name="nom" placeholder="Le nom du groupe"  required/>
@@ -30,13 +36,11 @@ switch($action)
               </div>
 
               <div class="input">
-                    <input type="file" name="banniere" placeholder="Le nom du groupe"  required/>
+                    <input type="file" name="banniere" />
               </div>
 
               <div class="input">
                     <input type="submit" value="Creer" />
-              </div>
-
               </div>
              
 	    </form>';
@@ -58,23 +62,24 @@ switch($action)
 				                   ON social_gs_admin.membre_id = membres.membre_id
 				                   WHERE social_gs_admin.membre_id = :membre 
 				                   AND social_gs_admin.groupes_id = :groupe');
-		$groupeademander->bindParam(':membre',$id,PDO::PARAM_INT);
-		$groupeademander->bindParam(':groupe',$groupeid,PDO::PARAM_INT);
-		$groupeademander->fetch();
+		$groupedemander->bindParam(':membre',$id,PDO::PARAM_INT);
+		$groupedemander->bindParam(':groupe',$groupeid,PDO::PARAM_INT);
+		$groupedemander->execute();
+		$grouped = $groupedemander->fetch();
 
 		echo '<div class="groupes">
 
 		       <div class="ban_min">
-        	            <img src="./photos/'.$groupedemander['groupes_banniere_min'].'" alt="ban_min"/>
+        	            <img src="./photos/'.$grouped['groupes_banniere_min'].'" alt="ban_min"/>
         	       </div>
-        	       <h3 class="nom"> <a href="./gerer.php?action=admin&g='.$groupe['groupes_id'].'">'.$groupedemander['groupes_nom'].'</a></h3>
+        	       <h3 class="nom"> <a href="./gerer.php?action=admin&g='.$grouped['groupes_id'].'">'.$grouped['groupes_nom'].'</a></h3>
 
         	       <div class="infos_groupes">';
 
         $nbresmembres = $bdd->prepare('SELECT COUNT(*) AS nbrm 
-        	                             FROM groupes_gs_membres 
+        	                             FROM social_gs_membres 
         	                             WHERE groupes_id = :groupe');
-        $nbresmembres->bindParam(':groupe', $groupeademander['groupes_id'],PDO::PARAM_INT);
+        $nbresmembres->bindParam(':groupe', $grouped['groupes_id'],PDO::PARAM_INT);
         $nbresmembres->execute();
         $nbresmembres = $nbresmembres->fetch();
         $nbresmembres = $nbresmembres['nbrm'];
@@ -83,10 +88,10 @@ switch($action)
               
               <h2> Administrer </h2>
               <ul>
-                  <li><a href="gerer.php?action=add&g='.$groupeademander['groupes_id'].'">Ajouter un membre </a></li>
-                  <li><a href="gerer.php?action=suppm&g='.$groupeademander['groupes_id'].'">Supprimer des membres </a></li>
-                  <li><ahref="gerer.php?action=del&g='.$groupeademander['groupes_id'].'">Supprimer le groupe </a></li>
-                  <li><ahref="gerer.php?action=edit&g='.$groupeademander['groupes_id'].'">Supprimer le groupe </a></li>
+                  <li><a href="gerer.php?action=add&g='.$grouped['groupes_id'].'">Ajouter un membre </a></li>
+                  <li><a href="gerer.php?action=suppm&g='.$grouped['groupes_id'].'">Supprimer des membres </a></li>
+                  <li><ahref="gerer.php?action=del&g='.$grouped['groupes_id'].'">Supprimer le groupe </a></li>
+                  <li><ahref="gerer.php?action=edit&g='.$grouped['groupes_id'].'">Editer les parametres du groupe </a></li>
               </ul>
 
         ';
@@ -97,7 +102,9 @@ switch($action)
 	}  
 	else
 	{
-		echo '<h3> Listes des groupes que vous pouvez administrer </h3>';
+		echo '<h3> Administrer vos groupes </h3>';
+
+        //Tous les groupes pour les quelles on est administratuer
 
 		$groupesinfo = $bdd->prepare('SELECT * FROM social_groupes
 				                      JOIN social_gs_admin 
@@ -108,15 +115,24 @@ switch($action)
 		$groupesinfo->bindParam(':membre',$id,PDO::PARAM_INT);
         $groupesinfo->execute();
 
-        while($groupe = $groupesinfo->fetch())
+        if($groupesinfo->rowCount() > 0)
         {
-        	echo '<div class="tutos">
-        	       <div class="ban_min">
-        	            <img src="./photos/'.$groupe['groupes_banniere_min'].'" alt="ban_min"/>
-        	       </div>
-        	       <h3 class="nom"> <a href="./gerer.php?action=admin&g='.$groupe['groupes_id'].'">'.$groupe['groupes_nom'].'</a></h3>
-        	</div>';
-        }
+
+	        while($groupe = $groupesinfo->fetch())
+	        {
+	        	echo '<div class="tutos">
+	        	       <div class="ban_min">
+	        	            <img src="./photos/'.$groupe['groupes_banniere_min'].'" alt="ban_min"/>
+	        	       </div>
+	        	       <h3 class="nom"> <a href="./gerer.php?action=admin&g='.$groupe['groupes_id'].'">'.$groupe['groupes_nom'].'</a></h3>
+	        	</div>';
+	        }
+	    }
+	    else
+	    {
+	    	echo '<p> Vous n\'avez creer aucun groupe <a href="gerer.php?action=creer"> Voulez vous en creer </a> </p>';
+
+	    }
 
 
 		
@@ -125,12 +141,115 @@ switch($action)
 	break;
 
 	case "del":
+		$groupeid = (isset($_GET['g']))?$_GET['g']:"";
+
+		if(empty($groupeid))
+		{
+			header('Location:mesgroupes.php');
+		}
+		else
+		{
+            $sur = isset($_GET['sur'])?$_GET['sur']:"";
+
+             if(empty($sur))
+			 {
+               echo '<p> Vous etes sur le point de supprimer un groupe ? etes vous sur <a href="gererok.php?action=del&g='.$groupe_id.'&sur=1">OUI</a>-
+			   <a href="voirgroupe.php?g='.$groupe_id.'>Non</a>';
+			 } 
+
+		}
 	break;
+
 	case "add":
+
+	        $groupeid =(isset($_GET['g']))?$_GET['g']:"";
+
+	          if(empty($groupeid))
+	          {
+	          	header('Location:mesgroupes.php');
+	          }
+	          
+	        echo '<h2> Inscrivez le pseudo du membre </h2>
+	             <form action="gererok.php?action=add&g='.$groupeid.'" method="POST">
+	                  <div class="input">
+                          <input type="text" name="nouveau" placeholder="Lepseudo du membre"  required/>
+                      </div>
+
+                      <div class="input">
+                          <input type="submit" value="Envoyer"  required/>
+                      </div>
+
+	             </form>';
+
 	break;
 	case "edit":
+	          $groupeid =(isset($_GET['g']))?$_GET['g']:"";
+
+	          if(empty($groupeid))
+	          {
+	          	header('Location:mesgroupes.php');
+	          }
+
+	        $groupeinfo = $bdd->prepare('SELECT * FROM social_groupes
+	        	                         JOIN soicial_gs_admin
+	        	                         ON social_groupes.groupes_id = social_gs_admin.groupes_id
+	        	                         JOIN membres ON membres.membre_id = social_gs_admin.membre_id
+	        	                         WHERE social_groupes.groupes_id = :groupe 
+	        	                         AND social_gs_admin.membre_id = :membre');
+	        $groupeinfo->bindParam(':membre',$id,PDO::PARAM_INT);
+	        $groupeinfo->bindParam(':groupe',$groupeid,PDO::PARAM_INT);
+	        $groupe = $groupeinfo->fetch();
+
+	        echo ' <h2> Edition de groupe </h2>
+
+	               <form method="POST action="gererok.php?action=edit&g='.$groupeid.'" enctype="multipart/form-data">
+	                    <div class="input">
+	                         <input type="text" name="nom" value="'.$groupe['groupes_nom'].'" required/>
+	                    </div>
+
+                         <div class="textarea">
+                            <textarea name="description" required >'.$groupe['groupes_description'].'</textarea>
+                         </div>
+
+			              <div class="input">
+			                    <input type="file" name="banniere" />
+			              </div>
+
+			              <div class="input">
+			                    <input type="submit" value="Modifier" />
+			              </div>
+
+
+	              </form>';
 	break;
+
 	case "suppm":
+
+	     $groupeid =(isset($_GET['g']))?$_GET['g']:"";
+
+	     if(empty($groupeid))
+	     {
+	          	header('Location:mesgroupes.php');
+	     }
+
+		echo '<h2> Inscrivez le pseudo du membre </h2>
+
+		             <form action="gererok.php?action=suppm&g='.$groupeid.'" method="POST">
+		                  <div class="input">
+	                          <input type="text" name="nouveau" placeholder="Lepseudo du membre"  required/>
+	                      </div>
+
+	                      <div class="input">
+	                          <input type="submit" value="Envoyer"/>
+	                      </div>
+
+		             </form>';
+
+	       
+	break;
+
+	default:
+         header('Location:mesgroupes.php');
 	break;
 
 	

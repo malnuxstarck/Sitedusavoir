@@ -13,11 +13,11 @@ echo '<h3> Vos groupes </h3>';
 
 $groupesad = $bdd->prepare('SELECT * FROM social_groupes 
 	                      JOIN social_gs_admin
-	                      ON social_gs_admin.membre_id = social_groupes.groupes_createur
+	                      ON social_gs_admin.groupes_id = social_groupes.groupes_id
 	                      JOIN membres
-	                      ON membres.membre_id = social_groupes.groupes_createur
+	                      ON membres.membre_id = social_gs_admin.membre_id
 	                      WHERE membres.membre_id = :id');
-$groupesad->bindParam(':id', $id, PDO::PARAM_INT)	;
+$groupesad->bindParam(':id', $id, PDO::PARAM_INT);
 
 $groupesad->execute();
 
@@ -38,6 +38,8 @@ if($groupesad->rowCount() > 0)
 	            </p> 
 	        </li>';
 	} 
+
+
 }
 else
 {
@@ -54,21 +56,27 @@ echo '<h3> Groupes auquel vous appartenez</h3>';
 
 
 $groupesap = $bdd->prepare('SELECT * FROM social_groupes 
-	                      JOIN social_gs_membres
-	                      ON social_gs_membres.groupes_id = social_groupes.groupes_id
-	                      JOIN membres
-	                      ON membres.membre_id = social_gs_membres.membre_id
-	                      WHERE social_gs_membre.membre_id = :id');
-$groupesad->bindParam(':id', $id, PDO::PARAM_INT)	;
+	                        JOIN social_gs_membres
+	                        ON social_gs_membres.groupes_id = social_groupes.groupes_id
+	                        JOIN membres
+	                        ON membres.membre_id = social_gs_membres.membre_id
+	                        WHERE social_gs_membres.membre_id = :id
+	                        AND social_groupes.groupes_id 
+	                        NOT IN (
+	                                SELECT groupes_id 
+	                                FROM social_gs_admin 
+	                                WHERE social_gs_admin.membre_id = :id)
+	                        ');
 
-$groupesad->execute();
+$groupesap->bindParam(':id', $id, PDO::PARAM_INT);
+$groupesap->execute();
 
 echo '<ul>';
 
-if($groupesad->rowCount() > 0)
+if($groupesap->rowCount() > 0)
 {
 
-	while($groupe = $groupesad->fetch())
+	while($groupe = $groupesap->fetch())
 	{
 	  echo '<li>
 	            <div class="avatar_gr">
