@@ -12,16 +12,16 @@ include("../includes/menu.php");
 <h2 class="titre" style="text-align:center"> Listes des Tutoriels </h2>
 
 <?php
+
 $page = (!empty($_GET['page']))?$_GET['page']:1;
 $tutos_par_page = 20 ;
 $req = $bdd->query('SELECT COUNT(*) AS nbr_tuto FROM tutos');
 $nombres_tutos = $req->fetch();
-$nombres_tutos = $nombres_tutos["nbr_tuto"];
+$nombres_tutos = $nombres_tutos['nbr_tuto'];
 
-
-$req->closeCursor();
 
 $nbre_pages = ceil($nombres_tutos / $tutos_par_page);
+
 
 ?>
 
@@ -29,14 +29,15 @@ $nbre_pages = ceil($nombres_tutos / $tutos_par_page);
 <p class="page">
 <?php
 
-for($i = 1 ; $i <= $nbre_pages ; $i++)
+for($i = 1 ; $i <=$nbre_pages ; $i++)
 {
-	if($i = $page)
+	if($i == $page)
 	{
 		echo '<strong>'.$i.'</strong>';
 	}
-	else{
-		echo ' <a href="index.php?page='.$i.'</a> ';
+	else
+	{
+		echo ' <a href="index.php?page='.$i.'">'.$i.'</a> ';
 	}
 
 }
@@ -48,7 +49,7 @@ for($i = 1 ; $i <= $nbre_pages ; $i++)
 <?php
 
 if($id)
-	echo '<p><a href="debutertuto.php">Ecrire Un tuto </a></p>';
+	echo '<p><a href="debutertuto.php"> Ecrire Un tuto </a></p>';
 
 
 
@@ -61,7 +62,7 @@ $req = $bdd->prepare('SELECT tutos_titre ,tutos.tutos_id, tutos_banniere ,membre
 	                  LEFT JOIN membres 
 	                  ON membres.membre_id = tutos_par.membre_id
 	                  LEFT JOIN categorie
-	                  ON Categorie.cat_id = tutos.tutos_cat
+	                  ON categorie.cat_id = tutos.tutos_cat
 	                  ORDER BY tutos_date,tutos_cat
 	                  LIMIT :premier , :nombres');
 
@@ -93,7 +94,22 @@ if($req->rowCount() > 0)
 }
 else
 {
-	echo '<p>  Il n y \' a aucun tutos actuelement </p>';
+	if($id)
+	{
+        echo '<p>  Il n y \' a aucun tutos actuelement Sur le site
+	           <p>';
+	           
+	  }
+	  else
+	  {
+	  	echo '<p>  Il n y \' a aucun tutos actuelement  Vous devez etre inscrit pour rediger un tuto
+	           <p>
+	           <a href="../register.php">S\'inscrire</a>
+	         </p>
+	         <p> Ou se connecter <a href="../connexion.php">Se connecter </a>
+	      </p>';
+
+	  }
 }    
 
 ?>
@@ -104,12 +120,12 @@ else
 
 for($i = 1 ; $i <= $nbre_pages ; $i++)
 {
-	if($i = $page)
+	if($i == $page)
 	{
 		echo '<strong>'.$i.'</strong>';
 	}
 	else{
-		echo ' <a href="index.php?page='.$i.'</a> ';
+		echo ' <a href="index.php?page='.$i.'"">'.$i.'</a> ';
 	}
 
 }

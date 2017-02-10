@@ -118,7 +118,7 @@ if(!empty($_POST))
    $conclusion = (isset($_POST['conc']))?$_POST['conc']:"";
    $tuto = (isset($_POST['tuto']))?$_POST['tuto']:"";
 
-    if(empty($introduction) || empty($conclusion) || empty($titre))
+    if(empty($introduction) || empty($conclusion) || empty($titre) || empty($tuto))
    {
 	   	$_SESSION['flash']['danger'] = "Soit le titre et/ou l'introduction et/ou la conclusion est vide";
 	   	header('Location:editiontuto.php?tuto='.$_POST['tuto']);

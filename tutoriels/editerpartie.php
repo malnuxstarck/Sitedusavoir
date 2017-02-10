@@ -68,8 +68,8 @@ switch ($action) {
 	   		header('Location:./editiontuto.php?tuto='.$tuto);
 	   	}
 
-	   	$insertpart = $bdd->prepare('INSERT INTO tutos_parties (tutos_id,parties_titre,parties_contenu) 
-	   		                         VALUES(:tuto , :titre , :contenu)');
+	   	$insertpart = $bdd->prepare('UPDATE tutos_parties SET parties_titre = :titre, parties_contenu = :contenu
+	   		                         WHERE tutos_id = :tuto ');
 	   	$insertpart->bindParam(':tuto',$tuto,PDO::PARAM_INT);
 	   	$insertpart->bindParam(':titre',$titre,PDO::PARAM_STR);
 	   	$insertpart->bindParam(':contenu',$contenu,PDO::PARAM_STR);

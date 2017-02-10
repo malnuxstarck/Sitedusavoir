@@ -6,9 +6,6 @@ include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
-$req = $bdd->query('SELECT cat_id , cat_nom 
-	                FROM categorie
-	                ORDER BY cat_id');
 
 
 if(!$id)
@@ -17,67 +14,71 @@ if(!$id)
 	header('Location:../connexion.php');
 }
 
+if(empty($_POST))
+{
 
-?>
+ ?>
 
 
-<p id="fildariane"> <i><a href="../index.php">Accueil </a> --> <a href="index.php">Tutoriels</a>-->Nouveau tutoriel</i></p>
+	<p id="fildariane"> <i><a href="../index.php">Accueil </a> --> <a href="index.php">Tutoriels</a>-->Nouveau tutoriel</i></p>
 
-<h2 class="titre" style="text-align:center"> Debuter un tutoriel </h2>
+	<h2 class="titre" style="text-align:center"> Debuter un tutoriel </h2>
 
-<form method="POST" action="debutertuto.php" enctype="multipart/form-data">
+	<form method="POST" action="debutertuto.php" enctype="multipart/form-data">
 
-	<div class="input_titre">
-	      <p class="icon">
-	         <img src="../images/icones/text.png" alt="icon"/>
-	      </p>
-	      <p>
-	        <input type="text" name="titre" placeholder="Le titre du tutoriel" required />
-	      </p>  
-	</div>
+		<div class="input_titre">
+		      <p class="icon">
+		         <img src="../images/icones/text.png" alt="icon"/>
+		      </p>
+		      <p>
+		        <input type="text" name="titre" placeholder="Le titre du tutoriel" required />
+		      </p>  
+		</div>
 
-	<div class="textarea-titre">
-	      <textarea class="textarea" name="intro" required >Votre introduction</textarea>
-	</div>
+		<div class="textarea-titre">
+		      <textarea class="textarea" name="intro" required >Votre introduction</textarea>
+		</div>
 
-	<div class="textarea-titre">
-	      <textarea class="textarea" name="conc" required >Votre conclusion </textarea>
-	</div>
+		<div class="textarea-titre">
+		      <textarea class="textarea" name="conc" required >Votre conclusion </textarea>
+		</div>
 
-	<div class="input_fil">
-	      <p>
-	        <input type="file" name="banniere"/>
-	      </p>
-	      <p>
-	        Nb/ En cas d'erreur d'envoie de fichier , ou de non rensiegnement une banniere a defaut vous est donner.
-	        vous pouvez ensuite modifier celle ci :D
-	      </p>  
-	</div>
+		<div class="input_fil">
+		      <p>
+		        <input type="file" name="banniere"/>
+		      </p>
+		      <p>
+		        Nb/ En cas d'erreur d'envoie de fichier , ou de non rensiegnement une banniere a defaut vous est donner.
+		        vous pouvez ensuite modifier celle ci :D
+		      </p>  
+		</div>
 
-	<div class="select">
-	    <select name="cat">
-	           <?php
-                   $req = $bdd->query('SELECT cat_id , cat_nom 
-	                               FROM categorie
-	                               ORDER BY cat_id');
+		<div class="select">
+		    <select name="cat">
+		           <?php
+	                   $req = $bdd->query('SELECT cat_id , cat_nom 
+		                                   FROM categorie
+		                                   ORDER BY cat_id');
 
-	           while($cat = $req->fetch())
-	           {
-	              echo '<option value="'.$cat['cat_id'].'">'.$cat['cat_nom'].'</option>';
-	           }
-	           ?>
-	    </select>
-	</div>
+		           while($cat = $req->fetch())
+		           {
+		              echo '<option value="'.$cat['cat_id'].'">'.$cat['cat_nom'].'</option>';
+		           }
 
-	<div class="valid">
-	     <input type="submit" value="Envoyer" />
-	</div>
+		           ?>
+		    </select>
+		</div>
 
-</form>
+		<div class="valid">
+		     <input type="submit" value="Envoyer" />
+		</div>
 
-<?php
+	</form>
+
+	<?php
+}
  
-if(!empty($_POST))
+else
 {
 	$i = 0 ;
 
@@ -201,7 +202,7 @@ if(!empty($_POST))
        else
        {
        	   $banniere = './tutos_ban/ban.jpg';
-          $source = imagecreatefromjpeg($banniere);
+           $source = imagecreatefromjpeg($banniere);
 		   $destination = imagecreatetruecolor(300,225);
 
 			      	$largeur_s = imagesx($source);
@@ -233,7 +234,7 @@ if(!empty($_POST))
               'intro'  => $intro,
               'conc'   => $conc,
               'ban'    => $nom_ban,
-              'cat'    => $cat,
+              'cat'    => $cat
 
 
       		));
@@ -250,13 +251,13 @@ if(!empty($_POST))
       	$req1->execute();
 
       	$_SESSION['flash']['success'] = " Votre tuto a bien été creer , rendez vous dans mes tutoriels pour le modifier et/ou l'achever";
-      	header('Location:debutertuto.php');
+      	header('Location:index.php');
 
       }
       else
       {
       	$_SESSION['flash']['danger'] = $mess1 ."</br>".$mess2 ."</br>" . $mess3 ; 
-      	header('Location:debutertuto.php');
+      	header('Location:index.php');
       }	
 
       
