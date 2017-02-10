@@ -80,10 +80,10 @@ echo '<body>
 				            </li>
 
 							<li> 
-							     <a href="http://social.sitedusavoir.com">Social</a>
+							     <a href="../social">Social</a>
 							</li>    
 							<li> 
-							    <a href="http://blog.sitedusavoir.com">Blog</a>
+							    <a href="../blog">Blog</a>
 							</li>
 						</ul>
 

@@ -13,6 +13,62 @@
    }
 
 
+
+ function createAvatar($chaine , $blocks = 5 , $size = 100)
+{
+     
+       $togenerate  = ceil($blocks / 2);
+
+       $hashsize = $togenerate * $blocks ; 
+
+       $hash = md5($chaine); 
+
+       $hash = str_pad($hash , $hashsize , $hash);
+
+       $blockssize = $size / $blocks ;
+
+       $color = substr($hash , 0, 6);
+
+       $image = imagecreate($size,$size);
+
+       $background = imagecolorallocate($image ,255,255,255);
+
+       $color = imagecolorallocate($image , hexdec(substr($color,0,2)),hexdec(substr($color,2,2)),hexdec(substr($color,4,2)));
+
+
+       for ($x = 0 ; $x < $blocks ; $x++)
+       {
+          for ($y = 0 ; $y < $blocks ; $y++)
+          {
+            if( $x < $togenerate)
+
+               $pixel =  hexdec($hash[$x * $blocks + $y]) % 2 == 0;
+            else
+              $pixel =  hexdec($hash[($blocks - 1 - $x) *$blocks  + $y]) % 2 == 0;
+
+            $pixelcolor = $background;
+
+           if($pixel)
+           {
+            $pixelcolor = $color;
+
+            }
+
+              imagefilledrectangle($image,$x * $blockssize , $y*$blockssize, ($x+1)*$blockssize, ($y+1)*$blockssize, $pixelcolor);
+           }
+       }
+        
+        $name = time();
+
+        $nomavatar = str_replace(' ','',$name).'.'.'png';
+       
+       imagepng($image , './images/avatars/'.$nomavatar);
+       
+      return $nomavatar;
+
+}  
+
+
 function move_avatar($avatar)
 {
 
