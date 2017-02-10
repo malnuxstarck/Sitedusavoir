@@ -182,7 +182,7 @@
          <p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d\'accueil</p>';
     
     //La ligne suivante sera commentée plus bas
-    $nomavatar = (!empty($_FILES['avatar']['size']))?move_avatar($_FILES['avatar']):'default.png';
+    $nomavatar = (!empty($_FILES['avatar']['size']))?move_avatar($_FILES['avatar']):createAvatar($pseudo);
 
     $query = $bdd->prepare('INSERT INTO membres (membre_pseudo,membre_mdp, membre_email, membre_avatar, membre_inscrit,token) 
                             VALUES (:pseudo, :pass, :email , :nomavatar, NULL, :token)');

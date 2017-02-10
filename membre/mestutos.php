@@ -49,7 +49,7 @@ if($mestutos->rowCount() > 0)
 }
 else
 {
-	echo '<li> Vous n\'avez aucun tutos <a href="../debutertuto.php">Creer un et parateger votre savoir </a> </li> ';
+	echo '<li> Vous n\'avez aucun tutos <a href="../tutoriels/debutertuto.php">Creer un et parateger votre savoir </a> </li> ';
 }
 
 echo '<ul>';
