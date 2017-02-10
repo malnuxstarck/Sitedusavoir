@@ -21,6 +21,8 @@ $membre->execute();
 
 $membre = $membre->fetch();
 
+// On listes les groupes du membres
+
 echo '<aside class="aside-s">
            <p>'.$membre['membre_pseudo'].'
            </p>
@@ -96,14 +98,83 @@ else
 
          <section class="actu">
          ';
+         // Les statusts dans social_statut, qui peuvent etre des pulications aussi 
 
-         // Les status dans social_statut qui peuvent etre des pulications 
-
-         $actu = $bdd->prepare('SELECT * FROM social_statut 
+         $actu = $bdd->prepare('SELECT statut_id,statut_contenu, statut_date,statut_photo,social_statut.membre_id,membre_pseudo ,membre_avatar_mini
+                                FROM social_statut 
                                 JOIN membres
                                 ON membres.membre_id = social_statut.membre_id 
-                                WHERE social.membres_id = :id 
-                               ');
+                                WHERE social_statut.membre_id = :id
+                                UNION 
+                                SELECT statut_id,statut_contenu, statut_date,statut_photo,social_statut.membre_id,membre_pseudo ,membre_avatar_mini
+                                FROM social_statut 
+                                JOIN membres
+                                ON membres.membre_id = social_statut.membre_id 
+                                WHERE social_statut.membre_id IN (SELECT ami_from 
+                                                                  FROM amis 
+                                                                  WHERE ami_to = :id) 
+                                UNION 
+                                SELECT statut_id,statut_contenu , statut_date,statut_photo,social_statut.membre_id,membre_pseudo ,membre_avatar_mini
+                                FROM social_statut 
+                                JOIN membres
+                                ON membres.membre_id = social_statut.membre_id 
+                                WHERE social_statut.membre_id IN (SELECT ami_to 
+                                                                  FROM amis 
+                                                                  WHERE ami_from = :id) ORDER BY statut_date
+                                
+                                ');
+
+         $actu->bindParam(':id',$id,PDO::PARAM_INT);
+         $actu->execute();
+         while($statut = $actu->fetch())
+         {
+          $statutid = $statut['statut_id'];
+          echo '<div class="satut">
+                       <div class="membre">
+                            <span class="avatar_mini">'.$statut['membre_avatar_mini'].'</span>
+                            </span class="pseudo">'.$statut['membre_pseudo'].'</span>
+                       </div>';
+                       if($statut['statut_photo'])
+                       {
+                          echo '<div class="photo">
+                                       '.$statut['statut_photo'].'
+                                </div>';
+                       }
+
+                echo '<div class="content">
+                       '.$statut['statut_contenu'].'
+                </div>
+                        <ul>
+                         <li> <a href="./editstatut.php?action=comment&s='.$statut['statut_id'].'">Commenter</a></li>';
+                         if($id == $statut['membre_id'])
+                         echo '<li> <a href="./editstatut.php?action=edit&s='.$statut['statut_id'].'">Editer</a></li>';
+                      echo '</ul>
+                </div>
+                <div class="commentaire">';
+               $com = $bdd->prepare('SELECT commentaires_id,commentaires_text,membres.membre_id, membre_pseudo,membre_avatar_mini 
+                                     FROM social_st_comment
+                                     JOIN membres
+                                     ON membres.membre_id = social_st_comment.membre_id
+                                     WHERE statut_id = :statutid ORDER BY statut_id');
+               $com->bindParam(':statutid',$statutid,PDO::PARAM_INT);
+               $com->execute();
+
+               echo '<ul>';
+                           while($commentaire = $com->fetch())
+                           {
+                            echo '<li>
+                                      <div class="avatar_mini">'.$commentaire['membre_avatar_mini'].'</div>
+                                      <h3>'.$commentaire['membre_pseudo'].'</h3>
+                                    
+                                      <p>'.htmlspecialchars($commentaire['commentaires_text']).'</p>
+                                      <div class="editco">
+                                            <a href="./editstatut.php?action=editco&s='.$statutid.'&c='.$commentaire['commentaires_id'].'">Modifier</a>
+                                      </div>
+                            </li>';
+                           }
+                echo '</div>';
+
+         }
          echo '</section>
 
          <section class="gerer">

@@ -15,10 +15,17 @@ if(!$id)
 
 $action = (!empty($_GET['action']))?$_GET['action']:"";
 
+if(empty($action))
+{
+   header('Location:../index.php');
+}
+
 switch ($action) 
 
 {
   case "new":
+
+  //Creer un nouveau statut
   
     if(!empty($_POST))
     {
@@ -46,8 +53,8 @@ switch ($action)
         		move_uploaded_file($photo['tmp_name'], './photos/'.$nom_photo);
         	}
 
-        	$insertstatut = $bdd->prepare('INSERT INTO social_statut (statut_contenu ,staut_photo ,membre_id)
-        		                           VALUES(:contenu,:photo, :membre)');
+        	$insertstatut = $bdd->prepare('INSERT INTO social_statut (statut_contenu ,staut_photo ,membre_id,statut_date)
+        		                           VALUES(:contenu,:photo, :membre,NOW())');
 
         	$insertstatut->execute(array(
                  'membre' => $id,
@@ -146,6 +153,60 @@ switch ($action)
 
      break;
 
+
+
+     case "comment":
+
+     $statut = (isset($_GET['s']))?$_GET['s']:"";
+     $com = (isset($_POST['text']))?$_POST['text']:"";
+
+     if(empty($statut) || empty($com))
+     {
+       header('Location:./index.php');
+     }
+
+     $insertcom = $bdd->prepare('INSERT INTO social_st_comment (commentaires_text , membre_id , statut_id)
+                                 VALUES (:com , :membre , :statut)');
+     $insertcom->execute(array('com' => $com , 
+                               'membre' => $id ,
+                              'statut' => $statut
+                               ));
+
+     $_SESSION['flash']['success'] = " Commentaire enregistreé ";
+
+      header('Location:index.php');
+
+          break;
+
+       case "editco":
+
+       /* c: commentaire , 
+          s: statut , 
+          text : contenu du commentaire
+       */
+
+                $com_id = (isset($_GET['c']))?$_GET['c']:"";
+                $statut = (isset($_GET['s']))?$_GET['s']:"";
+                $contenu_com = (isset($_POST['text']))?$_POST['text']:"";
+
+                if(empty($com_id) || empty($statut) || empty($contenu_com))
+                {
+                  header('Location:./index.php');
+                }
+
+        $updatecom = $bdd->prepare('UPDATE social_st_comment 
+                                    SET commentaires_text = :commentaire 
+                                    WHERE commentaires_id = :com AND statut_id = :statut');
+        $updatecom->execute(array(
+                                   'commentaire' => $contenu_com,
+                                    'com' => $com_id,
+                                    'statut' => $statut
+                                  ));
+
+        $_SESSION['flash']['success'] = 'Commentaire mis a jour';
+
+       break;
+
     default:
-       header("Location:index.php");  
+       header('Location:index.php');  
 }  

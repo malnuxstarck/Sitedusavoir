@@ -25,6 +25,8 @@ if(!$id)
 switch($action)
 {
 	case "creer":
+
+	//  Creer un nouveau groupe formulaire
              echo '<h2> Creer un groupe </h2>';
 	echo '<form action=gererok.php?action=creer method="POST" enctype="multipart/form-data">
               <div class="input">
@@ -72,7 +74,7 @@ switch($action)
 		       <div class="ban_min">
         	            <img src="./photos/'.$grouped['groupes_banniere_min'].'" alt="ban_min"/>
         	       </div>
-        	       <h3 class="nom"> <a href="./gerer.php?action=admin&g='.$grouped['groupes_id'].'">'.$grouped['groupes_nom'].'</a></h3>
+        	       <h3 class="nom"> <a href="./voirgroupe.php?g='.$grouped['groupes_id'].'">'.$grouped['groupes_nom'].'</a></h3>
 
         	       <div class="infos_groupes">';
 
@@ -89,9 +91,9 @@ switch($action)
               <h2> Administrer </h2>
               <ul>
                   <li><a href="gerer.php?action=add&g='.$grouped['groupes_id'].'">Ajouter un membre </a></li>
-                  <li><a href="gerer.php?action=suppm&g='.$grouped['groupes_id'].'">Supprimer des membres </a></li>
-                  <li><ahref="gerer.php?action=del&g='.$grouped['groupes_id'].'">Supprimer le groupe </a></li>
-                  <li><ahref="gerer.php?action=edit&g='.$grouped['groupes_id'].'">Editer les parametres du groupe </a></li>
+                  <li><a href="gerer.php?action=suppm&g='.$grouped['groupes_id'].'">Supprimer un membres </a></li>
+                  <li><a href="gerer.php?action=del&g='.$grouped['groupes_id'].'">Supprimer le groupe </a></li>
+                  <li><a href="gerer.php?action=edit&g='.$grouped['groupes_id'].'">Editer les parametres du groupe </a></li>
               </ul>
 
         ';
@@ -153,8 +155,8 @@ switch($action)
 
              if(empty($sur))
 			 {
-               echo '<p> Vous etes sur le point de supprimer un groupe ? etes vous sur <a href="gererok.php?action=del&g='.$groupe_id.'&sur=1">OUI</a>-
-			   <a href="voirgroupe.php?g='.$groupe_id.'>Non</a>';
+               echo '<p> Vous etes sur le point de supprimer un groupe ? etes vous sur <a href="gererok.php?action=del&g='.$groupeid.'&sur=1">OUI</a>-
+			   <a href="voirgroupe.php?g='.$groupeid.'">Non</a></p>';
 			 } 
 
 		}
@@ -172,7 +174,7 @@ switch($action)
 	        echo '<h2> Inscrivez le pseudo du membre </h2>
 	             <form action="gererok.php?action=add&g='.$groupeid.'" method="POST">
 	                  <div class="input">
-                          <input type="text" name="nouveau" placeholder="Lepseudo du membre"  required/>
+                          <input type="text" name="nouveau" placeholder="Le pseudo du membre"  required/>
                       </div>
 
                       <div class="input">
@@ -191,13 +193,15 @@ switch($action)
 	          }
 
 	        $groupeinfo = $bdd->prepare('SELECT * FROM social_groupes
-	        	                         JOIN soicial_gs_admin
+	        	                         JOIN social_gs_admin
 	        	                         ON social_groupes.groupes_id = social_gs_admin.groupes_id
 	        	                         JOIN membres ON membres.membre_id = social_gs_admin.membre_id
 	        	                         WHERE social_groupes.groupes_id = :groupe 
 	        	                         AND social_gs_admin.membre_id = :membre');
 	        $groupeinfo->bindParam(':membre',$id,PDO::PARAM_INT);
 	        $groupeinfo->bindParam(':groupe',$groupeid,PDO::PARAM_INT);
+	        $groupeinfo->execute();
+
 	        $groupe = $groupeinfo->fetch();
 
 	        echo ' <h2> Edition de groupe </h2>

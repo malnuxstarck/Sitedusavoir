@@ -45,6 +45,8 @@ if($groupeinfo->rowcount() > 0)
 	               </div>
 	               <h3 class="nom_groupe">'.$groupe['groupes_nom'].'</h3>
                   <aside class="infos">
+                          
+                  </aside>
 	      </div>';
 
 }   

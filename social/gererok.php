@@ -24,6 +24,8 @@ switch($action)
 {
 	case "creer":
 
+	// Creer un nouveau groupe
+
 	   $nom = (isset($_POST['nom']))?$_POST['nom']:"";
 	   $description = isset($_POST['description'])?$_POST['description']:"";
 	   $banniere =   isset($_FILES['banniere'])?$_FILES['banniere']:"";
@@ -38,7 +40,7 @@ switch($action)
 	  {
 	  	//Erreur d'envoie ou pas d'images envoyer
 
-		  	$tailleban = getimagesize($banniere);
+		  	$tailleban = getimagesize($banniere['tmp_name']);
 
 		  	/*
 
@@ -65,42 +67,42 @@ switch($action)
 		  		{
 		  			case "png":
 
-		  			      $source =imagecreatefromgif("./photos/".$nom_ban) ;
+		  			      $source =imagecreatefrompng("./photos/".$nom_ban) ;
 
 		  			      $largeur_s = imagesx($source);
 		  			      $hauteur_s = imagesy($source);
 
-		  			      $destination = imagecreatetruecolor(50, 50);
+		  			      $destination = imagecreatetruecolor(100, 100);
                           $miniban = $id."-min-".time().".".$extension;
-		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  			      imagepng($destination , "./photos/".$miniban);
 
 
 		  			break;
 		  			case "jpg":
 
-		  	                $source =imagecreatefromgif("./photos/".$nom_ban) ;
+		  	                $source =imagecreatefromjpeg("./photos/".$nom_ban) ;
 
 		  			      $largeur_s = imagesx($source);
 		  			      $hauteur_s = imagesy($source);
 
-		  			      $destination = imagecreatetruecolor(50, 50);
+		  			      $destination = imagecreatetruecolor(100, 100);
                           $miniban = $id."-min-".time().".".$extension;
-		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  			      imagejpeg($destination , "./photos/".$miniban);
 
 		  			break;
 
 		  			case "jpeg":
 
-		  			       $source =imagecreatefromgif("./photos/".$nom_ban) ;
+		  			       $source =imagecreatefromjpeg("./photos/".$nom_ban) ;
 
 		  			      $largeur_s = imagesx($source);
 		  			      $hauteur_s = imagesy($source);
 
-		  			      $destination = imagecreatetruecolor(50, 50);
+		  			      $destination = imagecreatetruecolor(100, 100);
                           $miniban = $id."-min-".time().".".$extension;
-		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  			      imagejpeg($destination , "./photos/".$miniban);
 
 		  			break;
@@ -110,9 +112,9 @@ switch($action)
 		  			      $largeur_s = imagesx($source);
 		  			      $hauteur_s = imagesy($source);
 
-		  			      $destination = imagecreatetruecolor(50, 50);
+		  			      $destination = imagecreatetruecolor(100, 100);
                           $miniban = $id."-min-".time().".".$extension;
-		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  			      imagegif($destination , "./photos/".$miniban);
 
 		  			break;
@@ -126,9 +128,9 @@ switch($action)
 		  	   $source = imagecreatefrompng("./photos/default.png");
                $largeur_s = imagesx($source);
 		  	   $hauteur_s = imagesy($source);
-               $destination = imagecreatetruecolor(50, 50);
+               $destination = imagecreatetruecolor(100, 100);
                $miniban = $id."-min-".time()."."."png";
-		  	   imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  	   imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  	   imagepng($destination , "./photos/".$miniban);
             }
 
@@ -139,9 +141,9 @@ switch($action)
                $source = imagecreatefrompng("./photos/default.png");
                $largeur_s = imagesx($source);
 		  	   $hauteur_s = imagesy($source);
-               $destination = imagecreatetruecolor(50, 50);
+               $destination = imagecreatetruecolor(100, 100);
                $miniban = $id."-min-".time().".png";
-		  	   imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  	   imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  	   imagepng($destination , "./photos/".$miniban);
       }
 
@@ -190,7 +192,7 @@ switch($action)
 	    	header('Location:./index.php');
 	    }
 
-	    $groupea = $bdd->prepare('SELECT groupes_id 
+	    $groupea = $bdd->prepare('SELECT social_groupes.groupes_id 
 	    	                      FROM social_groupes 
 	    	                      JOIN social_gs_admin 
 	    	                      ON social_groupes.groupes_id = social_gs_admin.groupes_id
@@ -203,19 +205,22 @@ switch($action)
 	    {
 	    	$groupesupprimer = $groupeasup['groupes_id'];
 
-            $suppression = $bdd->query('DELETE FROM social_groupes WHERE groupes_id = :groupe');
+            $suppression = $bdd->prepare('DELETE FROM social_groupes WHERE groupes_id = :groupe');
             $suppression->execute(array('groupe' => $groupesupprimer));
-            $suppression->closeCusror();
+            
 
             $membressupp = $bdd->prepare('DELETE FROM social_gs_membres WHERE groupes_id = :groupe');
 
              $membressupp->execute(array('groupe' => $groupesupprimer));
-             $membressupp->closeCusror();
+           
 
              $adminsupp = $bdd->prepare('DELETE FROM social_gs_admin WHERE groupes_id = :groupe');
 
              $adminsupp->execute(array('groupe' => $groupesupprimer));
-             $adminsupp->closeCusror();
+
+             $_SESSION['flash']['danger'] = "Groupe Supprimer avec succes";
+	    		header('Location:./mesgroupes.php');
+           
 	    }
 	    else
 	    	{
@@ -227,9 +232,9 @@ switch($action)
 
 	case "add":
 	       $groupeid = (isset($_GET['g']))?$_GET['g']:"";
-	        $pseudo = isset($_POST['nouveau'])?$_POST['nouveau']:"";
+	        $pseudo = (isset($_POST['nouveau']))?$_POST['nouveau']:"";
 
-	       if(empty($groupe) || empty($pseudo))
+	       if(empty($groupeid) || empty($pseudo))
 	       {
 	       	header('Location:mesgroupes.php');
 	       }
@@ -242,11 +247,11 @@ switch($action)
          	 $membre = $membre['membre_id'];
 
          	 $ajoutmembre = $bdd->prepare('INSERT INTO social_gs_membres (groupes_id , membre_id)
-         	 	                           VALUES(:groupe , :membre');
+         	 	                           VALUES(:groupe , :membre)');
          	 $ajoutmembre->bindParam(':groupe',$groupeid,PDO::PARAM_INT);
          	 $ajoutmembre->bindParam(':membre',$membre,PDO::PARAM_INT);
          	 $ajoutmembre->execute();
-         	 $ajoutmembre->closeCusror();
+         	 $ajoutmembre->closeCursor();
 
          	 $_SESSION['flash']['success'] = "Membre ajouter avec succes";
          	 header('Location:voirgroupe.php?g='.$groupeid);
@@ -298,9 +303,9 @@ switch($action)
 		  			      $largeur_s = imagesx($source);
 		  			      $hauteur_s = imagesy($source);
 
-		  			      $destination = imagecreatetruecolor(50, 50);
+		  			      $destination = imagecreatetruecolor(100, 100);
                           $miniban = $id."-min-".time().".".$extension;
-		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  			       imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  			      imagepng($destination , "./photos/".$miniban);
 
 
@@ -312,9 +317,9 @@ switch($action)
 		  			      $largeur_s = imagesx($source);
 		  			      $hauteur_s = imagesy($source);
 
-		  			      $destination = imagecreatetruecolor(50, 50);
+		  			      $destination = imagecreatetruecolor(100, 100);
                           $miniban = $id."-min-".time().".".$extension;
-		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  			      imagejpeg($destination , "./photos/".$miniban);
 
 		  			break;
@@ -326,9 +331,9 @@ switch($action)
 		  			      $largeur_s = imagesx($source);
 		  			      $hauteur_s = imagesy($source);
 
-		  			      $destination = imagecreatetruecolor(50, 50);
+		  			      $destination = imagecreatetruecolor(100, 100);
                           $miniban = $id."-min-".time().".".$extension;
-		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  			      imagejpeg($destination , "./photos/".$miniban);
 
 		  			break;
@@ -338,9 +343,9 @@ switch($action)
 		  			      $largeur_s = imagesx($source);
 		  			      $hauteur_s = imagesy($source);
 
-		  			      $destination = imagecreatetruecolor(50, 50);
+		  			      $destination = imagecreatetruecolor(100, 100);
                           $miniban = $id."-min-".time().".".$extension;
-		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 50, 50, $largeur_s, $hauteur_s);
+		  			      imagecopyresampled($destination, $source, 0, 0, 0, 0, 100, 100, $largeur_s, $hauteur_s);
 		  			      imagegif($destination , "./photos/".$miniban);
 
 		  			break;
@@ -390,7 +395,7 @@ switch($action)
 	    $groupeid = (isset($_GET['g']))?$_GET['g']:"";
 	    $pseudo = isset($_POST['nouveau'])?$_POST['nouveau']:"";
 
-	       if(empty($groupe) || empty($pseudo))
+	       if(empty($groupeid) || empty($pseudo))
 	       {
 	       	header('Location:mesgroupes.php');
 	       }
@@ -409,7 +414,7 @@ switch($action)
          	 $suppmembre->bindParam(':groupe',$groupeid,PDO::PARAM_INT);
          	 $suppmembre->bindParam(':membre',$membre,PDO::PARAM_INT);
          	 $suppmembre->execute();
-         	 $suppmembre->closeCusror();
+         	 $suppmembre->closeCursor();
 
          	 $_SESSION['flash']['success'] = "Membre Supprimmer avec succes";
          	 header('Location:voirgroupe.php?g='.$groupeid);
