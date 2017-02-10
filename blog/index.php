@@ -1,106 +1,121 @@
 <?php
-
-session_start();
-
-$balises = true;
-$titre = 'Blog du Site du Savoir';
+$titre="Blog | SiteduSavoir.com";
+include("../includes/session.php");
 include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
-
 ?>
-<p id="fildariane"><i> Vous etes ici </i> : <a href="../index.php">Accueil </a> --> <a href="./index.php">Blog </a>
+
+<p id="fildariane"> <i><a href="../index.php">Accueil </a> --> <a href="index.php">Blog</a></i></p>
+
+<h2 class="titre" style="text-align:center"> Listes des Articles </h2>
 
 <?php
 
-
-if(verif_auth(MODO))
-{
-	echo '<p><a href="billet.php?action=creer">Voulez vous cree un billet</a></p>';
-}
-
-$requete = $bdd->query('SELECT datebillet,billets.billet_id,billet_titre,billet_contenu,billet_logo FROM billets ORDER BY billet_id DESC');
-
-if($requete->rowcount() > 0)
-{
-   while ($billet = $requete->fetch())
-   {
-
-   	$article = $billet['billet_id'];
-
-     echo '<div class="billet"> 
-                <ul>';
-
-                 if(verif_auth(INSCRIT))
-                  {
-                    echo'
-                  <li> 
-                     <a href="billet.php?action=comment&billet='.$billet['billet_id'].'"> Commenter</a>
-                  <li>';
-                  }
-
-                  if(verif_auth(MODO))
-                  {
-                    echo'
-                  <li> 
-                     <a href="billet.php?action=edit&billet='.$billet['billet_id'].'"> Editer le billet</a>
-                  <li>';
-                  }
-                   echo'
-                  <li> 
-                     <a href="billet.php?action=voir&billet='.$billet['billet_id'].'"> Voir l\'article complet</a>
-                  <li>
-                 </ul>
-                 
-                      <p ><span>'.$billet['billet_titre'].'</p>
-                      <p id="cercle" style="background:url(\'./logo/'.$billet['billet_logo'].'\') no-repeat center;"/>
-                      <p id="contenu">'.$billet['billet_contenu'].'</p>
-                 
-                 </br> ARTICLES PAR :';
-
-                 $auteur = $bdd->prepare('SELECT membre_pseudo,membres.membre_id AS membre_id FROM membres INNER JOIN auteurs ON auteurs.membre_id = membres.membre_id
-                 	WHERE auteurs.billet_id = :billet');
-                 $auteur->bindValue(':billet',$article,PDO::PARAM_STR);
-                 $auteur->execute();
-
-                 $nbre = $auteur->rowCount();
-                 
-                 $i=0;
-
-                 while($auteurs = $auteur->fetch())
-                 {
-                        
-                     	echo '<a href="../forum/voirprofil.php?action=consulter&m='.$auteurs['membre_id'].'"><span id="auteur">'.' '.$auteurs['membre_pseudo'].'</span></a>';
-
-                      $i = $i+1;
-                      
-                      if($i < $nbre AND $nbre > 0)
-
-                           echo '  et';
-                     
-                 }
-                 
-            	echo '</div>';
-   }
-
-}
-
-else
-{
-	echo '<p> Aucun billet trouver </p>';
+$page = (!empty($_GET['page']))?$_GET['page']:1;
+$articles_par_page = 20 ;
+$req = $bdd->query('SELECT COUNT(*) AS nbr_articles FROM articles');
+$nombres_articles = $req->fetch();
+$nombres_articles = $nombres_articles["nbr_articles"];
 
 
+$req->closeCursor();
 
-	if(verif_auth(MODO))
-	{
-     echo '<a href="billet.php?action=creer"> Creer Le premier billet </a>';
-	}
-}
+$nbre_pages = ceil($nombres_articles / $articles_par_page);
+
 ?>
 
-</div>
-</body>
-</html>
+
+<p class="page">
+<?php
+
+for($i = 1 ; $i <= $nbre_pages ; $i++)
+{
+	if($i == $page)
+	{
+		echo '<strong>'.$i.'</strong>';
+	}
+	else{
+		echo ' <a href="index.php?page='.$i.'</a> ';
+	}
+
+}
+   
+?>
+
+</p>
+
+<?php
+
+if(verif_auth(MODO))
+	echo '<p><a href="debuterarticle.php">Ecrire un article </a></p>';
 
 
+
+$premierarticle = ($page - 1) * $articles_par_page ;
+
+$req = $bdd->prepare('SELECT articles_titre,articles.articles_id, articles_banniere ,membre_pseudo,membres.membre_id,cat_nom 
+	                  FROM articles
+	                  LEFT JOIN articles_par
+	                  ON articles.articles_id = articles_par.articles_id
+	                  LEFT JOIN membres 
+	                  ON membres.membre_id = articles_par.membre_id
+	                  LEFT JOIN categorie
+	                  ON categorie.cat_id = articles.articles_cat
+	                  ORDER BY articles_date,articles_cat
+	                  LIMIT :premier , :nombres');
+
+$req->bindParam(':premier',$premierarticle, PDO::PARAM_INT);
+$req->bindParam(':nombres',$articles_par_page,PDO::PARAM_INT);
+
+$req->execute();
+
+if($req->rowCount() > 0)
+{
+
+	while($article = $req->fetch())
+	{
+	  
+	  echo 
+	      '<div class="tutos">
+	            <div class="banniere">
+	                <img src="articles_ban/'.$article['articles_banniere'].'" alt="banniere"/>
+	            </div>
+	            <div class="tutos_infos">
+	               <h3 class="tuto_titre" style="color:#2b8bad;"><a href="lirearticle.php?&article='.$article['articles_id'].'">'.htmlspecialchars($article['articles_titre']).'</a></h3>
+	               <span> Par <a href="../forum/voirprofil.php?action=consulter&m='.$article['membre_id'].'">'.$article['membre_pseudo'].'</a></span><span>'.$article['cat_nom'].'</span>
+	            </div>  
+
+
+	       </div>';
+    }
+}
+else
+{
+	
+        echo '<p>  Il n y \' a aucun articles actuelement Sur le site
+	           <p>';
+}
+
+?>
+
+<p class="page">
+
+<?php
+
+for($i = 1 ; $i <= $nbre_pages ; $i++)
+{
+	if($i == $page)
+	{
+		echo '<strong>'.$i.'</strong>';
+	}
+	else{
+		echo ' <a href="index.php?page='.$i.'</a> ';
+	}
+
+}
+   
+?>
+
+</p>
