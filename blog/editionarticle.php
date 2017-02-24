@@ -35,17 +35,33 @@ $req->execute();
 $article = $req->fetch();
 
 ?>
-<p id="fildariane"><i><a href="../index.php">Accueil </a>--><a href="./index.php"> Blog </a>-->Edition de Article </i></p>
-<h2 class="titre" style="text-align: center;"> Editer un Article </h2>
-<div class="edit-article">
-    <form action="" method="POST">
-	     <?php
 
+<div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Edition Article</span> </li>
+         </ul>
+  </div>
+
+  <div class="page">
+
+ <?php 
+ 
+ if(empty($_POST))
+ {
+
+?>
+
+<h1 class="titre"> Editer un Article </h1>
+	<div class="formulaire formulaire-edition">
+	    <form action="" method="POST">
+
+        <?php
 	     echo '<div class="input">
+	          <label for="titre"></label>
 	          <input type="text" name="titre" value="'.$article['articles_titre'].'" required />
 	         </div>
               <input type="hidden" name="article" value="'.$art.'"/>
-	         <div>
+	         <div class="textarea">
 	              <textarea name="intro" required>'.$article['articles_intro'].'</textarea>
 	         </div>';
 
@@ -55,22 +71,22 @@ $article = $req->fetch();
 
 	     while($a = $requete->fetch())
 	     {
-	     	echo '<div class="partie>
-	     	               <div class="input">
-	     	                    <h2>'.$a['parties_titre'].'</h2>
-	     	                    <ul>
-	     	                        <li> <a href="editerpartie.php?partie='.$a['parties_id'].'&action=edit&article='.$art.'"> Editer </a> </li>
-	     	                        <li> <a href="editerpartie.php?partie='.$a['parties_id'].'&action=sup&article='.$art.'"> Supprimer </a> </li>
-	     	                    </ul>
-	     	               </div>
+	     	echo '<div class="partie">
+	     	               
+	     	                    <h3 class="titre titre-partie">'.$a['parties_titre'].'</h3>
 
-	     	               <div class="textarea">
-	     	                   <p>'.htmlspecialchars($a['parties_contenu']).'</p>
+	     	                    <div class="partie-text">
+	     	                    <ul>
+	     	                        <li> <a href="editerpartie.php?partie='.$a['parties_id'].'&action=edit&article='.$art.'"><span>Editer</span><img src="../images/icones/edit.png"/></a> </li>
+	     	                        <li> <a href="editerpartie.php?partie='.$a['parties_id'].'&action=sup&article='.$art.'"> <span>Delete</span><img src="../images/icones/edit.png"/></a> </li>
+	     	                    </ul>
+	     	                    <p>'.htmlspecialchars($a['parties_contenu']).'</p>
 	     	               </div>
+	     
 	     	      </div>';
 	     }
 
-	     echo '<div>
+	     echo '<div class="textarea">
 	              <textarea name="conc" required>'.htmlspecialchars($article['articles_conc']).'</textarea>
 	         </div>';
 
@@ -91,14 +107,19 @@ $article = $req->fetch();
 		    </select>
 	    </div>
 
-	    <div class="valid">
-	       <input type="submit" value="Envoyer" />
-	   </div>
+	        <div class="submit submit-tuto">
+		       <input name="validation" type="submit" value="Brouillon" />
+		   </div>
+
+		    <div class="submit submit-tuto">
+		       <input type="submit" value="validation" />
+		   </div>
 
     </form>
 </div>
 
-<div class="Modification">
+<div class="modification">
+<span class="modification-entete">Modification </span>
     <ul>
       <?php
 
@@ -111,7 +132,9 @@ $article = $req->fetch();
 
 <?php
 
-if(!empty($_POST))
+}
+
+else
 {
    $titre = (isset($_POST['titre']))?$_POST['titre']:"";
    $introduction = (isset($_POST['intro']))?$_POST['intro']:"";

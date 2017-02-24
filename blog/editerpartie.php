@@ -1,6 +1,6 @@
 <?php
 
-$titre="Traitement | SiteduSavoir.com";
+$titre="Edition partie | SiteduSavoir.com";
 include ("../includes/session.php");
 include("../includes/identifiants.php");
 include("../includes/debut.php");
@@ -23,6 +23,14 @@ if(empty($partie) || empty($art) || empty($action))
 	header("Location:./index.php");
 }
 
+echo '<div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./editionarticle.php?article=<?php echo $art;?>"> Edition Article</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Edition partie </span></li>
+         </ul>
+  </div>
+ <div class="page">';
+
+
 switch ($action) {
 
 	case 'edit':
@@ -39,20 +47,28 @@ switch ($action) {
 
 			$parties = $req->fetch();
 		
-			echo '<form method="POST" action="editerpartie.php?action=edit&article='.$art.'&partie='.$partie.'">
-			     <div class="titre">
-			          <input type="text" name="titre" value="'.$parties['parties_titre'].'"/>
-			     </div>
+			echo '<h1 class="titre">Editer partie </h1>
 
-			     <div class="textarea">
-			         <textarea name="contenu">'.$parties['parties_contenu'].'</textarea>
-			     </div>
+			<div class="formulaire formulaire-tuto">
 
-			    <div class="submit">
-			         <input type="submit" value="Editer"/>
-			    </div>
+				<form method="POST" action="editerpartie.php?action=edit&article='.$art.'&partie='.$partie.'">
+				     <div class="input input-tuto">
+				          <label for="titre"></label>
+				          <input type="text" name="titre" value="'.$parties['parties_titre'].'"/>
+				     </div>
 
-			</form>';
+				     <div class="textarea textarea-tuto">
+				         <textarea name="contenu">'.$parties['parties_contenu'].'</textarea>
+				     </div>
+
+				    <div class="submit submit-tuto">
+				         <input type="submit" value="Editer"/>
+				    </div>
+
+				</form>
+			</div>
+			</div>';
+			include '../includes/footer.php';
 	   }
 	   else
 	   {

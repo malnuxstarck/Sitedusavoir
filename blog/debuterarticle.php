@@ -24,57 +24,58 @@ if(empty($_POST))
 
 
 
-	<p id="fildariane"> <i><a href="../index.php">Accueil </a> --> <a href="index.php">Blog</a>-->Nouveau Article</i></p>
+   <div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Commencer Article</span> </li>
+         </ul>
+  </div>
+  <div class="page">
 
-	<h2 class="titre" style="text-align:center"> Debuter un Article </h2>
+	<h1 class="titre"> Debuter un Article </h1>
 
-	<form method="POST" action="debuterarticle.php" enctype="multipart/form-data">
 
-		<div class="input_titre">
-		      <p class="icon">
-		         <img src="../images/icones/text.png" alt="icon"/>
-		      </p>
-		      <p>
-		        <input type="text" name="titre" placeholder="Le titre du Article" required />
-		      </p>  
-		</div>
+	<div class="formulaire formulaire-tuto">
 
-		<div class="textarea-titre">
-		      <textarea class="textarea" name="intro" required >Votre introduction</textarea>
-		</div>
+		   <form method="POST" action="debuterarticle.php" enctype="multipart/form-data">
 
-		<div class="textarea-titre">
-		      <textarea class="textarea" name="conc" required >Votre conclusion </textarea>
-		</div>
+			<div class="input input-tuto">
+			      <label for="titre"></label>
+			        <input type="text" name="titre" placeholder="Le titre du Article" required />
+			</div>
 
-		<div class="input_fil">
-		      <p>
-		        <input type="file" name="banniere"/>
-		      </p>
-		      <p>
-		        Nb/ En cas d'erreur d'envoie de fichier , ou de non renseignement une banniere a defaut vous est donner.
-		        vous pouvez ensuite modifier celle ci :D
-		      </p>  
-		</div>
+			<div class="textarea textarea-tuto">
+			      <textarea name="intro" required >Votre introduction</textarea>
+			</div>
 
-		<div class="select">
-		    <select name="cat">
-		           <?php
+			<div class="textarea textarea-tuto">
+			      <textarea  name="conc" required >Votre conclusion </textarea>
+			</div>
 
-		           while($cat = $req->fetch())
-		           {
-		              echo '<option value="'.$cat['cat_id'].'">'.$cat['cat_nom'].'</option>';
-		           }
+			<div class="input input-tuto">
+			      <label for="banniere"></label>
+			         <input type="file" name="banniere"/>
+			</div>
 
-		           ?>
-		    </select>
-		</div>
+			<div class="select">
+			    <select name="cat">
+			           <?php
 
-		<div class="valid">
-		     <input type="submit" value="Envoyer" />
-		</div>
+			           while($cat = $req->fetch())
+			           {
+			              echo '<option value="'.$cat['cat_id'].'">'.$cat['cat_nom'].'</option>';
+			           }
 
-	</form>
+			           ?>
+			    </select>
+			</div>
+
+			<div class="submit submit-tuto">
+			     <input type="submit" value="Envoyer" />
+			</div>
+
+		</form>
+   </div>
+   </div>		
 
 	<?php
 }
