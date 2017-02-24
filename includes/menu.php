@@ -1,102 +1,42 @@
 <?php
 
-
 echo '<body>
+           <header>
+		        <div class="header-top">
+		             <h1 class="nomSite"><a href="./index.php"> Site du Savoir </a> </h1>
+		       </div>
+		       <div class="menu">
+		             <ul class="menu-content">
+		                 <li><a href="../forum/index.php"> Forum </a></li>
+		                 <li><a href="../tutoriels/index.php"> Tutoriels </a></li>
+		                 <li><a href="../social/index.php"> Social </a></li>
+		                 <li><a href="../blog/index.php"> Blog </a></li>
+		             </ul>
+		       </div>
+		       <div class="search">
+		             <form method="post" action="search.php">
+		                   <div class="form-content">
+		                        <div class="input-search">
+		                            <input type="text" name="search" value="Rechercher">
+		                        </div>
+		                        <div class="button-search">
+		                           <button type="submit">
+		                                 <img src="../images/icones/search.png" alt="Q"/>
+		                          </button>   
+		                      </div>
+		                   </div>
+		             </form>
+		       </div>
 
-           <div id="page">
+		       <div class="suscribe">
+		             <ul class="suscribe-content">
+		                  <li><a  href="../register.php"> S\'inscrire </a></li>
+		                  <li><a href="../connexion.php"> Se connecter </a></li>
+		             </ul>
+		       </div>
+           </header>';
 
-		      <div id="banniere">
-
-		             <h1 id="titre"> Site Du Savoir </h1>
-
-		             <div id ="infos">';
-
-		             if($id)
-		             {
-		             	echo 
-
-		             	'<ul>
-			             	    <li> 
-			             	       <a href="../membre/voirmonprofil.php?id='.$id.'">Mon compte </a>
-
-			             	       <ul>
-                                          <li>
-                                               <a href="../membre/editerprofil.php?id='.$id.'">Parametres</a>
-                                          </li>
-
-                                          <li>
-                                              <a href="../membre/amis.php">Amis</a>
-                                          </li>
-
-                                          <li>
-                                               <a href="../membre/messagesprives.php">Messages</a>
-                                          </li>
-
-                                          <li>
-                                                <a href="../membre/notifications.php">Notiffications </a>
-                                          </li>
-
-                                          <li>
-                                                <a href="../membre/mestutos.php"> Mes tutos </a>
-                                          </li>
-
-                                          <li>
-                                                <a href="../deconnexion.php"> Se deconnecter </a>
-                                          </li>
-                                          
-			             	       </ul>
-
-	                           </li>
-		             	 </ul>
-
-		             	 ';
-
-		             	
-
-		             	echo '</div>';
-
-		             }
-
-		             else
-		             {
-		             	echo '</div>';
-		             }
-
-		             echo
-
-					 '<div class="menu">
-
-					    <ul>
-					        <li>
-					            <a href="../index.php"><img src="../images/accueil.png" id="accueil" alt="A"/> Accueil</a>
-					        </li>
-
-				            <li>
-				                <a href="../forum">Forum</a>
-				            </li>
-
-				            <li>
-				                 <a href="../tutoriels">Tutoriels</a>
-				            </li>
-
-							<li> 
-							     <a href="../social">Social</a>
-							</li>    
-							<li> 
-							    <a href="../blog">Blog</a>
-							</li>
-						</ul>
-
-				</div>        
-
-		     </div>';
-
-		     ?>
-
-            
-        
-          
-          <?php if (session_status() == PHP_SESSION_NONE)
+         if (session_status() == PHP_SESSION_NONE)
           session_start();
           ?>
            <?php if(isset($_SESSION['flash'])): ?>
