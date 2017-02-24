@@ -6,7 +6,12 @@
   require_once("./includes/debut.php");
   require_once("./includes/menu.php");
 
-  echo '<p><i>Vous êtes ici</i> : <a href="../index.php"> Accueil </a> --> Inscription';
+ echo '<div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li>Inscription</li>
+         </ul>
+  </div>';
+
 
   if ($id != 0)
   { 
@@ -16,39 +21,44 @@
   if (empty($_POST['pseudo'])) // Si on la variable est vide, on peut considérer qu'on est sur la page de formulaire
   {
 
-    echo '<h1 class="titre">Inscription</h1>';
-
-    echo'<form method="post" action="" enctype="multipart/form-data" id="formulaire">
+    echo '<div class="page">
+              <h1 class="titre">Inscription</h1>
+              <div class="formulaire">
+              
+                 <form method="post" action="" enctype="multipart/form-data" id="formulaire">
           
-           <p>
-             <label for="pseudo">* Pseudo </label> 
-             <input name="pseudo" type="text" id="pseudo" required />(doit contenir entre 3 et 15 caractères, sans espace) 
-           </p>
-
-           <p>  
-             <label for="password">* Mot de Passe </label>
-             <input type="password" name="password" id="password" required/> 
-           </p>
-
-           <p>
-             <label for="confirm">* Confirmer le mot de passe </label>
-             <input type="password" name="confirm" id="confirm" required/>
-           </p>
-
-           <p>
-             <label for="email">* Votre adresse Mail </label>
-             <input type="text" name="email" id="email" required/>
-           </p>
-
-           <p>
-             <label for="avatar">Choisissez votre avatar </label>
-             <input type="file" name="avatar" id="avatar"/>(Taille max : 1mo)
-           </p>
-
-           <p>Les champs précédés d\'un * sont obligatoires</p>
-           <p><input type="submit" value="Inscription"/></p>
-
-         </form>';
+                        <div class="input">
+                              <label for="pseudo"><img src="images/icones/person.png"></label>
+                              <input type="text" name="pseudo" placeholder="Votre pseudo(Sans Espace,3 a 15 caracteres)*" required />
+                         </div>
+                         <div class="input">
+                              <label for="password"><img src="images/icones/mdp.png"></label>
+                              <input type="password" name="password" placeholder="Votre mot de passe*" required />
+                         </div>
+                         <div class="input">
+                              <label for="confirm"><img src="images/icones/mdp.png"></label>
+                              <input type="password" name="confirm" placeholder="confirmation de mot de passe*" required />
+                         </div>
+                         <div class="input">
+                              <label for="email"><img src="images/icones/mail.png"></label>
+                              <input type="email" name="email" placeholder="Votre email (utilisé pour confirmation de compte)*" required />
+                         </div>
+                         <div class="input">
+                              <label for="avatar"></label>
+                              <input type="file" value="Avatar" name="avatar" placeholder="votre Avatar"/>
+                         </div>
+                         <div class="submit">
+                             
+                              <input type="submit" value="Inscrire"/>
+                         </div>
+                         <p class="apresformulaire">
+                             Les champs contenant (*) sont obligatoires , mais vous n\'etes pas obligé de fournir un avatar , il vous serra donnés un unique".
+                             Un avatar de moins d\'un mega pixel dans le cas contraire .
+                         </p>
+                </form>
+            </div>
+        </div>';
+        include "./includes/footer.php";
   }
   else
   {

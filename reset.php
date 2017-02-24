@@ -9,6 +9,7 @@
  ?>
 
 <?php
+
   if(isset($_GET['id'])  && isset($_GET['token']))
   {
 		
@@ -51,22 +52,29 @@
     exit();
 
   }
+
+
 ?>
+<div class="page">
 
-<h1> Réinitialisez votre mot de passe </h1>
+    <h1 class="titre"> Réinitialisez votre mot de passe </h1>
+    <div class="formulaire">
+      <form action="" method="POST">
 
-<form action="" method="POST">
+        <div class="input">
+          <label for="password"><span><img src="images/icones/mdp.png"/></span></label>
+          <input type="password" name="password" required placeholder="Votre nouveau Mot de passe"/>
+        </div>
 
-  <div class="form-group">
-    <label for="pseudo">Mot de passe</label>
-    <input type="password" name="password" class="form-control" />
-  </div>
+        <div class="input">
+          <label for="confirmation"><span><img src="images/icones/mdp.png"/></span> </label>
+          <input type="password" name="confirmation" required placeholder="Confirmer le mot de passe" />
+        </div>  
+      	<div class="submit">
+           <input type="submit" value="Envoyer" /> 
+        </div>
+      </form>
+   </div>  
+</div>
 
-  <div class="form-group">
-    <label for="confirmation">Confirmation de mot de passe </label>
-    <input type="password" name="confirmation" class="form-control" />
-  </div>  
-	
-  <button type="submit" class="btn btn-primary"> Envoyer </button>
-        
-</form>
+<?php include "./includes/footer.php"; ?>

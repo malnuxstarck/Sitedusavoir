@@ -4,125 +4,104 @@
 ?>
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8"/>
-  	<title>Site du Savoir | sitedusavoir.com</title>
-  	<meta name="author" content="MalnuxStrck"/>
-  	<meta name="description" content="site de partages de connaissances,site d'apprentissage"/>
-  	<link rel="stylesheet" type="text/css" href="css/style.css"/>
-  	<link rel="icon" href="logo.png"/>
-  </head>
+<head>
+  <title>Site du Savoir | SiteduSavoir.com </title>
+  <meta charset="UTF-8/">
+  <meta name="description" content="Site du Savoir , Une nouvelle communauté de programmeur sympatique, partages de connaissances et astuces"/>
+  <meta name="author" content="MalnuxStarck"/>
+  <link rel="stylesheet" href="css/style.css" type="text/css"/>
+  <link rel="icon" href="sitedusavoir.png" type="image/png"/> 
+</head>
   <?php
-    if(isset($_SESSION['level'],$_SESSION['id'],$_SESSION['pseudo']))
-    {
-      $lvl = (int)$_SESSION['level'];
-      $id = (int)$_SESSION['id'];
-      $pseudo = $_SESSION['pseudo'];
-    }
-    else
-    {
-      $lvl = 1;
-      $id = 0;
-      $pseudo = '';
-    }
-    include ('includes/constantes.php');
-    include_once('includes/menu.php');
-    include_once('includes/identifiants.php');
-    reconnected_from_cookie();
+      if(isset($_SESSION['level'],$_SESSION['id'],$_SESSION['pseudo']))
+      {
+        $lvl = (int)$_SESSION['level'];
+        $id = (int)$_SESSION['id'];
+        $pseudo = $_SESSION['pseudo'];
+      }
+      else
+      {
+        $lvl = 1;
+        $id = 0;
+        $pseudo = '';
+      }
+      include ('includes/constantes.php');
+      include_once('includes/menu.php');
+      include_once('includes/identifiants.php');
+      reconnected_from_cookie();
+
+      /* Qui est en ligne */
+      
+      $ip = ip2long($_SERVER['REMOTE_ADDR']);
+//Requête
+      $query = $bdd->prepare('INSERT INTO forum_whosonline VALUES(:id,NOW(),:ip) ON DUPLICATE KEY UPDATE online_time = NOW() , online_id = :id');
+      $query->bindValue(':id',$id,PDO::PARAM_INT);
+      $query->bindValue(':ip', $ip, PDO::PARAM_INT);
+
+      $query->execute();
+      $query->CloseCursor();
+
+
+
+
+$query=$bdd->prepare('DELETE FROM forum_whosonline WHERE online_time < SUBDATE(NOW(),INTERVAL 5 MINUTE)');
+
+$query->execute();
+$query->CloseCursor();
+
   ?>
 
-  <?php
-    if ($id)
-    {
-      $req = $bdd->prepare('SELECT membre_pseudo,membre_avatar,membre_email,membre_rang FROM membres WHERE membre_id = :id');
-      $req->execute(array('id' => $id));
-      $data = $req->fetch();
-
-      echo '<aside id="aconnexion">
-              <h2 id="connexion">'.$data['membre_pseudo'].' </h2>
-
-              <div id="avatar">
-                <img src="images/avatars/'.$data['membre_avatar'].'" alt="Pas davatar"/>
+  <div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li>
+         </ul>
+  </div>
+        <div class="page">
+              <h1 class="titre"> Bienvenue sur le Site du Savoir </h1>
+              <div class="presentation">
+                    <span class="top-btn"><a href="./forum/"> Forum </a> </span>
+                    <p class="presentation-text">
+                      Le Forum est la partie la plus communataire . 
+                      elle permet au membre du site d'y discuter , chercher de l'aide ,
+                      proposer des modifications , signaler des bugs.Plusieurs forum y sont present:
+                      On en trouve un forum dedies pour les jeux videos , un forum general , et 
+                      un forum dedie a l'informatique.
+                       
+                    <p>
+              </div>
+              <div class="presentation">
+                    <span class="top-btn"><a href="./tutoriels/"> Tutos </a></span>
+                    <p class="presentation-text">
+                      Venez nous apprendre des nouvelles choses , que vous soyez informaticien ou non,
+                      vous possedez peut etre un domaine que vous maitrisez , venez nous en faire profiter.
+                      Partager votre savoir et aider les autres a s'ameliorer.
+                       
+                    <p>
+              </div>
+              <div class="presentation">
+                    <span class="top-btn"><a href="./blog/"> Blog </a> </span>
+                    <p class="presentation-text">
+                      Le blog est une autre partie du site tres importante.
+                      Elle permet de vous tenir au courant de l'activites du site.
+                      Entre autres les nouvelles fonctionnalites apporte , les propositions d'amelioration,
+                      et notament les sortis de s versions du sites
+                       
+                    <p>
+              </div>
+              <div class="presentation">
+                    <span class="top-btn"><a href="./social/"> Social </a> </span>
+                    <p class="presentation-text">
+                     Social,Reseau social tres basique , sans aucune pretention , vous pouvez faires des 
+                     statuts , des publications , partages votre humeurs vos photos .Vous pouvez creer des groupes ,
+                     les administrer , ajouter d'autres administrateurs , publier du contenu
+                       
+                    <p>
               </div>
 
-              <p><a href="mailto:'.$data['membre_email'].'">'.$data['membre_email'].'</a><p>
-
-              <p> <a href="membre/voirmonprofil.php?id='.$id.'"> Voir son profil </a></p>
-
-              <p> <a href="membre/editerprofil.php?id='.$id.'">Editer profil </a></p>
-              <p> <a href="deconnexion.php"> Se deconnecter </a> </p>
-            </aside>';
-    }
-    else{
-  ?>
-
-  <aside id="aconnexion">
-    <h2 id="connexion"> Connexion </h2>
-    <form id="seconnecter" method="POST" action="connexion.php">
-      <p>
-         <input type="text" name="pseudo" placeholder="Pseudo"/>
-      </p>
-      <p>
-        <input type="password" name="password" placeholder="Mot de passe"/>
-      </p>
-      <p>
-        <input type="checkbox" name="souvenir"/> Se souvenir de moi
-      </p>
-      <p>
-        <input type="submit" value="Se connecter"/>
-      </p>
-    </form>
-
-    <p id="oubli">
-      <a href="oublie.php">Mot de passe perdu </a>
-    </p>
-
-    <p id="nouveau">
-      <a href="register.php"> Nouveau ? Inscrivez Vous</a>
-    </p>
-
-  </aside>
-
-  <?php
-    }
-  ?>
-
-  <div id="arianepresentation">
-  	<section id="fildariane">
-  		<i> Vous etes ici --> <a href="index.php"> Accueil </a></i>
-  	</section>
-
-  	<section id="presentation">
-  		<h1> SDS KEZAKO ? </h1>
-  	  <p>
-  			SDS ou plus communement Site Du Savoir est un site communautaire. Il a pour but de regrouper les informaticiens (debutants, intermediaires, experts, confirmés) afin de partager nos Experiences, nos savoirs faire et nos astuces.
-  		</p>
-
-  		<h1 id="but"> De quoi est composé SDS </h1>
-
-  		<p>
-  			<a href="#">Extras</a> : Section Pour l'ensemble des tutos hors informatique. </br>
-  			<a href=""/>Tutoriels</a> Pour les tutos informatiques  Astuces(Programmation,Conception, partages experiences).</br>
-        <a href="./Forum">Forum </a> Pour tous les problemes ou pour se presenter. </br> <a href="">Social</a> pour se retrouver et discuter avec des inconnus une sorte de superchat global.
-  		</p>
-  	</section>
-  </div>
-
-  <div class="reste">
-
-  <?php
-    if(verif_auth(ADMIN))
-    {
-      echo '<a href="admin/index.php">Administration</a>';
-    }
-  ?>
-
-  </div>
-
- 
-          <?php include "./includes/footer.php"; ?>
-  
-
+        </div>
+     <?php
+         include  "./includes/footer.php";
+      ?>
 
 </body>
 </html>

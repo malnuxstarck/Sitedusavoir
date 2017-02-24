@@ -44,17 +44,23 @@
 ?>    	
 
 
+<div class="page">
 
-<h1> Mot de passe oublier </h1>
+<h1 class="titre"> Mot de passe oublier </h1>
 
-<form action="" method="POST">
+<div class="formulaire">
+    <form action="" method="POST">
 
-  <div class="form-group">
-    <label for="pseudo">Email</label>
+      <div class="input">
+         <label for="email"><span><img src="images/icones/mail.png" /></label>
+         <input type="email" name="email" placeholder="Votre email (Pour verification)" />
+     </div>
 
-    <input type="email" name="email" class="form-control" />
-  </div>
- 
-  <input type="submit" class="btn btn-primary" value="Renouveler"/>
-  
-</form>
+     <div class="submit">
+           <input type="submit" class="btn btn-primary" value="Renouveler"/>
+     </div> 
+      </form>
+  </div>  
+</div>
+
+<?php include"./includes/footer.php"; ?>

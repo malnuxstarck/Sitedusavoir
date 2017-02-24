@@ -4,51 +4,61 @@
   include_once './includes/identifiants.php';
   include_once'./includes/debut.php';
   include_once './includes/menu.php';
-  echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="../index.php">Accueil </a> --> Connexion';
+
+
+echo '<div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li>Connexion</li>
+         </ul>
+  </div>';
 
   reconnected_from_cookie();
-?>
 
-<?php
-	echo '<h1 class="titre">Connexion</h1>';
 	if ($id != 0)
 	{
-?>
-	<div class="alert-danger">
-<?php
-	erreur(ERR_IS_CO);
-?>
-  </div>
 
-<?php
+	echo '<div class="alert-danger">'. erreur(ERR_IS_CO). ' </div>';
+
+
 	}
-	 $page='index.php';
-?>
 
-<?php
+
+
   if (!isset($_POST['pseudo'])) //On est dans la page de formulaire
   {
-  	echo '<form method="post" action="connexion.php" id="formulaire">
-  				  <p>
-  					  <label for="pseudo">Pseudo </label><input name="pseudo" type="text" id="pseudo" />
-  					</p>
+  	echo '<div class="page">
+              <h1 class="titre">Connexion</h1>
 
-  					<p>
-  						<label for="password">Mot de Passe </label><input type="password" name="password" id="password" />
-  					</p>
+             <div class="formulaire">
 
-  					<p>
-  						<input type="checkbox" name="souvenir"> <label for="souvenir"> Se souvenir de Moi </label>
-  					</p>
+                <form method="post" action="connexion.php">
 
-  					<p>
-  					  <input type="submit" value="Connexion"/>
-  					</p>
-  			  </form>
-  			  <a href="./register.php">Pas encore inscrit ?</a>
-  			  </div>
-  			</div>
-  		</body>
+        				         <div class="input">
+                              <label for="pseudo"><img src="images/icones/person.png" alt="p"></label>
+                              <input type="text" name="pseudo" placeholder="Votre pseudo (Sans Espace,3 a 15 caracteres)" required />
+                         </div>
+                         <div class="input">
+                              <label for="password"><img src="images/icones/mdp.png" alt="M"></label>
+                              <input type="password" name="password" placeholder="Votre mot de passe" required />
+                          </div>    
+                          <div class="checkbox">
+                                <input type="checkbox" name="souvenir"/><label>Se souvenir de moi </label>
+                         </div>    
+                         
+                         <div class="submit">
+                                <input type="submit" value="Connexion"/>
+                         </div>
+      			   </form>
+             </div>
+          <p class="apresformulaire">
+  			    <a href="./register.php">Pas encore inscrit ?</a>
+            <a href="oublie.php">Mot de passe oublier</a>
+          </p>
+        </div>';
+
+       include './includes/footer.php';
+  			
+  		echo '</body>
   	</html>';
   }
 
@@ -130,14 +140,4 @@
   	}
   	echo $message.'</div></div></body></html>';
   }
-?>
-
-<input type="hidden" name="page" value="<?php
-  if(isset($_SERVER['HTTP_REFERER'])) 
-     echo $_SERVER['HTTP_REFERER']; ?>" />
-
-<?php
-  if(isset($_POST['page']))
-   $page = htmlspecialchars($_POST['page']);
-   echo 'Cliquez <a href="./'.$page.'">ici</a> pour revenir à la page précedente';
 ?>
