@@ -1,19 +1,20 @@
 <?php
 
 include "../includes/session.php";
-
-$titre = "Editer profil | Sitedusavoir.com";
-
-
 require_once("../includes/identifiants.php");
+
+$titre = $_SESSION['pseudo'] . ' | SiteduSavoir.com ';
 
 require_once("../includes/debut.php");
 
 require_once("../includes/menu.php");
 
 
-
-echo '<p><i>Vous êtes ici</i> : <a href="../index.php"> Accueil </a> --> Editer profil de '.$pseudo ;
+echo '<div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li>'.$pseudo.'</li>
+         </ul>
+  </div>';
 
 $identifiant = (isset($_GET['id']))?$_GET['id'] :0;
 
@@ -43,80 +44,84 @@ $membre = $req->fetch();
 if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
 {
   
-        echo '<h1 class="titre">Modification Infos : '.$pseudo .'</h1>';
+        echo '<div class="page">
+                  <h1 class="titre">Modification Infos : '.$pseudo .'</h1>';
 
 
-       echo '<form method="post" action="editerprofil.php?action=1" id="formulaire">
+       echo '<div class="formulaire">
 
-             
-              <p>
-                <label for="pseudo">* Pseudo </label> 
-                <input name="pseudo" value="'.$membre['membre_pseudo'].'" type="text" id="pseudo" />(doit contenir entre 3 et 15 caractères, sans espace) 
-              </p>
+	               <form method="post" action="editerprofil.php?action=1" id="formulaire">
+		               <div class="input">
+			                <label for="pseudo"><img src="../images/icones/person.png"></label>
+			                <input name="pseudo" value="'.$membre['membre_pseudo'].'" type="text" placeholder="(doit contenir entre 3 et 15 caractères, sans espace) " />
+		              </div>
 
-              <p>  
-                   <label for="password">* Mot de Passe </label>
-                   <input type="password" name="password" id="password" required /> 
-              </p>
+		              <div class="input">  
+		                   <label for="password"><img src="../images/icones/mdp.png"></label>
+		                   <input type="password" name="password" placeholder="Entrez le mot de passe" required /> 
+		              </div>
 
-              <p>
-                  <label for="confirm">* Confirmer le mot de passe </label>
-                  <input type="password" name="confirm" id="confirm" required />
-              </p>
+		              <div class="input">
+		                  <label for="confirm"><img src="../images/icones/mdp.png"></label>
+		                  <input type="password" name="confirm" placeholder="Confirmer le mot de passe" required />
+		              </div>
+
+                       <div class="submit">
+		                    <input type="submit" value="Modifier"/>
+                       </div>
+	              </form>
+             </div>
+	             </br>
+                <div class="formulaire">
+
+		             <form method="post" action="editerprofil.php?action=2" >
+
+			              <div class="input">
+			                  <label for="localisation"><img src="../images/icones/place.png"></label>
+			                  <input type="text" value ="'.$membre['membre_localisation'].'" name="localisation" required/>
+			              </div>
+
+			              <div class="input">
+			                  <label for="email"><img src="../images/icones/mail.png"></label>
+			                  <input type="email" name="email" value="'.$membre['membre_email'].'" placeholder="Votre email" required/>
+			              </div>
+
+			              <div class="input">
+			                  <label for="siteweb"></label>
+			                  <input type="text" value="'.$membre['membre_siteweb'].'" name="siteweb" placeholder="siteweb"/>
+			              </div>
+
+			              <div class="submit">
+			                 <input type="submit" value="Modifier"/>
+			              </div>
+		            </form>
+		        </div>
+
+	            </br>
+                <div class="formulaire">
+
+		               <form method="post" action="editerprofil.php?action=3">
+
+		              <div class="textarea">
+		                 
+		                  <textarea name="signature" value="'.$membre['membre_signature'].'" >'.$membre['membre_signature'].'
+		                  </textarea>
+		              </div>
 
 
-                <input type="submit" value="Modifier"/>
+		              <p style="text-align:center;"><img src="../images/avatars/'.$membre['membre_avatar'].'" alt="pas davatar"/></p>
 
-              </form>
+		               <div class="input">
+		                  <label for="avatar"></label>
 
-             </br>
+		                  <input type="file" name="avatar" id="avatar"/>(Taille max : 1mo)
+		              </div>
 
+		      
+		      <div class="submit"><input type="submit" value="Modifier"/></div>
 
-             <form method="post" action="editerprofil.php?action=2" id="formulaire">
-
-              <p>
-                  <label for="localisation">Votre localisation </label>
-                  <input type="text" value ="'.$membre['membre_localisation'].'" name="localisation" id="localisation" required/>
-              </p>
-
-              <p>
-                  <label for="email"> Votre email </label>
-                  <input type="email" name="email" value="'.$membre['membre_email'].'" id="email" required/>
-              </p>
-
-              <p>
-                  <label for="siteweb">Votre siteweb </label>
-                  <input type="text" value="'.$membre['membre_siteweb'].'" name="siteweb" placeholder="siteweb"/>
-              </p>
-
-              <p>
-                 <input type="submit" value="Modifier"/>
-              </p>
-            </form>
-
-            </br>
-
-               <form method="post" action="editerprofil.php?action=3" id="formulaire">
-
-              <p>
-                  <label for="signature">Votre signature </label>
-                  <textarea name="signature" value="'.$membre['membre_signature'].'" rows = "10" cols="50">'.$membre['membre_signature'].'
-                  </textarea>
-              </p>
-
-
-              <p style="text-align:center;"><img src="../images/avatars/'.$membre['membre_avatar'].'" alt="pas davatar"/></p>
-
-               <p>
-                  <label for="avatar">Modifier avatar </label>
-
-                  <input type="file" name="avatar" id="avatar"/>(Taille max : 1mo)
-              </p>
-
-      <p>Les champs précédés d un * sont obligatoires</p>
-      <p><input type="submit" value="Modifier"/></p>
-
-    </form>';
+		      </form>
+		    </div> ';
  
 
 }
@@ -217,20 +222,12 @@ else
 	endswitch;
 
 
-    	
-
-			
-
-
-
-
-	
 }
-
-
+echo '</div>';
+include "../includes/footer.php";
 
 ?>
-</div>
+
 </body>
 </html>
 

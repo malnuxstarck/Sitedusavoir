@@ -9,28 +9,48 @@ include("../includes/debut.php");
 		include("../includes/menu.php");
 
 		$action = isset($_GET['action'])?htmlspecialchars($_GET['action']):'';
-		echo '<p id="fildariane"><i>Vous êtes ici</i> : <a href="../index.php">Accueil</a> --> <a href="./amis.php">Gestion des amis</a>';
+
+		
+
 		if ($id==0) 
 			erreur(ERR_IS_CO);
 		//Le titre
-
-		echo '<h1>Gestion des amis</h1><br /><br />';
-
 
 		switch($action)
 
 		{
 			case "add":
+
+		             echo '<div class="fildariane">
+		               <ul>
+		                        <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./amis.php">Gestion des amis</a>
+		                        </li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Ajouter un ami </span></li>
+		             </ul>
+               </div>
+
+               <div class="page">';
+                
+                echo '<h1 class="titre">Gestion des amis</h1><br /><br />';
+
+
 			 //On veut ajouter un ami
 				if (!isset($_POST['pseudo']))
 				{
-					echo '<form action="amis.php?action=add" method="post">
-								<p>
-									<label for="pseudo">Entrez le pseudo</label>
-									<input type="text" name="pseudo" id="pseudo" />
-									<input type="submit" value="Envoyer" />
-								</p>
-					      </form>';
+					echo '<div class="formulaire">
+					            <form action="amis.php?action=add" method="post">
+
+									<div class="input">
+										<label for="pseudo"></label>
+										<input type="text" name="pseudo" />
+									</div>
+
+									<div class="submit">
+										<input type="submit" value="Envoyer" />
+									</div>
+
+					          </form>
+				
+					 </div>';
 				}
 
 				else
@@ -119,6 +139,21 @@ include("../includes/debut.php");
 
 			case "check":
 
+
+
+
+                  echo '<div class="fildariane">
+		               <ul>
+		                        <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./amis.php">Gestion des amis</a>
+		                        </li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Confirmer demande</span></li>
+		             </ul>
+               </div>
+
+               <div class="page">';
+                
+                echo '<h1 class="titre">Gestion des amis</h1><br /><br />';
+
+
 				$add = (isset($_GET['add']))?htmlspecialchars($_GET['add']):0;
 
 				if (empty($add))
@@ -159,6 +194,8 @@ include("../includes/debut.php");
 					}
 
 					$query->CloseCursor();
+
+					echo '</table>';
 
 				}
 
@@ -237,6 +274,20 @@ include("../includes/debut.php");
 				$query->bindValue(':conf','1',PDO::PARAM_STR);
 				$query->execute();
 
+
+                echo '<div class="fildariane">
+		               <ul>
+		                        <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./amis.php">Gestion des amis</a>
+		                        </li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Listes des amis </span></li>
+		             </ul>
+               </div>
+
+               <div class="page">';
+                
+                echo '<h1 class="titre">Gestion des amis</h1><br /><br />';
+
+
+
 				echo '<table align="center">
 				<tr>
 
@@ -305,11 +356,11 @@ include("../includes/debut.php");
 				echo '<br />
 
 				<ul>
-						<li>
+						<li class="nouveau-sujet ajoutami">
 						    <a href="./amis.php?action=add">Ajouter un ami</a>
 						</li>
 
-						<li>
+						<li class="nouveau-sujet ajoutami">
 						    <a href="./amis.php?action=check"> Voir les demandes d\'ajout ('.$demande_ami.')</a>
 						</li>
 				</ul>		
@@ -317,8 +368,10 @@ include("../includes/debut.php");
 
 		}
 
+		echo '</div>';
+
+		include "../includes/footer.php";
 		?>
 
-	</div>
   </body>
 </html>

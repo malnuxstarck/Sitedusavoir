@@ -1,22 +1,21 @@
 			<?php
 			include "../includes/session.php";
 
-			$titre="Messages Privés | SiteduSavoir.com";
-			$balises = true;
-
 			include("../includes/identifiants.php");
 			include("../includes/debut.php");
-			include("../includes/bbcode.php");
-			include("../includes/menu.php");
-
-			$action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 
 			if($id == 0 || !isset($id))
 			{
 				header('Location: ../index.php');
 			}
 
+			$titre="Messages Privés | SiteduSavoir.com";
+			$balises = true;
 
+			include("../includes/bbcode.php");
+			include("../includes/menu.php");
+
+			$action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 		    switch($action) //On switch sur $action
 			{
 
@@ -25,16 +24,26 @@
 
 				//Si on veut lire un message
 
-					echo'<p id="fildariane">
-							<i>Vous êtes ici </i> : 
-							<a href="../index.php">Accueil</a> --> <a href="./messagesprives.php">Messagerie privée</a> --> Consulter un message
-					    </p>';
+					echo '<div class="fildariane">
+									         <ul>
+									              <li>
+									                <a href="../index.php">Accueil</a>
+									              </li>
+									                 <img class="fleche" src="../images/icones/fleche.png"/>
+									              <li>
+									                  <a href="./messagesprives.php">Messages prives</a>
+									              </li>
+									                 <img class="fleche" src="../images/icones/fleche.png"/>
+									              <li> Consulter message </li>  
+									         </ul>
+									  </div>';
 
 					$id_mess = (int) $_GET['id']; 
 
 					//On récupère la valeur de l'id
 
-					echo '<h1>Consulter un message</h1><br /><br />';
+					echo '<div class="page">
+					              <h1 class="titre">Consulter un message</h1>';
 					//La requête nous permet d'obtenir les infos sur ce message :
 					$query = $bdd->prepare('SELECT mp_expediteur, mp_receveur,mp_titre,mp_time, mp_text, mp_lu, membre_id, membre_pseudo, membre_avatar,
 					    membre_localisation, membre_inscrit, membre_post, membre_signature FROM mp LEFT JOIN membres ON membre_id = mp_expediteur WHERE mp_id = :id');
@@ -50,8 +59,8 @@
 						erreur(ERR_WRONG_USER);
 
 					//bouton de réponse
-					echo'<p>
-							<a href="./messagesprives.php?action=repondre&amp;dest='.$data['mp_expediteur'].'"><img src="./images/repondre.gif" alt="Répondre"title="Répondre à ce message" /></a>
+					echo'<p class="nouveau-sujet">
+							<img src="../images/icones/mail.png"/><a href="./messagesprives.php?action=repondre&amp;dest='.$data['mp_expediteur'].'">Repondre </a>
 					     </p>';
 					?>
 					<table>
@@ -114,67 +123,59 @@
 
 				//On veut répondre
 
-					echo'<p>
-					          <i>Vous êtes ici</i> : <a href="../index.php">Accueil</a> --> <a href="./messagesprives.php">Messagerie privée</a> --> Ecrire un message
-					     </p>';
+					echo '<div class="fildariane">
+									         <ul>
+									              <li>
+									                <a href="../index.php">Accueil</a>
+									              </li>
+									                 <img class="fleche" src="../images/icones/fleche.png"/>
+									              <li>
+									                  <a href="./messagesprives.php">Messages prives</a>
+									              </li>
+									                 <img class="fleche" src="../images/icones/fleche.png"/>
+									              <li><span style="color:black;"> Repondre a un message </span></li>  
+									         </ul>
+									  </div>
 
-					echo '<h1>Répondre à un message privé</h1><br /><br />';
+						<div class="page">';
+
+					echo '<h1 class="titre">Répondre à un message privé</h1>';
 
 					$dest = (int) $_GET['dest'];
+
 					?>
-					<form method="post" name="formulaire" action="./messok.php?action=repondremp&amp;dest=<?php echo $dest ?>">
-							<p>
-								    <label for="titre">Titre : </label>
-								    <input type="text" size="80" id="titre" name="titre" />
-									<br />
-									<br />
 
-									<input type="button" id="gras" name="gras" value="Gras" onClick="javascript:bbcode('[g]', '[/g]');return(false)" />
-									<input type="button" id="italic" name="italic" value="Italic"
-									onClick="javascript:bbcode('[i]', '[/i]');return(false)" />
+					 <div class="formulaire">
 
-									<input type="button" id="souligné" name="souligné" value="Souligné" onClick="javascript:bbcode('[s]','[/s]');return(false)" />
+							<form method="post" action="./messok.php?action=repondremp&amp;dest=<?php echo $dest ?>">
+									<div class="input">
+										    <label for="titre"><span>Titre</span></label>
+										    <input type="text" name="titre" />
+								    </div>		    
+											<?php include "../includes/miseenforme.php"; ?>
 
-									<input type="button" id="lien" name="lien" value="Lien"
-									onClick="javascript:bbcode('[url]', '[/url]');return(false)" />
-									<br /><br />
+									<fieldset>
+									          <legend>Message</legend>
 
-									<img src="../images/smileys/heureux.gif" title="heureux"
-									alt="heureux" onClick="javascript:smilies(':D');return(false)" />
-									<img src="../images/smileys/lol.gif" title="lol" alt="lol"
-									onClick="javascript:smilies(':lol:');return(false)" />
+									          <div class="textarea">
+									                <textarea  name="message" required>
+												
+											       </textarea>
+											 </div>
 
-									<img src="../images/smileys/triste.gif" title="triste"
-									alt="triste" onClick="javascript:smilies(':triste:');return(false)"
-									/>
+											 <div class="submit submit-tuto">
+											      <input type="submit" name="submit" value="Envoyer" />
+											</div>
 
-									<img src="../images/smileys/cool.gif" title="cool" alt="cool"
-									onClick="javascript:smilies(':frime:');return(false)" />
-
-									<img src="../images/smileys/rire.gif" title="rire" alt="rire"
-									onClick="javascript:smilies('XD');return(false)" />
-
-									<img src../images/smileys/confus.gif" title="confus"
-									alt="confus" onClick="javascript:smilies(':s');return(false)" />
-
-									<img src="../images/smileys/choc.gif" title="choc" alt="choc"
-									onClick="javascript:smilies(':O');return(false)" />
-									<img src="../images/smileys/question.gif" title="?" alt="?"
-									onClick="javascript:smilies(':interrogation:');return(false)" />
-
-									<img src="../images/smileys/exclamation.gif" title="!" alt="!"
-									onClick="javascript:smilies(':exclamation:');return(false)" />
-
-									<br /><br />
-
-									<textarea cols="80" rows="8" id="message" name="message">
+											<div class="submit submit-tuto">
+											     <input type="reset" name="Effacer" value="Effacer"/>
+											</div>
 										
-									</textarea>
-									<br />
-									<input type="submit" name="submit" value="Envoyer" />
-									<input type="reset" name="Effacer" value="Effacer"/>
-							</p>
-					</form>
+									</fieldset>
+
+							</form>
+					</div>
+
 					<?php
 
 					 break;
@@ -183,95 +184,88 @@
 				case "nouveau": 
 				//Nouveau mp
 
-					echo'<p id="fildariane">
-							<i>Vous êtes ici</i> : <a href="../index.php">Accueil </a> --> <a href="./messagesprives.php">Messagerie privée</a> -
-							-> Ecrire un message
-					    </p>';
+					echo '<div class="fildariane">
+									         <ul>
+									              <li>
+									                <a href="../index.php">Accueil</a>
+									              </li>
+									                 <img class="fleche" src="../images/icones/fleche.png"/>
+									              <li>
+									                  <a href="./messagesprives.php">Messages prives</a>
+									              </li>
+									                 <img class="fleche" src="../images/icones/fleche.png"/>
+									              <li> Consulter message </li>  
+									         </ul>
+									  </div>
+							<div class="page">';
 
-					echo '<h1>Nouveau message privé</h1><br /><br />';
+					echo '<h1 class="titre">Nouveau message privé</h1><br /><br />';
+
 					?>
-					<form method="post" action="./messok.php?action=nouveaump" name="formulaire">
 
-							<p>
+					<div class="formulaire">
 
-									<label for="to">Envoyer à : </label>
-									<input type="text" size="30" id="to" name="to" />
-									<br />
+							<form method="post" action="./messok.php?action=nouveaump" name="formulaire">
 
-									<label for="titre">Titre : </label>
-									<input type="text" size="80" id="titre" name="titre" />
-									<br /><br />
+									<div class="input">
 
-									<input type="button" id="gras" name="gras" value="Gras"
-									onClick="javascript:bbcode('[g]', '[/g]');return(false)" />
+											<label for="to"><span> A :</span></label>
+											<input type="text" name="to" />
+									</div>
+									
+									<div class="input">
 
-									<input type="button" id="italic" name="italic" value="Italic"
-									onClick="javascript:bbcode('[i]', '[/i]');return(false)" />
+											<label for="titre"><span>Titre</span></label>
+											<input type="text" size="80" id="titre" name="titre" />
+								    </div>
 
-									<input type="button" id="souligné" name="souligné"
-									value="Souligné" onClick="javascript:bbcode('[s]',
-									'[/s]');return(false)" />
+                                     	<?php include "../includes/miseenforme.php"; ?>
 
-									<input type="button" id="lien" name="lien" value="Lien"
-									onClick="javascript:bbcode('[url]', '[/url]');return(false)" />
-									<br /><br />
+                                    <fieldset>
+                                     
+                                     	<legend>Message</legend>
+	                                    <div class="textarea">
 
-									<img src="./images/smileys/heureux.gif" title="heureux"
-									alt="heureux" onClick="javascript:smilies(':D');return(false)" />
+												<textarea  name="message"></textarea>
+									    </div>			
+										
+										<div class="submit submit-tuto">
+												<input type="submit" name="submit" value="Envoyer" />
+										</div>	
 
-									<img src="./images/smileys/lol.gif" title="lol" alt="lol"
-									onClick="javascript:smilies(':lol:');return(false)" />
+										<div class="submit submit-tuto">	
 
-									<img src="./images/smileys/triste.gif" title="triste"
-									alt="triste" onClick="javascript:smilies(':triste:');return(false)"/>
-
-									<img src="./images/smileys/cool.gif" title="cool" alt="cool"
-									onClick="javascript:smilies(':frime:');return(false)" />
-
-									<img src="./images/smileys/rire.gif" title="rire" alt="rire"
-									onClick="javascript:smilies('XD');return(false)" />
-
-									<img src="./images/smileys/confus.gif" title="confus"
-									alt="confus" onClick="javascript:smilies(':s');return(false)" />
-
-									<img src="./images/smileys/choc.gif" title="choc" alt="choc"
-									onClick="javascript:smilies(':O');return(false)" />
-
-									<img src="./images/smileys/question.gif" title="?" alt="?"
-									onClick="javascript:smilies(':interrogation:');return(false)" />
-
-									<img src="./images/smileys/exclamation.gif" title="!" alt="!"
-									onClick="javascript:smilies(':exclamation:');return(false)" />
-
-									<textarea cols="80" rows="8" id="message"
-									name="message"></textarea>
-									<br />
-									<input type="submit" name="submit" value="Envoyer" />
-
-									<input type="reset" name="Effacer" value="Effacer" />
-							</p>
-					</form>
+												<input type="reset" name="Effacer" value="Effacer" />
+										</div>
+							   </fieldset>		
+							</form>
+					   </div>		
 
 					<?php
 					 break;
 					//Si rien n'est demandé ou s'il y a une erreur dans l'url
 					//On affiche la boite de mp.
 				default: 
-					echo'<p id="fildariane">
-					<i>Vous êtes ici</i> : <a href="../index.php">Accueil</a> -->
-					<a href="./messagesprives.php">Messagerie privée</a>';
 
-					echo '<h1 class="titre">Messagerie Privée</h1><br /><br />';
+					echo '<div class="fildariane">
+					         <ul>
+					            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./messagesprives.php">Messages prives </a></li>
+					         </ul>
+                          </div>
 
-					$query=$bdd->prepare('SELECT mp_lu, mp_id, mp_expediteur, mp_titre, mp_time,
+                            <div class="page">';
+
+					echo '<h1 class="titre">Messagerie Privée</h1><br />';
+
+					$query = $bdd->prepare('SELECT mp_lu, mp_id, mp_expediteur, mp_titre, mp_time,
 					membre_id, membre_pseudo
 					FROM mp
 					LEFT JOIN membres ON mp.mp_expediteur = membres.membre_id
 					WHERE mp_receveur = :id ORDER BY mp_id DESC');
 					$query->bindValue(':id',$id,PDO::PARAM_INT);
 					$query->execute();
-					echo'<p><a href="./messagesprives.php?action=nouveau">
-					<img src="./images/nouveau.gif" alt="Nouveau" title="Nouveau message" />
+
+					echo'<p class="nouveau-sujet"><img src="../images/icones/mail.png"/><a href="./messagesprives.php?action=nouveau">Nouveau
 					</a></p>';
 
 					if ($query->rowCount()>0)
@@ -372,6 +366,7 @@
 			?>
 
 	    </div>
+	    <?php include "../includes/footer.php"; ?>
 	</body>
 </html>
 
