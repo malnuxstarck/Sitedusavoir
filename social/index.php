@@ -81,7 +81,7 @@ else
          <section class="top">
                  <form action="statutok.php?action=new" method="POST" enctype="multipart/form-data">
 
-                 <span class="avatar"><img src="../images/avatar_min/'.$membre['membre_avatar_mini'].'" alt="pas davatar"/></span>
+                 <span class="avatar"><img src="../images/avatars/'.$membre['membre_avatar_mini'].'" alt="pas davatar"/></span>
                  <div class="textarea">
                     <textarea name="statut">Votre statut </textarea>
                  </div>

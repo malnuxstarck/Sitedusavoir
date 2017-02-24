@@ -1,4 +1,4 @@
-<?php
+.php<?php
 
 $titre="Voir Groupe | SiteduSavoir.com";
 include ("../includes/session.php");
@@ -23,6 +23,8 @@ if(empty($groupeid))
 	header('Location:./index.php');
 
 }
+
+
 
 $groupeinfo = $bdd->prepare('SELECT * FROM social_groupes 
 	                         JOIN social_gs_membres 
