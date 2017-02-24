@@ -1,6 +1,6 @@
 <?php
 
-$titre="Traitement | SiteduSavoir.com";
+$titre="Edition partie | SiteduSavoir.com";
 include ("../includes/session.php");
 include("../includes/identifiants.php");
 include("../includes/debut.php");
@@ -23,6 +23,13 @@ if(empty($partie) || empty($tuto) || empty($action))
 	header("Location:./index.php");
 }
 
+echo '<div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Tutoriels</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./editiontuto.php?tuto=<?php echo $tuto;?>"> Edition tuto</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Edition partie </span></li>
+         </ul>
+  </div>
+ <div class="page">';
+
 switch ($action) {
 
 	case 'edit':
@@ -41,20 +48,26 @@ switch ($action) {
 
 			$parties = $req->fetch();
 		
-			echo '<form method="POST" action="editerpartie.php?action=edit&tuto='.$tuto.'&partie='.$partie.'">
-			     <div class="titre">
+			echo ' <h1 class="titre"> Edition de partie </h1>
+			   <div class="formulaire formulaire-tuto">
+			          <form method="POST" action="editerpartie.php?action=edit&tuto='.$tuto.'&partie='.$partie.'">
+			     <div class="input input-tuto">
+			          <label for="titre"></label>
 			          <input type="text" name="titre" value="'.$parties['parties_titre'].'"/>
 			     </div>
 
-			     <div class="textarea">
-			         <textarea name="contenu">'.$parties['parties_contenu'].'</textarea>
+			     <div class="textarea textarea-tuto">
+			         <textarea name="contenu">'.trim($parties['parties_contenu']).'</textarea>
 			     </div>
 
-			    <div class="submit">
+			    <div class="submit submit-tuto">
 			         <input type="submit" value="Editer"/>
 			    </div>
 
-			</form>';
+			</form>
+		</div>
+		</div>';
+		include '../includes/footer.php';
 	   }
 	   else
 	   {
@@ -90,8 +103,8 @@ switch ($action) {
 
 	        echo '<p>
                        Etes vous sur de vouloir supprimmer cette partie ?
-                       <p><a href="editerpartie.php?action=sup&tuto='.$tuto.'&partie='.$partie.'&sur=1">Oui</a></p>
-                       <p><a href="editiontuto.php?tuto='.$tuto.'">Non</a></p>
+                       <p class="nouveau-sujet" style="text-align:center;background:#e51c23;"><a href="editerpartie.php?action=sup&tuto='.$tuto.'&partie='.$partie.'&sur=1">Oui</a></p>
+                       <p class="nouveau-sujet"  style="text-align:center;" ><a href="editiontuto.php?tuto='.$tuto.'">Non</a></p>
 	              </p>';
 
 	         if(isset($_GET['sur']))

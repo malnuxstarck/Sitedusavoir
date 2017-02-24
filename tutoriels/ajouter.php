@@ -9,11 +9,6 @@ include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
-?>
-
-<p id="fildariane"><i><a href="../index.php">Accueil </a>--><a href="./index.php"> Tutoriels </a>-->Ajout Auteur/Partie </i></p>
-
-<?php
 
 
 
@@ -26,23 +21,40 @@ include("../includes/menu.php");
 		header('Location:index.php');
 	}
 
+
+	?>
+
+	<div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Tutoriels</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./editiontuto.php?tuto=<?php echo $tuto;?>"> Edition tuto</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Auteur/Partie</span> </li>
+         </ul>
+  </div>
+ <div class="page">
+
+
+	<?php
+
 	switch($action)
 	{
 		case "auteur":
 	    ?>
 	      <h2 class="titre"> Ajouter un auteur </h2>
 
-	    <form action="ajouterok.php?action=auteur&tuto=<?php echo $tuto;?>" method="POST">
+	      <div class="formulaire formulaire-tuto">
 
-	          <div class="input">
-	               <input type="text" name="auteur" required/>
-	          </div>
+              <form action="ajouterok.php?action=auteur&tuto=<?php echo $tuto;?>" method="POST">
 
-	          <div class="input">
-	               <input type="submit" value="Ajout Auteur" required/>
-	          </div>
+		          <div class="input input-tuto">
+		               <label for="auteur"><img src="../images/icones/person.png"></label>
+		               <input type="text" name="auteur" required/>
+		          </div>
 
-	    </form>
+		          <div class="submit submit-tuto">
+		               <input type="submit" value="Ajout Auteur" required/>
+		          </div>
+
+	          </form>
+	     </div>    
 
 	   <?php
 
@@ -52,24 +64,32 @@ include("../includes/menu.php");
 	 
 	   	?>
 	   	<h2 class="titre"> Ajouter une partie </h2>
-	   	 <form action="ajouterok.php?action=partie&tuto=<?php echo $tuto;?>" method="POST">
-	  
-		   	   <div class="">
-		   	        <input type="text" name="partie_titre"/>
-		   	   </div>
 
-		   	   <div class="">
-		   	        <textarea class="textarea" name="contenu">Le contenu de la partie</textarea>
-		   	   </div>
+	   	<div class="formulaire formulaire-tuto">
 
-		   	   <div class="input">
-	               <input type="submit" value="Ajout Partie" required>
-	          </div>
-	   	   </form>
+		   	 <form action="ajouterok.php?action=partie&tuto=<?php echo $tuto;?>" method="POST">
+		  
+			   	   <div class="input input-tuto">
+			   	        <label for="partie_titre"></label>
+			   	        <input type="text" name="partie_titre"/>
+			   	   </div>
+
+			   	   <div class="textarea textarea-tuto">
+			   	        <textarea  name="contenu">Le contenu de la partie</textarea>
+			   	   </div>
+
+			   	   <div class="submit submit-tuto">
+		               <input type="submit" value="Ajout Partie" required>
+		          </div>
+		   	   </form>
+		</div>   	   
 
 	   <?php
 
 	   break;
 	  
 	}
+
+     echo '</div>';
+	include "../includes/footer.php";
 

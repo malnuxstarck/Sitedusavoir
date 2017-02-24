@@ -7,129 +7,146 @@ include("../includes/menu.php");
 
 ?>
 
-<p id="fildariane"> <i><a href="../index.php">Accueil </a> --> <a href="index.php">Tutoriels</a></i></p>
+<div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Tutoriels</a></li>
+         </ul>
+  </div>
 
-<h2 class="titre" style="text-align:center"> Listes des Tutoriels </h2>
+ <div class="page">
 
-<?php
+	      <h2 class="titre"> Listes des Tutoriels </h2>
 
-$page = (!empty($_GET['page']))?$_GET['page']:1;
-$tutos_par_page = 20 ;
-$req = $bdd->query('SELECT COUNT(*) AS nbr_tuto FROM tutos');
-$nombres_tutos = $req->fetch();
-$nombres_tutos = $nombres_tutos['nbr_tuto'];
+	<?php
 
-
-$nbre_pages = ceil($nombres_tutos / $tutos_par_page);
-
-
-?>
+	$page = (!empty($_GET['page']))?$_GET['page']:1;
+	$tutos_par_page = 20 ;
+	$req = $bdd->query('SELECT COUNT(*) AS nbr_tuto FROM tutos');
+	$nombres_tutos = $req->fetch();
+	$nombres_tutos = $nombres_tutos['nbr_tuto'];
 
 
-<p class="page">
-<?php
+	$nbre_pages = ceil($nombres_tutos / $tutos_par_page);
 
-for($i = 1 ; $i <=$nbre_pages ; $i++)
-{
-	if($i == $page)
+
+	?>
+
+
+	<p class="pagination">
+	<?php
+
+	for($i = 1 ; $i <=$nbre_pages ; $i++)
 	{
-		echo '<strong>'.$i.'</strong>';
+		if($i == $page)
+		{
+			echo '<strong>'.$i.'</strong>';
+		}
+		else
+		{
+			echo ' <a href="index.php?page='.$i.'">'.$i.'</a> ';
+		}
+
+	}
+	   
+	?>
+
+	</p>
+
+	<?php
+
+	if($id)
+		echo '<p class="nouveau-sujet"><img src="../images/icones/new.png"/><a href="debutertuto.php"> Ecrire Un tuto </a></p>';
+
+
+
+	$premiertutos = ($page - 1) * $tutos_par_page ;
+
+	$req = $bdd->prepare('SELECT tutos_titre ,tutos.tutos_id, tutos_banniere,cat_nom 
+		                  FROM tutos
+		                  LEFT JOIN categorie
+		                  ON categorie.cat_id = tutos.tutos_cat
+		                  ORDER BY tutos_date,tutos_cat
+		                  LIMIT :premier , :nombres');
+
+	$req->bindParam(':premier',$premiertutos, PDO::PARAM_INT);
+	$req->bindParam(':nombres',$tutos_par_page,PDO::PARAM_INT);
+
+	$req->execute();
+
+	if($req->rowCount() > 0)
+	{
+
+
+		while($tuto = $req->fetch())
+		{
+		  
+		  echo 
+		      '<div class="tutos">
+		            <div class="banniere">
+		                <img src="tutos_ban/'.$tuto['tutos_banniere'].'" alt="banniere"/>
+		            </div>
+		            <div class="tutos-infos">
+		               <h3 class="titre-tuto"><a href="liretuto.php?&tuto='.$tuto['tutos_id'].'">'.htmlspecialchars($tuto['tutos_titre']).'</a></h3>';
+		               
+                        $auteurs = $bdd->prepare('SELECT membre_pseudo , membres.membre_id 
+                        	                      FROM tutos_par JOIN membres 
+                        	                      ON membres.membre_id = tutos_par.membre_id WHERE tutos_id = :tuto');
+
+                        $auteurs->execute(array('tuto' => $tuto['tutos_id']));
+
+                        while($auteur = $auteurs->fetch())
+                        {
+		                 echo '<span class="auteur-tuto"><a href="../forum/voirprofil.php?action=consulter&m='.$auteur['membre_id'].'">'.$auteur['membre_pseudo'].'</a></span>';
+                        }
+
+		               echo '<span class="cat-tuto">'.$tuto['cat_nom'].'</span>
+
+		            </div>  
+
+
+		       </div>';
+	    }
 	}
 	else
 	{
-		echo ' <a href="index.php?page='.$i.'">'.$i.'</a> ';
-	}
+		if($id)
+		{
+	        echo '<p>  Il n y \' a aucun tutos actuelement Sur le site
+		           <p>';
+		           
+		  }
+		  else
+		  {
+		  	echo '<p>  Il n y \' a aucun tutos actuelement  Vous devez etre inscrit pour rediger un tuto
+		           <p>
+		           <a href="../register.php">S\'inscrire</a>
+		         </p>
+		         <p> Ou se connecter <a href="../connexion.php">Se connecter </a>
+		      </p>';
 
-}
-   
-?>
+		  }
+	}    
 
-</p>
+	?>
 
-<?php
+	<p class="pagination">
 
-if($id)
-	echo '<p><a href="debutertuto.php"> Ecrire Un tuto </a></p>';
+	<?php
 
-
-
-$premiertutos = ($page - 1) * $tutos_par_page ;
-
-$req = $bdd->prepare('SELECT tutos_titre ,tutos.tutos_id, tutos_banniere ,membre_pseudo,membres.membre_id,cat_nom 
-	                  FROM tutos
-	                  LEFT JOIN tutos_par
-	                  ON tutos.tutos_id = tutos_par.tutos_id
-	                  LEFT JOIN membres 
-	                  ON membres.membre_id = tutos_par.membre_id
-	                  LEFT JOIN categorie
-	                  ON categorie.cat_id = tutos.tutos_cat
-	                  ORDER BY tutos_date,tutos_cat
-	                  LIMIT :premier , :nombres');
-
-$req->bindParam(':premier',$premiertutos, PDO::PARAM_INT);
-$req->bindParam(':nombres',$tutos_par_page,PDO::PARAM_INT);
-
-$req->execute();
-
-if($req->rowCount() > 0)
-{
-
-
-	while($tuto = $req->fetch())
+	for($i = 1 ; $i <= $nbre_pages ; $i++)
 	{
-	  
-	  echo 
-	      '<div class="tutos">
-	            <div class="banniere">
-	                <img src="tutos_ban/'.$tuto['tutos_banniere'].'" alt="banniere"/>
-	            </div>
-	            <div class="tutos_infos">
-	               <h3 class="tuto_titre" style="color:#2b8bad;"><a href="liretuto.php?&tuto='.$tuto['tutos_id'].'">'.htmlspecialchars($tuto['tutos_titre']).'</a></h3>
-	               <span> Par <a href="../forum/voirprofil.php?action=consulter&m='.$tuto['membre_id'].'">'.$tuto['membre_pseudo'].'</a></span><span>'.$tuto['cat_nom'].'</span>
-	            </div>  
+		if($i == $page)
+		{
+			echo '<strong>'.$i.'</strong>';
+		}
+		else{
+			echo ' <a href="index.php?page='.$i.'"">'.$i.'</a> ';
+		}
 
-
-	       </div>';
-    }
-}
-else
-{
-	if($id)
-	{
-        echo '<p>  Il n y \' a aucun tutos actuelement Sur le site
-	           <p>';
-	           
-	  }
-	  else
-	  {
-	  	echo '<p>  Il n y \' a aucun tutos actuelement  Vous devez etre inscrit pour rediger un tuto
-	           <p>
-	           <a href="../register.php">S\'inscrire</a>
-	         </p>
-	         <p> Ou se connecter <a href="../connexion.php">Se connecter </a>
-	      </p>';
-
-	  }
-}    
-
-?>
-
-<p class="page">
-
-<?php
-
-for($i = 1 ; $i <= $nbre_pages ; $i++)
-{
-	if($i == $page)
-	{
-		echo '<strong>'.$i.'</strong>';
 	}
-	else{
-		echo ' <a href="index.php?page='.$i.'"">'.$i.'</a> ';
-	}
+	   
+	?>
 
-}
-   
-?>
-
-</p>
+	</p>
+</div>
+<?php include "../includes/footer.php"; ?>

@@ -20,62 +20,70 @@ if(empty($_POST))
  ?>
 
 
-	<p id="fildariane"> <i><a href="../index.php">Accueil </a> --> <a href="index.php">Tutoriels</a>-->Nouveau tutoriel</i></p>
+   <div class="fildariane">
+         <ul>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Tutoriels</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Commencer tuto</span> </li>
+         </ul>
+  </div>
 
-	<h2 class="titre" style="text-align:center"> Debuter un tutoriel </h2>
+  <div class="page">
 
-	<form method="POST" action="debutertuto.php" enctype="multipart/form-data">
 
-		<div class="input_titre">
-		      <p class="icon">
-		         <img src="../images/icones/text.png" alt="icon"/>
-		      </p>
-		      <p>
-		        <input type="text" name="titre" placeholder="Le titre du tutoriel" required />
-		      </p>  
-		</div>
+		<h1 class="titre"> Debuter un tutoriel </h1>
 
-		<div class="textarea-titre">
-		      <textarea class="textarea" name="intro" required >Votre introduction</textarea>
-		</div>
+		<div class="formulaire formulaire-tuto">
 
-		<div class="textarea-titre">
-		      <textarea class="textarea" name="conc" required >Votre conclusion </textarea>
-		</div>
+			<form method="POST" action="debutertuto.php" enctype="multipart/form-data">
 
-		<div class="input_fil">
-		      <p>
-		        <input type="file" name="banniere"/>
-		      </p>
-		      <p>
-		        Nb/ En cas d'erreur d'envoie de fichier , ou de non rensiegnement une banniere a defaut vous est donner.
-		        vous pouvez ensuite modifier celle ci :D
-		      </p>  
-		</div>
+				<div class="input input-tuto">
+				      <label for="titre">
+				      </label>
+				     <input type="text" name="titre" placeholder="Le titre du tutoriel" required />
+				     
+				</div>
 
-		<div class="select">
-		    <select name="cat">
-		           <?php
-	                   $req = $bdd->query('SELECT cat_id , cat_nom 
-		                                   FROM categorie
-		                                   ORDER BY cat_id');
+				<div class="textarea textarea-tuto">
+				      <textarea  name="intro" required >Votre introduction</textarea>
+				</div>
 
-		           while($cat = $req->fetch())
-		           {
-		              echo '<option value="'.$cat['cat_id'].'">'.$cat['cat_nom'].'</option>';
-		           }
+				<div class="textarea textarea-tuto">
+				      <textarea  name="conc" required >Votre conclusion </textarea>
+				</div>
 
-		           ?>
-		    </select>
-		</div>
+				<div class="input input-tuto">
+				      <label for="banniere">
+				      </label>
+				        <input type="file" name="banniere"/>
+				    
+				</div>
 
-		<div class="valid">
-		     <input type="submit" value="Envoyer" />
-		</div>
+				<div class="select">
+				    <select name="cat">
+				           <?php
+			                   $req = $bdd->query('SELECT cat_id , cat_nom 
+				                                   FROM categorie
+				                                   ORDER BY cat_id');
 
-	</form>
+				           while($cat = $req->fetch())
+				           {
+				              echo '<option value="'.$cat['cat_id'].'">'.$cat['cat_nom'].'</option>';
+				           }
+
+				           ?>
+				    </select>
+				</div>
+
+				<div class="submit submit-tuto">
+				     <input type="submit" value="Envoyer" />
+				</div>
+
+			</form>
+	   </div>	
+    </div>
 
 	<?php
+
+	include "../includes/footer.php";
 }
  
 else
