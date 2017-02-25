@@ -211,7 +211,7 @@ else
 
          
 
-                 echo'<p class="derniermessage">
+                 echo'<p class="derniermessagef">
 
                           <span>Dernier message </span>
 

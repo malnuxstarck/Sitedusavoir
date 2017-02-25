@@ -4,7 +4,7 @@
 
  /******************************* Par defaut *******************************
  /*******************************     CSS    ******************************/
-/*
+
 @font-face {
 	font-family: "Euphemia";
     src: url("//db.onlinewebfonts.com/t/5c81010800152b142ea357ccbee8c40e.eot");
@@ -28,7 +28,8 @@
 
 
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700);
-*/
+
+
 
  body,html
  {
@@ -1004,13 +1005,13 @@ label span
 	font-family: Gadugi;
 }
 
-.derniermessage span:nth-child(1)
+.derniermessage span:nth-child(1) , .derniermessagef span:nth-child(1)
 {
 	font-size: 20px;
 	color:#247997;
 }
 
-.infossujet span:nth-child(2) a , .derniermessage span:nth-child(2) a 
+.infossujet span:nth-child(2) a , .derniermessage span:nth-child(2) a ,.derniermessagef a
 {
 	color:#1bbc9b;
 }
@@ -1105,7 +1106,7 @@ label span
 .listesforums p span
 {
 	display: block;
-	height: 30px;
+	height: 31px;
 }
 
 
@@ -1148,12 +1149,22 @@ label span
 	padding-top: 0;
 }
 
+<<<<<<< HEAD
 .nombremessages , .derniermessage , .nombresujets
 {
 	margin-left: 10px;
 }
 
 .nombremessages , .nombresujets
+=======
+.infosforum  , .nombremessages , .derniermessagef , .nombresujets
+{
+	margin-left: 5px;
+	margin-top: 1px;
+}
+
+.nombremessages ,.nombresujets
+>>>>>>> 7cb1386fad7641c9c9f5fabe16c436cc9c204344
 {
   text-align: center;
   color:#217998;	
@@ -1177,9 +1188,13 @@ label span
 	color:#217998;
 }
 
-.derniermessage
+.derniermessagef
 {
+<<<<<<< HEAD
 	width:255px;
+=======
+	width:265px;
+>>>>>>> 7cb1386fad7641c9c9f5fabe16c436cc9c204344
 }
 
 
@@ -1297,4 +1312,16 @@ footer li a
 	line-height: 35px;
 	color: blue;
 
+}
+
+
+
+/***** media queries *****/
+
+@media screen and (max-width:1366px)
+{
+	header > div
+    {
+    	margin-right:2%;
+    }
 }
