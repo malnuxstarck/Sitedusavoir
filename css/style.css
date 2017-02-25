@@ -1148,12 +1148,12 @@ label span
 	padding-top: 0;
 }
 
-.infosforum  , .nombremessages , .derniermessage , .nombresujets
+.nombremessages , .derniermessage , .nombresujets
 {
-	margin-left: 5px;
+	margin-left: 10px;
 }
 
-.nombremessages , .derniermessage , .nombresujets
+.nombremessages , .nombresujets
 {
   text-align: center;
   color:#217998;	
@@ -1167,7 +1167,7 @@ label span
 
 .infosforum 
 {
-	width:365px;
+	width:360px;
 	
 }
 
@@ -1179,7 +1179,7 @@ label span
 
 .derniermessage
 {
-	width:250px;
+	width:255px;
 }
 
 
@@ -1193,7 +1193,7 @@ label span
 {
 	display: block;
 	margin-top:8px;
-	margin-left: 5px;
+	margin-left: 3px;
 }
 
 .forums span
@@ -1220,6 +1220,7 @@ label span
   font-weight: bold;
 }
 
+/**** Voir un sujet (Topic) **/
 
 
 /******* Le pied de page *****/

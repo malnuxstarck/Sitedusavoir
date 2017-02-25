@@ -185,11 +185,11 @@ else
                </p>
 
                <p class="nombresujets">
-                    <span>'.$data['forum_topic'].'</span><span> Sujets </span>
+                    <span>'.$data['forum_topic'].'</span><span style="font-weight:normal;"> Sujets </span>
                </p>
 
                <p class="nombremessages">
-                    <span>'.$data['forum_post'].'</span><span> msgs</span>
+                    <span>'.$data['forum_post'].'</span><span style="font-weight:normal;"> msgs</span>
                </p>';
 
 
