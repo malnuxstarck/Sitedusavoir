@@ -13,6 +13,7 @@ echo '<body>
 		                 <li><a href="../blog/index.php"> Blog </a></li>
 		             </ul>
 		       </div>
+
 		       <div class="search">
 		             <form method="post" action="search.php">
 		                   <div class="form-content">
@@ -28,12 +29,63 @@ echo '<body>
 		             </form>
 		       </div>
 
-		       <div class="suscribe">
-		             <ul class="suscribe-content">
-		                  <li><a  href="../register.php"> S\'inscrire </a></li>
-		                  <li><a href="../connexion.php"> Se connecter </a></li>
-		             </ul>
-		       </div>
+		       <div class="suscribe">';
+
+		          if(!$id)
+		          {
+			           echo  '<ul class="suscribe-content">
+				                  <li><a  href="../register.php"> S\'inscrire </a></li>
+				                  <li><a href="../connexion.php"> Se connecter </a></li>
+			                 </ul>';
+			      }
+			      else
+			      {
+
+			      	$query = $bdd->prepare('SELECT membre_avatar FROM membres WHERE membre_id = :id');
+			      	$query->bindParam(':id',$id , PDO::PARAM_INT);
+			      	$query->execute();
+			      	$avatar = $query->fetch();
+
+			      	$avatar = $avatar['membre_avatar'];
+
+                      echo '<div class="cercle">
+
+                                 <ul>
+
+                                   <li class="first">
+                                       <a href="../membre/voirmonprofil.php?id='.$id.'"><img src="../images/avatars/'.$avatar.'" alt="avatar"/></a>
+
+		                                 <ul> 
+		                                           <li>
+		                                               <a href="../membre/editerprofil.php?id='.$id.'">Parametres</a>
+		                                          </li>
+
+		                                          <li>
+		                                              <a href="../membre/amis.php">Amis</a>
+		                                          </li>
+
+		                                          <li>
+		                                               <a href="../membre/messagesprives.php">Messages</a>
+		                                          </li>
+
+		                                          <li>
+		                                                <a href="../membre/notifications.php">Notiffications </a>
+		                                          </li>
+
+		                                          <li>
+		                                                <a href="../membre/mestutos.php"> Mes tutos </a>
+		                                          </li>
+
+		                                          <li>
+		                                                <a href="../deconnexion.php"> Se deconnecter </a>
+		                                          </li>
+		                                 </ul>
+		                            </li>
+		                            </ul>     
+                           </div>';
+			      }
+
+		       echo '</div>
            </header>';
 
          if (session_status() == PHP_SESSION_NONE)

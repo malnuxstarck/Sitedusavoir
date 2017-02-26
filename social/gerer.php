@@ -6,7 +6,25 @@ include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
-echo '<p id="fildariane"><i><a href="../index.php">Accueil</a>--><a href="./index.php">Social</a>-->Gestion des groupes</i></p>';
+echo '<div class="fildariane">
+
+                <ul>
+                    <li>
+                        <a href="../index.php">Accueil </a>
+                    </li> <img src="../images/icones/fleche.png" class="fleche"/>
+
+                    <li>
+                        <a href="./index.php">Social </a>
+                     </li>
+
+                     <img src="../images/icones/fleche.png" class="fleche"/>
+                     <li> <span style="color:black;">Gerer mes groupes</span></li>
+
+                 </ul>      
+
+         </div>
+
+         <div class="page">';
 
 $action = isset($_GET['action'])?$_GET['action']:"";
 
@@ -27,9 +45,12 @@ switch($action)
 	case "creer":
 
 	//  Creer un nouveau groupe formulaire
-             echo '<h2> Creer un groupe </h2>';
-	echo '<form action=gererok.php?action=creer method="POST" enctype="multipart/form-data">
+             echo '<h2 class="titre"> Creer un groupe </h2>';
+	echo '<div class="formulaire">
+
+	        <form action=gererok.php?action=creer method="POST" enctype="multipart/form-data">
               <div class="input">
+                    <label for="nom"></label>
                     <input type="text" name="nom" placeholder="Le nom du groupe"  required/>
               </div>
 
@@ -38,14 +59,16 @@ switch($action)
               </div>
 
               <div class="input">
+                    <label for="banniere"></label>
                     <input type="file" name="banniere" />
               </div>
 
-              <div class="input">
+              <div class="submit">
                     <input type="submit" value="Creer" />
               </div>
              
-	    </form>';
+	    </form>
+	    </div>';
 
 	break;
 
@@ -89,7 +112,7 @@ switch($action)
         echo '<p> Il y a actuement '.$nbresmembres.' membres sur groupe </p>
               
               <h2> Administrer </h2>
-              <ul>
+              <ul class="adminlisteaction">
                   <li><a href="gerer.php?action=add&g='.$grouped['groupes_id'].'">Ajouter un membre </a></li>
                   <li><a href="gerer.php?action=suppm&g='.$grouped['groupes_id'].'">Supprimer un membres </a></li>
                   <li><a href="gerer.php?action=del&g='.$grouped['groupes_id'].'">Supprimer le groupe </a></li>
@@ -171,19 +194,24 @@ switch($action)
 	          	header('Location:mesgroupes.php');
 	          }
 	          
-	        echo '<h2> Inscrivez le pseudo du membre </h2>
+	        echo '<h2 class="titre"> Inscrivez le pseudo du membre </h2>
+	           <div class="formulaire">
 	             <form action="gererok.php?action=add&g='.$groupeid.'" method="POST">
+
 	                  <div class="input">
-                          <input type="text" name="nouveau" placeholder="Le pseudo du membre"  required/>
+                         <label for="nouveau"></label> 
+                         <input type="text" name="nouveau" placeholder="Le pseudo du membre"  required/>
                       </div>
 
-                      <div class="input">
+                      <div class="submit">
                           <input type="submit" value="Envoyer"  required/>
                       </div>
 
-	             </form>';
+	             </form>
+	           </div>';
 
 	break;
+
 	case "edit":
 	          $groupeid =(isset($_GET['g']))?$_GET['g']:"";
 
@@ -204,10 +232,12 @@ switch($action)
 
 	        $groupe = $groupeinfo->fetch();
 
-	        echo ' <h2> Edition de groupe </h2>
+	        echo ' <h2 class="titre"> Edition de groupe </h2>
+                    <div class="formulaire">
 
 	               <form method="POST action="gererok.php?action=edit&g='.$groupeid.'" enctype="multipart/form-data">
 	                    <div class="input">
+	                         <label for="nom"></label>
 	                         <input type="text" name="nom" value="'.$groupe['groupes_nom'].'" required/>
 	                    </div>
 
@@ -216,15 +246,17 @@ switch($action)
                          </div>
 
 			              <div class="input">
+			                    <label for="banniere"></label>
 			                    <input type="file" name="banniere" />
 			              </div>
 
-			              <div class="input">
+			              <div class="submit">
 			                    <input type="submit" value="Modifier" />
 			              </div>
 
 
-	              </form>';
+	              </form>
+	              </div>';
 	break;
 
 	case "suppm":
@@ -236,18 +268,20 @@ switch($action)
 	          	header('Location:mesgroupes.php');
 	     }
 
-		echo '<h2> Inscrivez le pseudo du membre </h2>
+		echo '<h2 class="titre"> Inscrivez le pseudo du membre </h2>
+                    <div class="formulaire">
 
 		             <form action="gererok.php?action=suppm&g='.$groupeid.'" method="POST">
 		                  <div class="input">
-	                          <input type="text" name="nouveau" placeholder="Lepseudo du membre"  required/>
+	                          <label for="nouveau"></label><input type="text" name="nouveau" placeholder="Lepseudo du membre"  required/>
 	                      </div>
 
-	                      <div class="input">
+	                      <div class="submit">
 	                          <input type="submit" value="Envoyer"/>
 	                      </div>
 
-		             </form>';
+		             </form>
+		           </div>';
 
 	       
 	break;
@@ -258,3 +292,5 @@ switch($action)
 
 	
 }
+echo '</div>';
+include "../includes/footer.php";

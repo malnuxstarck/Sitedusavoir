@@ -185,6 +185,16 @@ h1 a
 	border:2px solid white;
 }
 
+.suscribe li a
+{
+	display:block;
+	width:102px;
+	height: 40px;
+	font-family: Gadugi;
+    color:white;
+    font-size:16px;
+}
+
 .form-content > div
 {
    display: inline-block;
@@ -244,7 +254,7 @@ h1 a
 	margin-left: 10px;
 }
 
-.fildariane a,.fildariane span
+.fildariane a, .fildariane span
 {
 	display: block;
 	height: 35px;
@@ -687,6 +697,11 @@ label span
 	margin:30px;
 }
 
+.nouveau-sujet:hover
+{
+	background: #28a88e;
+}
+
 .nouveau-sujet a
 {
 	height: 44px;
@@ -800,6 +815,9 @@ label span
 
 /******* Espace de membre ******/
 
+
+
+
 .membre
 {
 	width:700px;
@@ -907,7 +925,7 @@ label span
 .signature
 {
 	padding:10px;
-	height: 90px;
+	height: auto;
 	border:0;
 	border-top: 2px solid #898686 ;
 	border-bottom: 2px solid #898686;
@@ -949,6 +967,86 @@ label span
 	color: #1bbc9b;
 	border: 1px solid #1bbc9b;
 	border-bottom: 3px solid #1bbc9b;;
+}
+
+
+
+/*****Membre connecter ****/
+
+.cercle 
+{
+
+
+
+}
+
+.cercle img
+{
+	display: block;
+	width:35px;
+	height:35px;
+	margin-top: 5px;
+	margin-left: 7.5px;
+}
+
+
+.cercle .first
+{
+	display:inline-block;
+	width:50px;
+	height: 50px;
+	border:1px solid #edebeb;
+	border-radius: 100%;
+	margin-top:-5px;
+	margin-right: 100px;
+	background: #edebeb;
+}
+
+.suscribe .cercle .first > a
+{
+	display: block;
+	width:50px;
+	height: 50px;
+}
+
+.cercle ul ul li  a
+{
+	display: block;
+	color: green;
+	width:150px;
+	height:40px;
+	display:block;
+	text-align:center;
+}
+
+
+
+.cercle ul ul li
+{
+	width:150px;
+	height:40px;
+	display: block;
+	color: yellow;
+	text-align:center;
+	border:1px solid green;;
+
+}
+
+.cercle ul ul
+{
+	visibility: hidden;
+	margin:0;
+	padding:0;
+	transition: visibility 0.1s ease-out;
+	margin-bottom: 50px;
+}
+
+.cercle ul li:hover > ul
+{
+	visibility:visible;
+	float: left;
+	transition: all 0.8s;
+	z-index:500;
 }
 
 
@@ -1149,14 +1247,13 @@ label span
 	padding-top: 0;
 }
 
-<<<<<<< HEAD
+
 .nombremessages , .derniermessage , .nombresujets
 {
 	margin-left: 10px;
 }
 
-.nombremessages , .nombresujets
-=======
+
 .infosforum  , .nombremessages , .derniermessagef , .nombresujets
 {
 	margin-left: 5px;
@@ -1164,7 +1261,6 @@ label span
 }
 
 .nombremessages ,.nombresujets
->>>>>>> 7cb1386fad7641c9c9f5fabe16c436cc9c204344
 {
   text-align: center;
   color:#217998;	
@@ -1190,11 +1286,9 @@ label span
 
 .derniermessagef
 {
-<<<<<<< HEAD
 	width:255px;
-=======
 	width:265px;
->>>>>>> 7cb1386fad7641c9c9f5fabe16c436cc9c204344
+
 }
 
 
@@ -1237,6 +1331,326 @@ label span
 
 /**** Voir un sujet (Topic) **/
 
+.lesujet
+{
+	display: block;
+}
+
+.membresujet , .contenu-message
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 20px;
+	margin-right: 10px;
+	font-family: Euphemia;
+}
+
+.membresujet
+{
+	width: 80px;
+	height: auto;
+	border: 1px solid #6e6e6e;
+	background: #edebeb;
+}
+
+.membresujet > .badgef
+{
+	display: block;
+	height:30px;
+	text-align: center;
+	line-height: 30px;
+	color:white;
+	font-size: 15px;
+}
+
+.membresujet img
+{
+	display: block;
+	margin-left: 9px;
+	margin-right: 9px;
+	width: 60px;
+	height: 60px;
+}
+
+.contenu-message
+{
+	width:630px;
+	height:auto;
+	background: #edebeb;
+	border-bottom: 2px solid #c3c0c0;
+	border-top:  2px solid #c3c0c0;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+
+}
+
+.lienmod , .top-messagef
+{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.lienmod
+{
+	width:240px;
+	float:right;
+	margin-right: -20px;
+}
+
+
+.lienmod ul
+{
+	display: block;
+	width:240px;
+	height:40px;
+	margin:0;
+	padding: 0;
+}
+
+.lienmod li
+{
+	display: inline-block;
+	height: 40px;
+	width:100px;
+	background: #1bbc9b;
+	margin-left: 2px;
+}
+
+.lienmod a
+{
+  display: block;
+  text-align:center;
+  line-height: 35px;
+  color: white;
+  background: #1bbc9b;
+}
+
+.lienmod img, .lienmod span
+{
+	display: inline-block;
+	vertical-align: top;
+	margin: 3px;
+	color:white;
+}
+
+.lienmod img
+{
+	padding-top: 7px;
+}
+
+.top-messagef
+{
+	margin: 0;
+	padding: 0;
+}
+
+.top-messagef a , .top-messagef span
+{
+	display: inline-block;
+	vertical-align: top;
+	color: #1bbc9b;
+}
+
+
+.lemessage ,.signatureforum
+{
+	display: block;
+	margin-top: 10px;
+}
+
+.signatureforum
+{
+	border-top: 2px solid #c3c0c0;
+	width:610px;
+	padding-right: 10px;
+	padding-left: 10px;
+	overflow: hidden;
+}
+
+.touslesmessages , .administrationf
+{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.administrationf
+{
+	width:230px;
+	height: 150px;
+	height: auto;
+	margin-left:10px;
+}
+
+.administrationf ul
+{
+	width:230px;
+	height: auto;
+	margin:0;
+	padding: 0;
+	margin-top: 10px;
+	background:  #edebeb;
+}
+
+.administrationf li
+{
+	display: block;
+	width:230px;
+	height:40px;
+	margin:0;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 0;
+	
+}
+
+.adminf-entete
+{
+	width:230px;
+	height:40px;
+	line-height: 40px;
+}
+
+.administrationf li span 
+{
+	width: 100px;
+	color: #24b194;
+	text-align: center;
+	line-height: 38px;
+}
+
+.administrationf li a
+{
+	height:40px;
+	color: #24b194;
+}
+
+.administrationf li span , .administrationf img
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-left:5px;
+
+}
+
+.administrationf img
+{
+	margin-top: 8px;
+}
+
+/******* Social ******/
+
+.gestionac , .fil
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 20px;
+	margin-left: 20px;
+	font-family: Gadugi;
+}
+
+.gestionac, .gestionac ul
+{
+	width:200px;
+}
+
+.gestionac ul
+{
+	width:200px;
+	margin:0px;
+	padding: 0px;
+}
+
+.pseudoso
+{
+	text-align: center;
+	font-size: 20px;
+	font-family: Gadugi;
+}
+
+.pseudoso a
+{
+	display: block;
+	color: #24b194;
+}
+
+.actual h3 , .lgroupes h3
+{
+	font-family: Euphemia;
+	font-size: 16px;
+	text-align: center;
+	line-height: 25px;
+	height:30px;
+	border: 1px solid;
+	background: #427f95;
+	color: white;
+
+}
+
+.lgroupes li , .actual li
+{
+	display: block;
+	height:35px;
+	width:200px;
+	text-align: center;
+	line-height: 30px;
+	border-bottom:1px solid #b0aeae;
+	color: #24b194;
+	overflow: hidden;
+	
+}
+
+.lgroupes li a, .actual li a
+{
+	display: block;
+	width: 200px;
+	height:35px;
+	color: #24b194;
+	text-align: center;
+
+
+}
+
+.lgroupes h3 a
+{
+	display: block;
+	color: white;
+
+}
+
+.fichierEtsubmit , .avatarEtstatut
+{
+	display: block;
+}
+
+.fichierEtsubmit input
+{
+	width:117px;
+	height:35px;
+	margin-left: 190px;
+	background: #1bbc9b;
+	border:1px solid #1bbc9b;
+	color: white;
+	font-size:16px;
+	cursor: pointer;
+}
+
+
+
+.avatarsocial img
+{
+	margin-left: 20px;
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.avatarsocial  , .textarea-soc ,.fichier , .submit-statut
+{
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 10px;
+}
 
 /******* Le pied de page *****/
 

@@ -7,9 +7,27 @@ include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
-echo '<p id="fildariane"><i><a href="../index.php">Accueil</a>--><a href="/index.php">Social</a>-->Mes groupes</i></p>';
+echo '<div class="fildariane">
 
-echo '<h3> Vos groupes </h3>';
+                <ul>
+                    <li>
+                        <a href="../index.php">Accueil </a>
+                    </li> <img src="../images/icones/fleche.png" class="fleche"/>
+
+                    <li>
+                        <a href="./index.php">Social </a>
+                     </li>
+
+                     <img src="../images/icones/fleche.png" class="fleche"/>
+                     <li> <span style="color:black;">Mes groupes</span></li>
+
+                 </ul>      
+
+         </div>
+
+         <div class="page">';
+         
+echo '<h3 class="titre"> Vos groupes </h3>';
 
 $groupesad = $bdd->prepare('SELECT * FROM social_groupes 
 	                      JOIN social_gs_admin

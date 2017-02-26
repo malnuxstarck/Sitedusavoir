@@ -13,7 +13,7 @@ function code($texte)
 		$texte = str_replace(':rire:', '<img src="../images/smileys/rire.png" title="rire" alt="rire" />', $texte);
 		$texte = str_replace(':s', '<img src="../images/smileys/confus.png" title="confus" alt="confus" />', $texte);
 
-		$texte = str_replace(':O', '<img src="../images/smileys/choc.png" title="choc" alt="choc" />', $texte);
+		$texte = str_replace(':o', '<img src="../images/smileys/choc.png" title="choc" alt="choc" />', $texte);
 
 		$texte = str_replace(':question:', '<img src="../images/smileys/question.png" title="?" alt="?" />', $texte);
 

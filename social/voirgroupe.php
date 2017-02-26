@@ -1,4 +1,4 @@
-.php<?php
+<?php
 
 $titre="Voir Groupe | SiteduSavoir.com";
 include ("../includes/session.php");

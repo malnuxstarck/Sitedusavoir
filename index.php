@@ -1,4 +1,5 @@
 <?php
+  include "includes/identifiants.php";
 	include 'includes/fonctions.php';
 	include ('includes/session.php');
 ?>

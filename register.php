@@ -51,7 +51,7 @@
                              
                               <input type="submit" value="Inscrire"/>
                          </div>
-                         <p class="apresformulaire">
+                         <p class="apresformulaire" style="font-family:Gadugi;">
                              Les champs contenant (*) sont obligatoires , mais vous n\'etes pas obligé de fournir un avatar , il vous serra donnés un unique".
                              Un avatar de moins d\'un mega pixel dans le cas contraire .
                          </p>

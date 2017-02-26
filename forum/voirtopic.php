@@ -1,8 +1,11 @@
 <?php
-session_start();
 
+
+include "../includes/session.php";
 include("../includes/identifiants.php");
-include("../includes/bbcode.php"); //On verra plus tard ce qu'est cefichier
+include("../includes/bbcode.php"); 
+
+//On verra plus tard ce qu'est cefichier
 //On récupère la valeur de t
 
 if(isset($_GET['t']))
@@ -22,7 +25,7 @@ $query->execute();
 
 $data = $query->fetch();
 
-$titre= $data['topic_titre'];
+$titre = $data['topic_titre'];
 
 
 include("../includes/debut.php");
@@ -89,12 +92,18 @@ if($id!=0)
 }
 
 echo '<div class="fildariane">
+
          <ul>
-         <li><a href="../index.php"> Accueil </a></li> <img class="fleche" src="../images/icones/fleche.png"/>
+         <li>
+              <a href="../index.php"> Accueil </a>
+        </li> 
+              <img class="fleche" src="../images/icones/fleche.png"/>
             <li>
                 <a href="./index.php">Forum</a>
             </li>
+
             <img class="fleche" src="../images/icones/fleche.png"/>
+
            <li>
                <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
            </li>  <img class="fleche" src="../images/icones/fleche.png"/>   
@@ -130,97 +139,25 @@ for ($i = 1 ; $i <= $nombreDePages ; $i++)
 echo'</p>';
 
 
-if(verif_auth($data['auth_modo']))
-{
-
-  $query=$bdd->prepare('SELECT forum_id, forum_name 
-                        FROM forum
-                        WHERE forum_id <> :forum');
-  $query->bindValue(':forum',$forum,PDO::PARAM_INT);
-  $query->execute();
-
-  //$forum a été définie tout en haut de la page !
-
-  echo'<p>Déplacer vers :</p>
-  <form method="post" action=postok.php?action=deplacer&amp;t='.$topic.'>
-  <select name="dest">';
-  while($data=$query->fetch())
-  {
-  echo'<option value='.$data['forum_id'].'
-  id='.$data['forum_id'].'>'.$data['forum_name'].'</option>';
-  }
-  $query->CloseCursor();
-  echo'
-  </select>
-  <input type="hidden" name="from" value='.$forum.'>
-  <input type="submit" name="submit" value="Envoyer" />
-  </form>';
-
-
-
-  $query = $bdd->prepare('SELECT topic_locked FROM forum_topic WHERE
-  topic_id = :topic');
-  $query->bindValue(':topic',$topic,PDO::PARAM_INT);
-  $query->execute();
-  $datas =$query->fetch();
-
-  if ($datas['topic_locked'] == 1) // Topic verrouillé !
-  {
-  echo'<a href="./postok.php?action=unlock&t='.$topic.'">
-  <img src="./images/unlock.gif" alt="deverrouiller"
-  title="Déverrouiller ce sujet" /></a>';
-  }
-
-  else //Sinon le topic est déverrouillé !
-  {
-  echo'<a href="./postok.php?action=lock&amp;t='.$topic.'">
-  <img src="./images/lock.gif" alt="verrouiller" title="Verrouiller ce
-  sujet" /></a>';
-  }
-
-  $query->CloseCursor();
-
-
-     echo'<form method="post" action=postok.php?action=autorep&amp;t='.$topic.'>
-<select name="rep">';
-
-$query=$bdd->query('SELECT automess_id, automess_titre FROM forum_automess');
-while ($data = $query->fetch())
-{
-echo '<option value="'.$data['automess_id'].'">
-'.$data['automess_titre'].'</option>';
-
-}
-echo '</select><input type="submit" name="submit" value="Envoyer" /></form>';
-$query->CloseCursor();
-
-
-
-
-
-}
-
-
-
 $premierMessageAafficher = ($page - 1) * $nombreDeMessagesParPage;
 
 //On affiche l'image répondre
 
 if (verif_auth($data['auth_post']))
-{//On affiche l'image répondre
-echo'<a href="./poster.php?action=repondre&amp;t='.$topic.'">
-<img src="../images/repondre.gif" alt="Répondre" title="Répondre à ce
-topic"></a>';
+{
+//On affiche l'image répondre
+  echo'<p class="nouveau-sujet" title="Répondre à ce topic">
+   <img src="../images/icones/mail.png"/><a href="./poster.php?action=repondre&amp;t='.$topic.'">Repondre</a>
+   </p>';
 }
  
  
 if (verif_auth($data['auth_topic']))
 {
 //On affiche l'image nouveau topic
-echo'<a href="./poster.php?
-action=nouveautopic&amp;f='.$forum.'">
-<img src="../images/nouveau.gif" alt="Nouveau topic"
-title="Poster un nouveau topic"></a>';
+echo'<p class="nouveau-sujet" title="Poster un nouveau topic">
+        <img src="../images/icones/new.png"/><a href="./poster.php?action=nouveautopic&amp;f='.$forum.'">Nouveau Sujet</a>
+     </p>';
 }
 
 $query->CloseCursor();
@@ -244,6 +181,10 @@ $query->bindValue(':nombre',(int)$nombreDeMessagesParPage,PDO::PARAM_INT);
 $query->execute();
 
 //On vérifie que la requête a bien retourné des messages
+
+
+echo '<div class="touslesmessages">';
+
 if ($query->rowCount()< 1 )
 {
     echo'<p>Il n y a aucun post sur ce topic, vérifiez l url et
@@ -262,20 +203,24 @@ else
       //On vérifie les droits du membre
       
 
-      echo'<div class="membre">
-                  <img src="../images/avatars/'.$data['membre_avatar'].'" alt="" />';
+      echo'<div class="lesujet">
 
-                  if($data['membre_rang']== 3)
-                        echo'<span class="badge badgef"> Moderateur </span>';
-                  else if($data['membre_rang'] == 4)
-                        echo '<span class="badge badgef">Admin </span>
-            </div>
+                <div class="membresujet">
+
+                    <img src="../images/avatars/'.$data['membre_avatar'].'" alt="" />';
+
+                    if($data['membre_rang']== 3)
+                          echo'<span class="badge badgef"> Moderateur </span>';
+                    else if($data['membre_rang'] == 4)
+                          echo '<span class="badge badgef">Admin </span>';
+              echo '</div>
 
             <div class="contenu-message">
-               <p>
+
+               <p class="top-messagef">
                   <a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">
-                    '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a> à '.$data['post_time'].'
-               <p>';
+                    '.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a> <span>  le '.$data['post_time'].'</span>
+               </p>';
 
                     /* Si on est l'auteur du message, on affiche des liens pour
                     Modérer celui-ci.
@@ -284,34 +229,84 @@ else
                     if ($id == $data['post_createur'] OR verif_auth(MODO))
                     {
 
-                    echo'<ul>
-                     
+                    echo'<div class="lienmod">
+
+                             <ul>
                              <li>
-                                  <a href="./poster.php?p='.$data['post_id'].'&amp;action=delete"> Delete <img src="../images/icones/del.png" alt="Supprimer" title="Supprimer ce message" />
+                                  <a href="./poster.php?p='.$data['post_id'].'&amp;action=delete"><span> Delete</span> <img src="../images/icones/del.png" alt="Supprimer" title="Supprimer ce message" />
                                  </a>
                             </li>
 
                             <li>
-                                <a href="./poster.php?p='.$data['post_id'].'&amp;action=edit">Editer<img src="../images/icones/edit.png" alt="Editer" title="Editer ce message" />
+                                <a href="./poster.php?p='.$data['post_id'].'&amp;action=edit"><span>Editer</span><img src="../images/icones/edit.png" alt="Editer" title="Editer ce message" />
                                 </a>
                             </li>
 
-                       </ul>';
+                       </ul>
+                      </div>';
                     }
 
                     echo '<div class="lemessage">' .code(nl2br(stripslashes(htmlspecialchars($data['post_texte'])))).'</div>
 
-                   <div class="signatureforum">';
-                             echo  code(nl2br(stripslashes(htmlspecialchars($data['membre_signature'])))).'</div>
-                 </div>';
+                     <div class="signatureforum">';
+                               echo  code(nl2br(stripslashes(htmlspecialchars($data['membre_signature'])))).'
+                    </div>
+
+                </div>
+            </div>';
 } 
 
 //Fin de la boucle ! \o/
 
 $query->CloseCursor();
 
-?>
-</table>
+   echo '</div>';
+
+        if(verif_auth($data['auth_modo']))
+        {
+
+         echo '<div class="administrationf">
+
+                 <div class="modification-entete adminf-entete">Moderation</div>
+               <ul>
+                   <li><a href="./moderer.php?action=deplacer&f='.$forum.'&t='.$topic.'"><img src="../images/icones/deplacer.png"/><span>Deplacer</span></a></li>
+                   <li>';
+
+                          $query = $bdd->prepare('SELECT topic_locked 
+                                                  FROM forum_topic 
+                                                  WHERE topic_id = :topic');
+                                    $query->bindValue(':topic',$topic,PDO::PARAM_INT);
+                                    $query->execute();
+                                    $datas =$query->fetch();
+
+                                  if ($datas['topic_locked'] == 1) // Topic verrouillé !
+                                  {
+                                    echo'<a href="./postok.php?action=unlock&t='.$topic.'">
+                                    <img src="../images/icones/ver.png" alt="deverrouiller" title="Déverrouiller ce sujet" /><span>Déverrouiller</span></a>';
+                                  }
+
+                                  else //Sinon le topic est déverrouillé !
+                                  {
+                                    echo'<a href="./postok.php?action=lock&amp;t='.$topic.'">
+                                    <img src="../images/icones/ver.png" alt="verrouiller" title="Verrouiller ce sujet" /><span>Verrouiller</span></a>';
+                                  }
+
+                       $query->CloseCursor();
+                      
+                   echo '</li>
+
+                   <li>
+                       <a href="moderer.php?action=autoreponse&f='.$forum.'&t='.$topic.'"><img src="../images/icones/autorep.png"/><span>Autoreponse</span></a> 
+                  </li>
+               </ul>
+
+            </div>';
+       }
+
+
+
+ ?>
+
 
 <p class="pagination">
 
@@ -331,6 +326,26 @@ for ($i = 1 ; $i <= $nombreDePages ; $i++)
 }
 
 echo'</p>';
+
+
+if (verif_auth($data['auth_post']))
+{
+//On affiche l'image répondre
+  echo'<p class="nouveau-sujet" title="Répondre à ce topic">
+   <img src="../images/icones/mail.png"/><a href="./poster.php?action=repondre&amp;t='.$topic.'">Repondre</a>
+   </p>';
+}
+ 
+ 
+if (verif_auth($data['auth_topic']))
+{
+//On affiche l'image nouveau topic
+echo'<p class="nouveau-sujet" title="Poster un nouveau topic">
+        <img src="../images/icones/new.png"/><a href="./poster.php?action=nouveautopic&amp;f='.$forum.'">Nouveau Sujet</a>
+     </p>';
+}
+
+
 
 //On ajoute 1 au nombre de visites de ce topic
 

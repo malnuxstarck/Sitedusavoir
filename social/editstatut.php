@@ -18,8 +18,28 @@ include("../includes/menu.php");
     switch($action)
     {
       case "edit":
-      echo '<p id="fildariane"><i><a href="./index.php">Accueil</a>--><ahref="./index.php">Social</a>-->Edition statut </i></p>
-             <h3> Edition de votre Statut </h3>';
+
+          echo '<div class="fildariane">
+
+                <ul>
+                    <li>
+                        <a href="../index.php">Accueil </a>
+                    </li> <img src="../images/icones/fleche.png" class="fleche"/>
+
+                    <li>
+                        <a href="./index.php">Social </a>
+                     </li>
+
+                     <img src="../images/icones/fleche.png" class="fleche"/>
+                     <li> <span style="color:black;">Editer statut </span></li>
+
+                 </ul>      
+
+         </div>
+
+         <div class="page">
+
+             <h3 class="titre"> Edition de votre Statut </h3>';
 
 
            $selectionstatut = $bdd->prepare('SELECT * FROM social_statut 
@@ -30,48 +50,91 @@ include("../includes/menu.php");
 
           $statutinfos = $selectionstatut->fetch();
 
-          echo '<form action="statutok.php?action=edit&s='.$statutinfos['statut_id'].'" method="POST" enctype="multipart/form-data">
+          echo '<div class="formulaire">
+
+                     <form action="statutok.php?action=edit&s='.$statutinfos['statut_id'].'" method="POST" enctype="multipart/form-data">
 
                      <div class="textarea">
                           <textarea name="statut">'.htmlspecialchars($statutinfos['statut_contenu']).' </textarea>
                      </div>
 
-                     <div class="fichier">';
+                     <div class="input">';
 
                             if($statutinfos['statut_photo'])
                                 echo '<img src=".photos/'.$statutinfos['statut_photo'].'" alt=""/>';
 
-                           echo '<input type="file" name="photo"/>
+                           echo '<label></label>
+                                 <input type="file" name="photo"/>
                       </div>
-                      <div>
+                      <div class="submit">
                             <input type="submit" value="Editer"/>
                        </div>
 
-          </form>';
+          </form>
+          </div>';
           break;
        case "comment":
 
-       echo '<p id="fildariane"><i><a href="./index.php">Accueil</a>--><ahref="./index.php">Social</a>-->commenter statut </i></p>
-       <h3> Edition de votre Statut </h3>';
+       echo '<div class="fildariane">
+
+                <ul>
+                    <li>
+                        <a href="../index.php">Accueil </a>
+                    </li> <img src="../images/icones/fleche.png" class="fleche"/>
+
+                    <li>
+                        <a href="./index.php">Social </a>
+                     </li>
+
+                     <img src="../images/icones/fleche.png" class="fleche"/>
+                     <li> <span style="color:black;">Commenter statut </span></li>
+
+                 </ul>      
+
+         </div>
+
+         <div class="page">
+
+       <h3 class="titre"> Commenter un statut </h3>';
 
               
-              echo '<form method="POST" action="statutok.php?action=comment&s='.$statut.'">
+              echo '<div class="formulaire">
 
-                      <div class="textarea">
-                           <textarea name="text" placeholder="commentter">
+                        <form method="POST" action="statutok.php?action=comment&s='.$statut.'">
+                 
+                         <div class="textarea">
+                           <textarea name="text" placeholder="commenter">
                            </textarea>
                       </div>
-                      <div>
+                      <div class="submit">
                            <input type="submit" value="Commenter"/>
                       </div>
-                    </form>';  
+                    </form>
+                </div>';  
 
           break;
 
        case "editco":
 
-       echo '<p id="fildariane"><i><a href="./index.php">Accueil</a>--><ahref="./index.php">Social</a>-->Edition commentaire </i></p>
-       <h3> Edition de votre Statut </h3>';
+        echo '<div class="fildariane">
+
+                <ul>
+                    <li>
+                        <a href="../index.php">Accueil </a>
+                    </li> <img src="../images/icones/fleche.png" class="fleche"/>
+
+                    <li>
+                        <a href="./index.php">Social </a>
+                     </li> 
+                     <img src="../images/icones/fleche.png" class="fleche"/>
+                     <li>
+                       <span style="color:black;">Editer commentaire </span></li>
+
+                 </ul>      
+
+         </div>
+
+         <div class="page">';
 
                 $com_id = (isset($_GET['c']))?$_GET['c']:"";
 
@@ -88,21 +151,29 @@ include("../includes/menu.php");
 
                 $commentaire = $selectcom->fetch();
 
-                 echo '<form method="POST" action="statutok.php?action=editco&s='.$statut.'&c='.$com_id.'">
+                echo '<h2 class="titre"> Modifier commentaire </h2>';
+
+                 echo '<div class="formulaire">
+
+                    <form method="POST" action="statutok.php?action=editco&s='.$statut.'&c='.$com_id.'">
 
                       <div class="textarea">
                            <textarea name="text" placeholder="commentter">'.
                            $commentaire['commentaires_text'].'
                            </textarea>
                       </div>
-                      <div>
+                      <div class="submit">
                            <input type="submit" value="Commenter"/>
                       </div>
-                    </form>';  
+                    </form>
+                    </div>';  
 
 
        break;
        default:
              header('Location:./index.php');
-       break;   
      }
+
+     echo '</div>';
+
+     include "../includes/footer.php";

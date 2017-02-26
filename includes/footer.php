@@ -51,10 +51,10 @@ $count_online = $count_visiteurs + $count_membres;
        <div class="apropos">
             <h2 class="nom-apropos"> Me contacter </h2>
             <ul class="apropos-content">
-                <li> <a href="#"> Facebook </a></li>
-                <li> <a href="#"> Twitter </a></li>
-                <li> <a href="#"> Github </a></li>
-                <li> <a href="#"> Siteperso </a></li>
+                <li> <a href="https://www.facebook.com/abdoulmalikhamidou"> Facebook </a></li>
+                <li> <a href="https://twitter.com/AbdoulMalikH"> Twitter </a></li>
+                <li> <a href="https://github.com/malnuxstarck"> Github </a></li>
+                <li> <a href="http://malnuxstarck.alwaysdata.net"> Siteperso </a></li>
             </ul>
        </div>
        <p class="copyright">
