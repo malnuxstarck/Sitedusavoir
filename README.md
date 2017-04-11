@@ -42,6 +42,8 @@ Une partie Social
 # Social Informatique
 
 - Un mini reseau social , on pourra y poster des photos , avoirs des amis , creer des status et des groupes
+# Maj prochaine
 Vous voulez particper , alors regarder le fichier contribuer.md
+
 Lancement de la version 2 qui sera coder avec la POO en PHP et corrections de quelques bugs
 
