@@ -228,7 +228,7 @@ else
 
     {
 
-         echo'<p class="derniermessage"><span>Pas de message</span></p>
+         echo'<p class="derniermessagef"><span>Pas de message</span></p>
          </li>';
 
     }

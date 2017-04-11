@@ -134,7 +134,7 @@ $query->CloseCursor();
 
 		<div class="formulaire">
 
-			<form method="post" action="postok.php?action=repondre&amp;t=<?php echo $topic ?>">
+			<form method="post" name="formulaire"  action="postok.php?action=repondre&amp;t=<?php echo $topic ?>">
 				
 
 				    <?php include "../includes/miseenforme.php"; ?>
@@ -262,7 +262,7 @@ else //Sinon ça roule et on affiche la suite
    //Le formulaire de postage
 ?>
 <div class="formulaire">
-	<form method="post" action="postok.php?action=edit&amp;p=<?php echo $post; ?>">
+	<form method="post" name="formulaire" action="postok.php?action=edit&amp;p=<?php echo $post; ?>">
 
     
 	    <?php include "../includes/miseenforme.php"; ?>

@@ -132,3 +132,7 @@ for($i = 1 ; $i <= $nbre_pages ; $i++)
 ?>
 
 </p>
+
+</div>
+
+<?php include "../includes/footer.php"; ?>

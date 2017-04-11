@@ -107,6 +107,7 @@ a
 	width : 1000px;
 	margin:auto;
 	margin-bottom: 20px;
+	font-family: Ubuntu;
 }
 
 .pageforum
@@ -1147,6 +1148,7 @@ label span
 	background: #1bbc9b;
 	padding: 2px;
 	color: white;
+	float: right;
 }
 
 
@@ -1284,9 +1286,13 @@ label span
 	color:#217998;
 }
 
-.derniermessagef
+ .derniermessage
+ {
+ 	width: 330px;
+ }
+
+.derniermessagef 
 {
-	width:255px;
 	width:265px;
 
 }

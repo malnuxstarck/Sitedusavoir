@@ -258,9 +258,20 @@ else
 
 //Fin de la boucle ! \o/
 
-$query->CloseCursor();
-
    echo '</div>';
+
+$query = $bdd->prepare('SELECT topic_titre, topic_post, forum_topic.forum_id , topic_last_post,forum_name, auth_view, auth_topic, auth_post,auth_modo
+                        FROM forum_topic
+                        LEFT JOIN forum 
+                        ON forum_topic.forum_id = forum.forum_id 
+                        WHERE topic_id = :topic');
+$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+$query->execute();
+
+$data = $query->fetch();
+
+
+
 
         if(verif_auth($data['auth_modo']))
         {

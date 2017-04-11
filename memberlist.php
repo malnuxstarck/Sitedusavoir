@@ -35,22 +35,38 @@ include "./includes/session.php";
   $MembreParPage = 25;
   $NombreDePages = ceil($total / $MembreParPage);
 
-  echo '<p><i>Vous êtes ici</i> : <a href="./index.php">Acceuil</a> --> <a href="./memberlist.php">Liste des membres</a></p>';
+  
+echo '<div class="fildariane">
+              <ul>
+               <li> 
+                   <a href="../index.php">Accueil</a>
+               </li>
+                   <img class="fleche" src="../images/icones/fleche.png"/>
+
+                  <li>
+                     <a href="./memberlist.php">Listes des membres</a>
+                  <li>
+            </ul>
+
+         </div>
+
+        <div class="page">';
+
   //Nombre de pages
   $page = (isset($_GET['page']))?intval($_GET['page']):1;
   
   //On affiche les pages 1-2-3, etc.
-  echo 'Page : ';
+  echo '<p class="pagination">';
 
   for ($i = 1 ; $i <= $NombreDePages ; $i++)
   {
     if ($i == $page) //On ne met pas de lien sur la page actuelle
     {
-      echo $i;
+      echo '<strong>'.$i.'</strong>';
     }
     else
     {
-      echo '<p><a href="memberlist.php?page='.$i.'">'.$i.'</a></p>';
+      echo'<a href="memberlist.php?page='.$i.'">'.$i.'</a>';
     }
   }
 
@@ -161,5 +177,7 @@ include "./includes/session.php";
 ?>
 
 </div>
+
+<?php include "includes/footer.php"; ?>
 </body>
 </html>

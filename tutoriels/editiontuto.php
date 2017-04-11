@@ -54,6 +54,7 @@ if(empty($_POST))
 
 	<h1 class="titre"> Editer un tuto </h1>
 	<div class="formulaire formulaire-edition">
+
 	    <form action="" method="POST">
 		     <?php
 
@@ -176,7 +177,7 @@ else
    	$insertion->closeCursor();
 
    	$_SESSION['flash']['success'] = "Tutos mis a jour ";
-   	header('Location:editiontuto?tuto='.$tuto);
+   	header('Location:editiontuto.php?tuto='.$tuto);
    }
 
 

@@ -179,7 +179,7 @@
 	                     <span> <a href="./voirtopic.php?t='.$data['topic_id'].'" title="Topic commencé à '.$data['topic_time'].'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>
 	                     </span>
 
-	                     <span> Par  <a class="at" href="./voirprofil.php?m='.$data['topic_createur'].'&amp;action=consulter">'.stripslashes(htmlspecialchars($data['membre_pseudo_createur'])).'</a> <i> '.$data['topic_time'].'</i>
+	                     <span><a class="at" href="./voirprofil.php?m='.$data['topic_createur'].'&amp;action=consulter">'.stripslashes(htmlspecialchars($data['membre_pseudo_createur'])).'</a> <i> '.$data['topic_time'].'</i>
 	                     </span>
 
 	                 </p>
@@ -208,7 +208,7 @@
 			         A <a  href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">'.$data['post_time'].'</a>
 			    </span>
 			    </p>
-			    <span class="typesujet">Annonce</span>
+			    <span class="typesujet">A</span>
 			 </div>';
 		}
 	}
