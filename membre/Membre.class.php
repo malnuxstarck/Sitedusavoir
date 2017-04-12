@@ -21,6 +21,12 @@ class Membre
 	protected $membre_reset;
 	protected $membre_reset_at;
 	protected $membre_cookie;
+	
+
+	public function __construct(array $donnees)
+	{
+		$this->hydrate(array $donnees) ;
+	}
 
 	public function id()
 	{
@@ -125,60 +131,76 @@ class Membre
 		       $this->membre_email = $email ;
 	}
 
-	public function setDerniere_visite()
+	public function setDerniere_visite($visite)
 	{
-		return $this->membre_derniere_visite;
+		 $this->membre_derniere_visite;
 	}
 
-	public function setAvatar()
+	public function setAvatar($visite)
 	{
-		return $this->membre_avatar;
+		 $this->membre_avatar = $visite;
 	}
 
-	public function setInscrit()
+	public function setInscrit($inscrit)
 	{
-		return $this->membre_inscrit;
+		 $this->membre_inscrit = $inscrit ;
 	}
 
-	public function setSiteweb()
+	public function setSiteweb($site)
 	{
-		return $this->membre_siteweb;
+		 $this->membre_siteweb = $site ;
 	}
 
-	public function setLocalisation()
+	public function setLocalisation($localisation)
 	{
-		return $this->membre_localisation;
-	}
-	
-	public function setPost()
-	{
-		return $this->membre_post;
+		 $this->membre_localisation = $localisation ;
 	}
 
-	public function setToken()
+	public function setPost($post)
 	{
-		return $this->membre_token;
+		if($post >= 0)
+		   $this->membre_post = $post ;
 	}
 
-	public function setReset()
+	public function setToken($token)
 	{
-		return $this->membre_reset;
+		/* Une cle de 60 caracteres genere pour laverification d'un compte  */
+		 $this->membre_token = $token ;
 	}
 
-	public function setReset_at()
+	public function setReset($reset)
 	{
-		return $this->membre_reset_at;
+		/* Une autre cle de 60 caracteres mais cette fois lorsqu'on reinitialise son mdp */
+		 $this->membre_reset = $reset ;
 	}
 
-	public function setCookie()
+	public function setReset_at($reset_at)
 	{
-		return $this->membre_cookie;
+		 $this->membre_reset_at = $reset_at ;
 	}
 
-	public function setSignature()
+	public function setCookie($cookie)
 	{
-		return $this->membre_signature;
+		 $this->membre_cookie = $cookie ;
 	}
 
+	public function setSignature($signature)
+	{
+		 $this->membre_signature = $signature ;
+	}
+    
+    public function hydrate(array $donnees)
+    {
+    	foreach ($donnees as $key => $value) {
+    		# cherche si une mehode existe
+    		$keys = explode('_',$key);
+    		$method = 'set'.ucfirst($key[1]);
+
+    		if(method_exists($this, $method))
+    		{
+    			$this->$method($value);
+    		}
+    	}
+    }
 
 }
