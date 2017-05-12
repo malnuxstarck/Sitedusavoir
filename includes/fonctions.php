@@ -215,10 +215,7 @@ function reconnected_from_cookie()
      }
 }
 
-function chargerClass($className)
-{
-   require $className.'.class.php';
-}
+
 
 
 
