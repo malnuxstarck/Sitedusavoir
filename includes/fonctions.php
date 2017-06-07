@@ -1,6 +1,10 @@
 
 <?php
 
+   function chargerClass($class)
+   {
+      require '../class/'.$class.'.class.php';
+   }
    
    function erreur($err='')
    {
@@ -210,6 +214,7 @@ function reconnected_from_cookie()
 
      }
 }
+
 
 
 
