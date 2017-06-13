@@ -14,7 +14,7 @@ include("../includes/debut.php");
 
 		if ($id==0) 
 			erreur(ERR_IS_CO);
-		//Le titre
+		
 
 		switch($action)
 
