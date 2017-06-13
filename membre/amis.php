@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+include "../includes/session.php";
 
 $titre="Gestion des amis";
 include("../includes/identifiants.php");
