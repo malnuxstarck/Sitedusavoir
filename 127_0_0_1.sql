@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `7438988jpzn`
+
 --
 CREATE DATABASE IF NOT EXISTS `sitedusavoir` DEFAULT CHARACTER SET utf8 COLLATE UTF8_general_ci;
 USE `sitedusavoir`;
@@ -98,7 +98,7 @@ CREATE TABLE `categories` (
 
 CREATE TABLE `forums` (
   `id` int(11) NOT NULL,
-  `cat_id` mediumint(8) NOT NULL,
+  `cat` mediumint(8) NOT NULL,
   `name` varchar(30) NOT NULL,
   `description` text NOT NULL,
   `ordre` mediumint(8) DEFAULT NULL,
@@ -218,7 +218,7 @@ CREATE TABLE `membres` (
   `token` varchar(250) DEFAULT NULL,
   `reset` varchar(250) DEFAULT NULL,
   `reset_at` datetime DEFAULT NULL,
-  `cookie` varchar(250) DEFAULT NULL,
+  `cookiee` varchar(250) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
