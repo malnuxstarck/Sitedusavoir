@@ -86,25 +86,6 @@ function move_avatar($avatar)
 }
 
 
-function move_logo($logo)
-{
-
-      $extension_upload = strtolower(substr( strrchr($logo['name'],'.') ,1));
-
-      $name = time();
-
-      $nomlogo = str_replace(' ','',$name).".".$extension_upload;
-
-      $name = "./logo/".str_replace('','',$name).".".$extension_upload;
-
-      move_uploaded_file($logo['tmp_name'],$name);
-
-        return $nomlogo;
-
-}
-
-
-
 
 function str_random($nombre)
 {

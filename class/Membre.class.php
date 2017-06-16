@@ -228,6 +228,28 @@ class Membre
     	 $this->_reset_at = $date ;
     }
 
+    public function moveAvatar($avatar)
+    {
+        $extension = strtolower(substr( strrchr($avatar['name'],'.') ,1));
+
+        $name = time();
+
+        $nomavatar = str_replace(' ','',$name).".".$extension_upload;
+
+        $name = "./images/avatars/".str_replace('','',$name).".".$extension_upload;
+
+        move_uploaded_file($avatar['tmp_name'],$name);
+
+       return $nomavatar;
+    }
+
+
+  public function verif_auth($auth_necessaire)
+  {
+     $level = (isset($_SESSION['level']))?$_SESSION['level']:1;
+     return ($auth_necessaire <= intval($level));
+  }
+
 
   public function hydrate(array $membreA)
   {

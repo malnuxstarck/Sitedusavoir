@@ -98,6 +98,7 @@
     $i++;
     
 	}
+
   if (strlen($pseudo) < 3 || strlen($pseudo) > 15  || !preg_match('#^[a-zA-Z0-9_]+$#',$pseudo))
   {
     $pseudo_erreur2 = "Votre pseudo est soit trop grand, soit trop petit, soit il ne respecte les caracteres autorisées";
@@ -133,6 +134,7 @@
   }
 
   //On vérifie la forme maintenant
+
   if(empty($_POST['email']) || !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL))
   {
 
@@ -182,6 +184,7 @@
       $avatar_erreur3 = "Extension de l'avatar incorrecte";
     }
   }
+  
   if ($i==0)
   {
          
