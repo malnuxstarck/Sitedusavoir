@@ -211,7 +211,7 @@ CREATE TABLE `membres` (
   `avatar` varchar(100) DEFAULT NULL,
   `signature` varchar(200) DEFAULT 'Pas de signature',
   `localisation` varchar(100) DEFAULT 'Non Localisé',
-  `inscription` datetime DEFAULT NULL,
+  `inscrit` datetime DEFAULT NULL,
   `visite` datetime DEFAULT NULL,
   `rang` int(11) NOT NULL DEFAULT '2',
   `posts` int(11) NOT NULL DEFAULT '0',
