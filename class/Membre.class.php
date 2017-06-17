@@ -16,10 +16,10 @@ class Membre
 
 	// Les attributs d'un membre
 
-	protected $_id ;
-	protected $_pseudo ;
-	protected $_password ;
-	protected $_confirmPassword ;
+    protected $_id ;
+    protected $_pseudo ;
+    protected $_password ;
+    protected $_confirmPassword ;
     protected $_email ;
     protected $_localisation ;
     protected $_siteweb ;
@@ -255,7 +255,7 @@ class Membre
   {
   	foreach ($membreA AS $cle => $contenu)
   	{
-  		$method = 'set'.ucfirst($le);
+  		$method = 'set'.ucfirst($cle);
   		if(method_exists($this, $method))
   		{
   			$method($contenu);
