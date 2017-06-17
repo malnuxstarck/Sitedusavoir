@@ -17,6 +17,11 @@ class ManagerMembre
 
 	public function __construct(PDO $db)
 	{
+		$this->setDb($db) ;
+	}
+	
+	public function setDb($db)
+	{
 		$this->_db = $db ;
 	}
  
