@@ -117,6 +117,7 @@
 
         echo'<h1>Inscription interrompue</h1>';
         echo'<p>Une ou plusieurs erreurs se sont produites pendant l inscription</p>';
+        
         echo'<p>'.$managerMembre->nombresErreurs.' erreur(s)</p>';
 
         $errors = $managerMembre->errors();
