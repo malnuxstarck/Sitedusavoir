@@ -140,11 +140,10 @@ class Membre
 
     public function setId($id)
     {
-    	if (is_int($id) AND $id > 0)
-    	{
-    		$this->_id = $id ;
+        $id = (int)$id;
 
-    	}
+        if(is_int($id) AND $id > 0)
+    	    $this->_id = $id ;
     }
 
     public function setPseudo($pseudo)
@@ -215,7 +214,7 @@ class Membre
 
     public function setSignature($signature)
     {
-    	 $this->_signature = $signture ;
+    	 $this->_signature = $signature ;
     }
 
     public function setReset($reset)
@@ -295,15 +294,15 @@ class Membre
            }
        }
         
-        $name = time();
+        $name = $chaine;
 
-        $nomavatar = str_replace(' ','',$name).'.png';
+        $nomavatar = $name.'.png';
        
         imagepng($image , './images/avatars/'.$nomavatar);
        
       return $nomavatar;
 
-    }  
+    } 
 
 
   public function hydrate(array $membreA)
@@ -311,10 +310,7 @@ class Membre
   	foreach ($membreA AS $cle => $contenu)
   	{
   		$method = 'set'.ucfirst($cle);
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/POO
   		if(method_exists($this, $method))
   		{
   			$this->$method($contenu);

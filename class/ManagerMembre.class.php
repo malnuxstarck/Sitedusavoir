@@ -91,15 +91,16 @@ class ManagerMembre
 
     public function verifAvatar($avatar)
     {
-		if (!empty($avatar['size']))
+		  if (!empty($avatar['size']))
 		  {
 		    //On définit les variables :
 
 		    $maxsize = 54000; //Poid de l'image
-		    $maxwidth = 180; //Largeur de l'image
-		    $maxheight = 180; //Longueur de l'image
+		    $maxwidth = 500; //Largeur de l'image
+		    $maxheight = 500; //Longueur de l'image
 
 		    $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png', 'bmp' ); 
+
 		    //Liste des extensions valides
 
 		    if ($avatar['error'] > 0)
@@ -118,12 +119,12 @@ class ManagerMembre
 
 		    if ($image_sizes[0] > $maxwidth OR $image_sizes[1] > $maxheight)
 		    {
-			      $nombresErreurs++;
+			      $this->nombresErreurs++;
 			      $this->_errors["avatar3"] = "Image trop large ou trop longue : (<strong>".$image_sizes[0]."x".$image_sizes[1]."</strong> contre
 			      <strong>".$maxwidth."x".$maxheight."</strong>)";
 		    }
 
-		    $extension_upload = strtolower(substr(strrchr($_FILES['avatar']['name'], '.') ,1));
+		    $extension_upload = strtolower(substr(strrchr($avatar['name'], '.') ,1));
 
 		    if(!in_array($extension_upload,$extensions_valides) )
 		    {
@@ -131,7 +132,11 @@ class ManagerMembre
 			      $this->_errors["avatar4"] = "Extension de l'avatar incorrecte";
 		    }
 
+		    return TRUE;
+
 		  }
+		  else
+		  	 return FALSE;
     }
 
     public function inscription(Membre $membreA)
@@ -164,6 +169,36 @@ class ManagerMembre
          return $this->_errors;
     }
 
+    public function infosMembre($info)
+    {
+    	  $id = (int)$info;
+
+    	  if($id == 0)
+    	  {
+    	  	    $query = $this->_db->prepare('SELECT * FROM membres WHERE pseudo = :info');
+    		    $query->bindValue(':info',$info,PDO::PARAM_INT);
+          }
+          else
+          {
+          	    $query = $this->_db->prepare('SELECT * FROM membres WHERE id = :info');
+    		    $query->bindValue(':info',$id,PDO::PARAM_INT);
+          }
+
+            $query->execute();
+
+            $donnees = $query->fetch();
+
+            return $donnees;
+    }
+    
+  
+    public function confirmerCompte(Membre $membre)
+    {
+        $query = $this->_db->prepare('UPDATE membres SET visite = NOW() ,inscrit = NOW() ,token = NULL 
+        	                          WHERE id = :id');
+        $query->bindValue(":id",$membre->id(),PDO::PARAM_INT);
+        $query->execute();
+    }
 
 	
 

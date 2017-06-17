@@ -71,11 +71,10 @@
   
       $membreAInscrire = new Membre($_POST);
       $token = $membreAInscrire->str_random(60);
-
       $membreAInscrire->setToken($token);
-      $membreAInscrire->setAvatar($_FILES["avatar"]);
 
-      $managerMembre = new managerMembre($bdd);
+      $membreAInscrire->setAvatar($_FILES["avatar"]);
+      $managerMembre = new ManagerMembre($bdd);
 
       $managerMembre->pseudoLibre($membreAInscrire->pseudo());
       $managerMembre->pseudoValide($membreAInscrire->pseudo());
@@ -83,21 +82,18 @@
       $managerMembre->verifyPassword($membreAInscrire);
       $managerMembre->emailValide($membreAInscrire->email());
 
-      $managerMembre->verifAvatar($membreAInscrire->avatar());
 
-      $nomavatar = $membreAInscrire->moveAvatar($membreAInscrire->avatar());
-
-
-      if (!empty($nomavatar))
-      {
+      if ($managerMembre->verifAvatar($membreAInscrire->avatar()))
+      {   
+          $nomavatar = $membreAInscrire->moveAvatar($membreAInscrire->avatar());
           $membreAInscrire->setAvatar($nomavatar);
       }
       else
       {
-          $nomavatar = $membreAInscrire->creerAvatar($membreAInscrire->pseudo);
+          $pseudo = $membreAInscrire->pseudo();
+          $nomavatar = $membreAInscrire->createAvatar($pseudo);
           $membreAInscrire->setAvatar($nomavatar);
       }
-
 
   
       if ($managerMembre->nombresErreurs == 0)
@@ -128,7 +124,11 @@
         }
          echo'<p> Cliquez <a href="./register.php">Ici</a> pour recommencer</p>';
       }
+
+      
   }
+
+  
 
 ?>
 </div>
