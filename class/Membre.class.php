@@ -125,7 +125,7 @@ class Membre
     	return $this->_signature ;
     }
 
-    punlic function reset()
+    public function reset()
     {
     	return $this->_reset ;
     }
@@ -149,11 +149,11 @@ class Membre
 
     public function setPseudo($pseudo)
     {
-       $this->_pseudo = $pseudo ;
+        $this->_pseudo = $pseudo ;
     }
 
 
-    public function setPassword()
+    public function setPassword($password)
     {
     	$this->_password = $password;
     }
@@ -175,7 +175,7 @@ class Membre
 
     public function setPosts($posts)
     {
-    	 $this->_posts = $posts
+    	 $this->_posts = $posts;
     }
 
     public function setAvatar($avatar)
@@ -230,7 +230,7 @@ class Membre
 
     public function moveAvatar($avatar)
     {
-        $extension = strtolower(substr( strrchr($avatar['name'],'.') ,1));
+        $extension_upload = strtolower(substr( strrchr($avatar['name'],'.') ,1));
 
         $name = time();
 
@@ -244,21 +244,77 @@ class Membre
     }
 
 
-  public function verif_auth($auth_necessaire)
-  {
-     $level = (isset($_SESSION['level']))?$_SESSION['level']:1;
-     return ($auth_necessaire <= intval($level));
-  }
+    public function verif_auth($auth_necessaire)
+    {
+        $level = (isset($_SESSION['level']))?$_SESSION['level']:1;
+        return ($auth_necessaire <= intval($level));
+    }
+
+    public function createAvatar($chaine , $blocks = 5 , $size = 100)
+    {
+     
+       $togenerate  = ceil($blocks / 2);
+
+       $hashsize = $togenerate * $blocks ; 
+
+       $hash = md5($chaine); 
+
+       $hash = str_pad($hash , $hashsize , $hash);
+
+       $blockssize = $size / $blocks ;
+
+       $color = substr($hash , 0, 6);
+
+       $image = imagecreate($size,$size);
+
+       $background = imagecolorallocate($image ,255,255,255);
+
+       $color = imagecolorallocate($image , hexdec(substr($color,0,2)),hexdec(substr($color,2,2)),hexdec(substr($color,4,2)));
+
+
+       for ($x = 0 ; $x < $blocks ; $x++)
+       {
+          for ($y = 0 ; $y < $blocks ; $y++)
+          {
+            if( $x < $togenerate)
+
+               $pixel =  hexdec($hash[$x * $blocks + $y]) % 2 == 0;
+            else
+              $pixel =  hexdec($hash[($blocks - 1 - $x) *$blocks  + $y]) % 2 == 0;
+
+            $pixelcolor = $background;
+
+           if($pixel)
+           {
+
+                $pixelcolor = $color;
+
+            }
+
+              imagefilledrectangle($image,$x * $blockssize , $y*$blockssize, ($x+1)*$blockssize, ($y+1)*$blockssize, $pixelcolor);
+           }
+       }
+        
+        $name = time();
+
+        $nomavatar = str_replace(' ','',$name).'.png';
+       
+        imagepng($image , './images/avatars/'.$nomavatar);
+       
+      return $nomavatar;
+
+    }  
 
 
   public function hydrate(array $membreA)
   {
   	foreach ($membreA AS $cle => $contenu)
   	{
-  		$method = 'set'.ucfirst($le);
+  		$method = 'set'.ucfirst($cle);
+
   		if(method_exists($this, $method))
   		{
-  			$method($contenu);
+  			$this->$method($contenu);
   		}
   	}
   }

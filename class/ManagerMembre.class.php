@@ -13,7 +13,7 @@ class ManagerMembre
 
 	protected $_db;
 	protected $_errors = array();
-	protected $nombresErreurs = 0;
+	public $nombresErreurs = 0;
 
 	public function __construct(PDO $db)
 	{
@@ -34,10 +34,7 @@ class ManagerMembre
 		{
 			$this->nombresErreurs++;
 			$this->_errors["pseudo1"] = "Votre pseudo est dejas pris , nous sommes desolé ";
-			return NON_VALIDE ;
 		}
-
-		return VALIDE;
 
 	}
 
@@ -47,15 +44,13 @@ class ManagerMembre
         {
                $this->_errors["pseudo2"] = "Votre pseudo est soit trop grand, soit trop petit, soit il ne respecte les caracteres autorisées";
                $this->nombresErreurs++;
-               return NON_VALIDE;
         }
 
-        return VALIDE ;
 	}
 
 	public function emailValide($email)
 	{
-		$query = $this->_db->prepare('SELECT COUNT(*) AS nbr FROM membres WHERE membre_email =:mail');
+		$query = $this->_db->prepare('SELECT COUNT(*) AS nbr FROM membres WHERE email =:mail');
         $query->bindValue(':mail',$email, PDO::PARAM_STR);
         $query->execute();
         $nombresEmails = $query->fetchColumn();
@@ -64,16 +59,15 @@ class ManagerMembre
         {
         	$this->nombresErreurs++;
         	$this->_errors["mail1"] = " Votre email est soit deja prise , soit ne respecte pas le format ";
-        	return NON_VALIDE ;
         }
 
-        return VALIDE;
+        
 	}
 
     public function verifyPassword(Membre $membreAInscrire)
     {
     	$password = $membreAInscrire->password();
-    	$confirmPassword = $this->confirmPassword();
+    	$confirmPassword = $membreAInscrire->confirmPassword();
 
     	if($password != $confirmPassword || empty($confirmPassword) || empty($password))
         {
@@ -83,7 +77,7 @@ class ManagerMembre
 
         else{
 
-	  	   $pass = PASSWORD_HASH($pass,PASSWORD_BCRYPT);
+	  	   $pass = PASSWORD_HASH($membreAInscrire->password(),PASSWORD_BCRYPT);
 	       $membreAInscrire->setPassword($pass);
 	       $membreAInscrire->setConfirmPassword(NULL);
         }
@@ -112,7 +106,7 @@ class ManagerMembre
 		    if ($avatar['size'] > $maxsize)
 		    {
 		        $nombresErreurs++;
-		        $this->_errors["avatar2"] = "Le fichier est trop gros :(<strong>"$avatar['size']." Octets</strong> contre <strong>".$maxsize." Octets</strong>)";
+		        $this->_errors["avatar2"] = 'Le fichier est trop gros :(<strong>'.$avatar['size'].' Octets</strong> contre <strong>'.$maxsize.' Octets</strong>)';
 		    }
 
 		    $image_sizes = getimagesize($avatar['tmp_name']);
@@ -135,16 +129,35 @@ class ManagerMembre
 		  }
     }
 
-    public function envoyerMail($email,$titre,$message)
+    public function inscription(Membre $membreA)
     {
-         mail($email,$titre,$message);
+    	$query = $this->_db->prepare("INSERT INTO membres(pseudo,password, email, avatar, inscrit,token) 
+                                      VALUES(:pseudo, :pass, :email , :nomavatar, NULL, :token)");
+    	$query->execute(array("pseudo" => $membreA->pseudo(),
+    		                  "pass"   => $membreA->password(),
+    		                  "email"  => $membreA->email(),
+    		                  "nomavatar" => $membreA->avatar(),
+    		                  "token"     => $membreA->token()));
+    	$query->closeCursor();
+
+    	$id = $this->_db->lastInsertId();
+    	$token = $membreA->token();
+    	
+    	$membreA->setID($id);
+
+    	$this->envoyerMail($membreA->email() , "Inscription sur le Site du Savoir","Cliquez ou copier le lien dans votre navigateur https://sitedusavoir.com/confirm.php?id=$id&token=$token");
+
     }
 
-	public function inscription(Membre $membreAInscrire)
+    public function envoyerMail($email,$titre,$message,$header="sitedusavoir.com")
+    {
+         mail($email,$titre,$message,$header);
+    }
+
+	public function errors()
 	{
-
-
-	}
+         return $this->_errors;
+    }
 
 
 	

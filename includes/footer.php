@@ -3,7 +3,7 @@
 $count_online = 0;
 //Décompte des visiteurs
 $count_visiteurs=$bdd->query('SELECT COUNT(*) AS nbr_visiteurs
-                              FROM forum_whosonline 
+                              FROM whosonline 
                               WHERE online_id = 0')->fetchColumn();
 
 
@@ -11,10 +11,10 @@ $count_visiteurs=$bdd->query('SELECT COUNT(*) AS nbr_visiteurs
 
 $texte_a_afficher = "<br />Liste des personnes en ligne : ";
 
-$query = $bdd->prepare('SELECT membre_id, membre_pseudo
-                        FROM forum_whosonline
+$query = $bdd->prepare('SELECT id, pseudo
+                        FROM whosonline
                         LEFT JOIN membres 
-                        ON online_id = membre_id
+                        ON online_id = id
                         WHERE online_time > SUBDATE(NOW(), INTERVAL 5 MINUTE) 
                         AND online_id <> 0');
 $query->execute();
