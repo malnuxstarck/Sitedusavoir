@@ -33,6 +33,7 @@ class Membre
     protected $_rang ;
     protected $_avatar ;
     protected $_colkiee ;
+    protected $_souvenir ;
 
     // le constructeur 
 
@@ -41,7 +42,7 @@ class Membre
     	$this->hydrate($membreA);
     }
 
-    public function str_random($taille)
+    public static function str_random($taille)
     {
     	$alphabet ="0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN";
         return substr(str_shuffle(str_repeat($alphabet,$taille)) ,0, $taille);

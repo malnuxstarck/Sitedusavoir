@@ -8,10 +8,12 @@
 
   $id = $_GET['id'];
   $token = $_GET['token'];
+
+  $dateInscription = "IS NULL";
   
 
   $managerMembre = new ManagerMembre($bdd);
-  $donnees = $managerMembre->infosMembre($id);
+  $donnees = $managerMembre->infosMembre($id,$dateInscription);
 
   $membre = new Membre($donnees);
 

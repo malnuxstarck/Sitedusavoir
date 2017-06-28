@@ -169,19 +169,21 @@ class ManagerMembre
          return $this->_errors;
     }
 
-    public function infosMembre($info)
+    public function infosMembre($info,$dateInscription = "IS NOT NULL")
     {
     	  $id = (int)$info;
 
     	  if($id == 0)
     	  {
-    	  	    $query = $this->_db->prepare('SELECT * FROM membres WHERE pseudo = :info');
+    	  	    $query = $this->_db->prepare('SELECT * FROM membres WHERE pseudo = :info AND inscrit :inscription');
     		    $query->bindValue(':info',$info,PDO::PARAM_INT);
+    		    $query->bindValue(":inscription",$dateInscription,PDO::PARAM_STR);
           }
           else
           {
-          	    $query = $this->_db->prepare('SELECT * FROM membres WHERE id = :info');
+          	    $query = $this->_db->prepare('SELECT * FROM membres WHERE id = :info AND inscrit :inscription');
     		    $query->bindValue(':info',$id,PDO::PARAM_INT);
+    		    $query->bindValue(":inscription",$dateInscription,PDO::PARAM_STR);
           }
 
             $query->execute();
@@ -199,6 +201,75 @@ class ManagerMembre
         $query->bindValue(":id",$membre->id(),PDO::PARAM_INT);
         $query->execute();
     }
+
+
+    public function reconnected_from_cookie()
+    {
+
+		if(session_status() == PHP_SESSION_NONE)
+		{
+		    session_start();
+		}
+
+
+	    if(isset($_COOKIE['souvenir']) && !isset($_SESSION['membre_id']))
+	    {
+
+	       $cookie = $_COOKIE['souvenir'];
+	       $parts =  explode('==',$cookie);
+	       $user_id = $parts[0];
+
+	        
+	       $donnnees = $this->infosMembre($user_id);
+
+	       $membre = new Membre($donnees);
+
+	       if($membre)
+	       {
+	            $expected = $user_id.'=='.$membre->cookiee().sha1($membre->id().'MALNUX667');
+	              
+	            if($expected == $cookie)
+	            {
+	               
+	                setcookie('souvenir',$cookie,time()+60*60*24*7);
+
+	                $_SESSION['pseudo'] = $membre->pseudo();
+	                $_SESSION['level'] = $membre->rang();
+	                $_SESSION['id'] = $membre->id();
+
+	        
+	                $this->derniereVisite($membre->id());
+	            }
+	            else
+	            {
+	                  setcookie('souvenir',NULL,-1);
+	            }
+
+
+	        }
+
+	        else
+	        {
+	          setcookie('souvenir',NULL,-1);
+	        }
+
+
+
+	     }
+	}
+
+	public function derniereVisite($id)
+	{
+		$query = $this->_db->prepare("UPDATE membres SET visite = NOW() WHERE id = :id");
+		$query->bindValue(":id",$id, PDO::PARAM_INT);
+		$query->execute();
+	}
+
+	public function connexion(array $donnees)
+	{
+		
+
+	}
 
 	
 

@@ -3,7 +3,7 @@
 echo '<body>
            <header>
 		        <div class="header-top">
-		             <h1 class="nomSite"><a href="./index.php"> Site du Savoir </a> </h1>
+		             <h1 class="nomSite"><a href="../index.php"> Site du Savoir </a> </h1>
 		       </div>
 		       <div class="menu">
 		             <ul class="menu-content">
