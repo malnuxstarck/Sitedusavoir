@@ -3,12 +3,12 @@
   $titre="Connexion";
   include_once './includes/identifiants.php';
   include_once'./includes/debut.php';
-  include_once './includes/menu.php';
   include_once "./includes/fonctions.php";
 
   spl_autoload_register("chargerClass");
-
   $managerMembre = new ManagerMembre($bdd);
+
+  include_once './includes/menu.php';
 
   echo '<div class="fildariane">
          <ul>

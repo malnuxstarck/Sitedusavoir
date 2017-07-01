@@ -40,27 +40,26 @@
             include("fonctions.php");
             include("constantes.php");
 
-
-
-
-             $ip = ip2long($_SERVER['REMOTE_ADDR']);
-//Requête
-$query = $bdd->prepare('INSERT INTO whosonline VALUES(:id,NOW(),:ip) ON DUPLICATE KEY UPDATE online_time = NOW() , online_id = :id');
-$query->bindValue(':id',$id,PDO::PARAM_INT);
-$query->bindValue(':ip', $ip, PDO::PARAM_INT);
-
-$query->execute();
-$query->CloseCursor();
+            spl_autoload_register("chargerClass");
 
 
 
 
-$query=$bdd->prepare('DELETE FROM whosonline WHERE online_time < SUBDATE(NOW(),INTERVAL 5 MINUTE)');
+            $ip = ip2long($_SERVER['REMOTE_ADDR']);
+            $memberDatas = array("online_id" => $id , "online_ip" => $ip);
+            $memberOnline = new WhoIsOnline($memberDatas);
+            $managerWhoIsOnline = new ManagerWhoIsOnline($bdd);
 
-$query->execute();
-$query->CloseCursor();
+            /* On met a jour l'utilisateur et la date de sa mise en ligne */
+
+            $managerWhoIsOnline->updateWhoIsOnline($memberOnline);
+
+            /* On supprime tous les utilisateurs qui depassent 5 minutes sans etre reactualiser */
+            
+            $managerWhoIsOnline->deleteWhoIsOnline();
 
             $balises=(isset($balises))?$balises:0;
+
 if($balises)
 {
 

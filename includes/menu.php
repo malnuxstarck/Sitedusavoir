@@ -31,6 +31,8 @@ echo '<body>
 
 		       <div class="suscribe">';
 
+		          $managerMembre = new ManagerMembre($bdd);
+
 		          if(!$id)
 		          {
 			           echo  '<ul class="suscribe-content">
@@ -41,12 +43,11 @@ echo '<body>
 			      else
 			      {
 
-			      	$query = $bdd->prepare('SELECT membre_avatar FROM membres WHERE membre_id = :id');
-			      	$query->bindParam(':id',$id , PDO::PARAM_INT);
-			      	$query->execute();
-			      	$avatar = $query->fetch();
+			      	
+			      	$donnees = $managerMembre->infosMembre($id);
+			      	$membre  = new Membre($donnees);
 
-			      	$avatar = $avatar['membre_avatar'];
+			      	$avatar = $membre->avatar();
 
                       echo '<div class="cercle">
 
@@ -89,14 +90,14 @@ echo '<body>
            </header>';
 
          if (session_status() == PHP_SESSION_NONE)
-          session_start();
+                 session_start();
           ?>
            <?php if(isset($_SESSION['flash'])): ?>
 
       <?php foreach($_SESSION['flash'] as $cle => $message): ?>
 
         <div class="alert alert-<?=$cle ?>">
-           <?= $message; ?>
+                <?= $message; ?>
            </div>
 
         <?php endforeach; ?>

@@ -194,6 +194,11 @@ class ManagerMembre
                 return array();    
     }
     
+    /*
+    *@function confrirmerCompte
+    **@param Membre
+    ** Permet de confirmer un compte d'utilisateur
+    */
   
     public function confirmerCompte(Membre $membre)
     {
@@ -202,6 +207,11 @@ class ManagerMembre
         $query->bindValue(":id",$membre->id(),PDO::PARAM_INT);
         $query->execute();
     }
+
+    /*
+    **@function reconnected_from_cookie
+    ** Reconnecte un utilisateur s'il a un cookie poster dans son navigateur
+    */
 
 
     public function reconnected_from_cookie()
@@ -277,6 +287,12 @@ class ManagerMembre
 
 	}
 
+	public function OublieMoi($id)
+	{
+		$query = $this->_db->prepare("UPDATE membres SET cookiee = NULL WHERE id = :id");
+		$query->bindValue(':id' , $id ,PDO::PARAM_INT);
+	}
+
 
 	/*
 	**@param array $donnees
@@ -291,8 +307,6 @@ class ManagerMembre
 		{
 			$this->_errors["champsVides"] = "Une erreure s'est produite vous devez remplir tous les champs";
 			$this->nombresErreurs++;
-
-			echo 'Probleme vide';
 
 		}
 		else

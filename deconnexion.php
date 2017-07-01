@@ -1,5 +1,8 @@
 <?php
+
   include './includes/session.php';
+  include './includes/fonctions.php';
+  spl_autoload_register("chargerlass");
   
   session_destroy();
 
@@ -7,12 +10,14 @@
   unset($_COOKIE['souvenir']);
 
   setcookie('souvenir',NULL,time()-1);
-
-  include("./includes/identifiants.php");
-  include_once('./includes/debut.php');
+ 
+  include './includes/identifiants.php';
+  include_once './includes/debut.php';
   include_once('./includes/menu.php');
 
-  $query=$bdd->prepare('DELETE FROM forum_whosonline WHERE online_id = :id');
+  $ip
+
+  $query=$bdd->prepare('DELETE FROM whoisonline WHERE online_id = :id');
   $query->bindValue(':id',$id,PDO::PARAM_INT);
   $query->execute();
   $query->CloseCursor();

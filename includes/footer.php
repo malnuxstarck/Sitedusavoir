@@ -1,42 +1,29 @@
 <?php
 
 $count_online = 0;
-//Décompte des visiteurs
-$count_visiteurs=$bdd->query('SELECT COUNT(*) AS nbr_visiteurs
-                              FROM whosonline 
-                              WHERE online_id = 0')->fetchColumn();
 
+//Décompte des visiteurs
+
+$managerWhoIsOnline =  new ManagerWhoIsOnline($bdd);
+$count_visiteurs    =  $managerWhoIsOnline->nombresDeVisiteursEnLigne();
 
 //Décompte des membres
 
 $texte_a_afficher = "<br />Liste des personnes en ligne : ";
 
-$query = $bdd->prepare('SELECT id, pseudo
-                        FROM whosonline
-                        LEFT JOIN membres 
-                        ON online_id = id
-                        WHERE online_time > SUBDATE(NOW(), INTERVAL 5 MINUTE) 
-                        AND online_id <> 0');
-$query->execute();
-$count_membres=0;
+$membresEnLigneEtMessage = $managerWhoIsOnline->nombresDeMembresEnLigne();
+$count_membres= $membresEnLigneEtMessage["nombre"] ;
 
-while ($data = $query->fetch())
-{
-    $count_membres ++;
-
-    $texte_a_afficher .= '<a href="../forum/voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a> ,';
-}
-
-
-$texte_a_afficher = substr($texte_a_afficher, 0, -1);
 $count_online = $count_visiteurs + $count_membres;
+$texte_a_afficher.= $membresEnLigneEtMessage["texte_a_afficher"];
+
 ?>
 
 <footer>
      <div class="whoisonline">
            <h2 class="quies"> Qui est en ligne ? </h2>
            <p class="text">
-               Il y'a actuelment <?php echo $count_online.' connectés , dont '. $count_membres. ' membres et '. $count_visiteurs .' invités';
+               Il y'a actuelment <?php echo $count_online.' connectés , dont '.$count_membres.' membres et '. $count_visiteurs .' invités';
                echo $texte_a_afficher ; ?> 
               </p>
        </div>
@@ -58,7 +45,7 @@ $count_online = $count_visiteurs + $count_membres;
             </ul>
        </div>
        <p class="copyright">
-           Site du Savoir Tous droits reservés &copy copyright 2017  
+           Site du Savoir Tous droits reservés &copy copyright <?php $annee = date('Y'); echo $annee ; ?>  
        </p>
 
 </footer>
