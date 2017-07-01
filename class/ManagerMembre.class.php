@@ -77,7 +77,7 @@ class ManagerMembre
     	if($password != $confirmPassword || empty($confirmPassword) || empty($password))
         {
             $this->_errors["password"] = "Votre mot de passe et votre confirmation diffèrent, ou sont vides";
-           $this->nombresErreurs++;
+            $this->nombresErreurs++;
         }
 
         else{
@@ -169,28 +169,29 @@ class ManagerMembre
          return $this->_errors;
     }
 
-    public function infosMembre($info,$dateInscription = "IS NOT NULL")
+    public function infosMembre($info,$dateInscription = 'IS NOT NULL')
     {
     	  $id = (int)$info;
 
     	  if($id == 0)
     	  {
-    	  	    $query = $this->_db->prepare('SELECT * FROM membres WHERE pseudo = :info AND inscrit :inscription');
-    		    $query->bindValue(':info',$info,PDO::PARAM_INT);
-    		    $query->bindValue(":inscription",$dateInscription,PDO::PARAM_STR);
+    	  	    $query = $this->_db->prepare('SELECT * FROM membres WHERE pseudo = :info AND inscrit '.$dateInscription );
+    		    $query->bindValue(':info',$info,PDO::PARAM_STR);
           }
           else
           {
-          	    $query = $this->_db->prepare('SELECT * FROM membres WHERE id = :info AND inscrit :inscription');
+          	    $query = $this->_db->prepare('SELECT * FROM membres WHERE id = :info AND inscrit '.$dateInscription);
     		    $query->bindValue(':info',$id,PDO::PARAM_INT);
-    		    $query->bindValue(":inscription",$dateInscription,PDO::PARAM_STR);
           }
 
             $query->execute();
 
             $donnees = $query->fetch();
 
-            return $donnees;
+            if(!empty($donnees))
+                    return $donnees;
+            else
+                return array();    
     }
     
   
@@ -265,10 +266,86 @@ class ManagerMembre
 		$query->execute();
 	}
 
+	public function souviensToiDeMoi($id)
+	{
+		$req = $this->_db->prepare("UPDATE membres
+                                      SET cookie = :cookie
+                                      WHERE membre_id = :id");
+
+		$req->bindValue(':id',$id, PDO::PARAM_INT);
+		$req->execute();
+
+	}
+
+
+	/*
+	**@param array $donnees
+	** retourne un membre si aucune erreur ne survienne , sinon renvoie NULL
+	*/
+
 	public function connexion(array $donnees)
 	{
-		
 
+
+		if(empty($donnees['pseudo']) || empty($donnees['password']))
+		{
+			$this->_errors["champsVides"] = "Une erreure s'est produite vous devez remplir tous les champs";
+			$this->nombresErreurs++;
+
+			echo 'Probleme vide';
+
+		}
+		else
+		{
+			$datas = $this->infosMembre($donnees["pseudo"]);
+			$membreAEnvoyer = new Membre($datas);
+
+			if(PASSWORD_VERIFY($donnees["password"] ,$membreAEnvoyer->password()))
+			{
+				if($membreAEnvoyer->rang() == 0 )
+				{
+					$this->nombresErreurs++;
+				    $this->_errors["Motdepasse"] = "Vous avez été Banni du site , impossible de vous connecter sur ce site.";
+				}
+				else
+				{
+					if(!empty($donnees["souvenir"]))
+					{
+						$cookie = Membre::str_random(60);
+						$this->souviensToiDeMoi($membreAEnvoyer->id());
+						setcookie('souvenir',$membreAEnvoyer->id().'=='.$cookie.sha1($membreAEnvoyer->id().'MALNUX667'),time() + 60 * 60 *24 *7 );
+
+					}
+
+					$_SESSION['pseudo'] = $membreAEnvoyer->pseudo();
+    				$_SESSION['level'] = $membreAEnvoyer->rang();
+    				$_SESSION['id'] = $membreAEnvoyer->id();
+    				$_SESSION["flash"]["success"] = 'Bienvenue '.$membreAEnvoyer->pseudo().', vous êtes maintenant connecté ! ';
+
+    				$this->derniereVisite($membreAEnvoyer->id());
+				}		
+
+
+			}
+			else
+			{
+				$this->nombresErreurs++;
+				$this->_errors["Motdepasse"] = "Mot de passe ou pseudo incorrecte veuillez reessayez";
+			}
+            
+          
+		}
+
+        
+		if($this->nombresErreurs != 0)
+		{
+			return NULL;
+		}
+		else
+		{
+			return $membreAEnvoyer;
+		}
+		
 	}
 
 	

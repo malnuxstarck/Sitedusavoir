@@ -136,6 +136,11 @@ class Membre
     	return $this->_reset_at ;
     }
 
+    public function souvenir()
+    {
+        return $this->_souvenir ;
+    }
+
     // Les setters , permetent de modifier le contenu ou la valeur d'un attribut ;
 
 
@@ -226,6 +231,11 @@ class Membre
     public function setReset_at($date)
     {
     	 $this->_reset_at = $date ;
+    }
+
+    public function setSouvenir($souvenir)
+    {
+        $this->souvenir = $souvenir ;
     }
 
     public function moveAvatar($avatar)

@@ -9,7 +9,7 @@
   $id = $_GET['id'];
   $token = $_GET['token'];
 
-  $dateInscription = "IS NULL";
+  $dateInscription = 'IS NULL';
   
 
   $managerMembre = new ManagerMembre($bdd);
