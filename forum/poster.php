@@ -15,7 +15,7 @@ $action = (isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 //Il faut être connecté pour poster !
 
 if ($id == 0) 
-	erreur(ERR_IS_CO);
+	erreur(ManagerMembre::ERR_IS_CO);
 
 //Si on veut poster un nouveau topic, la variable f se trouve dans l'url,
 //On récupère certaines valeurs

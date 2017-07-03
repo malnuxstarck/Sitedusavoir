@@ -105,7 +105,7 @@ class ManagerMembre
 
 		    if ($avatar['error'] > 0)
 		    {
-			      $this->_errors["avatar1"] = "Erreur lors du transfert de l'avatar : ";
+			      $this->_errors["avatar1"] = "Erreur lors du transfert de l'avatar  ";
 			      $this->nombresErreurs++;
 		    }
 
@@ -132,7 +132,7 @@ class ManagerMembre
 			      $this->_errors["avatar4"] = "Extension de l'avatar incorrecte";
 		    }
 
-		    return TRUE;
+		      return TRUE;
 
 		  }
 		  else
@@ -175,12 +175,20 @@ class ManagerMembre
 
     	  if($id == 0)
     	  {
-    	  	    $query = $this->_db->prepare('SELECT * FROM membres WHERE pseudo = :info AND inscrit '.$dateInscription );
+    	  	    $query = $this->_db->prepare('
+    	  	    	                          SELECT id,pseudo,password,siteweb,email,signature,avatar,localisation,token,cookiee,reset,reset_at,rang,posts,DATE_FORMAT(inscrit ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS inscrit , DATE_FORMAT(visite ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS visite
+    	  	    	                          FROM membres 
+    	  	    	                          WHERE pseudo = :info AND inscrit '.$dateInscription );
+
     		    $query->bindValue(':info',$info,PDO::PARAM_STR);
           }
           else
           {
-          	    $query = $this->_db->prepare('SELECT * FROM membres WHERE id = :info AND inscrit '.$dateInscription);
+          	    $query = $this->_db->prepare('
+          	    	                          SELECT id,pseudo,password,siteweb,email,avatar,signature,localisation,token,cookiee,reset,reset_at,rang,posts,DATE_FORMAT(inscrit ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS inscrit , DATE_FORMAT(visite ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS visite
+    	  	    	                          FROM membres  
+    	  	    	                          WHERE id = :info AND inscrit '.$dateInscription);
+
     		    $query->bindValue(':info',$id,PDO::PARAM_INT);
           }
 
@@ -192,6 +200,32 @@ class ManagerMembre
                     return $donnees;
             else
                 return array();    
+    }
+
+    /*
+    **@function mise ajours infos
+    **@param Membre
+    **
+    */
+
+
+    public function miseAjoursMembre(Membre $membreAjour)
+    {
+    	$query = $this->_db->prepare('UPDATE membres SET pseudo = :pseudo ,email = :mail , password = :password ,localisation = :localisation,signature = :signature , siteweb = :siteweb ,avatar = :avatar WHERE id = :id');
+
+    	$query->execute(array(
+
+    		    'id' => $membreAjour->id(),
+    		    'pseudo' => $membreAjour->pseudo(),
+    		    'password' => $membreAjour->password(),
+    		    'mail' => $membreAjour->email(),
+                'localisation' => $membreAjour->localisation(),
+                'avatar' => $membreAjour->avatar(),
+                'siteweb' => $membreAjour->siteweb(),
+                'signature' => $membreAjour->signature()
+    		));
+
+    	$query->closeCursor();
     }
     
     /*
@@ -360,6 +394,22 @@ class ManagerMembre
 			return $membreAEnvoyer;
 		}
 		
+	}
+
+	public function totalDesMembres()
+	{
+		$query = $this->_db->query('SELECT COUNT(*) AS nbr FROM membres');
+		$donnees = $query->fetch();
+
+		return $donnees["nbr"];
+	}
+
+	public function dernierInscrit()
+	{
+		$query = $this->_db->query('SELECT * FROM membres ORDER BY id DESC LIMIT 0, 1');
+		$donnees = $query->fetch();
+
+		return $donnees;
 	}
 
 	

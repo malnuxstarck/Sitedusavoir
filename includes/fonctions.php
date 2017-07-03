@@ -1,11 +1,15 @@
 
 <?php
-
-   function chargerClass($class)
-   {
-      require './class/'.$class.'.class.php';
-   }
    
+
+    function chargerClass($class,$position ="./")
+    {
+      if(!file_exists($position.'class/'.$class.'.class.php'))
+               $position = "../";
+
+         require $position.'class/'.$class.'.class.php';
+    }
+     
    function erreur($err='')
    {
     

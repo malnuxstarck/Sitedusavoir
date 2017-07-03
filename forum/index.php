@@ -1,4 +1,5 @@
 <?php
+
 include "../includes/session.php";
 $titre ="Forums | SiteduSavoir.com";
 
@@ -6,9 +7,6 @@ include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
-?>
-
-<?php
   echo '<div class="fildariane">
 
                 <ul>

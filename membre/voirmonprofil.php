@@ -1,11 +1,11 @@
 <?php
-include "../includes/session.php";
 
+include "../includes/session.php";
 $titre = $_SESSION['pseudo'];
 
-include_once('../includes/identifiants.php');
-include_once ('../includes/debut.php');
-include_once('../includes/menu.php');
+include_once '../includes/identifiants.php' ;
+include_once '../includes/debut.php' ;
+include_once '../includes/menu.php' ;
 
 
 if( $id == 0)
@@ -19,23 +19,19 @@ echo '<div class="fildariane">
          </ul>
   </div>';
 
-$membre = (int)$_GET['id'];
 
-if($membre != $id)
+$idGet = (int)$_GET['id'];
+
+if($idGet != $id)
 {
-	
-header('Location:./voirmonprofil.php?id='.$id);
-
+	header('Location:./voirmonprofil.php?id='.$id);
 }
 
-$requete = $bdd->prepare('SELECT membre_pseudo ,membre_localisation, membre_email, DATE_FORMAT(membre_inscrit ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS  membre_inscrit,membre_siteweb,membre_post,
-	                             membre_signature,DATE_FORMAT(membre_derniere_visite,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS membre_derniere_visite,membre_avatar 
-	                      FROM membres
-	                      WHERE membre_id = :idmembre');
-$requete->execute(array('idmembre' => $membre));
 
-$memb = $requete->fetch();
+$managerMembre = new ManagerMembre($bdd);
+$donnees = $managerMembre->infosMembre($id);
 
+$membre = new Membre($donnees);
 
 echo ' <div class="page">
                          <div class="membre">
@@ -44,7 +40,7 @@ echo ' <div class="page">
 	                            <div class="entetemembre">
 
 		                                <div class="avatar">
-		                                     <img src="../images/avatars/'.$memb['membre_avatar'].'" alt="Pas d avatar"/>';
+		                                     <img src="../images/avatars/'.$membre->avatar().'" alt="Pas d avatar"/>';
 
 		                                     if($lvl == 3)
 		                                        echo'<span class="badge"> Moderateur </span>';
@@ -54,10 +50,10 @@ echo ' <div class="page">
 		                                echo '</div>
 
 		                                <div class="membre-ins">
-		                                      <h4 class="nommembre">'.$memb['membre_pseudo'].'</h4>
+		                                      <h4 class="nommembre">'.$membre->pseudo().'</h4>
 		                                      <p>
-		                                          Membre depuis le '.$memb['membre_inscrit'].'</br>
-		                                          Email : <a href="mailto:'.$memb['membre_email'].'">'.$memb['membre_email'].'</a>
+		                                          Membre depuis le '.$membre->inscrit().'</br>
+		                                          Email : <a href="mailto:'.$membre->email().'">'.$membre->email().'</a>
 		                                      </p>
 		                                      <span class="membre-edit">
 		                                             <a href="./editerprofil.php">Editer </a>
@@ -67,23 +63,22 @@ echo ' <div class="page">
 
 	                          <div class="infosmembre">
 	                                <ul>
-	                                    <li> <span class="libele">Site Web </span>       :  <span class="infos-content"><a href="'.htmlspecialchars($memb['membre_siteweb']).'">'.htmlspecialchars($memb['membre_siteweb']).'</a></span>  </li>
-	                                    <li> <span class="libele"> Localisation </span>  :  <span class="infos-content"> '.$memb['membre_localisation'].' </span> </li>
-	                                    <li> <span class="libele"> Messages </span>      :  <span class="infos-content"> '.$memb['membre_post'].'  </li>
-	                                    <li> <span class="libele">Derniere Visite </span>:  <span class="infos-content"> '.$memb['membre_derniere_visite'].' </span> </li>
+	                                    <li> <span class="libele">Site Web </span>       :  <span class="infos-content"><a href="'.htmlspecialchars($membre->siteweb()).'">'.htmlspecialchars($membre->siteweb()).'</a></span>  </li>
+	                                    <li> <span class="libele"> Localisation </span>  :  <span class="infos-content"> '.$membre->localisation().' </span> </li>
+	                                    <li> <span class="libele"> Messages </span>      :  <span class="infos-content"> '.$membre->posts().'  </li>
+	                                    <li> <span class="libele">Derniere Visite </span>:  <span class="infos-content"> '.$membre->visite().'</span> </li>
 	                                </ul>
 	                          </div>
 
 	                          <div class="signature">
 	                               
-	                                  '.$memb['membre_signature'].'
+	                                  '.$membre->signature().'
 	                               
 	                          </div>
                         </div>     
             </div>
 	' ;
 
-    
 
 include "../includes/footer.php";
 

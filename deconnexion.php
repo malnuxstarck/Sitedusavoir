@@ -1,8 +1,9 @@
 <?php
 
   include './includes/session.php';
-  include './includes/fonctions.php';
-  spl_autoload_register("chargerlass");
+  include './includes/identifiants.php';
+  include_once './includes/debut.php';
+  include_once('./includes/menu.php');
   
   session_destroy();
 
@@ -11,20 +12,18 @@
 
   setcookie('souvenir',NULL,time()-1);
  
-  include './includes/identifiants.php';
-  include_once './includes/debut.php';
-  include_once('./includes/menu.php');
+  
 
-  $ip
+  $ip = ip2long($_SERVER['REMOTE_ADDR']);
+  $memberDatas = array("online_id" => $id , "online_ip" => $ip);
 
-  $query=$bdd->prepare('DELETE FROM whoisonline WHERE online_id = :id');
-  $query->bindValue(':id',$id,PDO::PARAM_INT);
-  $query->execute();
-  $query->CloseCursor();
+  $memberOnline = new WhoIsOnline($memberDatas);
+  $managerWhoIsOnline = new ManagerWhoIsOnline($bdd);
 
-  $req = $bdd->prepare('UPDATE membres SET cookie = NULL WHERE membre_id=:id');
-  $req->execute(array('id'=>$id));
-  $req->CloseCursor();
+  $managerWhoIsOnline->deleteMembreOnline($id);
+  $managerMembre = new ManagerMembre($bdd);
+
+  $managerMembre->oublieMoi($id);
 
   if ($id == 0)
   {
@@ -37,4 +36,5 @@
     $_SESSION['flash']['success'] = 'Vous êtes à présent déconnecté.';
     header('Location:connexion.php');
   }
-?>
+
+

@@ -5,7 +5,6 @@ include "../includes/session.php";
 include("../includes/identifiants.php");
 include("../includes/bbcode.php"); 
 
-//On verra plus tard ce qu'est cefichier
 //On récupère la valeur de t
 
 if(isset($_GET['t']))
