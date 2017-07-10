@@ -38,29 +38,31 @@
 									         </ul>
 									  </div>';
 
-					$id_mess = (int) $_GET['id']; 
+					$idMessage = (int) $_GET['id']; 
 
 					//On récupère la valeur de l'id
 
 					echo '<div class="page">
 					              <h1 class="titre">Consulter un message</h1>';
 					//La requête nous permet d'obtenir les infos sur ce message :
-					$query = $bdd->prepare('SELECT mp_expediteur, mp_receveur,mp_titre,mp_time, mp_text, mp_lu, membre_id, membre_pseudo, membre_avatar,
-					    membre_localisation, membre_inscrit, membre_post, membre_signature FROM mp LEFT JOIN membres ON membre_id = mp_expediteur WHERE mp_id = :id');
+					  $managerMembre = new ManagerMembre($bdd);
+					  $managerMp = new ManagerMp($bdd);
 
-					$query->bindValue(':id',$id_mess,PDO::PARAM_INT);
-					$query->execute();
+					  $infosMessage = $managerMp->infosMessage($idMessage);
+					  $leMessage = new Mp($infosMessage);
 
-					$data = $query->fetch();
+					  $infosMembre = $managerMembre->infosMembre($leMessage->expediteur());
+					  $expediteurMessage = new Membre($infosMembre);
+
 
 					// Attention ! Seul le receveur du mp peut le lire !
 
-					if ($id != $data['mp_receveur']) 
+					if ($id != $leMessage->receveur()) 
 						erreur(ERR_WRONG_USER);
 
 					//bouton de réponse
 					echo'<p class="nouveau-sujet">
-							<img src="../images/icones/mail.png"/><a href="./messagesprives.php?action=repondre&amp;dest='.$data['mp_expediteur'].'">Repondre </a>
+							<img src="../images/icones/mail.png"/><a href="./messagesprives.php?action=repondre&amp;dest='.$leMessage->expediteur().'">Repondre </a>
 					     </p>';
 					?>
 					<table>
@@ -75,9 +77,9 @@
 							<tr>
 									<td>
 										<?php echo'<strong>
-										<a href="../forum/voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">
-										'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a></strong></td>
-										<td>Posté à '.$data['mp_time'].'
+										<a href="../forum/voirprofil.php?m='.$expediteurMessage->id().'&amp;action=consulter">
+										'.stripslashes(htmlspecialchars($expediteurMessage->pseudo())).'</a></strong></td>
+										<td>Posté à '.$leMessage->mptime().'
 									</td>';
 									?>
 							</tr>
@@ -87,18 +89,18 @@
 										<?php
 										//Ici des infos sur le membre qui a envoyé le mp
 										echo'<p>
-												<img src="../images/avatars/'.$data['membre_avatar'].'" alt="" />
-												<br />Membre inscrit le '.$data['membre_inscrit'].'
-												<br />Messages : '.$data['membre_post'].'
+												<img src="../images/avatars/'.$expediteurMessage->avatar().'" alt="" />
+												<br />Membre inscrit le '.$expediteurMessage->inscrit().'
+												<br />Messages : '.$expediteurMessage->posts().'
 												<br />Localisation :
-												'.stripslashes(htmlspecialchars($data['membre_localisation'])).'
+												'.stripslashes(htmlspecialchars($expediteurMessage->Localisation())).'
 										    </p>
 									</td>
 
 									<td>';
-										echo code(nl2br(stripslashes(htmlspecialchars($data['mp_text'])))).'
+										echo code(nl2br(stripslashes(htmlspecialchars($leMessage->texte())))).'
 										<hr
-										/>'.code(nl2br(stripslashes(htmlspecialchars($data['membre_signature'])))).'
+										/>'.code(nl2br(stripslashes(htmlspecialchars($expediteurMessage->signature())))).'
 									</td>
 							</tr>
 					</table>';
@@ -106,15 +108,9 @@
 
 					<?php
 
-					if ($data['mp_lu'] == 0) //Si le message n'a jamais été lu
+					if ($leMessage->lu() == 0) //Si le message n'a jamais été lu
 					{
-							$query->CloseCursor();
-							$query=$bdd->prepare('UPDATE mp SET mp_lu = :lu WHERE mp_id= :id');
-							$query->bindValue(':id',$id_mess, PDO::PARAM_INT);
-
-							$query->bindValue(':lu','1', PDO::PARAM_STR);
-							$query->execute();
-							$query->CloseCursor();
+							$managerMp->messageLu($leMessage->id());
 					}
 
 					break; //La fin !
@@ -158,9 +154,7 @@
 									          <legend>Message</legend>
 
 									          <div class="textarea">
-									                <textarea  name="message" required>
-												
-											       </textarea>
+									                <textarea name="texte" required></textarea>
 											 </div>
 
 											 <div class="submit submit-tuto">
@@ -226,7 +220,7 @@
                                      	<legend>Message</legend>
 	                                    <div class="textarea">
 
-												<textarea  name="message"></textarea>
+												<textarea  name="texte"></textarea>
 									    </div>			
 										
 										<div class="submit submit-tuto">
@@ -257,18 +251,15 @@
 
 					echo '<h1 class="titre">Messagerie Privée</h1><br />';
 
-					$query = $bdd->prepare('SELECT mp_lu, mp_id, mp_expediteur, mp_titre, mp_time,
-					membre_id, membre_pseudo
-					FROM mp
-					LEFT JOIN membres ON mp.mp_expediteur = membres.membre_id
-					WHERE mp_receveur = :id ORDER BY mp_id DESC');
-					$query->bindValue(':id',$id,PDO::PARAM_INT);
-					$query->execute();
+					$managerMp = new ManagerMp($bdd);
+					$managerMembre = new ManagerMembre($bdd);
+
+					$tousLesMessages = $managerMp->tousLesMessages($id);
 
 					echo'<p class="nouveau-sujet"><img src="../images/icones/mail.png"/><a href="./messagesprives.php?action=nouveau">Nouveau
 					</a></p>';
 
-					if ($query->rowCount()>0)
+					if (!empty($tousLesMessages))
 					{
 						?>
 						<table>
@@ -299,13 +290,19 @@
 
 							<?php
 							//On boucle et on remplit le tableau
-							while ($data = $query->fetch())
-							{
+							foreach ($tousLesMessages as $leMessage) {
+
+                                     $mp = new Mp($leMessage);
+                                     $infosExpediteur = $managerMembre->infosMembre($mp->receveur());
+
+                                     $expediteur = new Membre($infosExpediteur);
+
+
 								   echo'<tr>';
 
 									       //Mp jamais lu, on affiche l'icone en question
 
-											if($data['mp_lu'] == 0)
+											if($mp->lu() == 0)
 											{
 
 											echo'<td>
@@ -323,21 +320,21 @@
 											}
 
 											echo'<td id="mp_titre">
-													<a href="./messagesprives.php?action=consulter&amp;id='.$data['mp_id'].'">'.stripslashes(htmlspecialchars($data['mp_titre'])).'</a>
+													<a href="./messagesprives.php?action=consulter&amp;id='.$mp->id().'">'.stripslashes(htmlspecialchars($mp->titre())).'</a>
 												</td>
 
 												<td id="mp_expediteur">
-													<a href="../forum/voirprofil.php?action=consulter&amp;m='.$data['membre_id'].'">
-													'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a>
+													<a href="../forum/voirprofil.php?action=consulter&amp;m='.$expediteur->id().'">
+													'.stripslashes(htmlspecialchars($expediteur->pseudo())).'</a>
 												</td>
 
 												<td id="mp_time">'
-												      .$data['mp_time'].
+												      .$mp->mptime().
 												'
 												</td>
 
 												<td>
-													<a href="./messok.php?action=supprimer&amp;id='.$data['mp_id'].'&amp;sur=0">supprimer</a>
+													<a href="./messok.php?action=supprimer&amp;id='.$mp->id().'&amp;sur=0">supprimer</a>
 											    </td>
 
 									    </tr>';
@@ -345,7 +342,7 @@
 
 							//Fin de la boucle
 
-							$query->CloseCursor();
+			
 
 					  echo '</table>';
 
