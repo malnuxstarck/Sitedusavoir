@@ -9,7 +9,6 @@ echo '<body>
 		             <ul class="menu-content">
 		                 <li><a href="../forum/index.php"> Forum </a></li>
 		                 <li><a href="../tutoriels/index.php"> Tutoriels </a></li>
-		                 <li><a href="../social/index.php"> Social </a></li>
 		                 <li><a href="../blog/index.php"> Blog </a></li>
 		             </ul>
 		       </div>

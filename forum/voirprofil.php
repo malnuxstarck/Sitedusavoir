@@ -7,7 +7,7 @@
   include("../includes/menu.php");
 
 
-  $idMembre = (isset($_GET['m'])?(int)$_GET['m']:1;
+  $idMembre = isset($_GET['m'])?(int)$_GET['m']:1;
   $managerMembre = new ManagerMembre($bdd);
   $donnees = $managerMembre->infosMembre($idMembre);
   

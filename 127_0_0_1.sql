@@ -29,8 +29,8 @@ USE `sitedusavoir`;
 --
 
 CREATE TABLE `amis` (
-  `from` int(11) NOT NULL,
-  `to` int(11) NOT NULL,
+  `fromt` int(11) NOT NULL,
+  `toa` int(11) NOT NULL,
   `confirm` enum('0','1') NOT NULL,
   `dateamitie` datetime NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

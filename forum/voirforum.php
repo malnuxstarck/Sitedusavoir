@@ -6,26 +6,23 @@
 	include("../includes/menu.php");
 
 	//On récupère la valeur de f
-	$forum = (int) $_GET['f'];
+	$forum = (isset($_GET['f']))?(int) $_GET['f']:1;
+
+	$managerForum = new ManagerForum($bdd);
+	$donnees = $managerForum->infosForum($forum);
+	$forum = new Forum($donnees);
 
 	//A partir d'ici, on va compter le nombre de messages
 	//pour n'afficher que les 25 premiers
 
-	$query = $bdd->prepare('SELECT forum_name, forum_topic, auth_view,auth_topic 
-		                    FROM forum 
-		                    WHERE forum_id = :forum');
+    /*On verifie si l'utilisateur a le droit le forum */
 
-	$query->bindValue(':forum',$forum,PDO::PARAM_INT);
-	$query->execute();
-	$data = $query->fetch();
-
-
-	if (!verif_auth($data['auth_view']))
+	if (!Membre::verif_auth($forum->auth_view()))
 	{
 		erreur(ERR_AUTH_VIEW);
 	}
 
-	$totalDesMessages = $data['forum_topic'] + 1;
+	$totalDesMessages = $forum->topics() + 1;
 	$nombreDeMessagesParPage = 25;
 	$nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 
@@ -43,7 +40,7 @@
 				          <img class="fleche" src="../images/icones/fleche.png"/>
 
 				          <li>
-				               <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
+				               <a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
 				          <li>
 		        </ul>
 
@@ -52,7 +49,7 @@
 	      <div class="page">';
 
 
-	      echo '<h1 class="titre">'.stripslashes(htmlspecialchars($data['forum_name'])).'</h1><br/>';
+	      echo '<h1 class="titre">'.stripslashes(htmlspecialchars($forum->name())).'</h1><br/>';
 
 	$page = (isset($_GET['page']))?intval($_GET['page']):1;
 
@@ -81,16 +78,17 @@
 	//Et le bouton pour poster
 
 
-	if (verif_auth($data['auth_topic']))
+	if (Membre::verif_auth($forum->auth_topic()))
 	{
 		//Et le bouton pour poster
 		echo'<p class="nouveau-sujet">
-		         <a href="./poster.php?action=nouveautopic&amp;f='.$forum.'"><img src="../images/icones/new.png"/>Nouveau sujet </a>
+		         <a href="./poster.php?action=nouveautopic&amp;f='.$forum->id().'"><img src="../images/icones/new.png"/>Nouveau sujet </a>
 		      </p>';
 	}
 
-	$add1='';
+	$add1 ='';
 	$add2 ='';
+	$add3 = '';
 
 	if ($id!=0) //on est connecté
 	{
@@ -98,9 +96,9 @@
 		$add1 = ',tv_id, tv_post_id, tv_poste';
 
 		//Deuxièmement, jointure
-		$add2 = 'LEFT JOIN forum_topic_view
-		         ON forum_topic.topic_id = forum_topic_view.tv_topic_id 
-		         AND forum_topic_view.tv_id = :id';
+		$add2 = 'LEFT JOIN topic_view
+		         ON topic.id = topic_view.tv_topic_id 
+		         AND topic_view.tv_id = :id';
 	}
 
 	$query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre,topic_createur, topic_vu, topic_post, topic_time, topic_last_post, Mb.membre_pseudo 
@@ -228,12 +226,13 @@
 		$add1 = ',tv_id, tv_post_id, tv_poste';
 		//Deuxièmement, jointure
 		$add2 = 'LEFT JOIN forum_topic_view
-		ON forum_topic.topic_id = forum_topic_view.tv_topic_id AND
-		forum_topic_view.tv_id = :id';
+		ON topic.id = topic_view.tv_topic_id AND
+		topic_view.tv_id = :id';
 	}
 
 
 	//On prend tout ce qu'on a sur les topics normaux du forum
+
 	$query = $bdd->prepare('SELECT forum_topic.topic_id, topic_titre, topic_createur,topic_vu, topic_post,DATE_FORMAT(topic_time,\'%d/%m/%Y %h:%i:%s\') AS topic_time , topic_last_post,
 	Mb.membre_pseudo AS membre_pseudo_createur, post_id, post_createur, post_time, Mb.membre_avatar AS avatar_createur,
 	Ma.membre_pseudo AS membre_pseudo_last_posteur '.$add1.' FROM forum_topic

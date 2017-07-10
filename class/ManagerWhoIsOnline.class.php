@@ -58,6 +58,17 @@ class ManagerWhoIsOnline
 
     }
 
+    public function quiSontEnLigne()
+    {
+        $query = $this->_db->prepare('SELECT * FROM whoisonline WHERE online_id <> 0');
+        $query->execute();
+        $donnees = $query->fetchAll();
+        if(!empty($donnees))
+            return $donnees;
+        else
+            array();
+    }
+
     public function updateWhoIsOnline(WhoIsOnline $membre)
     {
     	$query = $this->_db->prepare('INSERT INTO whoisonline VALUES(:id,NOW(),:ip) ON DUPLICATE KEY UPDATE online_time = NOW() , online_id = :id');

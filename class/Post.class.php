@@ -85,7 +85,7 @@ class Post
 	}
 
 
-	public function hydrate(array $donnees)
+	public function hydrate($donnees)
 	{
 		foreach ($donnees as $key => $value) {
 

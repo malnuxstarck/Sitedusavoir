@@ -48,6 +48,12 @@ class Membre
         return substr(str_shuffle(str_repeat($alphabet,$taille)) ,0, $taille);
     }
 
+    public static function verif_auth($auth_necessaire)
+    {
+        $level = (isset($_SESSION['level']))?$_SESSION['level']:1;
+        return ($auth_necessaire <= intval($level));
+    }
+
 
     // les getters  , qui renvoie la valeur d'un attribut 
 
@@ -251,13 +257,6 @@ class Membre
         move_uploaded_file($avatar['tmp_name'],$name);
 
        return $nomavatar;
-    }
-
-
-    public function verif_auth($auth_necessaire)
-    {
-        $level = (isset($_SESSION['level']))?$_SESSION['level']:1;
-        return ($auth_necessaire <= intval($level));
     }
 
     public function createAvatar($chaine , $blocks = 5 , $size = 100)

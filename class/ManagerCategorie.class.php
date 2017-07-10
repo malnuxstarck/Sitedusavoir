@@ -17,4 +17,16 @@ class ManagerCategorie
 		$this->_db = $bdd ;
 	}
 	
+	public function infosCategorie($idCat)
+	{
+		$query = $this->_db->prepare("SELECT * FROM categories WHERE id = :idCat");
+		$query->bindValue(':idCat',$idCat, PDO::PARAM_INT);
+		$query->execute();
+		$donnees = $query->fetch();
+
+		if(!empty($donnees))
+			return $donnees
+		else
+			return array();
+	}
 }

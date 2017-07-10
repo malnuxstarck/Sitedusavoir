@@ -119,6 +119,7 @@ elseif (isset ($_GET['p']))
 	    </div>
 	    <div class="page">';
 }
+
 $query->CloseCursor();
 
 
