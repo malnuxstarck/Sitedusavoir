@@ -88,6 +88,10 @@ class ManagerMembre
         }
     }
 
+    /*
+    **@function retuourne true  si l'image est bien uploader , false si non;
+    */
+
 
     public function verifAvatar($avatar)
     {

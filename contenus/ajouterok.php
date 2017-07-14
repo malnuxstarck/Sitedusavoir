@@ -16,79 +16,78 @@ if(!$id)
 	header('Location:../connexion.php');
 }
 
-$art = isset($_GET['article'])?$_GET['article']:"";
+$idContenu = isset($_GET['contenu'])?$_GET['contenu']:"";
 $action = isset($_GET['action'])?$_GET['action']:"";
 
 
-if(empty($art) || empty($action))
+if(empty($idContenu) || empty($action))
 {
-	header('Location:./index.php');
+	  header('Location:./index.php');
 }
 
 switch($action)
 {
+  case "auteur":
 
+	$managerAuteur = new ManagerAuteur($bdd);
+  $infosAuteur = $managerAuteur->auteurInfos($_POST['auteur']);
 
-
-	case "auteur":
-
-	$auteur_a = (!empty($_POST['auteur']))?$_POST['auteur']:"";
-
-	$auteur = $bdd->prepare('SELECT membre_id 
-		                     FROM membres 
-		                     WHERE membre_pseudo = LOWER(:pseudo)');
-
-	$auteur->bindParam(':pseudo',$auteur_a,PDO::PARAM_INT);
-	$auteur->execute();
-	$aut = $auteur->fetch();
-
-	$aut = $aut['membre_id'];
-
-	if($aut)
+  if(!empty($infosAuteur))
 	{
-      $req = $bdd->prepare('INSERT INTO articles_par (membre_id , articles_id) VALUES(:membre, :article)');
-      $req->bindParam(':membre',$aut,PDO::PARAM_INT);
-      $req->bindParam(':article',$art,PDO::PARAM_INT);
+      $auteur = new Auteur($infosAuteur);
+      $auteur->setIdcontenu($idContenu);
 
-      $req->execute();
+      if($id != $auteur->membre()){
 
-      $_SESSION['flash']['success'] = " L' auteur a eté ajouter avecs succes , il peut desormer modifier l article ";
-      header('Location:./editionarticle.php?article='.$art);
+            $managerAuteur->ajouterAuteur($auteur->membre() , $auteur->idcontenu());
+            $_SESSION['flash']['success'] = "L' auteur a eté ajouter avecs succes , il peut desormer modifier ce contenu ";
+      }
+      else
+      {
+            $_SESSION['flash']['success'] = "Vous etes deja auteur du contenu :) ";
+      }
+          
+      header('Location:./editioncontenu.php?contenu='.$auteur->idcontenu());
 
 	}
 	else
 	{
         $_SESSION['flash']['danger'] = " L' auteur semble ne pas exister ";
-        header('Location:./ajouter.php?action=auteur&art='.$art);
+        header('Location:./ajouter.php?action=auteur&contenu='.$idContenu);
 	}
 
 	break;
 
 	case "partie":
 
-       $partietitre = (isset($_POST["partie_titre"]))?$_POST["partie_titre"]:"";
-       $contenu = (isset($_POST["contenu"]))?$_POST["contenu"]:"";
+      $partie = new Partie($_POST);
+      $managerPartie = new ManagerPartie($bdd);
 
-       if(empty($contenu) || empty($partietitre))
+      $partie->setIdcontenu($_GET['contenu']);
+      $managerPartie->verifierChamps($partie);
+
+       if($managerPartie->_iErrors > 0 )
        {
-          $_SESSION['flash']['success'] = " Le titre et/ou le contenu de la partie est vide ";
-          header('Location:./editionarticle.php?article='.$art);
+          $message = '';
+          foreach ($managerPartie->errors() as $value) {
+
+                $message.= $value.'</br>';
+              }
+
+          $_SESSION['flash']['danger'] = $message;
+          header('Location:./editioncontenu.php?='.$partie->idcontenu());
        }
        
        else
        {
-         $insertpart = $bdd->prepare('INSERT INTO articles_parties(parties_titre , parties_contenu , articles_id) 
-         	                          VALUES(:titre , :contenu , :article)');
-         $insertpart->execute(array('titre' => $partietitre , 'contenu' => $contenu, 'article' => $art));
+            $managerPartie->ajouterPartie($partie);
+            $_SESSION['flash']['success'] = "Partie creer avec success :) ";
+            header('Location:./editioncontenu.php?contenu='.$partie->idcontenu());
+        }
+break;
 
-         $_SESSION['flash']['success'] = " Vous avez cree la partie avec succes";
-         header('Location:./editionarticle.php?article='.$art);
-       }
-
-
-
-
-	break;
+  default:
+         header('Location:./index.php');
 
 
 }

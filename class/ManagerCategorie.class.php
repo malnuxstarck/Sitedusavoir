@@ -25,8 +25,22 @@ class ManagerCategorie
 		$donnees = $query->fetch();
 
 		if(!empty($donnees))
-			return $donnees
+			return $donnees;
 		else
 			return array();
 	}
+
+
+
+	public function tousLesCategories()
+	{
+		$query = $this->_db->query('SELECT * FROM categories ORDER BY ordre DESC');
+		$donnees = $query->fetchAll();
+
+		if(!empty($donnees))
+			return $donnees;
+		else
+			return array();
+	}	
+
 }

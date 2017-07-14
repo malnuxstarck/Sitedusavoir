@@ -39,12 +39,12 @@ class Categorie
 		$this->_id = $id;
 	}
 
-	public function nom($nom)
+	public function setNom($nom)
 	{
 		$this->_nom = $nom ;
 	}
 
-	public function ordre($ordre)
+	public function setOrdre($ordre)
 	{
 		$this->_ordre = $ordre;
 	}

@@ -3,19 +3,19 @@
 
 //Elle sert a ajouter un auteur a un article ou des parties
 
-$titre="Ajout (Partie Ou Membre) | SiteduSavoir.com";
+$titre="Ajout (Partie Ou Auteur) | SiteduSavoir.com";
 include ("../includes/session.php");
 include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
     $action = (isset($_GET['action']))?$_GET['action']:"";
-	$art = (isset($_GET['article']))?$_GET['article']:"";
+	$idContenu = (isset($_GET['contenu']))?$_GET['contenu']:"";
 
-	if(empty($action) || empty($art))
+	if(empty($action) || empty($idContenu))
 	{
 		$_SESSION['flash']['success'] = "Aucune action et/ou article selectionner";
-		header('Location:index.php');
+		header('Location:./index.php');
 	}
 
 
@@ -23,7 +23,7 @@ include("../includes/menu.php");
 
 <div class="fildariane">
          <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="editiontuto.php?tuto=<?php echo $art;?>"> Edition tuto</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Auteur/Partie</span> </li>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Contenus</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="editioncontenu.php?contenu=<?php echo $idContenu;?>"> Edition Contenu</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Auteur/Partie</span> </li>
          </ul>
   </div>
   
@@ -41,7 +41,7 @@ include("../includes/menu.php");
 	    ?>
 	      <h2 class="titre"> Ajouter un auteur </h2>
         <div class="formulaire formulaire-tuto">
-		    <form action="ajouterok.php?action=auteur&article=<?php echo $art;?>" method="POST">
+		    <form action="ajouterok.php?action=auteur&contenu=<?php echo $idContenu;?>" method="POST">
 
 		          <div class="input input-tuto">
 		               <label for="auteur"></label>
@@ -67,15 +67,15 @@ include("../includes/menu.php");
 	   	<h2 class="titre"> Ajouter une partie </h2>
 	   	<div class="formulaire formulaire-tuto">
 
-		   	 <form action="ajouterok.php?action=partie&article=<?php echo $art;?>" method="POST">
+		   	 <form action="ajouterok.php?action=partie&contenu=<?php echo $idContenu;?>" method="POST">
 		  
 			   	   <div class="input input-tuto">
-			   	        <label for="partie_titre"></label>
-			   	        <input type="text" name="partie_titre"/>
+			   	        <label for="titre"></label>
+			   	        <input type="text" placeholder="Le titre de la partie" name="titre"/>
 			   	   </div>
 
 			   	   <div class="textarea textarea-tuto">
-			   	        <textarea  name="contenu">Le contenu de la partie</textarea>
+			   	        <textarea placeholder="Le Contenu de la partie" name="texte">Le contenu de la partie</textarea>
 			   	   </div>
 
 			   	   <div class="submit submit-tuto">

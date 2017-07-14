@@ -12,12 +12,12 @@ if(!$id)
 }
 
 
-$partie =(isset($_GET['partie']))?$_GET['partie']:"";
-$art = (isset($_GET['article']))?$_GET['article']:"";
+$idPartie =(isset($_GET['partie']))?$_GET['partie']:"";
+$idContenu = (isset($_GET['contenu']))?$_GET['contenu']:"";
 $action = (isset($_GET['action']))?$_GET['action']:"";
 
 
-if(empty($partie) || empty($art) || empty($action))
+if(empty($idPartie) || empty($idContenu))
 {
 	$_SESSION['flash']['danger'] = "Aucune action et/ou partie selectionner";
 	header("Location:./index.php");
@@ -25,7 +25,7 @@ if(empty($partie) || empty($art) || empty($action))
 
 echo '<div class="fildariane">
          <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./editionarticle.php?article=<?php echo $art;?>"> Edition Article</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Edition partie </span></li>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./editioncontenu.php?contenu='.$idContenu.'" > Edition Article</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Edition partie </span></li>
          </ul>
   </div>
  <div class="page">';
@@ -38,27 +38,22 @@ switch ($action) {
        if(empty($_POST))
 	   {
 
-	        $req = $bdd->prepare('SELECT * 
-				                  FROM articles_parties 
-				                  WHERE articles_id = :article AND parties_id = :partie');
+	        $managerPartie = new ManagerPartie($bdd);
+	        $donnees = $managerPartie->donnerLaPartie($idPartie);
+	        $partie = new Partie($donnees);
 
-			$req->execute(array('article' => $art , 
-				                'partie' => $partie));
-
-			$parties = $req->fetch();
-		
 			echo '<h1 class="titre">Editer partie </h1>
 
 			<div class="formulaire formulaire-tuto">
 
-				<form method="POST" action="editerpartie.php?action=edit&article='.$art.'&partie='.$partie.'">
+				<form method="POST" action="editerpartie.php?action=edit&contenu='.$partie->idcontenu().'&partie='.$partie->id().'">
 				     <div class="input input-tuto">
 				          <label for="titre"></label>
-				          <input type="text" name="titre" value="'.$parties['parties_titre'].'"/>
+				          <input type="text" name="titre" value="'.trim($partie->titre()).'"/>
 				     </div>
 
 				     <div class="textarea textarea-tuto">
-				         <textarea name="contenu">'.$parties['parties_contenu'].'</textarea>
+				         <textarea name="texte">'.trim($partie->texte()).'</textarea>
 				     </div>
 
 				    <div class="submit submit-tuto">
@@ -73,25 +68,33 @@ switch ($action) {
 	   else
 	   {
 
-	        $titre = $_POST['titre'];
-	        $contenu = $_POST['contenu'];
+	        $managerPartie = new ManagerPartie($bdd);
+	        $partie = new Partie($_POST);
+	        $partie->setIdcontenu($_GET['contenu']);
 
-		   	if(empty($titre) || empty($contenu))
-		   	{
-		   		$_SESSION['flash']['success'] = "Le titre et/ou la partie est vide ";
-		   		header('Location:./editionarticle.php?article='.$art);
-		   	}
+	        $partie->setId($_GET['partie']);
 
-		   	$insertpart = $bdd->prepare('UPDATE  articles_parties  SET parties_titre = :titre,parties_contenu = :contenu 
-		   		                         WHERE articles_id = :article');
-		   	$insertpart->bindParam(':article',$art,PDO::PARAM_INT);
-		   	$insertpart->bindParam(':titre',$titre,PDO::PARAM_STR);
-		   	$insertpart->bindParam(':contenu',$contenu,PDO::PARAM_STR);
+            $managerPartie->verifierChamps($partie);
+            $managerPartie->verifierChamps($partie);
 
-		    $insertpart->execute();
+            if($managerPartie->_iErrors == 0){
 
-		    $_SESSION['flash']['success'] = "La partie est mise a jour ";
-		   	header('Location:./editionarticle.php?article='.$art);
+            	$managerPartie->miseAjourPartie($partie);
+
+            	$_SESSION['flash']['success'] = "La partie est mise a jour ";
+		   	    header('Location:./editioncontenu.php?contenu='.$partie->idcontenu());
+            }
+            else
+            {
+            	$message = '';
+            	foreach ($managerPartie->errors() as $value) {
+
+            		$message .= $value .'</br>';
+            	}
+
+            	 $_SESSION['flash']['danger'] = $message;
+		   	     header('Location:./editioncontenu.php?contenu='.$partie->idcontenu());
+            }
 
 
 	   }
@@ -102,25 +105,30 @@ switch ($action) {
 	
 	case "sup":
 
-	        echo '<p>
-                       Etes vous sur de vouloir supprimmer cette partie ?
-                       <p><a href="editerpartie.php?action=sup&article='.$art.'&partie='.$partie.'&sur=1">Oui</a></p>
-                       <p><a href="editionarticle.php?article='.$art.'">Non</a></p>
-	              </p>';
+             $managerPartie = new ManagerPartie($bdd);
+	         $donnees = array('id' => $_GET['partie'] , 'idcontenu' => $_GET['contenu']);
+	         $partie = new Partie($donnees);
 
 	         if(isset($_GET['sur']))
 	         {
-	         	$req = $bdd->prepare('DELETE FROM articles_parties WHERE parties_id = :partie');
+	         	$managerPartie->deletePartie($partie);
+                $_SESSION['flash']['success'] = "Partie supprimer avec success ";
+                header('Location:./editioncontenu.php?contenu='.$partie->idcontenu());
+	         }
+	         else
+	         {
+	         	 echo '<p>
+                       Etes vous sur de vouloir supprimmer cette partie ?
+                       <p><a href="editerpartie.php?action=sup&contenu='.$partie->idcontenu().'&partie='.$partie->id().'&sur=1">Oui</a></p>
+                       <p><a href="editioncontenu.php?contenu='.$partie->idcontenu().'">Non</a></p>
+	              </p>';
+             }     
 
-	         	$req->execute(array('partie' => $partie));
 
-	         	$_SESSION['flash']['success'] = "Partie bien supprimer ";
-
-                header('Location:./editionarticle.php?article='.$art);
-	         }     
-
-
-		# code...
+		
 		break;
+
+		default:
+		      header('Location:./index.php');
 }
 
