@@ -107,7 +107,7 @@ else
 	      	$idContenu = (int) $managerContenu->ajouterNouveauContenu($contenu , $id);
 
       	    $_SESSION['flash']['success'] = " Votre Contenu a bien été creer , vous pouvez l'achever ici ";
-      	    header('Location:./editioncontenu.php?id='.$idContenu);
+      	    header('Location:./editioncontenu.php?contenu='.$idContenu);
 
       }
       else

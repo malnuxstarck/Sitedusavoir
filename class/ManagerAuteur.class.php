@@ -50,4 +50,19 @@ class ManagerAuteur
 
    }
 
+   public function tousLesAuteurs($contenu)
+   {
+   	   $query = $this->_db->prepare('SELECT pseudo , idcontenu , membre FROM auteurs INNER JOIN membres ON membres.id = auteurs.membre WHERE idcontenu = :cont');
+   	   $query->bindValue(':cont', $contenu , PDO::PARAM_INT);
+   	   $query->execute();
+
+   	   $donnees = $query->fetchAll();
+
+   	   if(!empty($donnees))
+   	   	    return $donnees;
+   	   	else
+   	   		return array();
+   	   	
+   }
+
 }

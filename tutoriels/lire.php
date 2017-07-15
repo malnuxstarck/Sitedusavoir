@@ -8,22 +8,15 @@ include("../includes/menu.php");
 
 
 
+$idTuto = (!empty($_GET['tuto']))?(int)$_GET['tuto']:1;
 
-
-$art = (!empty($_GET['article']))?(int)$_GET['article']:1;
-
-$req = $bdd->prepare('SELECT *
-	                  FROM articles 
-	                  WHERE articles_id = :article');
-
-$req->execute(array('article' => $art));
-$article = $req->fetch();
-
-
+$managerContenu = new ManagerContenu($bdd);
+$infosTuto = $managerContenu->donneLeContenu($idTuto);
+$tuto = new Contenu($infosTuto);
 
 echo '<div class="fildariane">
          <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png" /> <li> <span style="color:black">'.$article['articles_titre'].' </span></li>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Tuto\'s</a></li><img class="fleche" src="../images/icones/fleche.png" /> <li> <span style="color:black">'.$tuto->titre().' </span></li>
          </ul>
   </div>
 
@@ -33,29 +26,26 @@ echo '<div class="fildariane">
 echo '<div class="liretuto">
            <section class="liretuto-debut">
                  <div class="logo">
-                      <img src="./articles_ban/'.$article['articles_banniere'].'" alt=""/>
+                      <img src="../contenus/bannieres/'.$tuto->banniere().'" alt=""/>
                  </div>
                   <div class="liretutoTitre">
-                        '.htmlspecialchars($article['articles_titre']).'
+                        '.htmlspecialchars($tuto->titre()).'
                   </div>
 
                   <div class="liretutoAuteurs">
                      <ul>';
 
-                     $auteur = $bdd->prepare('SELECT membre_pseudo , membres.membre_id ,membre_avatar
-                                              FROM membres
-                                              LEFT JOIN articles_par
-                                              ON articles_par.membre_id = membres.membre_id
-                                              WHERE articles_id = :article');
+                     $managerMembre = new ManagerMembre($bdd);
+                     $managerAuteur = new ManagerAuteur($bdd);
+                     $infosAuteurs = $managerAuteur->tousLesAuteurs($tuto->id());
 
-                    $auteur->bindParam(':article',$art, PDO::PARAM_INT);
+                     foreach ($infosAuteurs as  $infoAteur) {
 
-                    $auteur->execute();
+                          $infosMembre = $managerMembre->infosMembre($infoAteur['membre']);
+                          $membre = new Membre($infosMembre);
 
-                    while($auteurs = $auteur->fetch())
-                    {
-                          echo '<li class="liretutoAut"><img src="../images/avatars/'.$auteurs['membre_avatar'].'"/><a href="../forum/voirprofil.php?m='.$auteurs['membre_id'].'&action=consulter">'.$auteurs['membre_pseudo'].'</a></li>';
-                    }
+                          echo '<li class="liretutoAut"><img src="../images/avatars/'.$membre->avatar().'"/><a href="../forum/voirprofil.php?m='.$membre->id().'&action=consulter">'.$membre->pseudo().'</a></li>';
+                      }
 
 
                     echo '</ul>
@@ -63,30 +53,26 @@ echo '<div class="liretuto">
                     </div>
 
            <section class="liretuto-intro">
-                    '.$article['articles_intro'].'
+                    '.$tuto->introduction().'
            </section>';
 
    
-$partie = $bdd->prepare('SELECT * 
-	                     FROM articles_parties 
-	                     WHERE articles_id = :article
-	                     ORDER BY parties_id ');
-$partie->bindParam(':article',$art,PDO::PARAM_INT);
-$partie->execute();
-$i = 1;
-while($parties = $partie->fetch())
-{
+$managerPartie = new ManagerPartie($bdd);
+$infosParties = $managerPartie->toutesLesPartiesDeCeContenu($tuto->id());
+
+foreach ($infosParties as $infosPartie) {
+    
+    $partie = new Partie($infosPartie);
+
     echo '<section class="liretuto-partie">
-                     <h3 class="liretuto-partie-titre">'.$i.' '.htmlspecialchars($parties['parties_titre']).'</h3>
+                     <h3 class="liretuto-partie-titre">'.htmlspecialchars($partie->titre()).'</h3>
                              <div class="contenu-part">
-                                  '.$parties['parties_contenu'].'
+                                  '.$partie->texte().'
                              </div>
      </section>';
-
-     $i++;
 }
          echo '<section class="liretuto-intro">
-                    '.$article['articles_conc'].'
+                    '.$tuto->conclusion().'
            </section>
       </div>
   </div>';

@@ -93,7 +93,7 @@ class ManagerContenu
       	$query->closeCursor();
 
       	$idContenu = $this->_db->lastInsertId();
-      	$managerAuteur = new ManagerAuteur($this->_bd);
+      	$managerAuteur = new ManagerAuteur($this->_db);
       	$managerAuteur->ajouterAuteur($auteur , $idContenu);
 
       	return $idContenu ;
@@ -101,21 +101,11 @@ class ManagerContenu
 
    }
 
-   public function ajouterAuteur($auteur , $contenu)
+   public function donneLeContenu($contenu , $auteur = NULL)
    {
-   	   $contenu = (int)$contenu;
+   	   if($auteur != NULL){
 
-   	   $query = $this->_db->prepare('INSERT INTO auteurs(membre , idcontenu)
-      		                  VALUES(:membre , :contenu)');
-      	$query->bindValue(':membre',$auteur,PDO::PARAM_INT);
-      	$query->bindValue(':contenu',$contenu, PDO::PARAM_INT);
-        $query->execute();
-
-   }
-
-   public function donneLeContenu($contenu , $auteur)
-   {
-   	   $query= $this->_db->prepare('SELECT contenus.id as id , membres.id as auteur ,titre,introduction,conclusion, type ,banniere,validation,confirmation,cat,publication
+   	        $query= $this->_db->prepare('SELECT contenus.id as id , membres.id as auteur ,titre,introduction,conclusion, type ,banniere,validation,confirmation,cat,publication
 	                                FROM contenus
 	                                LEFT JOIN auteurs
 	                                ON contenus.id = auteurs.idcontenu
@@ -124,10 +114,20 @@ class ManagerContenu
 	                                WHERE contenus.id = :cont
 	                                AND membres.id = :memb');
 
-		$query->bindParam(':cont', $contenu , PDO::PARAM_INT);
-		$query->bindParam(':memb', $auteur , PDO::PARAM_INT);
+		    $query->bindParam(':cont', $contenu , PDO::PARAM_INT);
+		    $query->bindParam(':memb', $auteur , PDO::PARAM_INT);
+		    $query->execute();
+	    }
+	    else
+	    {
+	    	$query = $this->_db->prepare('SELECT *
+	                                      FROM contenus 
+	                                      WHERE id = :cont');
+	    	$query->bindValue(':cont' , $contenu , PDO::PARAM_INT);
+	    	$query->execute();
+	    }
 
-       $query->execute();
+       
 
        $infosContenu = $query->fetch();
 
@@ -136,6 +136,7 @@ class ManagerContenu
        	else
        		return array();
    }
+
 
    public function miseAjourContenu(Contenu $infoContenu)
    {
@@ -152,6 +153,33 @@ class ManagerContenu
 
    	    $_SESSION['flash']['success'] = "Votre contenu a été  mis a jour avec succes :) ";
    	    header('Location:./editioncontenu.php?contenu='.$infoContenu->id());
+   }
+
+   public function tousLesContenus($type , $debut , $nombreTotal = 20)
+   {
+   	    $query = $this->_db->prepare('SELECT * FROM contenus WHERE type = :type ORDER BY publication LIMIT :debut , :nombre');
+   	    $query->bindValue(':type' , $type , PDO::PARAM_STR);
+   	    $query->bindValue(':debut' , $debut , PDO::PARAM_INT);
+   	    $query->bindValue(':nombre' , $nombreTotal , PDO::PARAM_INT);
+
+   	    $query->execute();
+   	    $donnees = $query->fetchAll();
+
+   	    if(!empty($donnees))
+   	    	return $donnees;
+   	    else
+   	    	return array();
+   }
+
+   public function totalDeContenu($type)
+   {
+   	   $query = $this->_db->prepare('SELECT COUNT(*) AS nbr FROM contenus WHERE type = :type');
+   	   $query->bindValue(':type' , $type ,PDO::PARAM_STR);
+   	   $query->execute();
+   	   $total = $query->fetchColumn();
+
+   	   return $total;
+
    }
 
 }
