@@ -180,11 +180,12 @@ class ManagerMembre
     	  if($id == 0)
     	  {
     	  	    $query = $this->_db->prepare('
-    	  	    	                          SELECT id,pseudo,password,siteweb,email,signature,avatar,localisation,token,cookiee,reset,reset_at,rang,posts,DATE_FORMAT(inscrit ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS inscrit , DATE_FORMAT(visite ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS visite
+    	  	    	                          SELECT id,pseudo,password,siteweb,email,signature,avatar,localisation,token,cookiee,reset,reset_at,rang,posts,DATE_FORMAT(inscrit ,\'le %d-%m-%Y à %H h : %i min : %s secs\') AS inscrit , DATE_FORMAT(visite ,\'le %d-%m-%Y à %Hh:%imin:%s secs\') AS visite
     	  	    	                          FROM membres 
-    	  	    	                          WHERE pseudo = :info AND inscrit '.$dateInscription );
+    	  	    	                          WHERE pseudo = :info AND inscrit '.$dateInscription);
 
     		    $query->bindValue(':info',$info,PDO::PARAM_STR);
+    		    
           }
           else
           {
@@ -193,7 +194,8 @@ class ManagerMembre
     	  	    	                          FROM membres  
     	  	    	                          WHERE id = :info AND inscrit '.$dateInscription);
 
-    		    $query->bindValue(':info',$id,PDO::PARAM_INT);
+    		    $query->bindValue(':info',$info,PDO::PARAM_INT);
+
           }
 
             $query->execute();
@@ -215,7 +217,7 @@ class ManagerMembre
 
     public function miseAjoursMembre(Membre $membreAjour)
     {
-    	$query = $this->_db->prepare('UPDATE membres SET pseudo = :pseudo ,email = :mail , password = :password ,localisation = :localisation,signature = :signature , siteweb = :siteweb ,avatar = :avatar WHERE id = :id');
+    	$query = $this->_db->prepare('UPDATE membres SET pseudo = :pseudo ,email = :mail , password = :password , posts = :posts ,localisation = :localisation,signature = :signature , siteweb = :siteweb ,avatar = :avatar WHERE id = :id');
 
     	$query->execute(array(
 
@@ -226,7 +228,8 @@ class ManagerMembre
                 'localisation' => $membreAjour->localisation(),
                 'avatar' => $membreAjour->avatar(),
                 'siteweb' => $membreAjour->siteweb(),
-                'signature' => $membreAjour->signature()
+                'signature' => $membreAjour->signature(),
+                'posts'     => $membreAjour->posts()
     		));
 
     	$query->closeCursor();
@@ -357,7 +360,7 @@ class ManagerMembre
 				if($membreAEnvoyer->rang() == 0 )
 				{
 					$this->nombresErreurs++;
-				    $this->_errors["Motdepasse"] = "Vous avez été Banni du site , impossible de vous connecter sur ce site.";
+				    $this->_errors["rang"] = "Vous avez été Banni du site , impossible de vous connecter sur ce site.";
 				}
 				else
 				{
@@ -414,6 +417,28 @@ class ManagerMembre
 		$donnees = $query->fetch();
 
 		return $donnees;
+	}
+
+	public function augmenterNombrePostMembre($idMembre)
+	{
+		$query = $this->_db->prepare('UPDATE membres SET posts = posts + 1 WHERE id = :id');
+
+		$query->bindValue(':id', $idMembre, PDO::PARAM_INT);
+		$query->execute();
+		$query->CloseCursor();
+
+	}
+
+
+	public function diminuerNombrePostMembre($idMembre , $nbrePost = -1)
+	{
+		$query = $this->_db->prepare('UPDATE membres SET posts = posts + :nbr WHERE id = :id');
+
+		$query->bindValue(':id', $idMembre, PDO::PARAM_INT);
+		$query->bindValue(':nbr' , $nbrePost , PDO::PARAM_INT);
+		$query->execute();
+		$query->CloseCursor();
+
 	}
 
 	

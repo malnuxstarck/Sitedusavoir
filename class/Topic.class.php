@@ -77,7 +77,7 @@ class Topic
 
     /* les setters */
 
-	public function setId($d)
+	public function setId($id)
 	{
 		$this->_id = $id ;
 	}
@@ -111,7 +111,7 @@ class Topic
 	} 
 	public function setLast_post($postId)
 	{
-		$this->_last_post = $postId .
+		$this->_last_post = $postId ;
 	}
 	public function setFirst_post($idPost)
 	{
@@ -119,6 +119,7 @@ class Topic
 	}
 	public function setPosts($nombresPosts)
 	{
+		$nombresPosts = (int)$nombresPosts;
 		$this->_posts = $nombresPosts ;
 	}
 	public function setLocked($lock)

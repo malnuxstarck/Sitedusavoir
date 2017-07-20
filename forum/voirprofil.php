@@ -9,8 +9,11 @@
 
   $idMembre = isset($_GET['m'])?(int)$_GET['m']:1;
   $managerMembre = new ManagerMembre($bdd);
-  $donnees = $managerMembre->infosMembre($idMembre);
+
+  $dateIns = ' IS NOT NULL OR (id = :info AND inscrit IS NULL)';
   
+  $donnees = $managerMembre->infosMembre($idMembre , $dateIns);
+
   $membre = new Membre($donnees);
 
   //On affiche les infos sur le membre

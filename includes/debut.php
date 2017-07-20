@@ -69,7 +69,7 @@ if($balises)
 
             function bbcode(bbdebut, bbfin)
             {
-                  var input = window.document.formulaire.message;
+                  var input = window.document.formulaire.texte;
                   input.focus();
                   if(typeof document.selection != 'undefined')
                   {
@@ -141,7 +141,7 @@ if($balises)
 
             function smilies(img)
             {
-               window.document.formulaire.message.value += '' + img + '';
+               window.document.formulaire.texte.value += '' + img + '';
             }
 
       </script>

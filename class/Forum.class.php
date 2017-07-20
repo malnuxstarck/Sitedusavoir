@@ -88,6 +88,7 @@ class Forum
 
     public function setId($id)
     {
+        $id = (int)$id;
     	$this->_id = $id;
     }
 
@@ -111,10 +112,12 @@ class Forum
     }
     public function setTopics($topics)
     {
+        $topics = (int)$topics;
     	$this->_topics = $topics;
     }
     public function setPosts($posts)
     {
+        $posts = (int)$posts;
     	$this->_posts = $posts ;
     }
     public function setLast_post_id($postId)
@@ -123,10 +126,12 @@ class Forum
     }
     public function setAuth_view($droitView)
     {
+        $droitView = (int)$droitView;
     	$this->_auth_view = $droitView;
     }
     public function setAuth_post($droitPost)
     {
+        $droitPost = (int)$droitPost;
     	$this->_auth_post = $droitPost ;
     }
     public function setAuth_modo($droitModerer)

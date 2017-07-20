@@ -141,7 +141,7 @@ CREATE TABLE `config` (
 -- Structure de la table `forum_post`
 --
 
-CREATE TABLE `posts` (
+CREATE TABLE `post` (
   `id` int(11) NOT NULL,
   `createur` int(11) NOT NULL,
   `texte` text NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE `posts` (
 -- Structure de la table `forum_topic`
 --
 
-CREATE TABLE `topics` (
+CREATE TABLE `topic` (
   `id` int(11) NOT NULL,
   `forum` int(11) NOT NULL,
   `titre` char(60) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
@@ -375,13 +375,13 @@ ALTER TABLE `automessages`
 --
 -- Index pour la table `forum_post`
 --
-ALTER TABLE `posts`
+ALTER TABLE `post`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `forum_topic`
 --
-ALTER TABLE `topics`
+ALTER TABLE `topic`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `last_post` (`last_post`);
 

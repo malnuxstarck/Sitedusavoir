@@ -4,8 +4,10 @@
 
 class ManagerTopic
 {
+	const ERR_AUTH_DELETE_TOPIC = "Impossible de supprimer le Message ";
 	protected $_db;
-	public $_errors;
+    public $_iErros = 0;
+	protected $_errors;
 
 	/* Le constructeur */
 
@@ -19,35 +21,102 @@ class ManagerTopic
 		$this->_db = $bdd ;
 	}
 
-	public function tousLesTopics($add1,$add2, $add3,$idMembre,$forum, $signe = '<>',$nombresDeMessages = 15 , $premierMessage)
+	public function infosTopic($idTopic)
 	{
-		$query = $bdd->prepare('SELECT topic.id, titre,createur, vus, topics.posts AS posts, topic_time, last_post, Mb.membre_pseudo 
-		                   AS membre_pseudo_createur, Mb.membre_avatar AS avatar_createur, post_createur,post_time, Ma.membre_pseudo 
-		                   AS membre_pseudo_last_posteur,post_id '.$add1.' FROM forum_topic
-	                       LEFT JOIN membres Mb ON Mb.membre_id = forum_topic.topic_createur
-	                       LEFT JOIN forum_post ON forum_topic.topic_last_post = forum_post.post_id
-	                       LEFT JOIN membres Ma ON Ma.membre_id = forum_post.post_createur
-	                      '.$add2.' 
-	                       WHERE topic_genre = "Annonce" AND forum_topic.forum_id =:forum ORDER BY topic_last_post DESC');
+		$query = $this->_db->prepare('SELECT topic.id AS id ,titre,topictime, topic.vus AS vus ,createur,last_post ,first_post , topic.posts AS posts, locked , forum ,name, auth_view, auth_post, auth_topic, auth_annonce, auth_modo
+	                      FROM topic
+	                      LEFT JOIN forums 
+	                      ON forums.id = topic.forum
+	                      WHERE topic.id =:topic');
 
-		$query->bindParam(':forum',$forum->id(),PDO::PARAM_INT);
+	    $query->bindValue(':topic',$idTopic,PDO::PARAM_INT);
 
-		if($id!=0)
-			$query->bindParam(':id',$id,PDO::PARAM_INT);
+	    $query->execute();
+	    $data = $query->fetch();
+	    if(!empty($data))
+	    	return $data;
+	    else
+	    	return array();
+	}
 
-		if(!empty($add3))
+	public function verifierChamps(Topic $topic)
+	{
+		if(empty($topic->titre()))
 		{
-			$query->bindValue(':premier',(int) $premierMessage,PDO::PARAM_INT);
-	        $query->bindValue(':nombre',(int) $nombresDeMessages,PDO::PARAM_INT);
-	    }
-	        
+			$this->_iErros++;
+			$this->_errors['titre'] = '<p>Votre message ou votre titre est vide,cliquez <a href="./poster.php?action=nouveautopic&amp;f='.$topic->forum().'">ici</a> pour recommencer</p>';
+		}
+
+	}
+
+	public function errors()
+	{
+		return $this->_errors;
+	}
+
+	public function nouveauTopic(Topic $topic)
+	{
+		$query = $this->_db->prepare('INSERT INTO topic(forum, titre, createur, vus, topictime,genre) 
+			                          VALUES (:forum, :titre, :createur, 1, NOW(), :genre)');
+
+		$query->bindValue(':forum', $topic->forum(), PDO::PARAM_INT);
+		$query->bindValue(':titre', $topic->titre(), PDO::PARAM_STR);
+
+		$query->bindValue(':createur', $topic->createur(), PDO::PARAM_INT);
+
+		$query->bindValue(':genre', $topic->genre(), PDO::PARAM_STR);
 		$query->execute();
 
-		$donnees = $query->fetchAll();
+		$idTopic = $this->_db->lastInsertId();
 
-		if(!empty($donnees))
-			return $donnees;
-        else
-        	return array();
+		//Notre fameuse fonction !
+
+		return $idTopic;
 	}
+
+	public function miseAjoursTopic(Topic $topic)
+	{
+		$query=$this->_db->prepare('UPDATE topic SET last_post = :dernierpost, first_post = :nouveaupost , vus = :vus , locked = :lock
+		                      WHERE id = :nouveautopic');
+
+		$query->bindValue(':nouveaupost', (int)$topic->first_post(),PDO::PARAM_INT);
+		$query->bindValue(':dernierpost' , $topic->last_post() , PDO::PARAM_INT);
+
+		$query->bindValue(':nouveautopic', (int)$topic->id(),PDO::PARAM_INT);
+		$query->bindValue(':vus' , $topic->vus() , PDO::PARAM_INT);
+		$query->bindValue(':lock' , $topic->locked() , PDO::PARAM_STR);
+
+		$query->execute();
+
+		$query->CloseCursor();
+
+	}
+
+	public function diminuerNombrePostDuTopic(Topic $topic , $nbrePost = -1)
+	{
+		$query = $this->_db->prepare('UPDATE topic SET posts = posts + :nbr WHERE id = :topic');
+		$query->bindValue(':topic',$topic->id(),PDO::PARAM_INT);
+		$query->bindValue(':nbr' , $nbrePost , PDO::PARAM_INT);
+
+		$query->execute();
+		$query->CloseCursor();
+	}
+
+	public function deleteTopic($idTopic)
+	{
+		$query = $this->_db->prepare('DELETE FROM topic WHERE id = :topic');
+		$query->bindValue(':topic',$idTopic,PDO::PARAM_INT);
+
+		$query->execute();
+		$query->CloseCursor();
+	}
+
+	public function changerForum($idTopic , $forum)
+	{
+		$query = $this->_db->prepare('UPDATE topic SET forum = :val WHERE id = :id');
+		$query->bindValue(':val' ,$forum , PDO::PARAM_INT);
+		$query->bindValue(':id' ,$idTopic , PDO::PARAM_INT );
+		$query->execute();
+	}
+
 }

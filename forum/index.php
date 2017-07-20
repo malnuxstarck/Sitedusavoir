@@ -2,11 +2,11 @@
 
 include "../includes/session.php";
 $titre ="Forums | SiteduSavoir.com";
-
 include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
+$managerForum = new ManagerForum($bdd);
   echo '<div class="fildariane">
 
                 <ul>
@@ -26,77 +26,46 @@ include("../includes/menu.php");
 
                 <h1 class="titre">Forum</h1>';
 
-                  $totaldesmessages = 0;
-                  $categorie = NULL;
-                  $add1='';
-
-                  $add2 ='';
-
-                  if($id != 0) //on est connecté
-                  {
-                      //Premièrement, sélection des champs
-
-                      $add1 = ',tv_id, tv_post_id, tv_poste';
-
-                      //Deuxièmement, jointure
-
-                      $add2 = 'LEFT JOIN forum_topic_view
-                               ON forum_topic.topic_id = forum_topic_view.tv_topic_id 
-                               AND
-                                 forum_topic_view.tv_id = :id';
-
-                   }
-
+$categorieAlaBoucle = NULL ;
+$totaldesmessages = 0 ;
 
 //Cette requête permet d'obtenir tout sur le forum
 
-                      $query = $bdd->prepare('SELECT cat_id, cat_nom, forum.forum_id, forum_name,forum_last_post_id, forum_desc, forum_post, forum_topic, auth_view, forum_topic.topic_id,
-                               forum_topic.topic_post, post_id, DATE_FORMAT(post_time, \'%d/%m/%Y %H:%i:%s\') AS post_time  , post_createur, membre_pseudo, membre_id '.$add1.'
-
-                        FROM categorie
-
-                        LEFT JOIN forum ON categorie.cat_id = forum.forum_cat_id
-
-                        LEFT JOIN forum_post ON forum_post.post_id = forum.forum_last_post_id
-
-                        LEFT JOIN forum_topic ON forum_topic.topic_id = forum_post.topic_id
-
-                        LEFT JOIN membres ON membres.membre_id = forum_post.post_createur '.$add2.'
-
-                        WHERE auth_view <= :lvl 
-
-                        ORDER BY cat_ordre, forum_ordre DESC');
-
-                      $query->bindValue(':lvl',$lvl,PDO::PARAM_INT);
-
-                      if($id!=0)
-                          $query->bindValue(':id',$id,PDO::PARAM_INT);
-
- 
-
-                       $query->execute();
+$jointures     = $managerForum->ajoutJointuresViews($id);
+$donneesForums = $managerForum->tousLesForums($jointures , $id , $lvl);
 
 
-
-
-                echo '<div class="forums">
-
-                        <ul class="listesforums">
-                          <div>
+ echo '<div class="forums">
+              <ul class="listesforums">
+                  <div>
                         ';
 
-while($data = $query->fetch())
+foreach ($donneesForums as $donneesForum ) {
+  
+    $forum = new Forum($donneesForum);
+    $categorie = new Categorie($donneesForum);
+    $categorie->setId($donneesForum['idCat']);
 
-{
+    $membre    = new Membre($donneesForum);
+    $membre->setId($donneesForum['idMembre']);
+
+    $topic = new Topic($donneesForum);
+    $topic->setId($donneesForum['idTopic']);
+    $topic->setPosts($donneesForum['topicsPosts']);
+
+    $post = new Post($donneesForum);
+    $post->setID($donneesForum['idPost']);
+
+    $topic_view = new TopicView($donneesForum);
 
     //On affiche chaque catégorie
 
-    if( $categorie != $data['cat_id'] )
+    if( $categorieAlaBoucle != $categorie->id())
 
     {
 
-        //Si c'est une nouvelle catégorie on l'affiche
-         $categorie = $data['cat_id'];
+        //Si c'est une nouvelle catégorie on l'affiche , et On stocke l'id pour le prochain passage
+         $categorieAlaBoucle = $categorie->id();
 
        ?>
           </div>
@@ -110,13 +79,13 @@ while($data = $query->fetch())
                                   <img src="../images/icones/cat.png"/>
                               </span>
                               <span>    
-                                  <?php echo stripslashes(htmlspecialchars($data['cat_nom'])); ?>
+                                  <?php echo stripslashes(htmlspecialchars($categorie->nom())); ?>
                                </span>
                       </div>
                       
 
         <?php
-}
+    }
 
     // Ce super echo de la mort affiche tous
 
@@ -124,11 +93,11 @@ while($data = $query->fetch())
 
      if (!empty($id)) // Si le membre est connecté
      {
-        if ($data['tv_id'] == $id) //S'il a lu le topic
+        if ($topic_view->tv_id() == $id) //S'il a lu le topic
         {
-                if ($data['tv_poste'] == '0') // S'il n'a pas posté
+                if ($topic_view->tv_poste() == '0') // S'il n'a pas posté
                 {
-                        if ($data['tv_post_id'] == $data['forum_last_post_id'])
+                        if ($topic_view->tv_post_id() == $forum->last_post_id())
                         //S'il n'y a pas de nouveau message
                         {
                              $ico_mess = 'message.png';
@@ -142,7 +111,7 @@ while($data = $query->fetch())
 
                 else // S'il a posté
                 {
-                        if ($data['tv_post_id'] == $data['forum_last_post_id'])
+                        if ($topic_view->tv_post_id() == $forum->last_post_id())
                         //S'il n'y a pas de nouveau message
                         {
                              $ico_mess = 'messagep_lu.png';
@@ -160,12 +129,12 @@ while($data = $query->fetch())
               $ico_mess = 'message_non_lu.png';
 
         }
-}
+      }
  //S'il n'est pas connecté
-else
-{
-    $ico_mess = 'message.png';
-}
+     else
+     {
+         $ico_mess = 'message.png';
+     }
 
     echo'
         <li>
@@ -176,18 +145,18 @@ else
                 <p class="infosforum">
 
                     <span>
-                         <a href="./voirforum.php?f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
+                         <a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
                     </span>
 
-                    <span>'.stripslashes(htmlspecialchars($data['forum_desc'])).'</span>
+                    <span>'.stripslashes(htmlspecialchars($forum->description())).'</span>
                </p>
 
                <p class="nombresujets">
-                    <span>'.$data['forum_topic'].'</span><span style="font-weight:normal;"> Sujets </span>
+                    <span>'.$forum->topics().'</span><span style="font-weight:normal;"> Sujets </span>
                </p>
 
                <p class="nombremessages">
-                    <span>'.$data['forum_post'].'</span><span style="font-weight:normal;"> msgs</span>
+                    <span>'.$forum->posts().'</span><span style="font-weight:normal;"> msgs</span>
                </p>';
 
 
@@ -195,15 +164,14 @@ else
 
     // Soit il y a un nouveau message, soit le forum est vide
 
-    if (!empty($data['forum_post']))
-
+    if (!empty($topic->posts()))
     {
 
          //Selection dernier message
 
         $nombreDeMessagesParPage = 15;
 
-        $nbr_post = $data['topic_post'] + 1;
+        $nbr_post = $topic->posts() + 1;
 
         $page = ceil ($nbr_post / $nombreDeMessagesParPage);
 
@@ -214,8 +182,8 @@ else
                           <span>Dernier message </span>
 
                           <span>
-                            <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($data['membre_id'])).'&amp;action=consulter">'.$data['membre_pseudo'].'</a>
-                             le <a href="./voirtopic.php?t='.$data['topic_id'].'&amp;page='.$page.'#p_'.$data['post_id'].'">'.$data['post_time'].'</a>
+                            <a href="./voirprofil.php?m='.stripslashes(htmlspecialchars($membre->id())).'&amp;action=consulter">'.$membre->pseudo().'</a>
+                             le <a href="./voirtopic.php?t='.$topic->id().'&amp;page='.$page.'#p_'.$post->id().'">'.$post->posttime().'</a>
                         </span>
                   </p>
 
@@ -234,48 +202,38 @@ else
 
      
 
-     $totaldesmessages += $data['forum_post'];
+     $totaldesmessages += $forum->posts();
 
 }
 
-$query->CloseCursor();
-
-echo '   </ul>
-     </div>
+echo '</ul>
+     </div> 
 
   <div class="statistique"> 
 
      <span class="stat-entete"> Statistique </span>
-       <div >';
+        <div>';
 
           //On compte les membres
 
-      $TotalDesMembres = $bdd->query('SELECT COUNT(*) FROM membres')->fetchColumn();
+            $managerMembre = new ManagerMembre($bdd);
+            $totalDesMembres = $managerMembre->totalDesMembres();
 
-      $query->CloseCursor();  
-
-      $query = $bdd->query('SELECT membre_pseudo, membre_id FROM membres ORDER BY membre_id DESC LIMIT 0, 1');
-
-      $data = $query->fetch();
-
-      $derniermembre = stripslashes(htmlspecialchars($data['membre_pseudo']));
+            $dernierInscritDonnees = $managerMembre->dernierInscrit();
+            $derniermembre = new Membre($dernierInscritDonnees);
 
 
-      echo'<p>Le total des messages du forum est <strong>'.$totaldesmessages.'</strong>.</p>';
+            echo'<p>Le total des messages du forum est <strong>'.$totaldesmessages.'</strong>.</p>';
 
-      echo'<p>Le site et le forum comptent <strong>'.$TotalDesMembres.'</strong> membres.</p>';
+            echo'<p>Le site et le forum comptent <strong>'.$totalDesMembres.'</strong> membres.</p>';
 
-      echo'<p>Le dernier membre est <a href="./voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">'.$derniermembre.'</a>.</p>
-  </div>
+            echo'<p>Le dernier membre est <a href="./voirprofil.php?m='.$derniermembre->id().'&amp;action=consulter">'.$derniermembre->pseudo().'</a>.</p>
+       </div>
   </div>';
-
-$query->CloseCursor();
-
-
-
 
 
 echo '</div>';
+
 include "../includes/footer.php";
 
 echo '</body>
