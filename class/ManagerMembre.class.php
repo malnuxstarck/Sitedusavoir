@@ -10,6 +10,7 @@ class ManagerMembre
     const ERR_IS_NOT_CO =  'Vous devez d\'abord vous connecter ';
     const VALIDE = 1 ;
     const NON_VALIDE = 0;
+    const ERR_AUTH_ADMIN = "Acces restraint aux Administrateurs ";
 
 	protected $_db;
 	protected $_errors = array();
@@ -441,6 +442,72 @@ class ManagerMembre
 
 	}
 
-	
+	public function listeDesMembres($premier , $membreParPage , $champOrdre , $ordre)
+	{
+		$query = $this->_db->prepare('SELECT id, pseudo,inscrit, posts, visite, online_id 
+                          FROM membres 
+                          LEFT JOIN whoisonline 
+                          ON online_id = id 
+                          ORDER BY '.$champOrdre.' '.$ordre.' 
+                          LIMIT :premier, :membreparpage');
+
+        $query->bindValue(':premier',$premier,PDO::PARAM_INT);
+        $query->bindValue(':membreparpage',$membreParPage, PDO::PARAM_INT);
+        $query->execute();
+
+        $datas = $query->fetchAll();
+
+        return $datas;
+	}
+
+	public function infosMembreParEmail($email)
+	{
+		$req = $this->_db->prepare('SELECT * FROM membres WHERE email = :email AND inscrit IS NOT NULL');
+        $req->execute(array('email' => $email));
+
+        $user = $req->fetch();
+
+        if(!empty($user))
+               return $user;
+        else
+            return array();   
+	}
+
+	public function prepareInitialisationPassword($idM)
+	{
+		$token = Membre::str_random(60);
+        $req = $this->_db->prepare('UPDATE membres SET reset = :token , reset_at = NOW() WHERE id = :id');
+
+        $req->execute(array(
+                            'token'=> $token,
+                            'id'  => $idM 
+      ));
+
+        return $token;
+	}
+
+	public function initialisationPassword($membre)
+	{
+		$req = $this->_db->prepare('UPDATE membres SET password = :pass, reset = NULL, reset_at = NULL WHERE id = :id');
+            $req->execute(array('pass'=> $membre->password(),'id'=> $membre->id()));
+	}
+
+	public function tousLesBannis()
+	{
+		$query = $this->_db->query('SELECT id, pseudo FROM membres WHERE rang = 0');
+		$datas = $query->fetchAll();
+
+		return $datas;
+	}
+
+	public function recupereLeMembre($pseudo)
+	{
+		$query = $this->_db->prepare('SELECT * FROM membres WHERE LOWER(pseudo) = :pseudo');
+		$query->bindValue(':pseudo', strtolower($pseudo) , PDO::PARAM_STR);
+		$query->execute();
+
+		$data = $query->fetch();
+		return $data;
+	}
 
 }

@@ -6,36 +6,38 @@
 
   include_once './includes/menu.php';
   include_once './includes/fonctions.php';
- ?>
-
-<?php
 
   if(isset($_GET['id'])  && isset($_GET['token']))
   {
-		
-    $req = $bdd->prepare('SELECT * FROM membres WHERE membre_id = :id AND reset = :reset AND reset_at IS NOT NULL AND reset_at > DATE_SUB(NOW(), INTERVAL 30 MINUTE)');
+      $managerMembre = new ManagerMembre($bdd);
+      $token = $_GET['token'];
+      $idUser = (int)$_GET['id'];
 
-    $req->execute(array('id' => $_GET['id'], 'reset' => $_GET['token']));
+		  $infosMembre = $managerMembre->infosMembre($idUser);
+      $membre = new Membre($infosMembre);
 
-    $user = $req->fetch();
+      $membreAjours = new Membre($_POST);
+      $membreAjours->setID($membre->id());
 
-    if($user)
-    {
-
-      if(!empty($_POST) && $_POST['password'] == $_POST['confirmation'])
+      if(!empty($infosMembre) AND $membre->reset() == $token)
       {
-        $password = PASSWORD_HASH($_POST['password'],PASSWORD_BCRYPT);
-        $req = $bdd->prepare('UPDATE membres SET membre_mdp = :pass, reset = NULL, reset_at = NULL WHERE membre_id = :id');
-        $req->execute(array('pass'=> $password,'id'=> $user['membre_id']));
+          $managerMembre->verifyPassword($membreAjours);
 
-       
+          if(empty($managerMembre->errors())){
 
-       $_SESSION['flash']['success'] = "Mot de passe mis a jour, vous pouvez vous connecter a present";
+               $managerMembre->initialisationPassword($membreAjours);
+               $_SESSION['flash']['success'] = "Mot de passe mis a jour, vous pouvez vous connecter a present";
+               header('Location: ../index.php');
+          }
+          else
+          {
+              $message = $managerMembre->errors()['password'];
+              $_SESSION['flash']['danger'] = $message;
+              header('Location: ./oubli.php');
+          }
+
             
-
-        header('Location: ../index.php');
-        exit();
-      }
+            exit();
     }
     else
     {
@@ -47,7 +49,7 @@
   }
   else
   {
-
+    $_SESSION['flash']['danger'] = "Maivaise URL , veiullez reessayer .";
     header('Location: connexion.php');
     exit();
 
@@ -67,8 +69,8 @@
         </div>
 
         <div class="input">
-          <label for="confirmation"><span><img src="images/icones/mdp.png"/></span> </label>
-          <input type="password" name="confirmation" required placeholder="Confirmer le mot de passe" />
+          <label for="confirmPassword"><span><img src="images/icones/mdp.png"/></span> </label>
+          <input type="password" name="confirmPassword" required placeholder="Confirmer le mot de passe" />
         </div>  
       	<div class="submit">
            <input type="submit" value="Envoyer" /> 

@@ -1,5 +1,5 @@
 <?php
-session_start();
+include '../includes/session.php';
 $titre="Administration| sitedusavoir.com";
 $balises = true;
 
@@ -14,8 +14,8 @@ $action = (isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 echo'<p id="fildariane"><i>Vous êtes ici</i> : <a href="../index.php">Acceuil</a> --> <a href="./index.php">Administration du forum</a>';
 
 
-if (!verif_auth(ADMIN)) 
-	   erreur(ERR_AUTH_ADMIN);
+if (!Membre::verif_auth(ADMIN)) 
+	   erreur(ManagerMembre::ERR_AUTH_ADMIN);
 
 
 switch($cat) //1er switch
@@ -44,17 +44,19 @@ switch($cat) //1er switch
 							"forum_titre" => "Titre du forum"
 		                    );
 
-		$query = $bdd->query('SELECT config_nom, config_valeur FROM forum_config');
+        $managerConfiguration = new ManagerConfiguration($bdd);
+        $donneesConfigs = $managerConfiguration->toutesLesConfigurations();
+        
+        foreach ($donneesConfigs as $donneesConfig) {
 
-		while($data=$query->fetch())
-		{
-
+        	$config = new Configuration($donneesConfig);
+      
 				echo '<p>
-						<label for='.$data['config_nom'].'>
-							'.$config_name[$data['config_nom']].'
+						<label for='.$config->nom().'>
+							'.$config_name[$config->nom()].'
 						</label> :
-						<input type="text" id="'.$data['config_nom'].'"value="'.$data['config_valeur'].'"
-						name="'.$data['config_nom'].'">
+						<input type="text" id="'.$config->nom().'"value="'.$config->valeur().'"
+						name="'.$config->nom().'">
 				    </p>';
 
 		}
@@ -63,7 +65,6 @@ switch($cat) //1er switch
 				       <input type="submit" value="Envoyer" />
 				     </p>
 				</form>';
-        $query->CloseCursor();
 
 		break;
 
@@ -109,7 +110,8 @@ switch($cat) //1er switch
 
 					elseif($_GET['c'] == "f")
 					{
-							$query=$bdd->query('SELECT cat_id, cat_nom FROM categorie ORDER BY cat_ordre DESC');
+							$managerCategorie = new ManagerCategorie($bdd);
+							$donneesCats = $managerCategorie->tousLesCategories();
 
 							echo'<h1>Création d un forum</h1>';
 
@@ -124,10 +126,11 @@ switch($cat) //1er switch
 
 									<label>Catégorie : </label><select name="cat">';
 
-									while($data = $query->fetch())
-									{
-										echo'<option value="'.$data['cat_id'].'">
-										           '.$data['cat_nom'].'
+                                    foreach ($donneesCats as $donneesCat ) {
+                                    	$cat = new Categorie($donneesCat);
+
+                                    	echo'<option value="'.$cat->id().'">
+										           '.$cat->nom().'
 										    </option>';
 									}
 
@@ -136,8 +139,6 @@ switch($cat) //1er switch
 									      <br />
 									<input type="submit" value="Envoyer">
 							    </form>';
-
-							    $query->CloseCursor();
 
 				    }
 							//3ème cas : on cherche à créer une catégorie (c=c)
@@ -158,6 +159,14 @@ switch($cat) //1er switch
 			    case "edit":
 					//Edition d'un forum
 					echo'<h1>Edition d un forum</h1>';
+
+					$managerCategorie = new ManagerCategorie($bdd);
+					$donneesCats = $managerCategorie->tousLesCategories();
+
+					$managerForum = new ManagerForum($bdd);
+					$jointures = $managerForum->ajoutJointuresViews($id);
+					$donneesForums = $managerForum->tousLesForums($jointures ,$id , $lvl);
+
 
 					if(!isset($_GET['e']))
 					{
@@ -188,21 +197,21 @@ switch($cat) //1er switch
 
 					elseif($_GET['e'] == "editf")
 					{
-
+						
 					//On affiche dans un premier temps la liste des forums
 							if(!isset($_POST['forum']))
 							{
-									$query=$bdd->query('SELECT forum_id, forum_name FROM forum ORDER BY forum_ordre DESC');
-
 									echo'<form method="post" action="index.php?cat=forum&amp;action=edit&amp;e=editf">';
 											echo'<p>
 													Choisir un forum :</br /></h2>
 
 													<select name="forum">';
-													while($data = $query->fetch())
-													{
-														echo'<option value="'.$data['forum_id'].'">
-														             '.stripslashes(htmlspecialchars($data['forum_name'])).'
+													foreach ($donneesForums as $donneesForum) {
+
+														$forum = new Forum($donneesForum);
+											
+														echo'<option value="'.$forum->id().'">
+														             '.stripslashes(htmlspecialchars($forum->name())).'
 														   </option>';
 													}
 
@@ -210,7 +219,7 @@ switch($cat) //1er switch
 											    </p>
 									    </form>';
 
-									$query->CloseCursor();
+									
 
 							}
 
@@ -218,61 +227,55 @@ switch($cat) //1er switch
 
 							else
 							{
-									$query = $bdd->prepare('SELECT forum_id, forum_name, forum_desc,forum_cat_id FROM forum WHERE forum_id = :forum');
-
-									$query->bindValue(':forum',(int) $_POST['forum'],PDO::PARAM_INT);
-									$query->execute();
-
-									$data1 = $query->fetch();
+									$donneesForumR = $managerForum->infosForum($_POST['forum']);
+									$forumR = new Forum($donneesForumR);
 
 									echo'<p>
 											Edition du forum
-											<strong>'.stripslashes(htmlspecialchars($data1['forum_name'])).'</strong>
+											<strong>'.stripslashes(htmlspecialchars($forumR->name())).'</strong>
 									    </p>';
 
 									echo'<form method="post" action="adminok.php?cat=forum&amp;action=edit&amp;e=editf">
 									         <label>Nom du forum : </label>
-									          <input type="text" id="nom" name="nom" value="'.$data1['forum_name'].'" />
+									          <input type="text" id="nom" name="nom" value="'.$forumR->name().'" />
 									          <br />
 
 										<label>Description :</label>
-										<textarea cols=40 rows=4 name="desc" id="desc">'.$data1['forum_desc'].'</textarea>
+										<textarea cols=40 rows=4 name="description">'.$forumR->description().'</textarea>
 										<br />
 										<br />';
-										$query->CloseCursor();
 
 										//A partir d'ici, on boucle toutes les catégories,
 										//On affichera en premier celle du forum
 
-										$query = $bdd->query('SELECT cat_id, cat_nom FROM categorie ORDER BY cat_ordre DESC');
-
 										echo'<label>Déplacer le forum vers : </label>
 										<select name="depl">';
 
-											while($data2 = $query->fetch())
-											{
-												if($data2['cat_id'] == $data1['forum_cat_id'])
+											foreach ($donneesCats as $donneesCat) {
+
+												$cat = new Categorie($donneesCat);
+
+												if($cat->id() == $forumR->id())
 												{
-													echo'<option value="'.$data2['cat_id'].'" selected="selected">'.stripslashes(htmlspecialchars($data2['cat_nom'])).'
+													echo'<option value="'.$cat->id().'" selected="selected">'.stripslashes(htmlspecialchars($dcat->nom())).'
 													    </option>';
 												}
 
 												else
 												{
-													echo'<option
-													value="'.$data2['cat_id'].'">'.$data2['cat_nom'].'</option>';
+													echo'<option value="'.$cat->id().'">'.$cat->nom().'</option>';
 												}
 											}
 										  echo'</select>
 
-										  <input type="hidden" name="forum_id" value="'.$data1['forum_id'].'">';
+										  <input type="hidden" name="forum_id" value="'.$forum->id().'">';
 
 										  echo'<p><input type="submit" value="Envoyer">
 
 										   </p>
 
 									</form>';
-									$query->CloseCursor();
+							
 							}
 
 					}
@@ -282,43 +285,36 @@ switch($cat) //1er switch
 						//On commence par afficher la liste des catégories
 						if(!isset($_POST['cat']))
 						{
-							$query = $bdd->query('SELECT cat_id, cat_nom FROM categorie ORDER BY cat_ordre DESC');
 							echo'<form method="post" action="index.php?cat=forum&amp;action=edit&amp;e=editc">';
 								    echo'<p>
 									      Choisir une catégorie :</br />
 									       <select name="cat">';
 
-										while($data = $query->fetch())
-										{
-											echo'<option
-											value="'.$data['cat_id'].'">'.$data['cat_nom'].'</option>';
-										}
+										foreach ($donneesCats as $donneesCat) {
 
+												$cat = new Categorie($donneesCat);
+                                                echo'<option value="'.$cat->id().'">'.$cat->nom().'</option>';
+											}
 										echo'<input type="submit" value="Envoyer">
 									</p>
 							    </form>';
-							$query->CloseCursor();
 							
 						}
 
 						//Puis le formulaire
 						else
 						{
-							$query = $bdd->prepare('SELECT cat_nom FROM categorie WHERE cat_id = :cat');
-							$query->bindValue(':cat',(int) $_POST['cat'],PDO::PARAM_INT);
-							$query->execute();
-
-							$data = $query->fetch();
+							$donneesCat = $managerCategorie->infosCategorie((int)$_POST['cat']);
+							$cat = new Categorie($donneesCat);
 
 							echo'<form method="post" action="./adminok.php?cat=forum&amp;action=edit&amp;e=editc">';
 
 							echo'<label> Indiquez le nom de la catégorie :</label>
-							<input type="text" id="nom" name="nom" value="'.stripslashes(htmlspecialchars($data['cat_nom'])).'" />
+							<input type="text" id="nom" name="nom" value="'.stripslashes(htmlspecialchars($cat->nom())).'" />
 							<br /><br />
-							<input type="hidden" name="cat" value="'.$_POST['cat'].'" />
+							<input type="hidden" name="cat" value="'.$cat->id().'" />
 							<input type="submit" value="Envoyer" /></p>
 							</form>';
-							$query->CloseCursor();
 						}
 					}
 
@@ -327,20 +323,23 @@ switch($cat) //1er switch
 					{
 
 							$categorie="";
-							$query = $bdd->query('SELECT forum_id, forum_name, forum_ordre,forum_cat_id, cat_id, cat_nom FROM categorie LEFT JOIN forum ON cat_id = forum_cat_id ORDER BY cat_ordre DESC');
-
 							echo'<form method="post" action="adminok.php?cat=forum&amp;action=edit&amp;e=ordref">';
 
 									echo '<table>';
-									while($data = $query->fetch())
-									{
-										if( $categorie !== $data['cat_id'] )
+
+									foreach ($donneesForums as $donneesForum) {
+
+										$cat = new Categorie($donneesForums);
+										$cat->setId($donneesForum['idCat']);
+										$forum = new Forum($donneesForum);
+
+										if( $categorie !== $cat->id())
 										{
-											$categorie = $data['cat_id'];
+											$categorie = $cat->id();
 											echo'
 											<tr>
 												<th>
-												    <strong>'.stripslashes(htmlspecialchars($data['cat_nom'])).'</strong>
+												    <strong>'.stripslashes(htmlspecialchars($cat->nom())).'</strong>
 												</th>
 
 												<th>
@@ -350,11 +349,11 @@ switch($cat) //1er switch
 										}
 										echo'<tr>
 												<td>
-												    <a href="./voirforum.php?f='.$data['forum_id'].'">'.$data['forum_name'].'</a>
+												    <a href="./voirforum.php?f='.$forum->id().'">'.$forum->name().'</a>
 												</td>
 
 												<td>
-												   <input type="text" value="'.$data['forum_ordre'].'" name="'.$data['forum_id'].'" />
+												   <input type="text" value="'.$forum->ordre().'" name="'.$forum->id().'" />
 												</td>
 										    </tr>';
 									}
@@ -369,62 +368,60 @@ switch($cat) //1er switch
 
 					elseif($_GET['e'] == "ordrec")
 					{
-						$query = $bdd->query('SELECT cat_id, cat_nom, cat_ordre FROM categorie ORDER BY cat_ordre DESC');
 
 						echo'<form method="post" action="adminok.php?cat=forum&amp;action=edit&amp;e=ordrec">';
 
-								while($data = $query->fetch())
-								{
-									echo'<label>'.stripslashes(htmlspecialchars($data['cat_nom'])).':</label>
+								foreach ($donneesCats as $donneesCat) {
 
-									<input type="text" value="'.$data['cat_ordre'].'"name="'.$data['cat_id'].'" /><br /><br
+									$cat = new Categorie($donneesCat);
+								
+									echo'<label>'.stripslashes(htmlspecialchars($cat->nom())).':</label>
+
+									<input type="text" value="'.$cat->ordre().'"name="'.$cat->id().'" /><br /><br
 									/>';
 								}
 
 								echo '<input type="submit" value="Envoyer" />
 
 						    </form>';
-
-						$query->CloseCursor();
 					}
 
 					break;
-
-
 
 				   //Gestion des droits
 
 			    case "droits":
 					//Gestion des droits
+
+			        $managerForum = new ManagerForum($bdd);
+			        $jointures = $managerForum->ajoutJointuresViews($id);
+
+			        $donneesForums = $managerForum->tousLesForums($jointures , $id , $lvl);
 					echo'<h1>Edition des droits</h1>';
 
 					if(!isset($_POST['forum']))
 					{
-						$query=$bdd->query('SELECT forum_id, forum_name FROM forum ORDER BY forum_ordre DESC');
 
 						echo'<form method="post" action="index.php?cat=forum&action=droits">';
 							echo'<p>
 									Choisir un forum :</br />
 									<select name="forum">';
 
-									while($data = $query->fetch())
-									{
-										echo'<option value="'.$data['forum_id'].'">'.$data['forum_name'].'</option>';
+									foreach ($donneesForums as $donneesForum) {
+
+									    $forum = new Forum($donneesForum);
+										echo'<option value="'.$forum->id().'">'.$forum->name().'</option>';
 									}
 
 									echo'<input type="submit" value="Envoyer">
 							    </p>
 						</form>';
-						$query->CloseCursor();
 					}
 
 					else
 					{
-							$query = $bdd->prepare('SELECT forum_id, forum_name, auth_view,auth_post, auth_topic, auth_annonce, auth_modo
-							FROM forum WHERE forum_id = :forum');
-							$query->bindValue(':forum',(int) $_POST['forum'],
-							PDO::PARAM_INT);
-							$query->execute();
+							$donneesForum = $managerForum->infosForum((int)$_POST['forum']);
+							$forum = new Forum($donneesForum);
 
 							echo '<form method="post" action="adminok.php?cat=forum&action=droits">
 									<p>
@@ -436,7 +433,7 @@ switch($cat) //1er switch
 												<th>Annonce</th>
 												<th>Modérer</th>
 										    </tr>';
-										   $data = $query->fetch();
+
 										   //Ces deux tableaux vont permettre d'afficher les résultats
 										   $rang = array(
 														VISITEUR=>"Visiteur",
@@ -456,26 +453,26 @@ switch($cat) //1er switch
 
 										foreach($list_champ as $champ)
 										{
-										echo'<td><select name="'.$champ.'">';
-										for($i=1;$i<5;$i++)
-										{
-										if ($i == $data[$champ])
-										{
-										echo'<option value="'.$i.'"
-										selected="selected">'.$rang[$i].'</option>';
+											echo'<td><select name="'.$champ.'">';
+
+											for($i=1; $i<5; $i++)
+											{
+												if ($i == $forum->$champ())
+												{
+													echo'<option value="'.$i.'" selected="selected">'.$rang[$i].'</option>';
+												}
+												else
+												{
+													echo'<option value="'.$i.'">'.$rang[$i].'</option>';
+												}
+											}
+											echo'</td></select>';
 										}
-										else
-										{
-										echo'<option value="'.$i.'">'.$rang[$i].'</option>';
-										}
-										}
-										echo'</td></select>';
-										}
-										echo'<br /><input type="hidden" name="forum_id" value="'.$data['forum_id'].'" />
+										echo'<br /><input type="hidden" name="forum_id" value="'.$forum->id().'" />
 										<input type="submit" value="Envoyer">
 									</p>
 								</form>';
-							$query->CloseCursor();
+							
 					}
 					echo '</table>';
 					break;
@@ -518,7 +515,8 @@ switch($cat) //1er switch
 						<form method="post" action="./index.php?cat=membres&amp;action=edit">
 							<p>
 								<label for="membre">Inscrivez le pseudo : </label>
-								<input type="text" id="membre" name="membre"><input type="submit" name="Chercher" value="Chercher">
+								<input type="text" id="membre" name="membre">
+								<input type="submit" name="Chercher" value="Chercher">
 							</p>
 						</form>';
 					}
@@ -526,17 +524,14 @@ switch($cat) //1er switch
 					else //sinon
 					{
 						$pseudo_d = $_POST['membre'];
-						//Requête qui ramène des info sur le membre à
-						//Partir de son pseudo
-						$query = $bdd->prepare('SELECT membre_id,
-						membre_pseudo, membre_email,
-						membre_siteweb, membre_signature,
-						membre_localisation, membre_avatar
-						FROM membres WHERE LOWER(membre_pseudo)=:pseudo');
-						$query->bindValue(':pseudo',strtolower($pseudo_d),PDO::PARAM_STR);
-						$query->execute();
+						//Requête qui ramène des info sur le membre à partir de son pseudo
+						
+						$managerMembre = new ManagerMembre($bdd);
+						$donneesMembre = $managerMembre->recupereLeMembre($pseudo_d);
+						$membre = new Membre($donneesMembre);
+
 						//Si la requête retourne un truc, le membre existe
-						if ($data = $query->fetch())
+						if (!empty($donneesMembre))
 						{
 							?>
 							<form method="post" action="adminok.php?cat=membres&amp;action=edit" enctype="multipart/form-data">
@@ -544,18 +539,18 @@ switch($cat) //1er switch
 									<fieldset>
 											<legend>Identifiants</legend>
 											<label for="pseudo">Pseudo :</label>
-											<input type="text" name="pseudo" id="pseudo" value="<?php echo stripslashes(htmlspecialchars($data['membre_pseudo'])) ?>" /><br />
+											<input type="text" name="pseudo" id="pseudo" value="<?php echo stripslashes(htmlspecialchars($membre->pseudo())) ?>" /><br />
 									</fieldset>
 
 									<fieldset>
 
 											<legend>Contacts</legend>
 											<label for="email">Adresse E_Mail :</label>
-											<input type = "text" name="email" id="email" value="<?php echo stripslashes(htmlspecialchars($data['membre_email'])) ?>" /><br />
+											<input type = "text" name="email" id="email" value="<?php echo stripslashes(htmlspecialchars($membre->email())) ?>" /><br />
 
 											<label for="website">Site web :</label>
-											<input type = "text" name="website" id="website"
-											value="<?php echo stripslashes(htmlspecialchars($data['membre_siteweb'])) ?>"/><br />
+											<input type = "text" name="siteweb" id="website"
+											value="<?php echo stripslashes(htmlspecialchars($membre->siteweb())) ?>"/><br />
 
 									</fieldset>
 
@@ -568,7 +563,7 @@ switch($cat) //1er switch
 											       Localisation :
 											</label>
 
-											<input type = "text" name="localisation" id="localisation" value="<?php echo stripslashes(htmlspecialchars($data['membre_localisation'])) ?>" />
+											<input type = "text" name="localisation" id="localisation" value="<?php echo stripslashes(htmlspecialchars($membre->localisation())) ?>" />
 											<br />
 									</fieldset>
 
@@ -590,13 +585,13 @@ switch($cat) //1er switch
 												      <input type="checkbox" name="delete" value="Delete" /> Supprimer l avatar
 												</label>
 
-												    Avatar actuel : <?php echo'<img src="../images/avatars/'.$data['membre_avatar'].'" alt="pas d avatar" />' ?>
+												    Avatar actuel : <?php echo'<img src="../images/avatars/'.$membre->avatar().'" alt="pas d avatar" />' ?>
 												<br /><br />
 
 												<label for="signature">Signature :</label>
 
 												<textarea cols=40 rows=4 name="signature" id="signature">
-												          <?php echo $data['membre_signature'] ?>
+												          <?php echo $membre->signature() ?>
 												</textarea>
 
 												<br />
@@ -606,7 +601,6 @@ switch($cat) //1er switch
 									echo'<input type="hidden" value="'.stripslashes($pseudo_d).'" name="pseudo_d">
 									     <input type="submit" value="Modifier le profil" />
 							</form>';
-							$query->CloseCursor();
 						}
 						else echo' <p>
 										Erreur : Ce membre n existe pas, <br />
@@ -617,12 +611,7 @@ switch($cat) //1er switch
 
 					break;
 
-
-
-
-
-
-					break;
+                    break;
 
 				case "droits":
 
@@ -652,13 +641,10 @@ switch($cat) //1er switch
 					{
 
 							$pseudo_d = $_POST['membre'];
+                            $managerMembre = new ManagerMembre($bdd);
+                            $donneesMembre = $managerMembre->recupereLeMembre($pseudo_d);
 
-							$query = $bdd->prepare('SELECT membre_pseudo,membre_rang FROM membres WHERE LOWER(membre_pseudo) = :pseudo');
-							$query->bindValue(':pseudo',strtolower($pseudo_d),PDO::PARAM_STR);
-
-							$query->execute();
-
-							if ($data = $query->fetch())
+							if (!empty($donneesMembre))
 							{
 								echo'<form action="./adminok.php?cat=membres&amp;action=droits" method="post">';
 
@@ -672,23 +658,22 @@ switch($cat) //1er switch
 
 															//Ce tableau associe numéro de droit et nom
 
-											echo'<label>'.$data['membre_pseudo'].'</label>';
+											echo'<label>'.$membre->pseudo().'</label>';
 
 											echo'<select name="droits">';
 
-														for($i=0;$i<5;$i++)
+														for($i = 0 ; $i < 5; $i++)
 														{
-																if ($i == $data['membre_rang'])
+																if ($i == $membre->rang())
 																{
 
-																	echo'<option value="'.$i.'"
-																	selected="selected">'.$rang[$i].'</option>';
+																	echo'<option value="'.$i.'" selected="selected">'.$rang[$i].'</option>';
 																}
 
 																else
 																{
 
-																echo'<option value="'.$i.'">'.$rang[$i].'</option>';
+																	echo'<option value="'.$i.'">'.$rang[$i].'</option>';
 
 																}
 														}
@@ -698,7 +683,6 @@ switch($cat) //1er switch
 											<input type="hidden" value="'.stripslashes($pseudo_d).'" name="pseudo">
 											<input type="submit" value="Envoyer">
 									</form>';
-									$query->CloseCursor();
 							}
 
 							else echo' <p>
@@ -733,28 +717,27 @@ switch($cat) //1er switch
 
 							<input type="submit" value="Envoyer">
 							<br />';
+
 							//Ici, on boucle : pour chaque membre banni, on affiche une checkbox
 							//Qui propose de le débannir
-							$query = $bdd->query('SELECT membre_id, membre_pseudo FROM membres WHERE membre_rang = 0');
 
+							$managerMembre = new ManagerMembre($bdd);
+                            $donneesMembresBannis = $managerMembre->tousLesBannis();
 							//Bien sur, on ne lance la suite que s'il y a des membres bannis !
 
-							if ($query->rowCount() > 0)
+							if (!empty($donneesMembresBannis))
 							{
-
-									while($data = $query->fetch())
-									{
+								foreach ($donneesMembresBannis as $donneesMembre) {
+									$membre = new Membre($donneesMembre);
 
 									echo'<br />
 									<label>
-											<a href="./voirprofil.php?action=consulter&amp;m='.$data['membre_id'].'">
+											<a href="./voirprofil.php?action=consulter&amp;m='.$membre->id().'">
 
-											'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a>
+											'.stripslashes(htmlspecialchars($membre->pseudo())).'</a>
 									</label>
 
-									<input type="checkbox" name="'.$data['membre_id'].'" />
-
-									Débannir<br />';
+									<input type="checkbox" name="'.$membre->id().'" /> Débannir<br />';
 
 									}
 
@@ -762,7 +745,7 @@ switch($cat) //1er switch
 									      <input type="submit" value="Go !" />
 									</p>
 
-							</form>';
+							    </form>';
 
 					        }
 
@@ -771,13 +754,12 @@ switch($cat) //1er switch
 					           Aucun membre banni pour le moment :p
 					       </p>';
 
-					$query->CloseCursor();
 					
 					break;
 
 
 
-					break;
+				    break;
 
 
 
