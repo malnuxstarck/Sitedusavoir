@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 27 Février 2017 à 23:40
+-- Généré le :  Sam 22 Juillet 2017 à 19:34
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -17,10 +17,11 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+-- Base de données :  `sitedusavoir`
 
---
 CREATE DATABASE IF NOT EXISTS `sitedusavoir` DEFAULT CHARACTER SET utf8 COLLATE UTF8_general_ci;
 USE `sitedusavoir`;
+--
 
 -- --------------------------------------------------------
 
@@ -30,7 +31,7 @@ USE `sitedusavoir`;
 
 CREATE TABLE `amis` (
   `fromt` int(11) NOT NULL,
-  `toa` int(11) NOT NULL,
+  `toA` int(11) NOT NULL,
   `confirm` enum('0','1') NOT NULL,
   `dateamitie` datetime NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -38,7 +39,53 @@ CREATE TABLE `amis` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `articles`
+-- Structure de la table `auteurs`
+--
+
+CREATE TABLE `auteurs` (
+  `membre` int(11) NOT NULL,
+  `idcontenu` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `automessages`
+--
+
+CREATE TABLE `automessages` (
+  `id` tinyint(3) NOT NULL,
+  `message` text NOT NULL,
+  `titre` varchar(200) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(30) NOT NULL,
+  `ordre` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `config`
+--
+
+CREATE TABLE `config` (
+  `nom` varchar(200) NOT NULL,
+  `valeur` varchar(500) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `contenus`
 --
 
 CREATE TABLE `contenus` (
@@ -57,43 +104,7 @@ CREATE TABLE `contenus` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `articles_par`
---
-
-CREATE TABLE `auteurs` (
-  `membre` int(11) NOT NULL,
-  `idcontenu` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `articles_parties`
---
-
-CREATE TABLE `parties` (
-  `id` int(11) NOT NULL,
-  `titre` varchar(200) NOT NULL,
-  `texte` text NOT NULL,
-  `idcontenu` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `categorie`
---
-
-CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
-  `nom` varchar(30) NOT NULL,
-  `ordre` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `forum`
+-- Structure de la table `forums`
 --
 
 CREATE TABLE `forums` (
@@ -110,90 +121,6 @@ CREATE TABLE `forums` (
   `auth_topic` tinyint(4) NOT NULL DEFAULT '2',
   `auth_annonce` tinyint(4) NOT NULL DEFAULT '3',
   `auth_modo` tinyint(4) NOT NULL DEFAULT '3'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `forum_automess`
---
-
-CREATE TABLE `automessages` (
-  `id` tinyint(3) NOT NULL,
-  `message` text NOT NULL,
-  `titre` varchar(200) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `forum_config`
---
-
-CREATE TABLE `config` (
-  `nom` varchar(200) NOT NULL,
-  `valeur` varchar(500) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `forum_post`
---
-
-CREATE TABLE `post` (
-  `id` int(11) NOT NULL,
-  `createur` int(11) NOT NULL,
-  `texte` text NOT NULL,
-  `posttime` datetime NOT NULL,
-  `topic` int(11) NOT NULL,
-  `forum` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `forum_topic`
---
-
-CREATE TABLE `topic` (
-  `id` int(11) NOT NULL,
-  `forum` int(11) NOT NULL,
-  `titre` char(60) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
-  `createur` int(11) NOT NULL,
-  `vus` mediumint(8) NOT NULL,
-  `topictime` datetime NOT NULL,
-  `genre` varchar(30) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT 'Message',
-  `last_post` int(11) NOT NULL DEFAULT '0',
-  `first_post` int(11) NOT NULL DEFAULT '0',
-  `posts` mediumint(8) NOT NULL DEFAULT '0',
-  `locked` enum('0','1') NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `forum_topic_view`
---
-
-CREATE TABLE `topic_view` (
-  `tv_id` int(11) NOT NULL,
-  `tv_topic_id` int(11) NOT NULL,
-  `tv_forum_id` int(11) NOT NULL,
-  `tv_post_id` int(11) NOT NULL,
-  `tv_poste` enum('0','1') NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `forum_whosonline`
---
-
-CREATE TABLE `whosonline` (
-  `online_id` int(11) NOT NULL,
-  `online_time` datetime NOT NULL,
-  `online_ip` int(15) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -240,6 +167,34 @@ CREATE TABLE `mp` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `parties`
+--
+
+CREATE TABLE `parties` (
+  `id` int(11) NOT NULL,
+  `titre` varchar(200) NOT NULL,
+  `texte` text NOT NULL,
+  `idcontenu` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `post`
+--
+
+CREATE TABLE `post` (
+  `id` int(11) NOT NULL,
+  `createur` int(11) NOT NULL,
+  `texte` text NOT NULL,
+  `posttime` datetime NOT NULL,
+  `topic` int(11) NOT NULL,
+  `forum` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `social_groupes`
 --
 
@@ -255,7 +210,7 @@ CREATE TABLE `social_groupes` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `social_gs_admin`
+-- Structure de la table `social_gs_admins`
 --
 
 CREATE TABLE `social_gs_admins` (
@@ -291,19 +246,6 @@ CREATE TABLE `social_gs_statut` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `social_st_comment`
---
-
-CREATE TABLE `social_st_comment` (
-  `id` int(11) NOT NULL,
-  `texte` text NOT NULL,
-  `membre` int(11) NOT NULL,
-  `statut` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `social_statut`
 --
 
@@ -318,11 +260,62 @@ CREATE TABLE `social_statut` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tutos`
+-- Structure de la table `social_st_comment`
 --
+
+CREATE TABLE `social_st_comment` (
+  `id` int(11) NOT NULL,
+  `texte` text NOT NULL,
+  `membre` int(11) NOT NULL,
+  `statut` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `topic`
+--
+
+CREATE TABLE `topic` (
+  `id` int(11) NOT NULL,
+  `forum` int(11) NOT NULL,
+  `titre` char(60) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `createur` int(11) NOT NULL,
+  `vus` mediumint(8) NOT NULL DEFAULT '0',
+  `topictime` datetime NOT NULL,
+  `genre` varchar(30) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT 'Message',
+  `last_post` int(11) NOT NULL DEFAULT '0',
+  `first_post` int(11) NOT NULL DEFAULT '0',
+  `posts` mediumint(8) NOT NULL DEFAULT '0',
+  `locked` enum('0','1') NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `topic_view`
+--
+
+CREATE TABLE `topic_view` (
+  `tv_id` int(11) NOT NULL,
+  `tv_topic_id` int(11) NOT NULL,
+  `tv_forum_id` int(11) NOT NULL,
+  `tv_post_id` int(11) NOT NULL,
+  `tv_poste` enum('0','1') NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `whoisonline`
+--
+
+CREATE TABLE `whoisonline` (
+  `online_id` int(11) NOT NULL,
+  `online_time` datetime NOT NULL,
+  `online_ip` int(15) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 --
 -- Index pour les tables exportées
 --
@@ -331,71 +324,39 @@ CREATE TABLE `social_statut` (
 -- Index pour la table `amis`
 --
 ALTER TABLE `amis`
-  ADD PRIMARY KEY (`to`,`from`);
+  ADD PRIMARY KEY (`toA`,`fromt`);
 
 --
--- Index pour la table `articles`
---
-ALTER TABLE `contenus`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `articles_par`
+-- Index pour la table `auteurs`
 --
 ALTER TABLE `auteurs`
   ADD PRIMARY KEY (`membre`,`idcontenu`),
   ADD KEY `fk_auteurs` (`idcontenu`);
 
 --
--- Index pour la table `articles_parties`
+-- Index pour la table `automessages`
 --
-ALTER TABLE `parties`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_contenus` (`idcontenu`);
+ALTER TABLE `automessages`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `categorie`
+-- Index pour la table `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `ordre` (`ordre`);
 
 --
--- Index pour la table `forum`
+-- Index pour la table `contenus`
+--
+ALTER TABLE `contenus`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `forums`
 --
 ALTER TABLE `forums`
   ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `forum_automess`
---
-ALTER TABLE `automessages`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `forum_post`
---
-ALTER TABLE `post`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `forum_topic`
---
-ALTER TABLE `topic`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `last_post` (`last_post`);
-
---
--- Index pour la table `forum_topic_view`
---
-ALTER TABLE `topic_view`
-  ADD PRIMARY KEY (`tv_id`,`tv_topic_id`);
-
---
--- Index pour la table `forum_whosonline`
---
-ALTER TABLE `whosonline`
-  ADD PRIMARY KEY (`online_ip`);
 
 --
 -- Index pour la table `membres`
@@ -410,18 +371,24 @@ ALTER TABLE `mp`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `parties`
+--
+ALTER TABLE `parties`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_contenus` (`idcontenu`);
+
+--
+-- Index pour la table `post`
+--
+ALTER TABLE `post`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `social_groupes`
 --
 ALTER TABLE `social_groupes`
   ADD PRIMARY KEY (`groupes_id`),
   ADD KEY `fk_grges` (`groupes_createur`);
-
---
--- Index pour la table `social_gs_admin`
---
-ALTER TABLE `social_gs_admin`
-  ADD PRIMARY KEY (`groupe`,`membre`),
-  ADD KEY `fk_gres_m` (`membre`);
 
 --
 -- Index pour la table `social_gs_membres`
@@ -439,6 +406,13 @@ ALTER TABLE `social_gs_statut`
   ADD KEY `fk_gs_gs` (`groupe`);
 
 --
+-- Index pour la table `social_statut`
+--
+ALTER TABLE `social_statut`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_membre` (`membre`);
+
+--
 -- Index pour la table `social_st_comment`
 --
 ALTER TABLE `social_st_comment`
@@ -447,76 +421,73 @@ ALTER TABLE `social_st_comment`
   ADD KEY `fk_st` (`statut`);
 
 --
--- Index pour la table `social_statut`
+-- Index pour la table `topic`
 --
-ALTER TABLE `social_statut`
+ALTER TABLE `topic`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_membre` (`membre`);
+  ADD UNIQUE KEY `last_post` (`last_post`);
 
 --
--- Index pour la table `tutos`
+-- Index pour la table `topic_view`
+--
+ALTER TABLE `topic_view`
+  ADD PRIMARY KEY (`tv_id`,`tv_topic_id`);
+
+--
+-- Index pour la table `whoisonline`
+--
+ALTER TABLE `whoisonline`
+  ADD PRIMARY KEY (`online_ip`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
 --
 
 --
-ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `forum`
---
-ALTER TABLE `forums`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `forum_automess`
+-- AUTO_INCREMENT pour la table `automessages`
 --
 ALTER TABLE `automessages`
-  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 --
--- AUTO_INCREMENT pour la table `forum_post`
+-- AUTO_INCREMENT pour la table `categories`
 --
-ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 --
--- AUTO_INCREMENT pour la table `forum_topic`
+-- AUTO_INCREMENT pour la table `contenus`
 --
-ALTER TABLE `topics`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `contenus`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+--
+-- AUTO_INCREMENT pour la table `forums`
+--
+ALTER TABLE `forums`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT pour la table `membres`
 --
 ALTER TABLE `membres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT pour la table `mp`
 --
 ALTER TABLE `mp`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `social_groupes`
---
-ALTER TABLE `social_groupes`
-  MODIFY `groupes_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `social_gs_statut`
---
-ALTER TABLE `social_gs_statut`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `social_st_comment`
---
-ALTER TABLE `social_st_comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `social_statut`
---
-ALTER TABLE `social_statut`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `tutos`
---
-ALTER TABLE `contenus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `tutos_parties`
+-- AUTO_INCREMENT pour la table `parties`
 --
 ALTER TABLE `parties`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+--
+-- AUTO_INCREMENT pour la table `post`
+--
+ALTER TABLE `post`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+--
+-- AUTO_INCREMENT pour la table `topic`
+--
+ALTER TABLE `topic`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
