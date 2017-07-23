@@ -1,10 +1,9 @@
 <?php
-<<<<<<< HEAD
+
 
 include "../includes/session.php";
-=======
 include '../includes/session.php';
->>>>>>> POO
+
 
 $titre="Gestion des amis";
 
