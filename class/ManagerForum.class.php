@@ -20,6 +20,16 @@ class ManagerForum
 		$this->_db = $bdd ;
 	}
 
+	public function nouveauForum(Forum $forum)
+	{
+		$query = $this->_db->prepare('INSERT INTO forums (name ,cat ,description ,ordre) VALUES(:name , :cat ,:description,NULL)');
+		$query->bindValue(':cat',$forum->cat() ,PDO::PARAM_INT);
+		$query->bindValue(':name' , $forum->name() ,PDO::PARAM_STR);
+		
+		$query->bindValue(':description' , $forum->description() ,PDO::PARAM_STR);
+		$query->execute();
+	}
+
 	public function infosForum($idForum)
 	{
 		$query = $this->_db->prepare('SELECT * FROM forums WHERE id = :id');

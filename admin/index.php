@@ -118,10 +118,10 @@ switch($cat) //1er switch
 							echo'<form method="post" action="./adminok.php?cat=forum&action=creer&c=f">';
 
 									echo'<label>Nom :</label>
-									<input type="text" id="nom" name="nom" />
+									<input type="text" id="name" name="nom" />
 									<br />
 									<br />
-									<label>Description :</label><textarea cols=40 rows=4 name="desc" id="desc"></textarea>
+									<label>Description :</label><textarea cols=40 rows=4 name="description" id="desc"></textarea>
 									<br /><br />
 
 									<label>Catégorie : </label><select name="cat">';
@@ -249,7 +249,7 @@ switch($cat) //1er switch
 										//On affichera en premier celle du forum
 
 										echo'<label>Déplacer le forum vers : </label>
-										<select name="depl">';
+										<select name="cat">';
 
 											foreach ($donneesCats as $donneesCat) {
 

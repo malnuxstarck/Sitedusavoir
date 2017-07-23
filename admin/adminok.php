@@ -12,32 +12,29 @@
 
   switch($cat)   //1er switch
   {
-    case "config":
+      case "config":
 
-      echo'<h1>Configuration du forum</h1>';
+          echo'<h1>Configuration du forum</h1>';
 
-      //On récupère les valeurs et le nom de chaque entrée de latable
+          //On récupère les valeurs et le nom de chaque entrée de latable
 
-      $query = $bdd->query('SELECT config_nom, config_valeur FROM forum_config');
+          $managerConfiguration = new ManagerConfiguration($bdd);
+          $donneesConfigs = $managerConfiguration->toutesLesConfigurations();
 
-      //Avec cette boucle, on va pouvoir contrôler le résultat pourvoir s'il a changé
+          //Avec cette boucle, on va pouvoir contrôler le résultat pourvoir s'il a changé
 
-      while($data = $query->fetch())
-      {
-        if ($data['config_valeur'] != $_POST[$data['config_nom']])
-        {
-          //On met ensuite à jour
-          $valeur = htmlspecialchars($_POST[$data['config_nom']]);
-          $query=$bdd->prepare('UPDATE forum_config SET config_valeur = :valeur WHERE config_nom = :nom');
+          foreach ($donneesConfigs as $donneesConfig ) {
 
-          $query->bindValue(':valeur', $valeur, PDO::PARAM_STR);
-          $query->bindValue(':nom',$data['config_nom'],PDO::PARAM_STR);
+                 $config = new Configuration($donneesConfig);
 
-          $query->execute();
-        }
-      }
+              if ($config->valeur() != $_POST[$config->nom()])
+              {
 
-      $query->CloseCursor();
+                  //On met ensuite à jour
+                  $config->setValeur(htmlspecialchars($_POST[$data['config_nom']]));
+          
+              }
+           }
 
       //Et le message !
       echo'<br /><br />Les nouvelles configurations ont été mises à jour !<br />
@@ -53,38 +50,28 @@
 
       //On récupère lavaleur de action
 
+      $managerForum = new ManagerForum($bdd);
+      $managerCategorie = new ManagerCategorie($bdd);
+
       switch($action) //2ème switch
       {
-        case "creer":
-        //On commence par les forums
-        if ($_GET['c'] == "f")
-        {
-          $titre = $_POST['nom'];
-          $desc = $_POST['desc'];
-          $cat = (int) $_POST['cat'];
-          $query=$bdd->prepare('INSERT INTO forum (forum_cat_id, forum_name, forum_desc,forum_ordre)
-                                VALUES (:cat, :titre, :desc,NULL)');
-          $query->bindValue(':cat',$cat,PDO::PARAM_INT);
-          $query->bindValue(':titre',$titre, PDO::PARAM_STR);
-          $query->bindValue(':desc',$desc,PDO::PARAM_STR);
-          $query->execute();
-          echo'<br /><br />Le forum a été créé !<br />
-               Cliquez <a href="./index.php">ici</a> pour revenir à l\'administration';
-          $query->CloseCursor();
-        }
-        //Puis par les catégories
-        elseif ($_GET['c'] == "c")
-        {
-          $titre = $_POST['nom'];
-          $query=$bdd->prepare('INSERT INTO categorie
-          (cat_nom,cat_ordre) VALUES (:titre,NULL)');
-          $query->bindValue(':titre',$titre, PDO::PARAM_STR);
-          $query->execute();
-          echo'<p>La catégorie a été créée !<br /> Cliquez <a
-          href="./index.php">ici</a>
-          pour revenir à l administration</p>';
-          $query->CloseCursor();
-        }
+          case "creer":
+                //On commence par les forums
+                if ($_GET['c'] == "f")
+                {
+                    $forum = new Forum($_POST);
+                    $managerForum->nouveauForum($forum);
+
+                    echo'<br /><br />Le forum a été créé !<br />
+                         Cliquez <a href="./index.php">ici</a> pour revenir à l\'administration';
+                }
+                //Puis par les catégories
+                elseif ($_GET['c'] == "c")
+                {
+                    $cat = new Categorie($_POST);
+                    $managerCategorie->nouvelleCategorie($cat);
+                    echo'<p>La catégorie a été créée !<br /> Cliquez <ahref="./index.php">ici</a pour revenir à l administration</p>';
+                }
         
         break;
         

@@ -43,4 +43,11 @@ class ManagerCategorie
 			return array();
 	}	
 
+	public function nouvelleCategorie($cat)
+	{
+		$query = $this->_db->prepare('INSERT INTO categories (nom ,ordre) VALUES(:nom , NULL)');
+		$query->bindValue(':nom',$cat->nom(), PDO::PARAM_STR);
+		$query->execute();
+	}
+
 }
