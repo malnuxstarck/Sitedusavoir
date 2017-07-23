@@ -50,4 +50,22 @@ class ManagerCategorie
 		$query->execute();
 	}
 
+	public function miseAjoursCategorie($cat)
+	{
+		$query = $this->_db->prepare('UPDATE categories SET nom = :nom WHERE id = :id');
+		$query->bindValue(':nom' , $cat->nom() , PDO::PARAM_STR);
+
+		$query->bindValue(':id' , $cat->id() , PDO::PARAM_INT);
+		$query->execute();
+	}
+
+	public function modifierOrdre($cat)
+	{
+		$query = $this->_db->prepare('UPDATE categories SET ordre = :ordre WHERE id = :id');
+		$query->bindValue(':id' ,$cat->id() , PDO::PARAM_INT);
+		$query->bindValue(':ordre' , $cat->ordre() , PDO::PARAM_INT);
+
+		$query->execute();
+	}
+
 }

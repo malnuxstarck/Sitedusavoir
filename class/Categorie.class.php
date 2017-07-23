@@ -36,6 +36,7 @@ class Categorie
 
     public function setId($id)
 	{
+		$id = (int)$id;
 		$this->_id = $id;
 	}
 

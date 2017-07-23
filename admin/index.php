@@ -118,7 +118,7 @@ switch($cat) //1er switch
 							echo'<form method="post" action="./adminok.php?cat=forum&action=creer&c=f">';
 
 									echo'<label>Nom :</label>
-									<input type="text" id="name" name="nom" />
+									<input type="text" id="name" name="name" />
 									<br />
 									<br />
 									<label>Description :</label><textarea cols=40 rows=4 name="description" id="desc"></textarea>
@@ -215,7 +215,7 @@ switch($cat) //1er switch
 														   </option>';
 													}
 
-													echo'<input type="submit" value="Envoyer">
+													echo'<input type="submit" value="Envoyer"/>
 											    </p>
 									    </form>';
 
@@ -237,7 +237,7 @@ switch($cat) //1er switch
 
 									echo'<form method="post" action="adminok.php?cat=forum&amp;action=edit&amp;e=editf">
 									         <label>Nom du forum : </label>
-									          <input type="text" id="nom" name="nom" value="'.$forumR->name().'" />
+									          <input type="text" id="nom" name="name" value="'.$forumR->name().'" />
 									          <br />
 
 										<label>Description :</label>
@@ -268,9 +268,10 @@ switch($cat) //1er switch
 											}
 										  echo'</select>
 
-										  <input type="hidden" name="forum_id" value="'.$forum->id().'">';
+										  		<input type="hidden" name="id" value="'.$forumR->id().'"/>';
 
-										  echo'<p><input type="submit" value="Envoyer">
+										  echo'<p>
+										       <input type="submit" value="Envoyer"/>
 
 										   </p>
 
@@ -312,7 +313,7 @@ switch($cat) //1er switch
 							echo'<label> Indiquez le nom de la catégorie :</label>
 							<input type="text" id="nom" name="nom" value="'.stripslashes(htmlspecialchars($cat->nom())).'" />
 							<br /><br />
-							<input type="hidden" name="cat" value="'.$cat->id().'" />
+							<input type="hidden" name="id" value="'.$cat->id().'" />
 							<input type="submit" value="Envoyer" /></p>
 							</form>';
 						}
@@ -329,8 +330,9 @@ switch($cat) //1er switch
 
 									foreach ($donneesForums as $donneesForum) {
 
-										$cat = new Categorie($donneesForums);
+										$cat = new Categorie($donneesForum);
 										$cat->setId($donneesForum['idCat']);
+										$cat->setOrdre($donneesForum['ordreCat']);
 										$forum = new Forum($donneesForum);
 
 										if( $categorie !== $cat->id())
@@ -468,7 +470,7 @@ switch($cat) //1er switch
 											}
 											echo'</td></select>';
 										}
-										echo'<br /><input type="hidden" name="forum_id" value="'.$forum->id().'" />
+										echo'<br /><input type="hidden" name="id" value="'.$forum->id().'" />
 										<input type="submit" value="Envoyer">
 									</p>
 								</form>';
@@ -621,20 +623,20 @@ switch($cat) //1er switch
 
 					if(!isset($_POST['membre']))
 					{
-					echo'<p>De quel membre voulez-vous modifier les droits
-					?</p>';
+							echo'<p>De quel membre voulez-vous modifier les droits
+							?</p>';
 
-					echo'<br />
+							echo'<br />
 
-					<form method="post" action="./index.php?cat=membres&action=droits">
-							<p>
-									<label for="membre">Inscrivez le pseudo : </label>
+							<form method="post" action="./index.php?cat=membres&action=droits">
+									<p>
+											<label for="membre">Inscrivez le pseudo : </label>
 
-									<input type="text" id="membre" name="membre">
+											<input type="text" id="membre" name="membre"/>
 
-									<input type="submit" value="Chercher">
-							</p>
-					</form>';
+											<input type="submit" value="Chercher"/>
+									</p>
+							</form>';
 					}
 
 					else
@@ -646,6 +648,7 @@ switch($cat) //1er switch
 
 							if (!empty($donneesMembre))
 							{
+								$membre = new Membre($donneesMembre);
 								echo'<form action="./adminok.php?cat=membres&amp;action=droits" method="post">';
 
 											$rang = array(
@@ -660,7 +663,7 @@ switch($cat) //1er switch
 
 											echo'<label>'.$membre->pseudo().'</label>';
 
-											echo'<select name="droits">';
+											echo'<select name="rang">';
 
 														for($i = 0 ; $i < 5; $i++)
 														{
@@ -687,7 +690,7 @@ switch($cat) //1er switch
 
 							else echo' <p>
 											Erreur : Ce membre n existe pas, <br />
-										cliquez <a href="./index.php?cat=membres&amp;action=edit">ici</a>
+										cliquez <a href="./index.php?cat=membres&amp;action=droits">ici</a>
 										pour réessayer
 							        </p>';
 					}

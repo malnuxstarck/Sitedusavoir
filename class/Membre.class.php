@@ -176,6 +176,7 @@ class Membre
 
     public function setRang($rang)
     {
+        $rang = (int)$rang;
     	$this->_rang = $rang ;
     }
 

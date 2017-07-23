@@ -510,4 +510,17 @@ class ManagerMembre
 		return $data;
 	}
 
+	public function promouvoirMembre(Membre $membre)
+	{
+		 $query = $this->_db->prepare('UPDATE membres 
+                                  SET rang = :rang
+                                  WHERE LOWER(pseudo) = :pseudo');
+
+            $query->bindValue(':rang',(int)$membre->rang(), PDO::PARAM_INT);
+            $query->bindValue(':pseudo',strtolower($membre->pseudo()), PDO::PARAM_STR);
+
+            $query->execute();
+            $query->CloseCursor();
+	}
+
 }

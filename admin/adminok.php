@@ -1,7 +1,7 @@
 <?php
 
   $balises = true;
-
+  include '../includes/session.php';
   include("../includes/identifiants.php");
   include("../includes/debut.php");
   include("../includes/menu.php");
@@ -29,9 +29,9 @@
 
               if ($config->valeur() != $_POST[$config->nom()])
               {
-
                   //On met ensuite à jour
-                  $config->setValeur(htmlspecialchars($_POST[$data['config_nom']]));
+                  $config->setValeur($_POST[$config->nom()]);
+                  $managerConfiguration->miseAjoursConfiguration($config);
           
               }
            }
@@ -70,7 +70,7 @@
                 {
                     $cat = new Categorie($_POST);
                     $managerCategorie->nouvelleCategorie($cat);
-                    echo'<p>La catégorie a été créée !<br /> Cliquez <ahref="./index.php">ici</a pour revenir à l administration</p>';
+                    echo'<p>La catégorie a été créée !<br /> Cliquez <a href="./index.php">ici</a pour revenir à l administration</p>';
                 }
         
         break;
@@ -81,78 +81,36 @@
 
           if($_GET['e'] == "editf")
           {
-            //Récupération d'informations
-            $titre = $_POST['nom'];
-            $desc = $_POST['desc'];
-            $cat = (int) $_POST['depl'];
+              //Récupération d'informations
 
-            //Vérification
+              $forumN = new Forum($_POST);
+              //Vérification
+              $donneesF = $managerForum->infosForum($forumN->id());
 
-            $query = $bdd->prepare('SELECT COUNT(*) FROM forum WHERE forum_id = :id');
-            $query->bindValue(':id',(int)$_POST['forum_id'],PDO::PARAM_INT);
-
-            $query->execute();
-            $forum_existe=$query->fetchColumn();
-
-            $query->CloseCursor();
-
-            if ($forum_existe == 0) 
-              erreur(ERR_FOR_EXIST);
+              if (empty($donneesF)) 
+                  erreur(ERR_FOR_EXIST);
 
             //Mise à jour
-
-            $query=$bdd->prepare('UPDATE forum SET forum_cat_id = :cat, forum_name = :name, forum_desc = :desc WHERE forum_id = :id');
-
-            $query->bindValue(':cat',$cat,PDO::PARAM_INT);
-            $query->bindValue(':name',$titre,PDO::PARAM_STR);
-            $query->bindValue(':desc',$desc,PDO::PARAM_STR);
-
-            $query->bindValue(':id',(int)
-            $_POST['forum_id'],PDO::PARAM_INT);
-            $query->execute();
-
-            $query->CloseCursor();
-
+              $managerForum->miseAjoursForum($forumN);
             //Message
 
             echo'<p>
-                   Le forum a été modifié !<br />Cliquez <a href="./admin.php">ici</a> pour revenir à l administratio
+                   Le forum a été modifié !<br />Cliquez <a href="./index.php">ici</a> pour revenir à l administration
                  </p>';
 
           }
           elseif($_GET['e'] == "editc")
           {
-
-            //Récupération d'informations
-
-            $titre = $_POST['nom'];
+              //Récupération d'informations
+              $cat = new Categorie($_POST);
 
             //Vérification
-            $query=$bdd->prepare('SELECT COUNT(*) 
-                                  FROM categorie 
-                                  WHERE cat_id = :cat');
-		  
-            $query->bindValue(':cat',(int)$_POST['cat'],PDO::PARAM_INT);
-
-            $query->execute();
-            $cat_existe = $query->fetchColumn();
-
-            $query->CloseCursor();
-
-            if ($cat_existe == 0) 
-              erreur(ERR_CAT_EXIST);
+            $donneesCat = $managerCategorie->infosCategorie($cat->id());
+            if (empty(($donneesCat))) 
+                erreur(ERR_CAT_EXIST);
 
             //Mise à jour
-
-            $query = $bdd->prepare('UPDATE categorie SET cat_nom = :name 
-                                    WHERE cat_id = :cat');
-
-            $query->bindValue(':name',$titre,PDO::PARAM_STR);
-            $query->bindValue(':cat',(int)$_POST['cat'],PDO::PARAM_INT);
-
-            $query->execute();
-            $query->CloseCursor();
-
+              $managerCategorie->miseAjoursCategorie($cat);
             //Message
             echo'<p>
                    La catégorie a été modifiée !<br /> Cliquez <a href="./index.php">ici</a> pour revenir à l administration
@@ -162,35 +120,21 @@
           {
 
             //On récupère les id et l'ordre de tous les forums
-
-            $query=$bdd->query('SELECT forum_id, forum_ordre 
-                                FROM forum');
-
+            $donneesForums = $managerForum->tousLesForums();
             //On boucle les résultats
 
-            while($data= $query->fetch())
-            {
-              $ordre = (int) $_POST[$data['forum_id']];
+            foreach ($donneesForums as $donneesForum) {
+                
+                $forum = new Forum($donneesForum);
+                $ordre = (int)$_POST[(string)$forum->id()];
+                //Si et seulement si l'ordre est différent de l'ancien, on le met à jour
 
-              //Si et seulement si l'ordre est différent de l'ancien, on le met à jour
-
-              if ($data['forum_ordre'] != $ordre)
-              {
-                $query=$bdd->prepare('UPDATE forum 
-                                      SET forum_ordre = :ordre
-                                      WHERE forum_id = :id');
-
-                $query->bindValue(':ordre',$ordre,PDO::PARAM_INT);
-                $query->bindValue(':id',$data['forum_id'],PDO::PARAM_INT);
-
-                $query->execute();
-                $query->CloseCursor();
-              }
+                  if ($forum->ordre() != $ordre)
+                  {
+                      $forum->setOrdre($ordre);
+                      $managerForum->modifierOrdre($forum);
+                  }
             }
-
-            $query->CloseCursor();
-
-            //Message
 
             echo'<p>
                    L\'ordre a été modifié !<br />
@@ -201,31 +145,21 @@
           elseif($_GET['e'] == "ordrec")
           {
 
-            //On récupère les id et les ordres de toutes les catégories
+              //On récupère les id et les ordres de toutes les catégories
+              $donneesCats = $managerCategorie->tousLesCategories();
+              //On boucle le tout
 
-            $query = $bdd->query('SELECT cat_id, cat_ordre 
-                                  FROM categorie');
+              foreach ($donneesCats as $donneesCat) {
+                  
+                  $cat = new Categorie($donneesCat);
+                  $ordre = (int) $_POST[$cat->id()];
+                  //On met à jour si l'ordre a changé
 
-            //On boucle le tout
-
-            while($data = $query->fetch())
-            {
-              $ordre = (int) $_POST[$data['cat_id']];
-
-              //On met à jour si l'ordre a changé
-
-              if($data['cat_ordre'] != $ordre)
-              {
-
-                $query=$bdd->prepare('UPDATE categorie SET cat_ordre = :ordre
-                                      WHERE cat_id = :id');
-
-                $query->bindValue(':ordre',$ordre,PDO::PARAM_INT);
-                $query->bindValue(':id',$data['cat_id'],PDO::PARAM_INT);
-
-                $query->execute();
-                $query->CloseCursor();
-              }
+                  if($cat->id() != $ordre)
+                  {
+                      $cat->setOrdre($ordre);
+                      $managerCategorie->modifierOrdre($cat);
+                  }
             }
 
             echo'<p>
@@ -240,31 +174,10 @@
 
             //Récupération d'informations
 
-            $auth_view = (int) $_POST['auth_view'];
-            $auth_post = (int) $_POST['auth_post'];
-            $auth_topic = (int) $_POST['auth_topic'];
-            $auth_annonce = (int) $_POST['auth_annonce'];
-            $auth_modo = (int) $_POST['auth_modo'];
+            $forumA = new Forum($_POST);
 
             //Mise à jour
-
-            $query = $bdd->prepare('UPDATE forum 
-                                    SET auth_view = :view, auth_post = :post, auth_topic = :topic, auth_annonce = :annonce, auth_modo = :modo 
-                                    WHERE forum_id = :id');
-
-            $query->bindValue(':view',$auth_view,PDO::PARAM_INT);
-            $query->bindValue(':post',$auth_post,PDO::PARAM_INT);
-
-            $query->bindValue(':topic',$auth_topic,PDO::PARAM_INT);
-            $query->bindValue(':annonce',$auth_annonce,PDO::PARAM_INT);
-            $query->bindValue(':modo',$auth_modo,PDO::PARAM_INT);
-
-            $query->bindValue(':id',(int)
-            $_POST['forum_id'],PDO::PARAM_INT);
-
-            $query->execute();
-
-            $query->CloseCursor();
+            $managerForum->miseAjoursDroits($forumA);
 
             //Message
             echo'<p>
@@ -280,118 +193,88 @@
         case "membres":
 
           $action = (isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
+          $managerMembre = new ManagerMembre($bdd);
 
           switch($action)
           {
 
-          case "droits":
-            $membre =$_POST['pseudo'];
-            $rang = (int) $_POST['droits'];
-            $query=$bdd->prepare('UPDATE membres 
-                                  SET membre_rang = :rang
-                                  WHERE LOWER(membre_pseudo) = :pseudo');
+              case "droits":
+                  
+                  $membre = new Membre($_POST);
+                  $managerMembre->promouvoirMembre($membre);
+              
+                echo'<p>
+                       Le niveau du membre a été modifié !<br />
+                       Cliquez <a href="./index.php">ici</a> pour revenir à l\'administration
+                     </p>';
+                
+                break;
 
-            $query->bindValue(':rang',$rang, PDO::PARAM_INT);
-            $query->bindValue(':pseudo',strtolower($membre), PDO::PARAM_STR);
-            $query->execute();
-            $query->CloseCursor();
-            echo'<p>
-                   Le niveau du membre a été modifié !<br />
-                   Cliquez <a href="./index.php">ici</a> pour revenir à l\'administration
-                 </p>';
-            
-            break;
+              case "ban":
 
-          case "ban":
+              //Bannissement dans un premier temps
+              //Si jamais on n'a pas laissé vide le champ pour le pseudo
 
-          //Bannissement dans un premier temps
-          //Si jamais on n'a pas laissé vide le champ pour le pseudo
-
-          if (isset($_POST['membre']) AND !empty($_POST['membre']))
-          {
-            $membre = $_POST['membre'];
-
-            $query=$bdd->prepare('SELECT membre_id 
-                                  FROM membres 
-                                  WHERE LOWER(membre_pseudo) = :pseudo');
-
-            $query->bindValue(':pseudo',strtolower($membre),PDO::PARAM_STR);
-
-            $query->execute();
-
-            //Si le membre existe
-
-            if ($data = $query->fetch())
-            {
-              //On le bannit
-
-              $query=$bdd->prepare('UPDATE membres 
-                                    SET membre_rang = 0 
-                                    WHERE membre_id = :id');
-
-              $query->bindValue(':id',$data['membre_id'],PDO::PARAM_INT);
-
-              $query->execute();
-              $query->CloseCursor();
-
-              echo'<br /><br />
-              Le membre '.stripslashes(htmlspecialchars($membre)).' a bien étébanni !<br />
-              <p> 
-                Cliquez <a href="./index.php">ici</a> pour revenir à l\'administration
-              </p>';
-            }
-            else
-            {
-              echo'<p>
-                     Désolé, le membre '.stripslashes(htmlspecialchars($membre)).' n\'existe pas !<br />
-                     Cliquez <a href="./index.php?cat=membres&action=ban">ici</a> pour réessayer
-                   </p>';
-            }
-          }
-
-          //Debannissement ici
-
-          $query = $bdd->query('SELECT membre_id 
-                                FROM membres 
-                                WHERE membre_rang = 0');
-
-          //Si on veut débannir au moins un membre
-
-          if ($query->rowCount() > 0)
-          {
-            $i=0;
-
-            while($data= $query->fetch())
-            {
-
-              if(isset($_POST[$data['membre_id']]))
+              if (isset($_POST['membre']) AND !empty($_POST['membre']))
               {
+                   $pseudo = $_POST['membre'];
+                   $donneesMembre = $managerMembre->recupereLeMembre($pseudo);
+                   //Si le membre existe
 
-                $i++;
+                  if(!empty($donneesMembre))
+                  {
+                      $membre = new Membre($donneesMembre);
+                      $membre->setRang(0);
+                      
+                      $managerMembre->promouvoirMembre($membre);
 
-                //On remet son rang à 2
-                $query=$bdd->prepare('UPDATE membres 
-                                      SET membre_rang = 2 
-                                      WHERE membre_id = :id');
-
-                $query->bindValue(':id',$data['membre_id'],PDO::PARAM_INT);
-                $query->execute();
-
-                $query->CloseCursor();
-
+                      echo'<br /><br />
+                      Le membre '.stripslashes(htmlspecialchars($membre->pseudo())).' a bien étébanni !<br />
+                      <p> 
+                          Cliquez <a href="./index.php">ici</a> pour revenir à l\'administration
+                      </p>';
+                
+                }
+                else
+                {
+                  echo'<p>
+                         Désolé, le membre '.stripslashes(htmlspecialchars($pseudo)).' n\'existe pas !<br />
+                         Cliquez <a href="./index.php?cat=membres&action=ban">ici</a> pour réessayer
+                       </p>';
+                }
               }
-            }
 
-            if ($i!=0)
-              echo'<p>Les membres ont été débannis<br />
-              Cliquez <a href="./index.php">ici</a> pour retourner à l
-              administration</p>';
-            }
+              //Debannissement ici
 
-            break;
-	  }
+              $donneesBannis = $managerMembre->tousLesBannis();
+              //Si on veut débannir au moins un membre
 
-          break;
+              if (!empty($donneesBannis))
+              {
+                    $i=0;
+
+                    foreach ($donneesBannis as $donneesBanni) {
+
+                        $banni = new Membre($donneesBanni);
+                  
+                        if(isset($_POST[$banni->id()]))
+                        {
+                            $i++;
+
+                          //On remet son rang à 2
+                            $banni->setRang(2);
+                            $managerMembre->promouvoirMembre($banni);
+                        }
+                  }
+
+                    if ($i != 0)
+                        echo'<p>Les membres ont été débannis<br /> Cliquez <a href="./index.php">ici</a> pour retourner à l administration</p>';
+                }
+
+                break;
+    	  }
+
+              break;
 
   }
-?>
+

@@ -30,6 +30,19 @@ class ManagerForum
 		$query->execute();
 	}
 
+	public function miseAjoursForum(Forum $forum)
+	{
+		$query = $this->_db->prepare('UPDATE forums SET name = :nom , description = :descr , cat = :cat WHERE id = :id');
+		$query->bindValue(':nom' ,$forum->name() , PDO::PARAM_STR);
+		$query->bindValue(':descr' , $forum->description() , PDO::PARAM_STR);
+
+		$query->bindValue(':id' , $forum->id() , PDO::PARAM_INT);
+		$query->bindValue(':cat' , $forum->cat() , PDO::PARAM_INT);
+
+
+		$query->execute();
+	}
+
 	public function infosForum($idForum)
 	{
 		$query = $this->_db->prepare('SELECT * FROM forums WHERE id = :id');
@@ -67,7 +80,7 @@ class ManagerForum
 
 	public function tousLesForums($jointures , $id , $levelMembre)
 	{
-		$query = $this->_db->prepare('SELECT categories.id AS idCat, categories.nom AS nom , forums.id AS id , name,last_post_id, description, forums.posts AS posts , forums.topics AS topics , auth_view, topic.id AS idTopic,
+		$query = $this->_db->prepare('SELECT categories.id AS idCat,categories.ordre AS ordreCat, categories.nom AS nom , forums.id AS id , name,last_post_id, description, forums.posts AS posts ,forums.ordre AS ordre, forums.topics AS topics , auth_view, topic.id AS idTopic,
                                topic.posts AS topicsPosts , post.id AS idPost, DATE_FORMAT(posttime, \'%d/%m/%Y %H:%i:%s\') AS posttime  , post.createur AS createur, pseudo, membres.id AS idMembre '.$jointures['add1'].'
 
                         FROM categories
@@ -181,6 +194,39 @@ class ManagerForum
 
         return $datas = $query->fetchAll();
 
+	}
+
+	public function modifierOrdre($forum)
+	{
+		 $query = $this->_db->prepare('UPDATE forum 
+                                      SET ordre = :ordre
+                                      WHERE id = :id');
+
+        $query->bindValue(':ordre',$forum->ordre(),PDO::PARAM_INT);
+        $query->bindValue(':id',$forum->id(),PDO::PARAM_INT);
+
+        $query->execute();
+        $query->CloseCursor();
+	}
+
+	public function miseAjoursDroits($forum)
+	{
+		$query = $this->_db->prepare('UPDATE forums 
+                                    SET auth_view = :view, auth_post = :post, auth_topic = :topic, auth_annonce = :annonce, auth_modo = :modo 
+                                    WHERE id = :id');
+
+            $query->bindValue(':view',$forum->auth_view(),PDO::PARAM_INT);
+            $query->bindValue(':post',$forum->auth_post(),PDO::PARAM_INT);
+
+            $query->bindValue(':topic',$forum->auth_topic(),PDO::PARAM_INT);
+            $query->bindValue(':annonce',$forum->auth_annonce(),PDO::PARAM_INT);
+            $query->bindValue(':modo',$forum->auth_modo(),PDO::PARAM_INT);
+
+            $query->bindValue(':id',(int)$forum->id(),PDO::PARAM_INT);
+
+            $query->execute();
+
+            $query->CloseCursor();
 	}
 
 
