@@ -1,6 +1,6 @@
 		<?php
         include "../includes/session.php";
-		$titre="Messagerie | Membres - Sitedusavoir";
+		$titre="Messagerie | Sitedusavoir";
 
 		include("../includes/identifiants.php");
 		include("../includes/debut.php");
@@ -8,14 +8,16 @@
 		include('../includes/bbcode.php');
 
 		if ($id==0) 
-			erreur(ERR_IS_CO);
+			erreur(Membre::ERR_IS_CO);
 
 
-		$action =(isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
+		$action =(isset($_GET['action']))?$_GET['action']:'';
 
-		$message =(isset($_POST['message']))?htmlspecialchars($_POST['message']):'';
+		$message =(isset($_POST['texte']))?htmlspecialchars($_POST['texte']):'';
 
 		$titre = (isset($_POST['titre']))?htmlspecialchars($_POST['titre']):'';
+
+
 
 
 	    switch($action)
@@ -26,69 +28,35 @@
 
 				//On récupère la valeur de l'id du destinataire
             
-				$dest = (int) $_GET['dest'];
-				//Enfin on peut envoyer le message
-				$query = $bdd->prepare('INSERT INTO mp (mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu) VALUES(:id, :dest, :titre, :txt, NOW(),\'0\')');
-				$query->bindValue(':id',$id,PDO::PARAM_INT);
-				$query->bindValue(':dest',$dest,PDO::PARAM_INT);
+				$dest = (int)$_GET['dest'];
+				$donnees = array('titre' => $titre , 'texte' => $message , 'expediteur' => $id , 'receveur' => $dest);
 
-				$query->bindValue(':titre',$titre,PDO::PARAM_STR);
-				$query->bindValue(':txt',$message,PDO::PARAM_STR);
-				$query->execute();
+				$infoMessage = new Mp($donnees);
+				$managerMp = new ManagerMp($bdd);
 
-				$query->CloseCursor();
+			    $managerMp->envoyerMp($infoMessage);
 
-				echo'<p>
-						Votre message a bien été envoyé!<br />
-						<br />Cliquez <a href="../index.php">ici</a> pour revenir à l index
-						du
-						forum<br />
-						<br />Cliquez <a href="./messagesprives.php">ici</a> pour retourner
-						à la messagerie
-				    </p>';
 				break;
 
 			case "nouveaump": //On envoie un nouveau mp
 				//On récupère le titre et le message
-				$message = $_POST['message'];
-				$titre = $_POST['titre'];
 
-				$dest = $_POST['to'];
+				$message = $_POST['texte'];
+				$titre = $_POST['titre'];
+                $dest = $_POST['to'];
+
+                $infoMessage = new Mp($_POST);
+                $managerMp = new ManagerMp($bdd);
+                $infosMembre = $managerMp->recupereLeMembre($infoMessage->to());
+                $infoMessage->setReceveur((int)$infosMembre['id']);
+                $infoMessage->setExpediteur($id);
 
 				//On récupère la valeur de l'id du destinataire
 				//Il faut déja vérifier le nom
 
-				$query = $bdd->prepare('SELECT membre_id FROM membres WHERE LOWER(membre_pseudo) = :dest');
-				$query->bindValue(':dest',strtolower($dest),PDO::PARAM_STR);
-				$query->execute();
-
-				?>
-				<?php
-
-				if($data = $query->fetch())
+				if(!empty($infosMembre))
 				{
-						$query=$bdd->prepare('INSERT INTO mp (mp_expediteur, mp_receveur, mp_titre, mp_text, mp_time, mp_lu)
-						VALUES(:id, :dest, :titre, :txt, NOW(), :lu)');
-
-						$query->bindValue(':id',$id,PDO::PARAM_INT);
-						$query->bindValue(':dest',(int)$data['membre_id'],PDO::PARAM_INT);
-
-						$query->bindValue(':titre',$titre,PDO::PARAM_STR);
-						$query->bindValue(':txt',$message,PDO::PARAM_STR);
-
-						$query->bindValue(':lu','0',PDO::PARAM_STR);
-						$query->execute();
-						$query->CloseCursor();
-
-						echo'<p>
-								Votre message a bien été envoyé!
-								<br /><br />Cliquez <a href="../index.php">ici</a> pour revenir à l
-								index du
-								forum<br />
-								<br />Cliquez <a href="./messagesprives.php">ici</a> pour retourner
-								àl
-								a messagerie
-						    </p>';
+						$managerMp->envoyerMp($infoMessage);
 				}
 
 				//Sinon l'utilisateur n'existe pas !
@@ -101,27 +69,22 @@
 				}
 
 				break;
-				?>
-
-				<?php
 
 			case "supprimer":
+
 				//On récupère la valeur de l'id
-				$id_mess = (int) $_GET['id'];
+				$idMessage = (int) $_GET['id'];
+				$managerMp = new ManagerMp($bdd);
+
+				$donnees = $managerMp->infosMessage($idMessage);
+				$infosMessage = new Mp($donnees);
+
 				
-				//Il faut vérifier que le membre est bien celui qui a reçu le message
-				$query = $bdd->prepare('SELECT mp_receveur FROM mp WHERE mp_id = :id');
-				$query->bindValue(':id',$id_mess,PDO::PARAM_INT);
-
-				$query->execute();
-				$data = $query->fetch();
-
+				//Il faut vérifier que le membre est bien celui qui a reçu le messag
 				//Sinon la sanction est terrible :p
 
-				if ($id != $data['mp_receveur']) 
+				if ($id != $infoMessage->receveur()) 
 					erreur(ERR_WRONG_USER);
-
-				$query->CloseCursor();
 
 				$sur = (int) $_GET['sur'];
 
@@ -131,16 +94,13 @@
 				{
 					echo'<p>
 							Etes-vous certain de vouloir supprimer ce message ?<br/>
-							<a href="./messok.php?action=supprimer&amp;id='.$id_mess.'&amp;sur=1"> Oui</a> - <a href="./messagesprives.php">Non</a>
+							<a href="./messok.php?action=supprimer&amp;id='.$idMessage.'&amp;sur=1"> Oui</a> - <a href="./messagesprives.php">Non</a>
 						</p>';
 				}
 				//Certain
 				else
 				{
-					$query=$bdd->prepare('DELETE from mp WHERE mp_id = :id');
-					$query->bindValue(':id',$id_mess,PDO::PARAM_INT);
-					$query->execute();
-					$query->CloseCursor();
+					$managerMp->deleteMp($idMessage);
 
 					echo'<p>
 							Le message a bien été supprimé.<br />

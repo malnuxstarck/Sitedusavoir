@@ -3,13 +3,12 @@
 echo '<body>
            <header>
 		        <div class="header-top">
-		             <h1 class="nomSite"><a href="./index.php"> Site du Savoir </a> </h1>
+		             <h1 class="nomSite"><a href="../index.php"> Site du Savoir </a> </h1>
 		       </div>
 		       <div class="menu">
 		             <ul class="menu-content">
 		                 <li><a href="../forum/index.php"> Forum </a></li>
 		                 <li><a href="../tutoriels/index.php"> Tutoriels </a></li>
-		                 <li><a href="../social/index.php"> Social </a></li>
 		                 <li><a href="../blog/index.php"> Blog </a></li>
 		             </ul>
 		       </div>
@@ -31,6 +30,8 @@ echo '<body>
 
 		       <div class="suscribe">';
 
+		          $managerMembre = new ManagerMembre($bdd);
+
 		          if(!$id)
 		          {
 			           echo  '<ul class="suscribe-content">
@@ -41,12 +42,11 @@ echo '<body>
 			      else
 			      {
 
-			      	$query = $bdd->prepare('SELECT membre_avatar FROM membres WHERE membre_id = :id');
-			      	$query->bindParam(':id',$id , PDO::PARAM_INT);
-			      	$query->execute();
-			      	$avatar = $query->fetch();
+			      	
+			      	$donnees = $managerMembre->infosMembre($id);
+			      	$membre  = new Membre($donnees);
 
-			      	$avatar = $avatar['membre_avatar'];
+			      	$avatar = $membre->avatar();
 
                       echo '<div class="cercle">
 
@@ -89,14 +89,14 @@ echo '<body>
            </header>';
 
          if (session_status() == PHP_SESSION_NONE)
-          session_start();
+                 session_start();
           ?>
            <?php if(isset($_SESSION['flash'])): ?>
 
       <?php foreach($_SESSION['flash'] as $cle => $message): ?>
 
         <div class="alert alert-<?=$cle ?>">
-           <?= $message; ?>
+                <?= $message; ?>
            </div>
 
         <?php endforeach; ?>

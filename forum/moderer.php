@@ -1,35 +1,29 @@
 <?php
 
-  include "../includes/session.php";
- include("../includes/identifiants.php");
+include "../includes/session.php";
+include("../includes/identifiants.php");
 
-
-$topic = $_GET['t'];
-$forum = $_GET['f'];
-
-
-$query = $bdd->prepare('SELECT topic_titre, topic_post, forum_topic.forum_id , topic_last_post,forum_name, auth_view, auth_topic, auth_post,auth_modo
-                        FROM forum_topic
-                        LEFT JOIN forum 
-                        ON forum_topic.forum_id = forum.forum_id 
-                        WHERE topic_id = :topic');
-
-$query->bindValue(':topic',$topic,PDO::PARAM_INT);
-$query->execute();
-
-$data = $query->fetch();
-
-$titre = $data['topic_titre'] ." | SiteduSavoir.com";
-
+$titre = 'Moderation - Topic ';
 include("../includes/debut.php");
 
-if(!verif_auth($data['auth_modo']))
+$idTopic = $_GET['t'];
+$idForum = $_GET['f'];
+$managerTopic = new ManagerTopic($bdd);
+
+$managerForum = new ManagerForum($bdd);
+$donneesTopic = $managerTopic->infosTopic($idTopic);
+$topic = new Topic($donneesTopic);
+
+$donneesForum = $managerForum->infosForum($idForum);
+$forum = new Forum($donneesForum);
+
+
+if(!Membre::verif_auth($forum->auth_modo()))
 {
 	header('Location:./index.php');
 }
 
 include("../includes/menu.php");
-
 
 echo '<div class="fildariane">
 
@@ -45,17 +39,15 @@ echo '<div class="fildariane">
             <img class="fleche" src="../images/icones/fleche.png"/>
 
            <li>
-               <a href="./voirforum.php?f='.$forum.'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
+               <a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
            </li>  <img class="fleche" src="../images/icones/fleche.png"/>   
            <li>
-            <a href="./voirtopic.php?t='.$topic.'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>
+            <a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
             </li>
          </ul>
      <div>';
 
 echo '<div class="page">';
-
-
 $action = (isset($_GET['action']))?$_GET['action']:"";
 
 switch($action)
@@ -66,17 +58,19 @@ switch($action)
               <h2 class="titre"> Ferme automatiquement le sujet , apres la reponse </h2>
 
           <div class="formulaire">
-	          <form method="post" action=postok.php?action=autorep&amp;t='.$topic.'>
+	          <form method="post" action=postok.php?action=autorep&amp;t='.$topic->id().'>
 
 	           <div class="select">
 						<select name="rep">';
 
-						$query=$bdd->query('SELECT automess_id, automess_titre FROM forum_automess');
+						$managerAutoMessage = new ManagerAutoMessage($bdd);
+                        $donneesAutoMesages = $managerAutoMessage->tousLesAutoMessages();
 
-						while($data = $query->fetch())
-						{
-						echo '<option value="'.$data['automess_id'].'">
-						'.$data['automess_titre'].'</option>';
+						foreach ($donneesAutoMesages as $automessageDonnnee) {
+							$automess = new AutoMessage($automessageDonnnee);
+
+						echo '<option value="'.$automess->id().'">
+						'.$automess->titre().'</option>';
 
 						}
 						echo '</select>
@@ -87,19 +81,9 @@ switch($action)
 				</div>
 				</form>
 		</div>';
-			$query->CloseCursor();
-
-
-
 	break;
 
 	case "deplacer":
-
-    $query=$bdd->prepare('SELECT forum_id, forum_name 
-                        FROM forum
-                        WHERE forum_id <> :forum');
-  $query->bindValue(':forum',$forum,PDO::PARAM_INT);
-  $query->execute();
 
   //$forum a été définie tout en haut de la page !
 
@@ -107,22 +91,24 @@ switch($action)
 
   <div class="formulaire">
 
-		  <form method="post" action=postok.php?action=deplacer&amp;t='.$topic.'>
+		  <form method="post" action=postok.php?action=deplacer&amp;t='.$topic->id().'>
 
           <div class="select">
 			  <select name="dest">';
-			  while($data=$query->fetch())
-			  {
-			  echo'<option value='.$data['forum_id'].' id='.$data['forum_id'].'>'.$data['forum_name'].'</option>';
-			  }
 
-			   $query->CloseCursor();
+			  $donneesForums = $managerForum->forumsDifferentDeCeluiLa($forum->id());
+
+			  foreach ($donneesForums as $donneesForum) {
+
+                     $forumd = new Forum($donneesForum);
+                     echo'<option value='.$forumd->id().' id='.$forumd->id().'>'.$forumd->name().'</option>';
+			  }
 
 			  echo'
 			  </select>
 		 </div>
 
-		  <input type="hidden" name="from" value='.$forum.'>
+		  <input type="hidden" name="from" value='.$forum->id().'>
 
 		  <div class="submit">
 		      <input type="submit" name="submit" value="Envoyer" />

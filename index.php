@@ -1,7 +1,8 @@
 <?php
-  include "includes/identifiants.php";
 	include 'includes/fonctions.php';
-	include ('includes/session.php');
+	include 'includes/session.php';
+  include 'includes/constantes.php';
+  include './includes/identifiants.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,11 +14,12 @@
   <link rel="stylesheet" href="css/style.css" type="text/css"/>
   <link rel="icon" href="sitedusavoir.png" type="image/png"/> 
 </head>
+
   <?php
       if(isset($_SESSION['level'],$_SESSION['id'],$_SESSION['pseudo']))
       {
         $lvl = (int)$_SESSION['level'];
-        $id = (int)$_SESSION['id'];
+        $id =  (int)$_SESSION['id'];
         $pseudo = $_SESSION['pseudo'];
       }
       else
@@ -26,29 +28,23 @@
         $id = 0;
         $pseudo = '';
       }
-      include ('includes/constantes.php');
-      include_once('includes/menu.php');
-      include_once('includes/identifiants.php');
-      reconnected_from_cookie();
+      
+      
+      spl_autoload_register('chargerClass');
+
+      include_once './includes/menu.php' ;
+      $managerMembre->reconnected_from_cookie();
 
       /* Qui est en ligne */
       
       $ip = ip2long($_SERVER['REMOTE_ADDR']);
-//Requête
-      $query = $bdd->prepare('INSERT INTO forum_whosonline VALUES(:id,NOW(),:ip) ON DUPLICATE KEY UPDATE online_time = NOW() , online_id = :id');
-      $query->bindValue(':id',$id,PDO::PARAM_INT);
-      $query->bindValue(':ip', $ip, PDO::PARAM_INT);
+      $memberDatas= array("online_id" => $id , "online_ip" => $ip);
+      $memberOnline = new WhoIsOnline($memberDatas);
 
-      $query->execute();
-      $query->CloseCursor();
+      $managerWhosIsOnline = new ManagerWhoIsOnline($bdd);
+      $managerWhosIsOnline->updateWhoIsOnline($memberOnline);
+      $managerWhosIsOnline->deleteWhoIsOnline();
 
-
-
-
-$query=$bdd->prepare('DELETE FROM forum_whosonline WHERE online_time < SUBDATE(NOW(),INTERVAL 5 MINUTE)');
-
-$query->execute();
-$query->CloseCursor();
 
   ?>
 

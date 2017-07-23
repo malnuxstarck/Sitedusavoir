@@ -1,27 +1,29 @@
 <?php
 
+  require './includes/identifiants.php';
+  require './includes/session.php';
+  require './includes/fonctions.php';
+  
+  spl_autoload_register('chargerClass');
+
   $id = $_GET['id'];
   $token = $_GET['token'];
-  require './includes/identifiants.php';
 
-  $req = $bdd->prepare('SELECT * 
-                        FROM membres 
-                        WHERE membre_id = :id');
+  $dateInscription = 'IS NULL';
+  
 
-  $req->execute(array('id'=> $id));
-  $user = $req->fetch();
+  $managerMembre = new ManagerMembre($bdd);
+  $donnees = $managerMembre->infosMembre($id,$dateInscription);
 
-  session_start();
+  $membre = new Membre($donnees);
 
-  if($user AND $user['token'] == $token)
+  
+  if($membre AND $membre->token() == $token)
   {
-    session_start();
 
     $_SESSION['flash']['success'] = "Votre compte a été validé, vous pouvez vous connecter maintenant.";
 
-    $req = $bdd->prepare('UPDATE membres SET token = NULL, membre_inscrit = NOW() WHERE membre_id = :id ');
-
-    $req->execute(array('id' => $id));
+    $managerMembre->confirmerCompte($membre);
 
     header('Location:connexion.php');
   }
@@ -32,3 +34,4 @@
     $_SESSION['flash']['danger'] = "Ce token n'est plus valide !!";
 
   }
+  

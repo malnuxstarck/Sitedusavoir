@@ -1,4 +1,5 @@
 <?php
+
 $titre="Blog | SiteduSavoir.com";
 include("../includes/session.php");
 include("../includes/identifiants.php");
@@ -19,14 +20,12 @@ include("../includes/menu.php");
 
 <?php
 
+$managerContenu = new ManagerContenu($bdd);
 $page = (!empty($_GET['page']))?$_GET['page']:1;
+
 $articles_par_page = 20 ;
-$req = $bdd->query('SELECT COUNT(*) AS nbr_articles FROM articles');
-$nombres_articles = $req->fetch();
-$nombres_articles = $nombres_articles["nbr_articles"];
 
-
-$req->closeCursor();
+$nombres_articles = $managerContenu->totalDeContenu('article');
 
 $nbre_pages = ceil($nombres_articles / $articles_par_page);
 
@@ -54,50 +53,43 @@ for($i = 1 ; $i <= $nbre_pages ; $i++)
 
 <?php
 
-if(verif_auth(MODO))
-	echo '<p class="nouveau-sujet"><img src="../images/icones/new.png"/><a href="debuterarticle.php">Ecrire un article </a></p>';
+	if($id)
+	   echo '<p class="nouveau-sujet"><img src="../images/icones/new.png"/><a href="../contenus/debutercontenu.php">Ecrire un article </a></p>';
 
 
 
 $premierarticle = ($page - 1) * $articles_par_page ;
 
-$req = $bdd->prepare('SELECT articles_titre,articles.articles_id, articles_banniere ,cat_nom 
-	                  FROM articles
-	                  LEFT JOIN categorie
-	                  ON categorie.cat_id = articles.articles_cat
-	                  ORDER BY articles_date
-	                  LIMIT :premier , :nombresparpages');
+$infosArticles = $managerContenu->tousLesContenus('article',$premierarticle);
 
-$req->bindParam(':premier',$premierarticle, PDO::PARAM_INT);
-$req->bindParam(':nombresparpages',$articles_par_page,PDO::PARAM_INT);
-
-$req->execute();
-
-if($req->rowCount() > 0)
+if(!empty($infosArticles))
 {
 
-	while($article = $req->fetch())
+	foreach ($infosArticles as $infosArticle)
 	{
+		$article = new Contenu($infosArticle);
+		$managerCategorie = new ManagerCategorie($bdd);
+		$infosCategorie = $managerCategorie->infosCategorie($article->cat());
+		$categorie = new Categorie($infosCategorie);
 	  
-	  echo 
+	    echo 
 	      '<div class="tutos">
 	            <div class="banniere">
-	                <img src="articles_ban/'.$article['articles_banniere'].'" alt="banniere"/>
+	                <img style="width:300px; height: 225px ;" src="../contenus/bannieres/'.$article->banniere().'" alt="banniere"/>
 	            </div>
 	            <div class="tutos-infos">
-	               <h3 class="titre-tuto"><a href="lirearticle.php?&article='.$article['articles_id'].'">'.htmlspecialchars($article['articles_titre']).'</a></h3>';
+	               <h3 class="titre-tuto"><a href="lire.php?article='.$article->id().'">'.htmlspecialchars($article->titre()).'</a></h3>';
 
-	               $auteurs = $bdd->prepare('SELECT membre_pseudo , membres.membre_id 
-                        	                      FROM articles_par JOIN membres 
-                        	                      ON membres.membre_id = articles_par.membre_id WHERE articles_id = :article');
+	                    $managerAuteur = new ManagerAuteur($bdd);
+	                    $infosAuteurs = $managerAuteur->tousLesAuteurs($article->id());
 
-                        $auteurs->execute(array('article' => $article['articles_id']));
-
-                        while($auteur = $auteurs->fetch())
+                        foreach ($infosAuteurs as $infosAuteur)
                         {
-		                 echo '<span class="auteur-tuto"><a href="../forum/voirprofil.php?action=consulter&m='.$auteur['membre_id'].'">'.$auteur['membre_pseudo'].'</a></span>';
+                        	$auteur = new Auteur($infosAuteur);
+
+		                    echo '<span class="auteur-tuto"><a href="../forum/voirprofil.php?m='.$auteur->membre().'">'.$auteur->pseudo().'</a></span>';
                         }
-	               echo '<span class="cat-tuto">'.$article['cat_nom'].'</span>
+	               echo '<span class="cat-tuto">'.$categorie->nom().'</span>
 	            </div>  
 
 

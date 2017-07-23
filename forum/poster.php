@@ -15,49 +15,47 @@ $action = (isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 //Il faut être connecté pour poster !
 
 if ($id == 0) 
-	erreur(ERR_IS_CO);
+	erreur(ManagerMembre::ERR_IS_CO);
 
 //Si on veut poster un nouveau topic, la variable f se trouve dans l'url,
 //On récupère certaines valeurs
 
-if (isset($_GET['f']))
-{
+if(isset($_GET['f'])){
 
-	$forum = (int) $_GET['f'];
-	$query= $bdd->prepare('SELECT forum_id ,forum_name, auth_view, auth_post, auth_topic,auth_annonce, auth_modo
-	                       FROM forum 
-	                       WHERE forum_id =:forum');
-
-	$query->bindValue(':forum',$forum,PDO::PARAM_INT);
-	$query->execute();
-	$data = $query->fetch();
+    $idForum = (int)$_GET['f'];
+	$managerForum = new ManagerForum($bdd);
+	$donneesForum = $managerForum->infosForum($idForum);
+	$forum = new Forum($donneesForum);
 
 	echo '<div class="fildariane">
          <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Forum</a></li><img class="fleche" src="../images/icones/fleche.png" /> <li><a href="./voirforum.php?f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Nouveau topic</span><li>
+            <li><a href="../index.php">Accueil</a></li>
+            <img class="fleche" src="../images/icones/fleche.png"/>
+            <li><a href="./index.php">Forum</a></li>
+            <img class="fleche" src="../images/icones/fleche.png" /> 
+            <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a></li>
+            <img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Nouveau topic</span>
+            </li>
          </ul>
        </div>
 
        <div class="page">';
-}
+}   
+
 
    //Sinon c'est un nouveau message, on a la variable t et
    //On récupère f grâce à une requête
 
 elseif (isset($_GET['t']))
 {
-	$topic = (int) $_GET['t'];
-	$query=$bdd->prepare('SELECT topic_titre, forum_topic.forum_id,forum_name, auth_view, auth_post, auth_topic, auth_annonce, auth_modo
-	                      FROM forum_topic
-	                      LEFT JOIN forum 
-	                      ON forum.forum_id = forum_topic.forum_id
-	                      WHERE topic_id =:topic');
-	$query->bindValue(':topic',$topic,PDO::PARAM_INT);
+	$idTopic = (int) $_GET['t'];
+	$managerTopic = new ManagerTopic($bdd);
 
-	$query->execute();
-	$data = $query->fetch();
+	$donneesTopic = $managerTopic->infosTopic($idTopic);
+	$topic = new Topic($donneesTopic);
 
-	$forum = $data['forum_id'];
+	$forum = new Forum($donneesTopic);
+	$forum->setId($topic->forum());
 
 	echo '<div class="fildariane">
 	           <ul>
@@ -65,12 +63,12 @@ elseif (isset($_GET['t']))
 	               <img class="fleche" src="../images/icones/fleche.png"/>
 
 	               <li>
-	                    <a href="./index.php">Forum</a><li> <img class="fleche" src="../images/icones/fleche.png"/> <li><a href="./voirforum.php?f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
+	                    <a href="./index.php">Forum</a><li> <img class="fleche" src="../images/icones/fleche.png"/> <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
 	               </li>
 	                    <img class="fleche" src="../images/icones/fleche.png"/>
 
 	               <li>
-	                  <a href="./voirtopic.php?t='.$topic.'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>
+	                  <a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
 	               </li>
 	                <img class="fleche" src="../images/icones/fleche.png"/>
 	                <li><span style="color:black;">Répondre</span></li>
@@ -84,22 +82,18 @@ elseif (isset($_GET['t']))
 
 elseif (isset ($_GET['p']))
 {
-	$post = (int) $_GET['p'];
+	$idPost = (int) $_GET['p'];
 
-	$query = $bdd->prepare('SELECT post_createur, forum_post.topic_id, topic_titre,forum_topic.forum_id,forum_name, auth_view, auth_post, auth_topic, auth_annonce, auth_modo
-	                        FROM forum_post
-	                        LEFT JOIN forum_topic 
-	                        ON forum_topic.topic_id = forum_post.topic_id
-	                        LEFT JOIN forum 
-	                        ON forum.forum_id = forum_topic.forum_id
-	                        WHERE forum_post.post_id = :post');
+	$managerPost = new ManagerPost($bdd);
+    $donneesPost = $managerPost->infosPost($idPost);
 
-	$query->bindValue(':post',$post,PDO::PARAM_INT);
-	$query->execute();
+    $post = new Post($donneesPost);
+    $post->setID($idPost);
 
-	$data = $query->fetch();
-	$topic = $data['topic_id'];
-	$forum = $data['forum_id'];
+    $forum = new Forum($donneesPost);
+    $forum->setID($post->forum());
+
+    $topic = new Topic($donneesPost); 
 
 	echo '<div class="fildariane">
 	           <li>
@@ -107,11 +101,11 @@ elseif (isset ($_GET['p']))
 	           </li>
 	           <img class="fleche" src="../images/icones/fleche.png"/>
 	           <li>
-	                 <a href="./voirforum.php?f='.$data['forum_id'].'">'.stripslashes(htmlspecialchars($data['forum_name'])).'</a>
+	                 <a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
 	           </li>
 	           <img class="fleche" src="../images/icones/fleche.png"/>
                <li> 
-                    <a href="./voirtopic.php?t='.$topic.'">'.stripslashes(htmlspecialchars($data['topic_titre'])).'</a>
+                    <a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
                </li>
 	          <img class="fleche" src="../images/icones/fleche.png"/>
 	               <li><span style="color:black;">Modérer un message</span>
@@ -119,11 +113,9 @@ elseif (isset ($_GET['p']))
 	    </div>
 	    <div class="page">';
 }
-$query->CloseCursor();
 
 
-
- switch($action)
+switch($action)
 {
     case "repondre":
 		 //Premier cas : on souhaite répondre
@@ -134,7 +126,7 @@ $query->CloseCursor();
 
 		<div class="formulaire">
 
-			<form method="post" name="formulaire"  action="postok.php?action=repondre&amp;t=<?php echo $topic ?>">
+			<form method="post" name="formulaire"  action="postok.php?action=repondre&amp;t=<?php echo $topic->id() ?>">
 				
 
 				    <?php include "../includes/miseenforme.php"; ?>
@@ -143,7 +135,7 @@ $query->CloseCursor();
 				      <legend>Message</legend>
 
 				 <div class="textarea">
-				        <textarea  name="message">Repondre</textarea>
+				        <textarea  name="texte">Repondre</textarea>
 				 </div>
 
 				 <div class="submit submit-tuto">
@@ -177,7 +169,7 @@ $query->CloseCursor();
 
 			<div class="formulaire">
 
-                 <form method="post" action="postok.php?action=nouveautopic&amp;f=<?php echo $forum;?>" name="formulaire">
+                 <form method="post" action="postok.php?action=nouveautopic&amp;f=<?php echo $forum->id();?>" name="formulaire">
 
 					<fieldset>
 
@@ -195,19 +187,20 @@ $query->CloseCursor();
 					      <legend>Message</legend>
 
                           <div class="textarea">
-					          <textarea  name="message" required ></textarea>
+					          <textarea  name="texte" required ></textarea>
 					       </div>   
 
 					<?php
-					if (verif_auth($data['auth_annonce']))
+
+					if (Membre::verif_auth($forum->auth_annonce()))
 					{
 					?>
-					   <label><input type="radio" name="mess" value="Annonce"/>Annonce</label>
+					   <label><input type="radio" name="genre" value="Annonce"/>Annonce</label>
 
 					<?php
 					}
 					?>
-					<label><input type="radio" name="mess" value="Message" checked="checked" />Topic</label><br />
+					<label><input type="radio" name="genre" value="Message" checked="checked" />Topic</label><br />
 
 					<div class="submit submit-tuto">
                          <input type="submit" name="submit" value="Envoyer" />
@@ -225,108 +218,108 @@ $query->CloseCursor();
     break;
 
 
- case "edit": 
+    case "edit": 
 
- //Si on veut éditer le post
-//On récupère la valeur de p
+        //Si on veut éditer le post
+        //On récupère la valeur de p
 
-$post = (int) $_GET['p'];
+        $idPost = (int) $_GET['p'];
 
-echo'<h2 class="titre">Edition</h2>';
+        echo'<h2 class="titre">Edition</h2>';
 
-//On lance enfin notre requête
+        //On lance enfin notre requête
 
-$query = $bdd->prepare('SELECT post_createur, post_texte, auth_modo
-               FROM forum_post  
-               LEFT JOIN forum 
-               ON forum_post.post_forum_id = forum.forum_id
-               WHERE post_id=:post');
+	    $managerPost = new ManagerPost($bdd);
+	    $donneesPost = $managerPost->infosPost($idPost);
+	    $post = new Post($donneesPost);
+	    $forum = new Forum($donneesPost);
 
-$query->bindValue(':post',$post,PDO::PARAM_INT);
-$query->execute();
-$data = $query->fetch();
+		//On récupère le message
+		//Ensuite on vérifie que le membre a le droit d'être ici (soit le créateur soit un modo/admin)
 
-$text_edit = $data['post_texte'];
+		if (!Membre::verif_auth($forum->auth_modo()) && $post->createur() != $id)
+		{
+		   // Si cette condition n'est pas remplie ça va barder :o
+		    erreur(Membre::ERR_AUTH_EDIT);
+		}
 
-//On récupère le message
-//Ensuite on vérifie que le membre a le droit d'être ici (soit le créateur soit un modo/admin)
+		else //Sinon ça roule et on affiche la suite
+		{
+		   //Le formulaire de postage
+		?>
+		<div class="formulaire">
+			<form method="post" name="formulaire" action="postok.php?action=edit&amp;p=<?php echo $post->id(); ?>">
 
-if (!verif_auth($data['auth_modo']) && $data['post_createur'] != $id)
-{
-   // Si cette condition n'est pas remplie ça va barder :o
-    erreur(ERR_AUTH_EDIT);
-}
+		    
+			    <?php include "../includes/miseenforme.php"; ?>
+		     
+			<fieldset>
+			    <legend>Message</legend>
 
-else //Sinon ça roule et on affiche la suite
-{
-   //Le formulaire de postage
-?>
-<div class="formulaire">
-	<form method="post" name="formulaire" action="postok.php?action=edit&amp;p=<?php echo $post; ?>">
+		        <div class="textarea">
+			          <textarea name="texte"><?php echo trim(htmlspecialchars($post->texte())); ?></textarea>
+			     </div>
 
-    
-	    <?php include "../includes/miseenforme.php"; ?>
-     
-	<fieldset>
-	    <legend>Message</legend>
+			     <div class="submit submit-tuto">
+			       <input type="submit" value="Editer !" />
+			    </div>
+			   <div class="submit submit-tuto">      
+			       <input type="reset" value = "Effacer"/>
+			  </div>  
+			</fieldset>
+			
+			</form>
+		</div>
 
-        <div class="textarea">
-	          <textarea name="message"><?php echo trim(htmlspecialchars($text_edit)); ?></textarea>
-	     </div>
+		</div>
 
-	     <div class="submit submit-tuto">
-	       <input type="submit" value="Editer !" />
-	    </div>
-	   <div class="submit submit-tuto">      
-	       <input type="reset" value = "Effacer"/>
-	  </div>  
-	</fieldset>
-	
-	</form>
-</div>
+		<?php
+		   include "../includes/footer.php";
+		}
 
-</div>
+    break;
 
-<?php
-   include "../includes/footer.php";
-}
+	case "delete": 
 
-break;
+	    //Si on veut supprimer le post
+		//On récupère la valeur de p
 
-case "delete": //Si on veut supprimer le post
-//On récupère la valeur de p
-$post = (int) $_GET['p'];
-//Ensuite on vérifie que le membre a le droit d'être ici
-echo'<h1> Suppression </h1>';
+		$idPost = (int) $_GET['p'];
+		//Ensuite on vérifie que le membre a le droit d'être ici
 
-$query = $bdd->prepare('SELECT post_createur, auth_modo
-                        FROM forum_post
-                        LEFT JOIN forum 
-                        ON forum_post.post_forum_id = forum.forum_id
-                        WHERE post_id= :post');
-$query->bindValue(':post',$post,PDO::PARAM_INT);
-$query->execute();
-$data = $query->fetch();
+		echo'<h1> Suppression </h1>';
 
-if (!verif_auth($data['auth_modo']) && $data['post_createur'] != $id)
-{
-	// Si cette condition n'est pas remplie ça va barder :o
-	erreur(ERR_AUTH_DELETE);
-}
+		$managerPost = new ManagerPost($bdd);
+		$donneesPost = $managerPost->infosPost($idPost);
 
-else //Sinon ça roule et on affiche la suite
-{
-	echo'<p>
-	        Êtes vous certains de vouloir supprimer ce post ?
-	    </p>';
+		$post = new Post($donneesPost);
+		$post->setId($idPost);
+		$forum = new Forum($donneesPost);
+		$forum->setID($post->forum());
 
-	echo'<p>
-	         <a href="./postok.php?action=delete&amp;p='.$post.'">Oui</a> ou <a href="./index.php">Non</a>
-	    </p>';
-}
 
-$query->CloseCursor();
-break;
+
+
+
+		if (!Membre::verif_auth($forum->auth_modo()) && $post->createur() != $id)
+		{
+			// Si cette condition n'est pas remplie ça va barder :o
+			erreur(ManagerPost::ERR_AUTH_DELETE);
+		}
+
+		else //Sinon ça roule et on affiche la suite
+		{
+			echo'<p>
+			        Êtes vous certains de vouloir supprimer ce post ?
+			    </p>';
+
+			echo'<p>
+			         <a href="./postok.php?action=delete&amp;p='.$post->id().'">Oui</a> ou <a href="./voirtopic.php?t='.$topic->id().'">Non</a>
+			    </p>';
+		}
+
+		
+	break;
 
 
 default: //Si jamais c'est aucun de ceux là c'est qu'il y a eu unproblème :o

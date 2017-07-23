@@ -1,13 +1,12 @@
 <?php
 
-include "../includes/session.php";
-require_once("../includes/identifiants.php");
+include '../includes/session.php';
+require_once '../includes/identifiants.php';
 
 $titre = $_SESSION['pseudo'] . ' | SiteduSavoir.com ';
 
-require_once("../includes/debut.php");
-
-require_once("../includes/menu.php");
+require_once '../includes/debut.php';
+require_once '../includes/menu.php';
 
 
 echo '<div class="fildariane">
@@ -24,24 +23,17 @@ if ($id == 0)
    header('Location:../index.php');
 }
 
-
-
 if ($id != $identifiant)
 { 
 	
    header('Location:./editerprofil.php?id='.$id);
 }
 
+$managerMembre = new managerMembre($bdd);
+$donnees = $managerMembre->infosMembre($id);
+$membre = new Membre($donnees);
 
-$req = $bdd->prepare('SELECT * FROM membres WHERE membre_id = :id');
-
-$req->bindParam(':id', $id, PDO::PARAM_INT);
-
-$req->execute();
-
-$membre = $req->fetch();
-
-if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est sur la page de formulaire
+if (empty($_POST)) // Si on la variable est vide, on peut considérer qu'on est sur la page de formulaire
 {
   
         echo '<div class="page">
@@ -50,10 +42,10 @@ if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est s
 
        echo '<div class="formulaire">
 
-	               <form method="post" action="editerprofil.php?action=1" id="formulaire">
+	               <form method="post" action="editerprofil.php?id='.$id.'" '.'id="formulaire">
 		               <div class="input">
 			                <label for="pseudo"><img src="../images/icones/person.png"></label>
-			                <input name="pseudo" value="'.$membre['membre_pseudo'].'" type="text" placeholder="(doit contenir entre 3 et 15 caractères, sans espace) " />
+			                <input name="pseudo" value="'.$membre->pseudo().'" type="text" placeholder="(doit contenir entre 3 et 15 caractères, sans espace) " />
 		              </div>
 
 		              <div class="input">  
@@ -62,167 +54,115 @@ if (empty($_POST)) // Si on la variable est vide, on peutconsidérer qu'on est s
 		              </div>
 
 		              <div class="input">
-		                  <label for="confirm"><img src="../images/icones/mdp.png"></label>
-		                  <input type="password" name="confirm" placeholder="Confirmer le mot de passe" required />
+		                  <label for="confirmPassword"><img src="../images/icones/mdp.png"></label>
+		                  <input type="password" name="confirmPassword" placeholder="Confirmer le mot de passe" required />
 		              </div>
 
-                       <div class="submit">
-		                    <input type="submit" value="Modifier"/>
-                       </div>
-	              </form>
-             </div>
-	             </br>
-                <div class="formulaire">
-
-		             <form method="post" action="editerprofil.php?action=2" >
-
-			              <div class="input">
+			            <div class="input">
 			                  <label for="localisation"><img src="../images/icones/place.png"></label>
-			                  <input type="text" value ="'.$membre['membre_localisation'].'" name="localisation" required/>
-			              </div>
+			                  <input type="text" value ="'.$membre->localisation().'" name="localisation" required/>
+			            </div>
 
 			              <div class="input">
 			                  <label for="email"><img src="../images/icones/mail.png"></label>
-			                  <input type="email" name="email" value="'.$membre['membre_email'].'" placeholder="Votre email" required/>
+			                  <input type="email" name="email" value="'.$membre->email().'" placeholder="Votre email" required/>
 			              </div>
 
 			              <div class="input">
 			                  <label for="siteweb"></label>
-			                  <input type="text" value="'.$membre['membre_siteweb'].'" name="siteweb" placeholder="siteweb"/>
+			                  <input type="text" value="'.$membre->siteweb().'" name="siteweb" placeholder="siteweb"/>
 			              </div>
-
-			              <div class="submit">
-			                 <input type="submit" value="Modifier"/>
-			              </div>
-		            </form>
-		        </div>
-
-	            </br>
-                <div class="formulaire">
-
-		               <form method="post" action="editerprofil.php?action=3">
 
 		              <div class="textarea">
 		                 
-		                  <textarea name="signature" value="'.$membre['membre_signature'].'" >'.$membre['membre_signature'].'
+		                  <textarea name="signature" value="'.$membre->signature().'" >'.$membre->signature().'
 		                  </textarea>
 		              </div>
 
 
-		              <p style="text-align:center;"><img src="../images/avatars/'.$membre['membre_avatar'].'" alt="pas davatar"/></p>
+		              <p style="text-align:center;"><img src="../images/avatars/'.$membre->avatar().'" alt="pas davatar"/></p>
 
 		               <div class="input">
+
 		                  <label for="avatar"></label>
 
 		                  <input type="file" name="avatar" id="avatar"/>(Taille max : 1mo)
 		              </div>
 
 		      
-		      <div class="submit"><input type="submit" value="Modifier"/></div>
+		            <div class="submit"><input type="submit" value="Modifier"/></div>
 
 		      </form>
 		    </div> ';
  
 
 }
-
-
-
 else
 {
+	$managerMembre = new managerMembre($bdd);
+	$donnees = $managerMembre->infosMembre($id);
+
+	$membreEnCours = new Membre($donnees);
+	$membreAjour   = new Membre($_POST);
+	if(isset($_FILES['avatar']))
+	      $membreAjour->setAvatar($_FILES['avatar']);
+
+	$membreAjour->setId($membreEnCours->id());
+
+	if($membreEnCours->pseudo() != $membreAjour->pseudo()){
+		$managerMembre->pseudoLibre($membreAjour->pseudo());
+		$managerMembre->pseudoValide($membreAjour->pseudo());
+	}
+    else
+		$membreAjour->setPseudo($membreEnCours->pseudo());
+
+	if($membreEnCours->email() != $membreEnCours->email())
+		$managerMembre->emailValide($membreAjour->email());
+	else
+		$membreAjour->setEmail($membreEnCours->email());
 	
+	if(empty($membreAjour->signature())){
+		$membreAjour->setSignature($membreEnCours->signature());
+	}
 
-	$action = (int)htmlspecialchars($_GET["action"]);
-
-	switch($action):
-
-	case 1:
-
-	// Le cas ou on veut juste modifier son pseudo soit mot de passe ou les deux
-
-		$pseudo = (isset($_POST["pseudo"]))?$_POST["pseudo"]:"";
-
-		$pass = (isset($_POST["password"]))?$_POST["password"]: "";
-
-		$confirm = (isset($_POST["confirm"]))?$_POST["confirm"]:"";
-
-		if(empty($pseudo) AND empty($pass))
-		{
-			$_SESSION["flash"]["danger"] = "Au moins un des champs doit etre remplis . Vous pouvez reessayer";
-			header('Location:editerprofil.php?id='.$id);
-		}
-
-		if(!empty($confirm) && $pass == $confirm )
-	    {
-	    	
-
-	      $pass =  PASSWORD_HASH($pass,PASSWORD_BCRYPT);
-	      $req1 = $bdd->prepare('UPDATE membres SET membre_mdp = :pass WHERE membre_id =:id');
-	      $req1->execute(array('id'=> $id , 'pass' => $pass));
-		  
-		 }
-
-	   
-
-		$req = $bdd->prepare('UPDATE membres SET membre_pseudo = :pseudo WHERE membre_id =:id');
-	    $req->execute(array('pseudo'=> $pseudo , 'id' => $id));
-	    $req->closeCursor();
-
-		$_SESSION["flash"]["success"] = "Mot de passe et/ou pseudo mis a jours";
-		header('Location:editerprofil.php?id='.$id);
-		
-    break;
-
-    case 2:
-
-	    $mail = $bdd->query("SELECT membre_email FROM membres WHERE membre_id = $id");
-        $mail = $mail->fetch();
-        $mail = $mail['membre_email'];
-
-	   
-	  
-	    //Changer son email, siteweb , localisation
-
-	    $localisation = (!empty($_POST['localisation']))?$_POST['localisation']:"Non localisé";
-	    $siteweb      = (!empty($_POST['siteweb']))?$_POST['siteweb']:"Aucun siteweb";
-	    $email        = (!empty($_POST['email']))?$_POST['email']:$mail;
+	if(!empty($membreAjour->password())){
+		$managerMembre->verifyPassword($membreAjour);
+	}
+	else
+		$membreAjour->setPassword($membreEnCours->password());
 
 
+	if(!empty($membreAjour->avatar())){
 
-	    $modification = $bdd->prepare('UPDATE membres SET membre_email  = :email, membre_siteweb = :siteweb,membre_localisation = :localisation WHERE membre_id =:id');
+	    if ($managerMembre->verifAvatar($membreAjour->avatar()))
+        {   
+            $nomavatar = $membreAjour->moveAvatar($membreAjour->avatar());
+            $membreAjour->setAvatar($nomavatar);
+        }
+    }
+    else
+    	$membreAjour->setAvatar($membreEnCours->avatar());
 
-	    $modification->bindParam(':email',$email,PDO::PARAM_STR);
-	    $modification->bindParam(':siteweb',$siteweb,PDO::PARAM_STR);
-	    $modification->bindParam(':localisation',$localisation,PDO::PARAM_STR);
-	    $modification->bindParam(':id',$id,PDO::PARAM_INT);
+    
+    if($managerMembre->nombresErreurs == 0){
+        $managerMembre->miseAjoursMembre($membreAjour);
+        $_SESSION['flash']['success'] = "Mise à jours des infos reussie .";
+    }
+    else{
+            $messageFinal = '';
 
-	    $modification->execute();
-	    $modification->closeCursor();
-
-	    $_SESSION['flash']['success'] = "Les modifications ont ete apportées .";
-
-	    header('Location:editerprofil.php?id='.$id);
-
+	    	foreach ($managerMembre->errors() as $value) {
+	    		$value.='</br>';
+	    		$messageFinal.=$value;
+	    	}
+	    	$_SESSION['flash']['danger'] = $messageFinal ;
+    }
+               
+    header('Location:editerprofil.php?id='.$membreEnCours->id());
 	
-
-	break;
-
-	case 3:
-
-	// dernier des cas si on veut modifier sa signature ou son avatar;
-
-	
-	break;
-
-	default:
-	$_SESSION["flash"]["danger"] = "Action invalide ";
-	header('Location:editerprofil.php?id='.$id);
-	
-
-	endswitch;
-
 
 }
+
 echo '</div>';
 include "../includes/footer.php";
 

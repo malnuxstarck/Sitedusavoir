@@ -1,15 +1,15 @@
 <?php
 include "./includes/session.php";
-  $titre="Liste des membres | SiteduSavoir.com";
-  include("includes/identifiants.php");
-  include("includes/debut.php");
-  include("includes/menu.php");
+$titre="Liste des membres | SiteduSavoir.com";
+include("includes/identifiants.php");
+include("includes/debut.php");
+include("includes/menu.php");
 
   //A partir d'ici, on va compter le nombre de members
   //pour n'afficher que les 25 premiers
 
 
-  $convert_order  =   array('membre_pseudo', 'membre_inscrit','membre_post', 'membre_derniere_visite');
+  $convert_order  =   array('pseudo', 'inscrit','posts', 'visite');
   $convert_tri    =   array('ASC', 'DESC');
 
   //On récupère la valeur de s
@@ -27,11 +27,9 @@ include "./includes/session.php";
   else 
     $tri = $convert_tri[0];
 
-  $query=$bdd->query('SELECT COUNT(*) AS nbr FROM membres');
-  $data = $query->fetch();
-  $total = $data['nbr'] +1;
+  $managerMembre = new ManagerMembre($bdd);
+  $total = $managerMembre->totalDesMembres() + 1;
 
-  $query->CloseCursor();
   $MembreParPage = 25;
   $NombreDePages = ceil($total / $MembreParPage);
 
@@ -73,7 +71,9 @@ echo '<div class="fildariane">
   echo '</p>';
 
   $premier = ($page - 1) * $MembreParPage;
+
   //Le titre de la page
+
   echo '<h1>Liste des membres</h1><br /><br />';
 ?>
 
@@ -98,20 +98,11 @@ echo '<div class="fildariane">
 </form>
 
 <?php
+
   //Requête
-  $query = $bdd->prepare('SELECT membre_id, membre_pseudo,membre_inscrit, membre_post, membre_derniere_visite, online_id 
-                          FROM membres 
-                          LEFT JOIN forum_whosonline 
-                          ON online_id = membre_id 
-                          ORDER BY '.$sort.' '.$tri.' 
-                          LIMIT :premier, :membreparpage');
+  $donneesMembres = $managerMembre->listeDesMembres($premier , $MembreParPage , $sort , $tri);
 
-  $query->bindValue(':premier',$premier,PDO::PARAM_INT);
-
-  $query->bindValue(':membreparpage',$MembreParPage, PDO::PARAM_INT);
-
-  $query->execute();
-  if ($query->rowCount() > 0)
+  if (!empty($donneesMembres))
   {
 ?>
 
@@ -140,19 +131,22 @@ echo '<div class="fildariane">
 
 <?php
   //On lance la boucle
-  while ($data = $query->fetch())
-  {
+  foreach ($donneesMembres as $donneesMembre) {
+
+        $membre = new Membre($donneesMembre);
+        $enLigne = new WhoIsOnline($donneesMembre);
+
     echo '
     <tr>
       <td>
-        <a href="./forum/voirprofil.php?m='.$data['membre_id'].'&amp;action=consulter">'.stripslashes(htmlspecialchars($data['membre_pseudo'])).'</a>
+        <a href="./forum/voirprofil.php?m='.$membre->id().'&amp;action=consulter">'.stripslashes(htmlspecialchars($membre->pseudo())).'</a>
       </td>
 
-      <td>'.$data['membre_post'].'</td>
-      <td>'.$data['membre_inscrit'].'</td>
-      <td>'.$data['membre_derniere_visite'].'</td>';
+      <td>'.$membre->posts().'</td>
+      <td>'.$membre->inscrit().'</td>
+      <td>'.$membre->visite().'</td>';
 
-    if (empty($data['online_id'])) 
+    if (!$enLigne->online_id()) 
       echo '<td>non</td>';
 
     else 
@@ -160,7 +154,6 @@ echo '<div class="fildariane">
 
     echo '</tr>';
   }
-  $query->CloseCursor();
 ?>
 
 </table>

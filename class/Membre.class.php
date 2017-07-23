@@ -6,201 +6,330 @@ Objet Membre
 
 class Membre
 {
-	protected $membre_id;
-	protected $membre_pseudo;
-	protected $membre_mdp;
-	protected $membre_email;
-	protected $membre_derniere_visite;
-	protected $membre_avatar;
-	protected $membre_inscrit;
-	protected $membre_siteweb;
-	protected $membre_signature;
-	protected $membre_localisation;
-	protected $membre_post;
-	protected $membre_token;
-	protected $membre_reset;
-	protected $membre_reset_at;
-	protected $membre_cookie;
-	
+	// Les differents rangs qu'un membre peut avoir
 
-	public function __construct(array $donnees)
-	{
-		$this->hydrate(array $donnees) ;
-	}
+	const BANNI      = 0 ;
+	const VISITEUR   = 1 ;
+	const MEMBRE     = 2 ;
+	const MODO       = 3 ;
+	const ADMIN      = 4 ;
 
-	public function id()
-	{
-		return $this->membre_id;
-	}
+	// Les attributs d'un membre
 
-	public function pseudo()
-	{
-		return $this->membre_pseudo;
-	}
+    protected $_id ;
+    protected $_pseudo ;
+    protected $_password ;
+    protected $_confirmPassword ;
+    protected $_email ;
+    protected $_localisation ;
+    protected $_siteweb ;
+    protected $_visite ;
+    protected $_inscrit ;
+    protected $_token ;
+    protected $_reset ;
+    protected $_reset_at ;
+    protected $_signature ;
+    protected $_posts ;
+    protected $_rang ;
+    protected $_avatar ;
+    protected $_colkiee ;
+    protected $_souvenir ;
 
-	public function mdp()
-	{
-		return $this->membre_mdp;
-	}
+    // le constructeur 
 
-	public function email()
-	{
-		return $this->membre_email;
-	}
-
-	public function derniere_visite()
-	{
-		return $this->membre_derniere_visite;
-	}
-
-	public function avatar()
-	{
-		return $this->membre_avatar;
-	}
-
-	public function inscrit()
-	{
-		return $this->membre_inscrit;
-	}
-
-	public function siteweb()
-	{
-		return $this->membre_siteweb;
-	}
-
-	public function localisation()
-	{
-		return $this->membre_localisation;
-	}
-
-	public function post()
-	{
-		return $this->membre_post;
-	}
-
-	public function token()
-	{
-		return $this->membre_token;
-	}
-
-	public function reset()
-	{
-		return $this->membre_reset;
-	}
-
-	public function reset_at()
-	{
-		return $this->membre_reset_at;
-	}
-
-	public function cookie()
-	{
-		return $this->membre_cookie;
-	}
-
-	public function signature()
-	{
-		return $this->membre_signature;
-	}
-
-     /***********************************************************/
-	/******              Les setteurs pour la classe     *******/
-	/**********************************************************/
-
-	public function setId($id)
-	{
-		if(is_int($id) AND $id > 0)
-          $this->membre_id = $id ;
-	}
-
-	public function setPseudo($pseudo)
-	{
-		if(is_string($pseudo))
-		   $this->membre_pseudo = $pseudo ;
-	}
-
-	public function setMdp($mdp)
-	{
-		if(is_string($mdp))
-		   $this->membre_mdp = $mdp ;
-	}
-
-	public function setEmail($email)
-	{
-		if(filter_var($email,FILTER_VALIDATE_EMAIL))
-		       $this->membre_email = $email ;
-	}
-
-	public function setDerniere_visite($visite)
-	{
-		 $this->membre_derniere_visite;
-	}
-
-	public function setAvatar($visite)
-	{
-		 $this->membre_avatar = $visite;
-	}
-
-	public function setInscrit($inscrit)
-	{
-		 $this->membre_inscrit = $inscrit ;
-	}
-
-	public function setSiteweb($site)
-	{
-		 $this->membre_siteweb = $site ;
-	}
-
-	public function setLocalisation($localisation)
-	{
-		 $this->membre_localisation = $localisation ;
-	}
-
-	public function setPost($post)
-	{
-		if($post >= 0)
-		   $this->membre_post = $post ;
-	}
-
-	public function setToken($token)
-	{
-		/* Une cle de 60 caracteres genere pour laverification d'un compte  */
-		 $this->membre_token = $token ;
-	}
-
-	public function setReset($reset)
-	{
-		/* Une autre cle de 60 caracteres mais cette fois lorsqu'on reinitialise son mdp */
-		 $this->membre_reset = $reset ;
-	}
-
-	public function setReset_at($reset_at)
-	{
-		 $this->membre_reset_at = $reset_at ;
-	}
-
-	public function setCookie($cookie)
-	{
-		 $this->membre_cookie = $cookie ;
-	}
-
-	public function setSignature($signature)
-	{
-		 $this->membre_signature = $signature ;
-	}
-    
-    public function hydrate(array $donnees)
+    public function __construct(array $membreA)
     {
-    	foreach ($donnees as $key => $value) {
-    		 cherche si une mehode existe
-    		$keys = explode('_',$key);
-    		$method = 'set'.ucfirst($key[1]);
-
-    		if(method_exists($this, $method))
-    		{
-    			$this->$method($value);
-    		}
-    	}
+    	$this->hydrate($membreA);
     }
+
+    public static function str_random($taille)
+    {
+    	$alphabet ="0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN";
+        return substr(str_shuffle(str_repeat($alphabet,$taille)) ,0, $taille);
+    }
+
+    public static function verif_auth($auth_necessaire)
+    {
+        $level = (isset($_SESSION['level']))?$_SESSION['level']:1;
+        return ($auth_necessaire <= intval($level));
+    }
+
+
+    // les getters  , qui renvoie la valeur d'un attribut 
+
+    public function id()
+    {
+    	return $this->_id ;
+    }
+    
+    public function pseudo()
+    {
+    	return $this->_pseudo ;
+    }
+
+    public function password()
+    {
+    	return $this->_password ;
+    }
+
+    public function confirmPassword()
+    {
+    	return $this->_confirmPassword ;
+    }
+
+    public function rang()
+    {
+    	return $this->_rang ;
+    }
+
+    public function email()
+    {
+    	return $this->_email ;
+    }
+
+    public function posts()
+    {
+    	return $this->_posts ;
+    }
+
+    public function avatar()
+    {
+    	return $this->_avatar ;
+    }
+
+    public function visite()
+    {
+    	return $this->_visite ;
+    }
+
+    public function token()
+    {
+    	return $this->_token ;
+    }
+
+    public function localisation()
+    {
+    	return $this->_localisation ;
+    }
+
+    public function cookiee()
+    {
+    	return $this->_colkiee ;
+    }
+
+    public function siteweb()
+    {
+    	return $this->_siteweb ; 
+    }
+
+    public function inscrit()
+    {
+    	return $this->_inscrit ;
+    }
+
+    public function signature()
+    {
+    	return $this->_signature ;
+    }
+
+    public function reset()
+    {
+    	return $this->_reset ;
+    }
+
+    public function reset_at()
+    {
+    	return $this->_reset_at ;
+    }
+
+    public function souvenir()
+    {
+        return $this->_souvenir ;
+    }
+
+    // Les setters , permetent de modifier le contenu ou la valeur d'un attribut ;
+
+
+    public function setId($id)
+    {
+        $id = (int)$id;
+
+        if(is_int($id) AND $id > 0)
+    	    $this->_id = $id ;
+    }
+
+    public function setPseudo($pseudo)
+    {
+        $this->_pseudo = $pseudo ;
+    }
+
+
+    public function setPassword($password)
+    {
+    	$this->_password = $password;
+    }
+
+    public function setConfirmPassword($confirmP)
+    {
+    	 $this->_confirmPassword = $confirmP;
+    }
+
+    public function setRang($rang)
+    {
+    	$this->_rang = $rang ;
+    }
+
+    public function setEmail($email)
+    {
+    	$this->_email = $email ;
+    }
+
+    public function setPosts($posts)
+    {
+    	 $this->_posts = $posts;
+    }
+
+    public function setAvatar($avatar)
+    {
+    	 $this->_avatar = $avatar;
+    }
+
+    public function setVisite($visite)
+    {
+    	$this->_visite = $visite ;
+    }
+
+    public function setToken($token)
+    {
+    	$this->_token = $token ;
+    }
+
+    public function setLocalisation($localisation)
+    {
+    	 $this->_localisation = $localisation ;
+    }
+
+    public function setCookiee($cookiee)
+    {
+    	 $this->_colkiee = $cookiee ;
+    }
+
+    public function setSiteweb($siteweb)
+    {
+    	 $this->_siteweb = $siteweb ; 
+    }
+
+    public function setInscrit($inscrit)
+    {
+    	 $this->_inscrit = $inscrit ;
+    }
+
+    public function setSignature($signature)
+    {
+    	 $this->_signature = $signature ;
+    }
+
+    public function setReset($reset)
+    {
+    	 $this->_reset = $reset ;
+    }
+
+    public function setReset_at($date)
+    {
+    	 $this->_reset_at = $date ;
+    }
+
+    public function setSouvenir($souvenir)
+    {
+        $this->souvenir = $souvenir ;
+    }
+
+    public function moveAvatar($avatar)
+    {
+        $extension_upload = strtolower(substr( strrchr($avatar['name'],'.') ,1));
+
+        $name = time();
+
+        $nomavatar = str_replace(' ','',$name).".".$extension_upload;
+
+        $name = "./images/avatars/".str_replace('','',$name).".".$extension_upload;
+
+        move_uploaded_file($avatar['tmp_name'],$name);
+
+       return $nomavatar;
+    }
+
+    public function createAvatar($chaine , $blocks = 5 , $size = 100)
+    {
+     
+       $togenerate  = ceil($blocks / 2);
+
+       $hashsize = $togenerate * $blocks ; 
+
+       $hash = md5($chaine); 
+
+       $hash = str_pad($hash , $hashsize , $hash);
+
+       $blockssize = $size / $blocks ;
+
+       $color = substr($hash , 0, 6);
+
+       $image = imagecreate($size,$size);
+
+       $background = imagecolorallocate($image ,255,255,255);
+
+       $color = imagecolorallocate($image , hexdec(substr($color,0,2)),hexdec(substr($color,2,2)),hexdec(substr($color,4,2)));
+
+
+       for ($x = 0 ; $x < $blocks ; $x++)
+       {
+          for ($y = 0 ; $y < $blocks ; $y++)
+          {
+            if( $x < $togenerate)
+
+               $pixel =  hexdec($hash[$x * $blocks + $y]) % 2 == 0;
+            else
+              $pixel =  hexdec($hash[($blocks - 1 - $x) *$blocks  + $y]) % 2 == 0;
+
+            $pixelcolor = $background;
+
+           if($pixel)
+           {
+
+                $pixelcolor = $color;
+
+            }
+
+              imagefilledrectangle($image,$x * $blockssize , $y*$blockssize, ($x+1)*$blockssize, ($y+1)*$blockssize, $pixelcolor);
+           }
+       }
+        
+        $name = $chaine;
+
+        $nomavatar = $name.'.png';
+       
+        imagepng($image , './images/avatars/'.$nomavatar);
+       
+      return $nomavatar;
+
+    } 
+
+
+  public function hydrate(array $membreA)
+  {
+  	foreach ($membreA AS $cle => $contenu)
+  	{
+  		$method = 'set'.ucfirst($cle);
+
+  		if(method_exists($this, $method))
+  		{
+  			$this->$method($contenu);
+  		}
+  	}
+  }
+
+
+
+	
 
 }

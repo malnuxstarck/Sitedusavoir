@@ -1,11 +1,15 @@
 
 <?php
-
-   function chargerClass($class)
-   {
-      require '../class/'.$class.'.class.php';
-   }
    
+
+    function chargerClass($class,$position ="./")
+    {
+      if(!file_exists($position.'class/'.$class.'.class.php'))
+               $position = "../";
+
+         require $position.'class/'.$class.'.class.php';
+    }
+     
    function erreur($err='')
    {
     
@@ -13,116 +17,7 @@
       exit('<div class="alert-danger">'. $mess .'</div><p>Cliquez <a href="../index.php">ici</a> pour revenir à la page d\'accueil</p> </div></body></html>');
    }
 
- function createAvatar($chaine , $blocks = 5 , $size = 100)
- {
-     
-       $togenerate  = ceil($blocks / 2);
-
-       $hashsize = $togenerate * $blocks ; 
-
-       $hash = md5($chaine); 
-
-       $hash = str_pad($hash , $hashsize , $hash);
-
-       $blockssize = $size / $blocks ;
-
-       $color = substr($hash , 0, 6);
-
-       $image = imagecreate($size,$size);
-
-       $background = imagecolorallocate($image ,255,255,255);
-
-       $color = imagecolorallocate($image , hexdec(substr($color,0,2)),hexdec(substr($color,2,2)),hexdec(substr($color,4,2)));
-
-
-       for ($x = 0 ; $x < $blocks ; $x++)
-       {
-          for ($y = 0 ; $y < $blocks ; $y++)
-          {
-            if( $x < $togenerate)
-
-               $pixel =  hexdec($hash[$x * $blocks + $y]) % 2 == 0;
-            else
-              $pixel =  hexdec($hash[($blocks - 1 - $x) *$blocks  + $y]) % 2 == 0;
-
-            $pixelcolor = $background;
-
-           if($pixel)
-           {
-            $pixelcolor = $color;
-
-            }
-
-              imagefilledrectangle($image,$x * $blockssize , $y*$blockssize, ($x+1)*$blockssize, ($y+1)*$blockssize, $pixelcolor);
-           }
-       }
-        
-        $name = time();
-
-        $nomavatar = str_replace(' ','',$name).'.'.'png';
-       
-       imagepng($image , './images/avatars/'.$nomavatar);
-       
-      return $nomavatar;
-
-}  
-
-
-function move_avatar($avatar)
-{
-
-      $extension_upload = strtolower(substr( strrchr($avatar['name'],'.') ,1));
-
-      $name = time();
-
-      $nomavatar = str_replace(' ','',$name).".".$extension_upload;
-
-      $name = "./images/avatars/".str_replace('','',$name).".".$extension_upload;
-
-      move_uploaded_file($avatar['tmp_name'],$name);
-
-        return $nomavatar;
-
-}
-
-
-function move_logo($logo)
-{
-
-      $extension_upload = strtolower(substr( strrchr($logo['name'],'.') ,1));
-
-      $name = time();
-
-      $nomlogo = str_replace(' ','',$name).".".$extension_upload;
-
-      $name = "./logo/".str_replace('','',$name).".".$extension_upload;
-
-      move_uploaded_file($logo['tmp_name'],$name);
-
-        return $nomlogo;
-
-}
-
-
-
-
-function str_random($nombre)
-{
-
-  $alphabet ="0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN";
-
-   return substr(str_shuffle(str_repeat($alphabet,$nombre)) ,0, $nombre);
-}
-
-
-
-function verif_auth($auth_necessaire)
-{
-  $level=(isset($_SESSION['level']))?$_SESSION['level']:1;
-  
-  return ($auth_necessaire <= intval($level));
-}
-
+ 
 function get_list_page($page, $nb_page, $link, $nb = 2)
 {
 
