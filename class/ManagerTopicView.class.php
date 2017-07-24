@@ -29,7 +29,7 @@ class ManagerTopicView
 		$query->bindValue(':post',$topic_view->tv_post_id(),PDO::PARAM_INT);
 		$query->bindValue(':poste',$topic_view->tv_poste(),PDO::PARAM_STR);
 		$query->execute();
-		$query->CloseCursor();
+		$query->closeCursor();
 	}
 
 	public function miseAjoursVu(TopicView $topic_view)

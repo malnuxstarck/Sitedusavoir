@@ -13,6 +13,20 @@ $idTopic = (isset($_GET['t']))?(int)$_GET['t']:1;
 
 $managerTopic = new ManagerTopic($bdd);
 $donneesTopic = $managerTopic->infosTopic($idTopic);
+
+if(empty($donneesTopic)) // si on ne trouve rien on redirige sur le premier topic :D
+{
+   /* A activer apres la premier creation de topic
+     $idTopic = 1 ;
+     $donneesTopic = $managerTopic->infosTopic($idTopic);
+    */
+
+     $_SESSION["flash"]["success"] = "Le topic n'existe pas ou a été supprimer ";
+     header('Location:./index.php');
+     exit();
+}     
+
+
 $topic = new Topic($donneesTopic);
 
 //A partir d'ici, on va compter le nombre de messages pourn'afficher que les 15 premiers
@@ -34,7 +48,7 @@ $nombreDeMessagesParPage = 15;
 $nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 $managerTopicView = new ManagerTopicView($bdd);
 
-if($id!=0)
+if($id != 0 AND $topic->id() != NULL)
 {
     $nbr_vu = $managerTopicView->nombreVusTopicDuMembre($id , $topic->id());
 

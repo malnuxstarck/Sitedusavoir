@@ -1,19 +1,28 @@
 <?php
 	include '../includes/session.php';
-	$titre="Voir un forum";
 	include("../includes/identifiants.php");
-	include("../includes/debut.php");
-	include("../includes/menu.php");
+	require "../class/ManagerForum.class.php";
+	require "../class/Forum.class.php";
 
-	//On récupère la valeur de f
-	$forumId = (isset($_GET['f']))?(int) $_GET['f']:1;
+    //On récupère la valeur de f
+    $forumId = (isset($_GET['f']))?(int) $_GET['f']:1;
 
 	$managerForum = new ManagerForum($bdd);
 	$donnees = $managerForum->infosForum($forumId);
-	$forum = new Forum($donnees);
 
+	if(empty($donnees))
+	{
+		$forumId = 1;
+		$donnees = $managerForum->infosForum($forumId);
+		$_SESSION['flash']['success'] = "Le forum n'existe pas , vous avez été redirigé ";
+    }
 
-    /*On verifie si l'utilisateur a le droit le forum */
+    $forum = new Forum($donnees);
+    $titre = $forum->name();
+
+	include("../includes/debut.php");
+	include("../includes/menu.php");
+   /*On verifie si l'utilisateur a le droit le forum */
 
 	if (!Membre::verif_auth($forum->auth_view()))
 	{

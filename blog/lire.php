@@ -12,6 +12,14 @@ $idArticle = (!empty($_GET['article']))?(int)$_GET['article']:1;
 
 $managerContenu = new ManagerContenu($bdd);
 $infosArticle = $managerContenu->donneLeContenu($idArticle);
+if(empty($infosArticle))
+{
+    $_SESSION['flash']['success'] = "L' Article  n'existe pas ";
+    header('Location:./index.php');
+    exit();
+}
+
+
 $article = new Contenu($infosArticle);
 
 echo '<div class="fildariane">

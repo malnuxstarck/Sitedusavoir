@@ -12,6 +12,14 @@ $idTuto = (!empty($_GET['tuto']))?(int)$_GET['tuto']:1;
 
 $managerContenu = new ManagerContenu($bdd);
 $infosTuto = $managerContenu->donneLeContenu($idTuto);
+
+if(empty($infosTuto))
+{
+    $_SESSION['flash']['success'] = "Le tuto n'existe pas ";
+    header('Location:./index.php');
+    exit();
+}
+
 $tuto = new Contenu($infosTuto);
 
 echo '<div class="fildariane">
