@@ -1,6 +1,6 @@
 <?php
 
-$titre="Blog | SiteduSavoir.com";
+$titre="Tutos | SiteduSavoir.com";
 include("../includes/session.php");
 include("../includes/identifiants.php");
 include("../includes/debut.php");
@@ -23,7 +23,7 @@ include("../includes/menu.php");
 $managerContenu = new ManagerContenu($bdd);
 $page = (!empty($_GET['page']))?$_GET['page']:1;
 
-$tutos_par_page = 20 ;
+$tutos_par_page = 20;
 
 $nombres_tutos = $managerContenu->totalDeContenu('tutoriel');
 
@@ -32,21 +32,8 @@ $nbre_pages = ceil($nombres_tutos / $tutos_par_page);
 ?>
 
 
-<p class="page">
-<?php
-
-for($i = 1 ; $i <= $nbre_pages ; $i++)
-{
-	if($i == $page)
-	{
-		echo '<strong>'.$i.'</strong>';
-	}
-	else{
-		echo ' <a href="index.php?page='.$i.'</a> ';
-	}
-
-}
-   
+<p class="pagination">
+<?php  paginationListe($page ,$nbre_pages, 'index.php');  
 ?>
 
 </p>
@@ -108,19 +95,7 @@ else
 <p class="pagination">
 
 <?php
-
-for($i = 1 ; $i <= $nbre_pages ; $i++)
-{
-	if($i == $page)
-	{
-		echo '<strong>'.$i.'</strong>';
-	}
-	else{
-		echo ' <a href="index.php?page='.$i.'">'.$i.'</a> ';
-	}
-
-}
-   
+      paginationListe($page ,$nbre_pages, 'index.php');
 ?>
 
 </p>

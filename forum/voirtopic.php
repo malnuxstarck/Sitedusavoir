@@ -37,6 +37,7 @@ $managerTopicView = new ManagerTopicView($bdd);
 if($id!=0)
 {
     $nbr_vu = $managerTopicView->nombreVusTopicDuMembre($id , $topic->id());
+
     $topic_view = new TopicView(array('tv_id' => $id , 
                                           'tv_forum_id' => $topic->forum() , 
                                           'tv_topic_id' => $topic->id() , 
@@ -88,19 +89,7 @@ echo '<div class="fildariane">
 //On affiche les pages 1-2-3 etc...
 
 echo '<p class="pagination">';
-
-for ($i = 1 ; $i <= $nombreDePages ; $i++)
-{
-    if ($i == $page) //On affiche pas la page actuelle en lien
-    {
-       echo '<strong>'.$i.'</strong>';
-    }
-    else
-    {
-      echo '<a href="voirtopic.php?t='.$topic.'&page='.$i.'">'. $i . '</a> ';
-    }
-
-}
+           paginationListe($page ,$nombreDePages, 'voirtopic.php?t='.$topic->id()) ;
 echo'</p>';
 
 
@@ -233,30 +222,9 @@ else
             </div>';
        }
 
-
-
-     ?>
-
-
-    <p class="pagination">
-
-    <?php
-
-    for ($i = 1 ; $i <= $nombreDePages ; $i++)
-    {
-        if ($i == $page) //On affiche pas la page actuelle en lien
-        {
-           echo '<strong>'.$i.'</strong>';
-        }
-        else
-        {
-          echo '<a href="voirtopic.php?t='.$topic.'&page='.$i.'">'. $i . '</a> ';
-        }
-
-    }
-
+    echo '<p class="pagination">';
+           paginationListe($page ,$nombreDePages, 'voirtopic.php?t='.$topic->id()); 
     echo'</p>';
-
 
     if (Membre::verif_auth($forum->auth_post()))
     {

@@ -42,21 +42,7 @@ $nbre_pages = ceil($nombres_contenus / $contenus_par_page);
 
 
 <p class="page">
-<?php
-
-for($i = 1 ; $i <= $nbre_pages ; $i++)
-{
-	if($i == $page)
-	{
-		echo '<strong>'.$i.'</strong>';
-	}
-	else{
-		echo ' <a href="index.php?page='.$i.'</a> ';
-	}
-
-}
-   
-?>
+<?php  paginationListe($page ,$nbre_pages, 'index.php'); ?>
 
 </p>
 
@@ -115,21 +101,7 @@ else
 
 <p class="pagination">
 
-<?php
-
-for($i = 1 ; $i <= $nbre_pages ; $i++)
-{
-	if($i == $page)
-	{
-		echo '<strong>'.$i.'</strong>';
-	}
-	else{
-		echo ' <a href="index.php?page='.$i.'">'.$i.'</a> ';
-	}
-
-}
-   
-?>
+<?php  paginationListe($page ,$nbre_pages, 'index.php') ; ?>
 
 </p>
 

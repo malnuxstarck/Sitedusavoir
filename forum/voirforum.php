@@ -54,18 +54,7 @@
 	//On affiche les pages 1-2-3, etc.
 
 	echo '<p class="pagination">';
-
-	for ($i = 1 ; $i <= $nombreDePages ; $i++)
-	{
-		if ($i == $page) //On ne met pas de lien sur la page actuelle
-		{
-			echo '<strong>'.$i.'</strong>';
-		} 
-		else 
-		{
-			echo '<a href="voirforum.php?f='.$forum.'&amp;page='.$i.'">'.$i.'</a>';
-		}
-	}
+           paginationListe($page ,$nombreDePages, 'voirforum.php?f='.$forum->id());
 	echo '</p>';
 
 	$premierMessageAafficher = ($page - 1) * $nombreDeMessagesParPage;
@@ -320,18 +309,7 @@
 	//On affiche les pages 1-2-3, etc.
 
 	echo '<p class="pagination">';
-
-	for ($i = 1 ; $i <= $nombreDePages ; $i++)
-	{
-		if ($i == $page) //On ne met pas de lien sur la page actuelle
-		{
-			echo '<strong>'.$i.'</strong>';
-		} 
-		else 
-		{
-			echo '<a href="voirforum.php?f='.$forum->id().'&amp;page='.$i.'">'.$i.'</a>';
-		}
-	}
+          paginationListe($page ,$nombreDePages, 'voirforum.php');
 	echo '</p>';
 
 echo '</div>';

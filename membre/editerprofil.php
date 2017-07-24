@@ -11,7 +11,7 @@ require_once '../includes/menu.php';
 
 echo '<div class="fildariane">
          <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li>'.$pseudo.'</li>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black">'.$pseudo.'</span></li>
          </ul>
   </div>';
 
