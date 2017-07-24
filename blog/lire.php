@@ -16,7 +16,7 @@ $article = new Contenu($infosArticle);
 
 echo '<div class="fildariane">
          <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Tuto\'s</a></li><img class="fleche" src="../images/icones/fleche.png" /> <li> <span style="color:black">'.$article->titre().' </span></li>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png" /> <li> <span style="color:black">'.$article->titre().' </span></li>
          </ul>
   </div>
 

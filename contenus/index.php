@@ -1,5 +1,5 @@
 <?php
-$titre="Blog | SiteduSavoir.com";
+$titre="Contenus | SiteduSavoir.com";
 include("../includes/session.php");
 include("../includes/identifiants.php");
 include("../includes/debut.php");
@@ -9,26 +9,34 @@ include("../includes/menu.php");
 
 <div class="fildariane">
          <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li>
+            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Contenus</a></li>
          </ul>
   </div>
 
  <div class="page">
 
-<h2 class="titre" > Listes des Articles </h2>
+<h2 class="titre" > Listes des Contenus(Blog /Tutos) </h2>
+
+<form method="POST" action ="">
+      <select name="type" id="">
+      	<option value="tutoriel">Tutoriel</option>
+      	<option value="article">Article</option>
+      </select>
+      <input type="submit" value="Envoyer">
+</form>
 
 <?php
 
+$managerContenu = new ManagerContenu($bdd);
+$managerAuteur = new ManagerAuteur($bdd);
+$managerCategorie = new ManagerCategorie($bdd);
+    
+$type = (!empty($_POST['type']))?$_POST['type']:'tutoriel';
 $page = (!empty($_GET['page']))?$_GET['page']:1;
-$articles_par_page = 20 ;
-$req = $bdd->query('SELECT COUNT(*) AS nbr_articles FROM articles');
-$nombres_articles = $req->fetch();
-$nombres_articles = $nombres_articles["nbr_articles"];
+$contenus_par_page = 20 ;
 
-
-$req->closeCursor();
-
-$nbre_pages = ceil($nombres_articles / $articles_par_page);
+$nombres_contenus = $managerContenu->totalDeContenu($type);
+$nbre_pages = ceil($nombres_contenus / $contenus_par_page);
 
 ?>
 
@@ -54,50 +62,42 @@ for($i = 1 ; $i <= $nbre_pages ; $i++)
 
 <?php
 
-if(verif_auth(MODO))
-	echo '<p class="nouveau-sujet"><img src="../images/icones/new.png"/><a href="debuterarticle.php">Ecrire un article </a></p>';
+$premiercontenu = ($page - 1) * $contenus_par_page ;
+$infosContenus = $managerContenu->tousLesContenus($type ,$premiercontenu ,$contenus_par_page);
 
 
-
-$premierarticle = ($page - 1) * $articles_par_page ;
-
-$req = $bdd->prepare('SELECT articles_titre,articles.articles_id, articles_banniere ,cat_nom 
-	                  FROM articles
-	                  LEFT JOIN categorie
-	                  ON categorie.cat_id = articles.articles_cat
-	                  ORDER BY articles_date
-	                  LIMIT :premier , :nombresparpages');
-
-$req->bindParam(':premier',$premierarticle, PDO::PARAM_INT);
-$req->bindParam(':nombresparpages',$articles_par_page,PDO::PARAM_INT);
-
-$req->execute();
-
-if($req->rowCount() > 0)
+if(!empty($infosContenus))
 {
 
-	while($article = $req->fetch())
-	{
-	  
+	foreach ($infosContenus as $infosContenu) {
+
+		$contenu = new Contenu($infosContenu);
+
+		if($contenu->type() == 'tutoriel')
+			$dossier = 'tutoriels/lire.php?tuto=';
+		else
+			$dossier = 'blog/lire.php?article=';
+	 
 	  echo 
 	      '<div class="tutos">
 	            <div class="banniere">
-	                <img src="articles_ban/'.$article['articles_banniere'].'" alt="banniere"/>
+	                <img src="bannieres/'.$contenu->banniere().'" alt="banniere" style="width:300px; height: 225px ;"/>
 	            </div>
 	            <div class="tutos-infos">
-	               <h3 class="titre-tuto"><a href="lirearticle.php?&article='.$article['articles_id'].'">'.htmlspecialchars($article['articles_titre']).'</a></h3>';
+	               <h3 class="titre-tuto"><a href="../'.$dossier.$contenu->id().'">'.htmlspecialchars($contenu->titre()).'</a></h3>';
 
-	               $auteurs = $bdd->prepare('SELECT membre_pseudo , membres.membre_id 
-                        	                      FROM articles_par JOIN membres 
-                        	                      ON membres.membre_id = articles_par.membre_id WHERE articles_id = :article');
+	                   $infosAuteurs = $managerAuteur->tousLesAuteurs($contenu->id());
 
-                        $auteurs->execute(array('article' => $article['articles_id']));
-
-                        while($auteur = $auteurs->fetch())
+                        foreach ($infosAuteurs as $infosAuteur)
                         {
-		                 echo '<span class="auteur-tuto"><a href="../forum/voirprofil.php?action=consulter&m='.$auteur['membre_id'].'">'.$auteur['membre_pseudo'].'</a></span>';
+                        	$auteur = new Auteur($infosAuteur);
+                            echo '<span class="auteur-tuto"><a href="../forum/voirprofil.php?action=consulter&m='.$auteur->membre().'">'.$auteur->pseudo().'</a></span>';
                         }
-	               echo '<span class="cat-tuto">'.$article['cat_nom'].'</span>
+
+                        $donnneesCat = $managerCategorie->infosCategorie($contenu->cat());
+                        $cat = new Categorie($donnneesCat);
+
+	               echo '<span class="cat-tuto">'.$cat->nom().'</span>
 	            </div>  
 
 

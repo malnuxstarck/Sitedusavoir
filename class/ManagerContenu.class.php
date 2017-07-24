@@ -182,4 +182,35 @@ class ManagerContenu
 
    }
 
+    public function totalDeMesContenus($type , $id)
+   {
+       $query = $this->_db->prepare('SELECT COUNT(*) AS nbr FROM contenus LEFT JOIN auteurs On auteurs.idcontenu = contenus.id WHERE type = :type AND membre = :id');
+       $query->bindValue(':type' , $type ,PDO::PARAM_STR);
+       $query->bindValue(':id' , $id , PDO::PARAM_INT);
+       $query->execute();
+       $total = $query->fetchColumn();
+
+       return $total;
+
+   }
+
+   public function tousMesContenus($type ,$auteur,$debut = 0 , $nombres = 20)
+   {
+        $query = $this->_db->prepare('SELECT * FROM contenus LEFT JOIN auteurs ON contenus.id = auteurs.idcontenu WHERE membre = :id AND type = :type ORDER BY publication LIMIT :debut , :nombre');
+
+        $query->bindValue(':id' , $auteur , PDO::PARAM_INT);
+        $query->bindValue(':debut' , $debut , PDO::PARAM_INT);
+        $query->bindValue(':nombre' , $nombres , PDO::PARAM_INT);
+        $query->bindValue(':type',$type ,PDO::PARAM_STR);
+
+        $query->execute();
+        $donnees = $query->fetchAll();
+
+        if(!empty($donnees))
+          return $donnees;
+        else
+          return array();
+
+   }
+
 }

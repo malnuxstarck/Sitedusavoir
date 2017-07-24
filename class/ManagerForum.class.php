@@ -22,7 +22,7 @@ class ManagerForum
 
 	public function nouveauForum(Forum $forum)
 	{
-		$query = $this->_db->prepare('INSERT INTO forums (name ,cat ,description ,ordre) VALUES(:name , :cat ,:description,NULL)');
+		$query = $this->_db->prepare('INSERT INTO forums(name ,cat ,description ,ordre) VALUES(:name , :cat ,:description,NULL)');
 		$query->bindValue(':cat',$forum->cat() ,PDO::PARAM_INT);
 		$query->bindValue(':name' , $forum->name() ,PDO::PARAM_STR);
 		

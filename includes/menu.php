@@ -73,7 +73,7 @@ echo '<body>
 		                                          </li>
 
 		                                          <li>
-		                                                <a href="../membre/mestutos.php"> Mes tutos </a>
+		                                                <a href="../membre/mescontenus.php"> Mes Contenus </a>
 		                                          </li>
 
 		                                          <li>
