@@ -14,10 +14,10 @@ echo '<body>
 		       </div>
 
 		       <div class="search">
-		             <form method="post" action="search.php">
+		             <form method="GET" action="search.php">
 		                   <div class="form-content">
 		                        <div class="input-search">
-		                            <input type="text" name="search" value="Rechercher">
+		                            <input type="text" name="q" value="Rechercher">
 		                        </div>
 		                        <div class="button-search">
 		                           <button type="submit">

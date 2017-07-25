@@ -5,11 +5,6 @@
   require_once("./includes/identifiants.php");
   require_once("./includes/debut.php");
   require_once("./includes/menu.php");
-  require_once("./includes/fonctions.php");
-
-
-  spl_autoload_register("chargerClass");
-
 
   echo '<div class="fildariane">
          <ul>
