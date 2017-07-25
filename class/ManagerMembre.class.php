@@ -265,7 +265,7 @@ class ManagerMembre
 		}
 
 
-	    if(isset($_COOKIE['souvenir']) && !isset($_SESSION['membre_id']))
+	    if(isset($_COOKIE['souvenir']) && !isset($_SESSION['id']))
 	    {
 
 	       $cookie = $_COOKIE['souvenir'];
@@ -273,7 +273,7 @@ class ManagerMembre
 	       $user_id = $parts[0];
 
 	        
-	       $donnnees = $this->infosMembre($user_id);
+	       $donnees = $this->infosMembre($user_id);
 
 	       $membre = new Membre($donnees);
 
@@ -318,13 +318,14 @@ class ManagerMembre
 		$query->execute();
 	}
 
-	public function souviensToiDeMoi($id)
+	public function souviensToiDeMoi($id ,$cookie)
 	{
 		$req = $this->_db->prepare("UPDATE membres
-                                      SET cookie = :cookie
-                                      WHERE membre_id = :id");
+                                      SET cookiee = :cookie
+                                      WHERE id = :id");
 
 		$req->bindValue(':id',$id, PDO::PARAM_INT);
+		$req->bindValue(':cookie',$cookie, PDO::PARAM_INT);
 		$req->execute();
 
 	}
@@ -368,7 +369,7 @@ class ManagerMembre
 					if(!empty($donnees["souvenir"]))
 					{
 						$cookie = Membre::str_random(60);
-						$this->souviensToiDeMoi($membreAEnvoyer->id());
+						$this->souviensToiDeMoi($membreAEnvoyer->id() ,$cookie);
 						setcookie('souvenir',$membreAEnvoyer->id().'=='.$cookie.sha1($membreAEnvoyer->id().'MALNUX667'),time() + 60 * 60 *24 *7 );
 
 					}
