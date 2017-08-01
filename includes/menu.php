@@ -14,7 +14,7 @@ echo '<body>
 		       </div>
 
 		       <div class="search">
-		             <form method="GET" action="search.php">
+		             <form method="GET" action="../search.php">
 		                   <div class="form-content">
 		                        <div class="input-search">
 		                            <input type="text" name="q" value="Rechercher">

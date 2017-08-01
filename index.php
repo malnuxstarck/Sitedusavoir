@@ -8,7 +8,7 @@
 <html>
 <head>
   <title>Site du Savoir | SiteduSavoir.com </title>
-  <meta charset="UTF-8/">
+  <meta charset="UTF-8"/>
   <meta name="description" content="Site du Savoir , Une nouvelle communauté de programmeur sympatique, partages de connaissances et astuces"/>
   <meta name="author" content="MalnuxStarck"/>
   <link rel="stylesheet" href="css/style.css" type="text/css"/>

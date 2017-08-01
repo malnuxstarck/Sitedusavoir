@@ -14,6 +14,13 @@
   
   $donnees = $managerMembre->infosMembre($idMembre , $dateIns);
 
+  
+  if(empty($donnees))
+  {
+      $_SESSION['flash']['success'] = "Le membre demander n'existe pas ";
+      header('Location:voirprofil.php?m=1');
+  }
+
   $membre = new Membre($donnees);
 
   //On affiche les infos sur le membre

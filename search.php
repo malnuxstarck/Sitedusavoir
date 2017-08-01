@@ -30,8 +30,44 @@
 			             </form>
 		     </div>';
 		 }else
-		 { 
-		 	print_r($resultats);
+		 {
+		 	foreach ($resultats as $key => $value) {
+
+		 		var_dump($value);
+		 		/*
+		 		switch ($key) {
+
+		 			case 'topic':
+		 				foreach ($value as $topicDonnee) {
+
+		 					$topic = new Topic($topicDonnee);
+
+		 					echo '<div class = "sujet">';
+
+                            echo '<h1>'.$topic->titre().'</h1>
+                                       <p>'.$topic->topictime().'<a href="forum/voirtopic.php?t='.$topic->id().'">Voir le sujet</a><p>';
+
+		 					echo '</div';         
+
+		 					
+		 				}
+
+		 				break;
+
+		 				case 'post':
+		 				break;
+
+		 				case 'contenus':
+		 				break;
+
+		 			
+		 			default:
+		 				# code...
+		 				break;
+
+		 		}
+		 		*/
+		 	}
 		 }
 
 	}
