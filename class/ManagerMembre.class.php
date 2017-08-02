@@ -116,7 +116,7 @@ class ManagerMembre
 
 		    if ($avatar['size'] > $maxsize)
 		    {
-		        $nombresErreurs++;
+		        $this->nombresErreurs++;
 		        $this->_errors["avatar2"] = 'Le fichier est trop gros :(<strong>'.$avatar['size'].' Octets</strong> contre <strong>'.$maxsize.' Octets</strong>)';
 		    }
 
@@ -133,7 +133,7 @@ class ManagerMembre
 
 		    if(!in_array($extension_upload,$extensions_valides) )
 		    {
-			      $nombresErreurs++;
+			      $this->nombresErreurs++;
 			      $this->_errors["avatar4"] = "Extension de l'avatar incorrecte";
 		    }
 
