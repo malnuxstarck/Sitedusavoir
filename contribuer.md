@@ -14,4 +14,4 @@ Voici les requetes a executer :)
 
 - Creation de la base de donnée , Desolé pour le nom degueux c'est a cause de mon hebergeur.
 
-Importez le fichier suivant sur votre serveur [Base et tables ](https://github.com/malnuxstarck/Sitedusavoir/blob/master/127_0_0_1.sql)
+Importez le fichier suivant sur votre serveur [Base et tables ](https://github.com/Profiteroles/Sitedusavoir/blob/master/127_0_0_1.sql)
