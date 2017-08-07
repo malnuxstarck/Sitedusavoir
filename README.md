@@ -1,11 +1,38 @@
-Coucou Internet.
-Apres plusieurs mois de conception ,j'ai finalement decidé de changer le concept du projet.
-A la fin de mon abonement ce ne sera plus Site du Savoir :)
+Coucou Internet .
 
-# Maj prochaine
-Vous voulez particper , alors regarder le fichier contribuer.md
+Voici  un petit recapitulatif du projets 
+Le projet est constituer de differents parties :
 
-Lancement de la version 2 qui sera coder avec la POO en PHP et corrections de quelques bugs
+* **Admin**
+La partie administration est reservé seulement qui peuvent gerer tout le site
 
-J'ai decidé de restructurer completement le projet , envie de l'adapter a la programmation orienté objet et pour un eventuel passage a un framework.
+* **Contenus**
 
+Cette partie contient entres autres un ensemble de fichier pour la redaction (modification , edition , auteurs , demande validaton)
+
+- debutercontenu.php pour preparer votre contenu en ecrivant la redaction et la conclusion
+- editioncontenu.php pour editer , ajouter des parties ou des auteurs
+- ajouter.php interface de saisi pour une partie ou un auteur
+
+* **Forums**
+
+La partie essentiel du site pour la communication entres les memebres du site
+
+- voirprofil.php profil d'un membre
+- voirforum.php pour voir un forum en particulier (Design , News ,...)
+- voirtopic.php pour voir les posts d'un topic 
+
+* **Tutos**
+
+Cette partie est reserve essentielement a la lecture 
+
+* **Blog** 
+
+Les administrateurs et les moderateurs du sites peuvent ecrirent des articles , les membres peuvent les lires 
+
+* Membre  **
+
+Pour gerer essentielement le membre 
+
+* Social 
+- Suspendu pour le moment
