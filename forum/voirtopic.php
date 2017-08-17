@@ -97,6 +97,14 @@ echo '<div class="fildariane">
 
       echo '<h1 class="titre">'.stripslashes(htmlspecialchars($topic->titre())).'</h1><br/><br />';
 
+
+      if($topic->resolu() == '1')
+          echo '<div class="alert-success"> Ce topic est resolu , veuillez en creé un nouveau ;)</div>';
+      else
+      {
+
+      }
+
 //Nombre de pages
   $page = (isset($_GET['page']))?intval($_GET['page']):1;
 
@@ -112,15 +120,22 @@ $premierMessageAafficher = ($page - 1) * $nombreDeMessagesParPage;
 if (Membre::verif_auth($forum->auth_post()))
 {
 
-  echo'<p class="nouveau-sujet" title="Répondre à ce topic">
+  echo'<p class="nouveau-sujet" style="display:inline-block;" title="Répondre à ce topic">
    <img src="../images/icones/mail.png"/><a href="./poster.php?action=repondre&amp;t='.$topic->id().'">Repondre</a>
+   </p>';
+}
+
+if($id == $topic->createur())
+{
+    echo'<p class="nouveau-sujet" style="display:inline-block;" title="Passer en resolu">
+   <img src="../images/icones/mail.png"/><a href="./postok.php?action=resoudre&amp;t='.$topic->id().'">Passer en resolu</a>
    </p>';
 }
  
  
 if (Membre::verif_auth($forum->auth_topic()))
 {
-    echo'<p class="nouveau-sujet" title="Poster un nouveau topic">
+    echo'<p class="nouveau-sujet" style="display:inline-block;" title="Poster un nouveau topic">
         <img src="../images/icones/new.png"/><a href="./poster.php?action=nouveautopic&amp;f='.$forum->id().'">Nouveau Sujet</a>
      </p>';
 }

@@ -167,6 +167,16 @@ switch($action)
 
     break;
 
+    case "resoudre":
+
+    		$idTopic = (int)$_GET['t'];
+    		$managerTopic = new ManagerTopic($bdd);
+    		$managerTopic->topicResolu($idTopic);
+
+    		header('Location:voirtopic.php?t='.$idTopic);
+
+    break;
+
     case "edit": //Si on veut éditer le post
 
         //On récupère la valeur de p

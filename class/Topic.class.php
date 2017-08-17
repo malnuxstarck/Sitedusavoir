@@ -16,6 +16,7 @@ class Topic
 	protected $_first_post;
 	protected $_posts;
 	protected $_locked;
+	protected $_resolu ;
 
 	/* le constructeur */
 
@@ -75,6 +76,11 @@ class Topic
 		return $this->_locked;
 	}
 
+	public function resolu()
+	{
+		return $this->_resolu;
+	}
+
     /* les setters */
 
 	public function setId($id)
@@ -125,6 +131,12 @@ class Topic
 	public function setLocked($lock)
 	{
 		$this->_locked = $lock ;
+	}
+
+	public function setResolu($resolu)
+	{
+		$resolu = (string)$resolu;
+		$this->_resolu = $resolu ;
 	}
 
 

@@ -287,7 +287,8 @@ CREATE TABLE `topic` (
   `last_post` int(11) NOT NULL DEFAULT '0',
   `first_post` int(11) NOT NULL DEFAULT '0',
   `posts` mediumint(8) NOT NULL DEFAULT '0',
-  `locked` enum('0','1') NOT NULL
+  `locked` enum('0','1') NOT NULL,
+  `resolu` enum('0','1') NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

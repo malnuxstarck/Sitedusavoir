@@ -157,7 +157,7 @@ class ManagerContenu
 
    public function tousLesContenus($type , $debut , $nombreTotal = 20)
    {
-   	    $query = $this->_db->prepare('SELECT * FROM contenus WHERE type = :type ORDER BY publication LIMIT :debut , :nombre');
+   	    $query = $this->_db->prepare('SELECT * FROM contenus WHERE type = :type ORDER BY publication DESC LIMIT :debut , :nombre');
    	    $query->bindValue(':type' , $type , PDO::PARAM_STR);
    	    $query->bindValue(':debut' , $debut , PDO::PARAM_INT);
    	    $query->bindValue(':nombre' , $nombreTotal , PDO::PARAM_INT);
@@ -211,6 +211,21 @@ class ManagerContenu
         else
           return array();
 
+   }
+
+   public function lesDerniersContenus($type , $nombre = 3)
+   {
+        $query = $this->_db->prepare('SELECT * FROM contenus WHERE type = :type  ORDER BY id DESC LIMIT 0 , :nombre');
+        $query->bindValue(':type' , $type , PDO::PARAM_STR);
+        $query->bindValue(':nombre' , $nombre , PDO::PARAM_INT);
+
+        $query->execute();
+        $donnees = $query->fetchAll();
+
+        if(!empty($donnees))
+            return $donnees;
+        else
+          return array();  
    }
 
 }

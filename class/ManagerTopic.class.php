@@ -23,7 +23,7 @@ class ManagerTopic
 
 	public function infosTopic($idTopic)
 	{
-		$query = $this->_db->prepare('SELECT topic.id AS id ,titre,topictime, topic.vus AS vus ,createur,last_post ,first_post , topic.posts AS posts, locked , forum ,name, auth_view, auth_post, auth_topic, auth_annonce, auth_modo
+		$query = $this->_db->prepare('SELECT topic.id AS id ,titre,topictime, topic.vus AS vus ,createur,last_post ,first_post ,resolu, topic.posts AS posts, locked , forum ,name, auth_view, auth_post, auth_topic, auth_annonce, auth_modo
 	                      FROM topic
 	                      LEFT JOIN forums 
 	                      ON forums.id = topic.forum
@@ -116,6 +116,15 @@ class ManagerTopic
 		$query = $this->_db->prepare('UPDATE topic SET forum = :val WHERE id = :id');
 		$query->bindValue(':val' ,$forum , PDO::PARAM_INT);
 		$query->bindValue(':id' ,$idTopic , PDO::PARAM_INT );
+		$query->execute();
+	}
+
+	public function topicResolu($idTopic)
+	{
+		$query = $this->_db->prepare('UPDATE topic SET resolu = :res WHERE id = :id');
+		$query->bindValue(':res' , '1' ,PDO::PARAM_STR);
+		$query->bindValue('id' , $idTopic , PDO::PARAM_INT);
+
 		$query->execute();
 	}
 
