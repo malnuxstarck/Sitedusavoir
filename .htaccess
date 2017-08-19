@@ -1,0 +1,8 @@
+RewriteEngine on
+
+#Externally redirect "/file.php" to "/file"
+RewriteCond %{THE_REQUEST} /([^.]+)\.php [NC]
+RewriteRule ^ /%1 [NC,L,R]
+#Internally map "/file" back to "/file.php"
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*?)/?$ /$1.php [NC,L]
