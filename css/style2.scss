@@ -1,0 +1,1747 @@
+/****** Les propiretes CSS pour SDS
+ Fait Par : Malnux Starck;
+ ******/
+
+ /******************************* Par defaut *******************************
+ /*******************************     CSS    ******************************/
+
+ @font-face {
+	font-family: "Euphemia";
+    src: url("//db.onlinewebfonts.com/t/5c81010800152b142ea357ccbee8c40e.eot");
+    src: url("//db.onlinewebfonts.com/t/5c81010800152b142ea357ccbee8c40e.eot?#iefix") format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/5c81010800152b142ea357ccbee8c40e.woff2") format("woff2"),
+    url("//db.onlinewebfonts.com/t/5c81010800152b142ea357ccbee8c40e.woff") format("woff"),
+    url("//db.onlinewebfonts.com/t/5c81010800152b142ea357ccbee8c40e.ttf") format("truetype"),
+    url("//db.onlinewebfonts.com/t/5c81010800152b142ea357ccbee8c40e.svg#Euphemia") format("svg");
+}
+
+
+@font-face {font-family: "Gadugi";
+    src: url("//db.onlinewebfonts.com/t/3f3f1a887702b525cda01f7cd776b241.eot");
+    src: url("//db.onlinewebfonts.com/t/3f3f1a887702b525cda01f7cd776b241.eot?#iefix") format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/3f3f1a887702b525cda01f7cd776b241.woff2") format("woff2"),
+    url("//db.onlinewebfonts.com/t/3f3f1a887702b525cda01f7cd776b241.woff") format("woff"),
+    url("//db.onlinewebfonts.com/t/3f3f1a887702b525cda01f7cd776b241.ttf") format("truetype"),
+    url("//db.onlinewebfonts.com/t/3f3f1a887702b525cda01f7cd776b241.svg#Gadugi") format("svg");
+}
+
+
+
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700);
+
+
+
+ body,html
+ {
+ 	margin:0;
+ 	padding:0;
+ 	width: 100%;
+
+ }
+
+ul
+{
+	display: block;
+	list-style-type: none;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+fieldset
+{
+	width:610px;
+	border: 1px solid #1bbc9b ;
+	margin-top: 20px;
+}
+
+legend
+{
+	width:120px;
+	height:50px;
+	border: 1px solid #1bbc9b ;
+	text-align:center;
+	line-height:50px;
+	font-family: "Gadugi";
+	margin-bottom: 10px;
+}
+
+a
+{
+	text-decoration: none;
+	cursor:pointer;
+}
+
+
+.alert-danger
+{
+	margin-top: 10px;
+	width:auto;
+	border-radius:5px;
+	background-color: #e51c23;
+    padding:15px;
+	border:1px solid transparent;
+	border-radius:3px;
+	color: white;
+	font-family:Arial;
+
+}
+
+
+
+.alert-success
+{
+	margin-top:10px;
+	width:auto;
+	border-radius:5px;
+	background-color: #4caf50;
+	padding:15px;
+	border:1px solid transparent;
+	border-radius:3px;
+	color: white;
+	font-family:Arial;
+}
+
+.page
+{
+	display:block;
+	width : 1000px;
+	margin:auto;
+	margin-bottom: 20px;
+	font-family: Ubuntu;
+}
+
+.pageforum
+{
+	width:1150px;
+}
+
+
+/***** pour le menu ***/
+
+header
+{
+	display:block;
+	background: #2b8Bad;
+	width:100%;
+	height: 70px;
+	margin:auto;
+}
+
+header > div
+{
+	display:inline-block;
+	height:70px;
+	vertical-align: top;
+	margin-right:5%;
+}
+
+header li
+{
+	display:inline-block;
+	width:110px;
+	height: 40px;
+	text-align:center;
+	line-height:40px;
+
+}
+
+li > a
+{
+	display:block;
+	width:102px;
+	height: 40px;
+	font-family: Gadugi;
+    color:white;
+    font-size:16px;
+}
+
+.header-top
+{
+	float:left;
+	margin-left:40px;
+
+}
+.header-top h1
+{
+
+	font-family: Lucida;
+	font-size: 35px;
+	margin-top:10px;
+}
+
+h1 a
+{
+	display: block;
+	color:white;
+	font-family: "Lucida Sans Unicode";
+}
+.suscribe
+{
+	float: right;
+	margin-right:40px;
+}
+.suscribe li
+{
+	border-radius:2px;
+	border:2px solid white;
+}
+
+.suscribe li a
+{
+	display:block;
+	width:102px;
+	height: 40px;
+	font-family: Gadugi;
+    color:white;
+    font-size:16px;
+}
+
+.form-content > div
+{
+   display: inline-block;
+   margin-top:15px;
+}
+
+.input-search input
+{
+   background: #2B8BAD;
+   border:0px;
+   height:30px;
+   border-bottom: 2px solid white;
+   color:white;
+   font-size:14px;
+}
+.button-search button
+{
+	background: #2B8BAD;
+	border: 0;
+	cursor: pointer;
+	margin-left:-35px;
+	height:30px;
+
+}
+.button-search img
+{
+	display: block;
+}
+
+.fildariane
+{
+	display:block;
+	width:100%;
+	height: 35px;
+	border-bottom:3px solid #1bbc9b;
+}
+
+
+.fildariane ul
+{
+	display:block;
+	margin-top: 0px;
+	height: 35px;
+	width:auto;
+
+}
+
+.fildariane li
+{
+	display: inline-block;
+	vertical-align: top;
+	height: 35px;
+	width: auto;
+	width:auto;
+	line-height: 35px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+.fildariane a, .fildariane span
+{
+	display: block;
+	height: 35px;
+	color: #2B8BAD;
+	text-align: center;
+	line-height: 31px;
+	font-family: Gadugi;
+	font-size:16px;
+	width: auto;
+}
+
+
+.fleche{
+	width:18px;
+	display: inline-block;
+	vertical-align: top;
+	padding: 8.5px;
+	padding-right: 0;
+	padding-left: 0;
+
+}
+
+
+.titre
+{
+	text-align: center;
+	font-family: Gadugi;
+	font-size:35px;
+	color:#184b5d;
+
+}
+
+.presentation
+{
+	display:inline-block;
+	vertical-align: top;
+	width:450px;
+	height:220px;
+	margin-bottom:30px;
+	margin-right:30px;
+	border-bottom: 4px solid #2b8bad;
+	background: #eaeeee;
+}
+
+.presentation-text
+{
+	font-size: 18px;
+	padding:10px;
+	padding-top: 0px;
+	font-family: Gadugi;
+	color: #1bbc9b;
+}
+
+.presentation a
+{
+	display:block;
+	color: white;
+}
+
+.presentation span
+{
+	display: inline-block;
+	width:120px;
+	height:40px;
+	text-align:center;
+	line-height: 40px;
+	background: #1bbc9b;
+	font-size:18px;
+	font-family: Gadugi;
+}
+
+
+.formulaire
+{
+	width: 620px;
+	margin:auto;
+	padding: auto;
+
+}
+
+/* Concerne en majorité la partie tutoriels */
+
+.formulaire-tuto
+{
+	width:800px;
+	display:inline-block;
+	margin-bottom: 20px;
+}
+
+.formulaire-edition
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-bottom: 20px;
+}
+
+.modification
+{
+	width:250px;
+	height:300px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.modification ul
+{
+	padding-right: 10px;
+	margin-top:10px;
+	display: block;
+	background: #edebeb;
+	height: 200px;
+
+}
+
+.modification li
+{
+	display: block;
+	margin-bottom: 15px;
+	margin-left: 10px;
+	width:200px;
+	height: 40px;
+}
+
+.modification li  a
+{
+   display: block;
+	width:200px;
+	height: 40px;
+	color:#1bbc9b;
+	text-align: center;
+	line-height: 40px;
+}
+
+.modification-entete
+{
+	display:block;
+	width:250px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	background: #236b85;
+	font-size: 18px;
+	font-family: Gadugi;
+	color:white;
+	margin-top:20px;
+}
+
+.titre-partie
+{
+	font-size: 18px;
+}
+
+.partie-text
+{
+	background:#edebeb;
+	width:auto;
+	height:300px;
+	padding:10px;
+	margin-bottom: 20px;
+	overflow: auto;
+}
+
+.partie-text ul
+{
+	display: block;
+	height:50px;
+	float:right;
+	margin-top: -10px;
+}
+
+.partie-text li
+{
+	display: inline-block;
+	background: #1bbc9b;
+}
+
+.partie-text a
+{
+  display: block;
+  text-align:center;
+  line-height: 35px;
+  color: white;
+  background: #1bbc9b;
+}
+
+.partie-text img, .partie-text span
+{
+	display: inline-block;
+	vertical-align: bottom;
+	margin: 2px;
+}
+
+.partie-text img
+{
+	padding: 8px;
+}
+
+.partie-text p
+{
+	clear: both;
+	font-family:Euphemia;
+	font-size: 16px;
+}
+
+.input, .checkbox, .submit,.select
+{
+	display: block;
+	margin:20px;
+
+}
+
+.input img
+{
+	display: block;
+	padding: 10px;
+	padding-left: 16px;
+}
+
+.input input
+{
+	width:500px;
+	height:40px;
+	display: inline-block;
+	vertical-align: top;
+	margin-left: -4px;
+	border:1px solid #edebeb;
+	background:#edebeb;
+	font-size:18px;
+	font-family: Euphemia;
+	text-align: center;
+	color:#176b89;
+
+}
+
+.input-tuto input
+{
+	width:680px;
+}
+
+.textarea
+{
+	padding: 20px;
+	padding-top:0;
+}
+
+
+.textarea textarea
+{
+	width:560px;
+	height:120px;
+	background:#edebeb;
+	font-family: Euphemia;
+	color:#176b89;
+	border:1px solid #edebeb;
+
+}
+
+.textarea-tuto textarea
+{
+   width:740px;
+   height:180px;
+}
+
+
+.input label
+{
+	width:60px;
+	height:43px;
+	display: inline-block;
+	vertical-align: top;
+	background:  #1bbc9b;
+}
+
+label span
+{
+	display: block;
+	text-align: center;
+	color:white;
+	font-family: Gadugi;
+	line-height: 40px;
+}
+
+.checkbox input
+{
+	width:30px;
+	height:40px;
+	background: #edebeb;
+	display: inline-block;
+	vertical-align: top;
+}
+
+
+.checkbox label
+{
+	width:200px;
+	height:40px;
+	display: inline-block;
+	vertical-align: top;
+	font-size:20px;
+	line-height: 41px;
+	color: #176b89;
+}
+
+.select select
+{
+	width:200px;
+	height:30px;
+	color: #176b89;
+	font-size: 16px;
+	background: #edebeb;
+	border: 1px solid #edebeb;
+}
+
+.submit input
+{
+	width:570px;
+	height:43px;
+	background: #1bbc9b;
+	border: 1px solid  #1bbc9b;
+	color:white;
+	font-size:20px;
+	font-family: Euphemia;
+	cursor: pointer;
+}
+
+.submit-tuto input
+{
+   width:150px;
+   float:right;
+   margin-right:20px;
+}
+
+
+.apresformulaire
+{
+	width:550px;
+	margin:auto;
+	margin-bottom: 50px;
+	font-size:20px;
+}
+
+.apresformulaire a
+{
+	display: inline-block;
+	width:200px;
+	font-size:18px;
+}
+
+
+/*presentation des tutoriels */
+
+.tutos
+{
+	display: inline-block;
+	width:300px;
+	height:350px;
+	margin-left: 30px;
+	margin-bottom: 20px;
+	background: #edebeb;
+}
+
+.banniere span , .banniere img
+{
+	display:block;
+}
+
+.mestutos
+{
+	height:380px;
+}
+
+.titre-tuto
+{
+    text-align: center;
+	font-family: "Gadugi";
+	font-size:16px;
+	width:auto;
+
+}
+
+.titre-tuto a
+{
+	display:block;
+	color:#0b3544;
+
+}
+
+.tutos-infos span
+{
+	display: inline-block;
+	margin-left:20px;
+	font-family: "Gadugi";
+	font-size: 17px;
+	padding: 3px;
+}
+
+.tutos-infos .cat-tuto
+{
+	float:right;
+	margin-right: 10px;
+	color: #d20d24;
+}
+
+.tutos-infos .auteur-tuto
+{
+	float:left;
+	margin-left:10px;
+}
+
+.auteur-tuto a
+{
+	color: #1bbc9b;
+}
+
+.edit-btn
+{
+	width:100px;
+	height:30px;
+	background: #1bbc9b;
+}
+
+.edit-btn a
+{
+	height:30px;
+	display:block;
+	text-align: center;
+	line-height: 28px;
+	color:white;
+	cursor: pointer;
+	font-family: Gadugi;
+
+}
+/*bouton pour cree */
+
+.nouveau-sujet
+{
+	width:180px;
+	height:45px;
+	background: #1bbc9b;
+	margin:30px;
+}
+
+.nouveau-sujet:hover
+{
+	background: #28a88e;
+}
+
+.nouveau-sujet a
+{
+	height: 44px;
+	text-align: center;
+	font-family: Gadugi;
+	font-size: 16px;
+	line-height: 43px;
+	margin-left: 5px;
+}
+
+.nouveau-sujet img
+{
+  padding: 12.5px;
+}
+
+.nouveau-sujet a , .nouveau-sujet img
+{
+	display:inline-block;
+	vertical-align: top;
+	color: white;
+}
+
+/*Lecture de tutoriels */
+
+.liretuto
+{
+	width:700px;
+	margin-top: 30px;
+}
+
+.liretuto section
+{
+	font-family: Euphemia ;
+}
+
+.liretutoTitre
+{
+	display: inline-block;
+	vertical-align: top;
+	width:600px;
+	height:58px;
+	border: 1px solid #edebeb;
+	font-size: 23px;
+	line-height: 50px;
+	padding-left: 10px;
+	background: #edebeb;
+	border-bottom: 2px solid #828080;
+	margin-bottom: 20px;
+}
+
+.liretutoTitre a
+{
+	color: #1bbc9b;
+}
+
+.logo
+{
+    display: inline-block;
+    vertical-align: top;
+    width:60px;
+    height: 60px;
+
+}
+
+.logo img
+{
+	display:block;
+	width:60px;
+	height:60px;
+	border-radius: 1px;
+}
+
+.liretutoAut
+{
+	display: inline-block;
+	vertical-align: top;
+	color:black;
+	margin-left: 5px;
+	height: 60px;
+	margin-top: 10px;
+}
+
+.liretutoAut a
+{
+	display: inline-block;
+	vertical-align: top;
+	color:#1bbc9b;
+	font-weight: bold;
+	text-decoration:underline;
+	line-height: 60px;
+	margin-left: 3px;
+}
+
+.liretutoAut img
+{
+	display: inline-block;
+	vertical-align: top;
+	height: 40px;
+	width:40px;
+	margin-left: 3px;
+}
+
+
+.liretuto-partie-titre
+{
+	font-size: 20px;
+	color:#1bbc9b;
+	border-bottom: 1px solid;
+}
+
+
+/******* Espace de membre ******/
+
+
+
+
+.membre
+{
+	width:700px;
+}
+
+.entetemembre, .infosmembre, .signature
+{
+	display:block;
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+
+.avatar ,.membre-ins
+{
+	display:inline-block;
+	vertical-align: bottom;
+	margin-left: 20px;
+}
+
+
+.avatar img, .badge
+{
+	display: block;
+}
+
+.badge
+{
+	text-align:center;
+	height:40px;
+	line-height:35px;
+	font-size:18px;
+	font-family: Euphemia;
+	color: white;
+	background: #1bbc9b;
+}
+
+.membre-ins h4
+{
+   color: #1bbc9b;
+}
+
+.membre-edit
+{
+	display:block;
+	height:40px;
+	width:100px;
+
+}
+
+.membre-edit a
+{
+	display:block;
+	height:40px;
+	width:100px;
+	border: 2px solid #1bbc9b;
+	text-align:center;
+	line-height: 40px;
+	color: #1bbc9b;
+
+}
+
+.membre-ins
+{
+	color: #2b8Bad;
+	font-size:16px;
+	font-family: "Arial";
+}
+
+.infosmembre li
+{
+	display:block;
+	height: 40px;
+	font-size:16px;
+	font-family: Gadugi;
+}
+
+
+.ajoutami
+{
+	width:230px;
+}
+.ajoutami a
+{
+	width:auto;
+	display: block;
+}
+
+
+
+.libele
+{
+	display: inline-block;
+	font-weight: bold;
+	margin-right: 10px;
+	width:120px;
+
+}
+
+.infos-content
+{
+	display: inline-block;
+	color: #2b8Bad;
+}
+
+.signature
+{
+	padding:10px;
+	height: auto;
+	border:0;
+	border-top: 2px solid #898686 ;
+	border-bottom: 2px solid #898686;
+	font-size: 18px;
+	font-family: Gadugi;
+
+}
+
+.pagination
+{
+	margin-left:20px;
+}
+
+.pagination strong
+{
+	display: inline-block;
+	width:35px;
+	height:30px;
+	background:  #1bbc9b;
+	margin-left: 10px;
+	text-align: center;
+	line-height: 30px;
+	font-family: Euphemia;
+	color: white;
+	border-bottom: 3px solid #1bbc9b;
+
+}
+
+.pagination a
+{
+	display: inline-block;
+	width:35px;
+	height:30px;
+	background:  white;
+	margin-left: 10px;
+	text-align: center;
+	line-height: 30px;
+	font-family: Euphemia;
+	color: #1bbc9b;
+	border: 1px solid #1bbc9b;
+	border-bottom: 3px solid #1bbc9b;;
+}
+
+
+
+/*****Membre connecter ****/
+
+.cercle
+{
+
+
+
+}
+
+.cercle img
+{
+	display: block;
+	width:35px;
+	height:35px;
+	margin-top: 5px;
+	margin-left: 7.5px;
+}
+
+
+.cercle .first
+{
+	display:inline-block;
+	width:50px;
+	height: 50px;
+	border:1px solid #edebeb;
+	border-radius: 100%;
+	margin-top:-5px;
+	margin-right: 100px;
+	background: #edebeb;
+}
+
+.suscribe .cercle .first > a
+{
+	display: block;
+	width:50px;
+	height: 50px;
+}
+
+.cercle ul ul li  a
+{
+	display: block;
+	color: green;
+	width:150px;
+	height:40px;
+	display:block;
+	text-align:center;
+}
+
+
+
+.cercle ul ul li
+{
+	width:150px;
+	height:40px;
+	display: block;
+	color: yellow;
+	text-align:center;
+	border:1px solid green;;
+
+}
+
+.cercle ul ul
+{
+	visibility: hidden;
+	margin:0;
+	padding:0;
+	transition: visibility 0.1s ease-out;
+	margin-bottom: 50px;
+}
+
+.cercle ul li:hover > ul
+{
+	visibility:visible;
+	float: left;
+	transition: all 0.8s;
+	z-index:500;
+}
+
+
+/*********** Forumm **** ************/
+
+.sujet
+{
+	height:70px;
+	background: #edebeb;
+	font-family: Gadugi;
+	margin-bottom: 20px;
+}
+
+.sujet p
+{
+	display: inline-block;
+	vertical-align: bottom;
+	height: 70px;
+	margin-top: 0px;
+	margin-right: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.avatar_createur img
+{
+	display: block;
+	height: 50px;
+	margin:8px;
+
+}
+
+.vues , .messages
+{
+	width:90px;
+}
+
+.infossujet
+{
+	width:300px;
+}
+
+.infossujet span , .derniermessage span
+{
+	display: block;
+	height:35px;
+	overflow: hidden;
+}
+
+.infossujet span:nth-child(1) a
+{
+	font-size: 24px;
+	color:#247997;
+	font-family: Gadugi;
+}
+
+.derniermessage span:nth-child(1) , .derniermessagef span:nth-child(1)
+{
+	font-size: 20px;
+	color:#247997;
+}
+
+.infossujet span:nth-child(2) a , .derniermessage span:nth-child(2) a ,.derniermessagef a
+{
+	color:#1bbc9b;
+}
+
+.infossujet span:nth-child(2) i
+{
+	color:#237c9b;
+}
+
+
+
+.vues span , .messages span
+{
+	display: inline-block;
+	vertical-align: top;
+	height: 70px;
+	width: 20px;
+	text-align: center;
+	line-height: 62px;
+
+}
+
+.vues img , .messages img
+{
+  display: block;
+  margin-top: 20px;
+}
+
+.typesujet
+{
+	display: inline-block;
+	vertical-align: top;
+	border: 1px solid;
+	margin-top: 0px;
+	background: #1bbc9b;
+	padding: 2px;
+	color: white;
+	float: right;
+}
+
+
+/*Accueil Forum ***/
+
+.categorie-nom
+{
+	display: block;
+	height: 50px;
+	margin-top: 0px;
+	background: #2b8bad;
+	font-family: Euphemia;
+
+}
+
+.categorie-nom span
+{
+	display: inline-block;
+	vertical-align: top;
+	height: 50px;
+	text-align: center;
+	line-height: 45px;
+	font-size: 23px;
+	color: white;
+	margin-left: 5px;
+}
+
+.cat
+{
+   display: block;
+   margin: 4px;
+}
+
+.forum ul
+{
+  margin-top: 0px;
+}
+
+
+.forum li
+{
+    margin-top: 15px;
+	height:70px;
+	background: #edebeb;
+}
+
+.listesforums p
+{
+	margin-top: 0px;
+	display: inline-block;
+	vertical-align: top;
+	height:69px;
+}
+
+.listesforums p span
+{
+	display: block;
+	height: 31px;
+}
+
+
+.forums
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-right:10px;
+    width:850px;
+}
+
+.statistique
+{
+	width: 250px;
+	display: inline-block;
+	vertical-align: top;
+	font-family: Euphemia;
+}
+
+
+.stat-entete
+{
+	display:block;
+	width:250px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	background:  #2b8bad;
+	font-size: 18px;
+	font-family: Gadugi;
+	color:white;
+	margin-top:16px;
+}
+
+
+.statistique > div
+{
+	background: #edebeb;
+	padding: 5px;
+	padding-top: 0;
+}
+
+
+.nombremessages , .derniermessage , .nombresujets
+{
+	margin-left: 10px;
+}
+
+
+.infosforum  , .nombremessages , .derniermessagef , .nombresujets
+{
+	margin-left: 5px;
+	margin-top: 1px;
+}
+
+.nombremessages ,.nombresujets
+{
+  text-align: center;
+  color:#217998;
+}
+
+.nombremessages, .nombresujets
+{
+	width:60px;
+	font-weight: bold;
+}
+
+.infosforum
+{
+	width:360px;
+
+}
+
+.infosforum span:nth-child(2)
+{
+	overflow: hidden;
+	color:#217998;
+}
+
+ .derniermessage
+ {
+ 	width: 330px;
+ }
+
+.derniermessagef
+{
+	width:265px;
+
+}
+
+
+.forumlogo
+{
+	width:35px;
+	margin-left:5px;
+}
+
+.forumlogo img
+{
+	display: block;
+	margin-top:8px;
+	margin-left: 3px;
+}
+
+.forums span
+{
+	font-family: Gadugi;
+
+}
+
+.infosforum span
+{
+	padding-left:5px;
+	padding-right: 5px;
+
+}
+
+
+
+.infosforum span:nth-child(1) a
+{
+  display: block;
+  color: #217998;
+  font-size: 20px;
+  font-family: Euphemia;
+  font-weight: bold;
+}
+
+/**** Voir un sujet (Topic) **/
+
+.lesujet
+{
+	display: block;
+}
+
+.membresujet , .contenu-message
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 20px;
+	margin-right: 10px;
+	font-family: Euphemia;
+}
+
+.membresujet
+{
+	width: 80px;
+	height: auto;
+	border: 1px solid #6e6e6e;
+	background: #edebeb;
+}
+
+.membresujet > .badgef
+{
+	display: block;
+	height:30px;
+	text-align: center;
+	line-height: 30px;
+	color:white;
+	font-size: 15px;
+}
+
+.membresujet img
+{
+	display: block;
+	margin-left: 9px;
+	margin-right: 9px;
+	width: 60px;
+	height: 60px;
+}
+
+.contenu-message
+{
+	width:630px;
+	height:auto;
+	background: #edebeb;
+	border-bottom: 2px solid #c3c0c0;
+	border-top:  2px solid #c3c0c0;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+
+}
+
+.lienmod , .top-messagef
+{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.lienmod
+{
+	width:240px;
+	float:right;
+	margin-right: -20px;
+}
+
+
+.lienmod ul
+{
+	display: block;
+	width:240px;
+	height:40px;
+	margin:0;
+	padding: 0;
+}
+
+.lienmod li
+{
+	display: inline-block;
+	height: 40px;
+	width:100px;
+	background: #1bbc9b;
+	margin-left: 2px;
+}
+
+.lienmod a
+{
+  display: block;
+  text-align:center;
+  line-height: 35px;
+  color: white;
+  background: #1bbc9b;
+}
+
+.lienmod img, .lienmod span
+{
+	display: inline-block;
+	vertical-align: top;
+	margin: 3px;
+	color:white;
+}
+
+.lienmod img
+{
+	padding-top: 7px;
+}
+
+.top-messagef
+{
+	margin: 0;
+	padding: 0;
+}
+
+.top-messagef a , .top-messagef span
+{
+	display: inline-block;
+	vertical-align: top;
+	color: #1bbc9b;
+}
+
+
+.lemessage ,.signatureforum
+{
+	display: block;
+	margin-top: 10px;
+}
+
+.signatureforum
+{
+	border-top: 2px solid #c3c0c0;
+	width:610px;
+	padding-right: 10px;
+	padding-left: 10px;
+	overflow: hidden;
+}
+
+.touslesmessages , .administrationf
+{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.administrationf
+{
+	width:230px;
+	height: 150px;
+	height: auto;
+	margin-left:10px;
+}
+
+.administrationf ul
+{
+	width:230px;
+	height: auto;
+	margin:0;
+	padding: 0;
+	margin-top: 10px;
+	background:  #edebeb;
+}
+
+.administrationf li
+{
+	display: block;
+	width:230px;
+	height:40px;
+	margin:0;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 0;
+
+}
+
+.adminf-entete
+{
+	width:230px;
+	height:40px;
+	line-height: 40px;
+}
+
+.administrationf li span
+{
+	width: 100px;
+	color: #24b194;
+	text-align: center;
+	line-height: 38px;
+}
+
+.administrationf li a
+{
+	height:40px;
+	color: #24b194;
+}
+
+.administrationf li span , .administrationf img
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-left:5px;
+
+}
+
+.administrationf img
+{
+	margin-top: 8px;
+}
+
+/******* Social ******/
+
+.gestionac , .fil
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 20px;
+	margin-left: 20px;
+	font-family: Gadugi;
+}
+
+.gestionac, .gestionac ul
+{
+	width:200px;
+}
+
+.gestionac ul
+{
+	width:200px;
+	margin:0px;
+	padding: 0px;
+}
+
+.pseudoso
+{
+	text-align: center;
+	font-size: 20px;
+	font-family: Gadugi;
+}
+
+.pseudoso a
+{
+	display: block;
+	color: #24b194;
+}
+
+.actual h3 , .lgroupes h3
+{
+	font-family: Euphemia;
+	font-size: 16px;
+	text-align: center;
+	line-height: 25px;
+	height:30px;
+	border: 1px solid;
+	background: #427f95;
+	color: white;
+
+}
+
+.lgroupes li , .actual li
+{
+	display: block;
+	height:35px;
+	width:200px;
+	text-align: center;
+	line-height: 30px;
+	border-bottom:1px solid #b0aeae;
+	color: #24b194;
+	overflow: hidden;
+
+}
+
+.lgroupes li a, .actual li a
+{
+	display: block;
+	width: 200px;
+	height:35px;
+	color: #24b194;
+	text-align: center;
+
+
+}
+
+.lgroupes h3 a
+{
+	display: block;
+	color: white;
+
+}
+
+.fichierEtsubmit , .avatarEtstatut
+{
+	display: block;
+}
+
+.fichierEtsubmit input
+{
+	width:117px;
+	height:35px;
+	margin-left: 190px;
+	background: #1bbc9b;
+	border:1px solid #1bbc9b;
+	color: white;
+	font-size:16px;
+	cursor: pointer;
+}
+
+
+
+.avatarsocial img
+{
+	margin-left: 20px;
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.avatarsocial  , .textarea-soc ,.fichier , .submit-statut
+{
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 10px;
+}
+
+/******* Le pied de page *****/
+
+footer
+{
+
+	width: 100%;
+	height:300px;
+	background: #2B8BAD;
+}
+
+footer h2
+{
+	text-align: center;
+	margin-top: 0px;
+	color:white;
+	font-style: underline;
+	font-weight: bold;
+	font-size: 23px;
+	font-family: Gadugi;
+}
+
+footer > div
+{
+	display: inline-block;
+	width:28%;
+	height:200px;
+	margin-left:2.8%;
+	margin-top: 20px;
+	padding:10px;
+	vertical-align: top;
+}
+
+footer div > p
+{
+	margin-top: -20px;
+	padding:10px;
+	font-size : 18px;
+	font-family: Euphemia;
+
+
+}
+
+footer > p
+{
+    height:50px;
+    text-align:center;
+    background: #267b99;
+    margin-bottom: 0px;
+    line-height: 50px;
+    font-size: 18px;
+    font-family: Euphemia;
+    color:white;
+
+}
+
+footer ul
+{
+	width:25%;
+	margin:auto;
+}
+
+footer li
+{
+	width:120px;
+}
+
+footer li a
+{
+	display: block;
+	width:120px;
+	text-align: center;
+	line-height: 35px;
+	color: blue;
+
+}
+
+
+
+/***** media queries *****/
+
+@media screen and (max-width:1366px)
+{
+	header > div
+    {
+    	margin-right:2%;
+    }
+}
