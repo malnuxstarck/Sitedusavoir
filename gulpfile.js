@@ -1,5 +1,6 @@
 // Packages node
 const gulp = require('gulp')
+const clean = require('gulp-clean')
 const plumber = require('gulp-plumber')
 const notify = require('gulp-notify')
 const sass = require('gulp-sass')
@@ -17,8 +18,8 @@ const confPostCss = [
 ]
 
 // Compilation SCSS => CSS
-gulp.task('scss', _ => {
-  return gulp.src(`${pathCss}/*.scss`)
+gulp.task('scss', _ => (
+  gulp.src(`${pathCss}/*.scss`)
     .pipe(plumber({
       errorHandler (err) {
         notify.onError({
@@ -33,22 +34,20 @@ gulp.task('scss', _ => {
     .pipe(sass({ outputStyle: 'expanded' }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(pathCss))
-})
+))
 
 // Watchers
-gulp.task('watch', _ => {
-  gulp.watch(`${pathCss}/**/*.scss`, ['scss'])
-})
+gulp.task('watch', ['scss'], _ => gulp.watch(`${pathCss}/**/*.scss`, ['scss']))
+
+// On enlève le fichier map pour la prod
+gulp.task('clean', _ => gulp.src(`${pathCss}/*.map`, { read: false }).pipe(clean()))
 
 // Production
-gulp.task('prod', _ => {
+gulp.task('prod', ['clean'], _ => {
   gulp.src(`${pathCss}/*.scss`)
     .pipe(sass({ outputStyle: 'compressed' }))
     .pipe(postcss(confPostCss))
     .pipe(gulp.dest(pathCss))
 })
 
-gulp.task('dev', ['scss'])
-gulp.task('build', ['prod'])
-
-gulp.task('default', ['dev', 'watch'])
+gulp.task('default', ['watch'])
