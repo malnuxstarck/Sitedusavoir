@@ -7,13 +7,14 @@ include("../includes/identifiants.php");
 include("../includes/debut.php");
 include("../includes/menu.php");
 
-echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./voirmonprofil.php">'.$pseudo.'</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Mes Contenus</span> </li>
-         </ul>
-  </div>
-  <div class="page">
-  <h2 class="titre"> Mes Contenus </h2>';
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./voirmonprofil.php">'.$pseudo.'</a></li>
+  <li><span>Mes Contenus</span></li>
+</ul>
+
+<div class="page">
+<h2 class="titre"> Mes Contenus </h2>';
 
 if(!$id)
 {
@@ -36,7 +37,7 @@ if(!$id)
 $managerContenu = new ManagerContenu($bdd);
 $managerAuteur = new ManagerAuteur($bdd);
 $managerCategorie = new ManagerCategorie($bdd);
-    
+
 $type = (!empty($_POST['type']))?$_POST['type']:'tutoriel';
 $page = (!empty($_GET['page']))?$_GET['page']:1;
 $contenus_par_page = 20 ;

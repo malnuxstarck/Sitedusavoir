@@ -7,11 +7,10 @@ include("../includes/menu.php");
 
 ?>
 
-<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Contenus</a></li>
-         </ul>
-  </div>
+  <ul>
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="./index.php">Contenus</a></li>
+  </ul>
 
  <div class="page">
 

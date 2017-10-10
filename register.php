@@ -6,15 +6,14 @@
   require_once("./includes/debut.php");
   require_once("./includes/menu.php");
 
-  echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li>Inscription</li>
-         </ul>
-  </div>';
+  echo '<ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li>Inscription</li>
+  </ul>';
 
 
   if ($id != 0)
-  { 
+  {
       erreur(managerMembre::ERR_IS_CO);
   }
 
@@ -24,9 +23,9 @@
     echo '<div class="page">
               <h1 class="titre">Inscription</h1>
               <div class="formulaire">
-              
+
                  <form method="post" action="" enctype="multipart/form-data" id="formulaire">
-          
+
                         <div class="input">
                               <label for="pseudo"><img src="images/icones/person.png"></label>
                               <input type="text" name="pseudo" placeholder="Votre pseudo(Sans Espace,3 a 15 caracteres)*" required />
@@ -48,7 +47,7 @@
                               <input type="file" value="Avatar" name="avatar" placeholder="votre Avatar"/>
                          </div>
                          <div class="submit">
-                             
+
                               <input type="submit" value="Inscrire"/>
                          </div>
                          <p class="apresformulaire" style="font-family:Gadugi;">
@@ -63,7 +62,7 @@
   }
   else
   {
-  
+
       $membreAInscrire = new Membre($_POST);
       $token = $membreAInscrire->str_random(60);
       $membreAInscrire->setToken($token);
@@ -79,7 +78,7 @@
 
 
       if ($managerMembre->verifAvatar($membreAInscrire->avatar()))
-      {   
+      {
           $nomavatar = $membreAInscrire->moveAvatar($membreAInscrire->avatar());
           $membreAInscrire->setAvatar($nomavatar);
       }
@@ -90,10 +89,10 @@
           $membreAInscrire->setAvatar($nomavatar);
       }
 
-  
+
       if ($managerMembre->nombresErreurs == 0)
       {
-             
+
         $managerMembre->inscription($membreAInscrire);
 
         echo'<h1>Inscription terminée</h1>';
@@ -108,11 +107,11 @@
 
         echo'<h1>Inscription interrompue</h1>';
         echo'<p>Une ou plusieurs erreurs se sont produites pendant l inscription</p>';
-        
+
         echo'<p>'.$managerMembre->nombresErreurs.' erreur(s)</p>';
 
         $errors = $managerMembre->errors();
-        
+
         foreach($errors as $erreur)
         {
             echo '<p>'.$erreur.'</p>';
@@ -120,10 +119,10 @@
          echo'<p> Cliquez <a href="./register.php">Ici</a> pour recommencer</p>';
       }
 
-      
+
   }
 
-  
+
 
 ?>
 </div>

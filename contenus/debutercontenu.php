@@ -23,11 +23,11 @@ if(empty($_POST))
 
 
 
-   <div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="../contenus/index.php">Contenus</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Commencer Contenu</span> </li>
-         </ul>
-  </div>
+  <ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="../contenus/index.php">Contenus</a></li>
+    <li><span>Commencer Contenu</span></li>
+  </ul>
   <div class="page">
 
 	<h1 class="titre"> Debuter un Contenu </h1>

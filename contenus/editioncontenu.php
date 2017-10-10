@@ -15,16 +15,16 @@ $contenu = new Contenu($donnees);
 
 ?>
 
-<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Contenus</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Edition Contenu</span> </li>
-         </ul>
-  </div>
+  <ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="./index.php">Contenus</a></li>
+    <li><span>Edition Contenu</span></li>
+  </ul>
 
   <div class="page">
 
- <?php 
- 
+ <?php
+
  if(empty($_POST))
  {
 

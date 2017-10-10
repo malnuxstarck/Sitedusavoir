@@ -7,24 +7,14 @@ include("../includes/debut.php");
 include("../includes/menu.php");
 
 $managerForum = new ManagerForum($bdd);
-  echo '<div class="fildariane">
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./index.php">Forum</a></li>
+</ul>
 
-                <ul>
-                    <li>
-                        <a href="../index.php">Accueil </a>
-                    </li> <img src="../images/icones/fleche.png" class="fleche"/>
+<div class="page pageforum">
 
-                    <li>
-                        <a href="./index.php">Forum </a>
-                     </li> 
-
-                 </ul>      
-
-         </div>
-
-         <div class="page pageforum">
-
-                <h1 class="titre">Forum</h1>';
+  <h1 class="titre">Forum</h1>';
 
 $categorieAlaBoucle = NULL ;
 $totaldesmessages = 0 ;
@@ -41,7 +31,7 @@ $donneesForums = $managerForum->tousLesForums($jointures , $id , $lvl);
                         ';
 
 foreach ($donneesForums as $donneesForum ) {
-  
+
     $forum = new Forum($donneesForum);
     $categorie = new Categorie($donneesForum);
     $categorie->setId($donneesForum['idCat']);
@@ -70,7 +60,7 @@ foreach ($donneesForums as $donneesForum ) {
        ?>
           </div>
            </ul>
-            
+
             <ul class="listesforums">
 
                <div class="forum">
@@ -78,11 +68,11 @@ foreach ($donneesForums as $donneesForum ) {
                               <span class="cat">
                                   <img src="../images/icones/cat.png"/>
                               </span>
-                              <span>    
+                              <span>
                                   <?php echo stripslashes(htmlspecialchars($categorie->nom())); ?>
                                </span>
                       </div>
-                      
+
 
         <?php
     }
@@ -175,7 +165,7 @@ foreach ($donneesForums as $donneesForum ) {
 
         $page = ceil ($nbr_post / $nombreDeMessagesParPage);
 
-         
+
 
                  echo'<p class="derniermessagef">
 
@@ -200,16 +190,16 @@ foreach ($donneesForums as $donneesForum ) {
     }
 
 
-     
+
 
      $totaldesmessages += $forum->posts();
 
 }
 
 echo '</ul>
-     </div> 
+     </div>
 
-  <div class="statistique"> 
+  <div class="statistique">
 
      <span class="stat-entete"> Statistique </span>
         <div>';

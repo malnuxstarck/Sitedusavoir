@@ -23,12 +23,13 @@ if(empty($idPartie) || empty($idContenu))
 	header("Location:./index.php");
 }
 
-echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./editioncontenu.php?contenu='.$idContenu.'" > Edition Article</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Edition partie </span></li>
-         </ul>
-  </div>
- <div class="page">';
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./index.php">Blog</a></li>
+  <li><a href="./editioncontenu.php?contenu='.$idContenu.'">Edition Article</a></li>
+  <li><span>Edition partie</span></li>
+</ul>
+<div class="page">';
 
 
 switch ($action) {

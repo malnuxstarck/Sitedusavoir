@@ -21,19 +21,20 @@ include("../includes/menu.php");
 
 ?>
 
-<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Contenus</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="editioncontenu.php?contenu=<?php echo $idContenu;?>"> Edition Contenu</a></li><img class="fleche" src="../images/icones/fleche.png"/><li> <span style="color:black;">Auteur/Partie</span> </li>
-         </ul>
-  </div>
-  
+  <ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="./index.php">Contenus</a></li>
+    <li><a href="editioncontenu.php?contenu=<?php echo $idContenu;?>"> Edition Contenu</a></li>
+    <li><span>Auteur/Partie</span></li>
+  </ul>
+
  <div class="page">
 
 <?php
 
 
 
-	
+
 
 	switch($action)
 	{

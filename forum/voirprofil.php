@@ -1,6 +1,6 @@
 <?php
   include '../includes/session.php';
-  
+
   $titre="Profil | SiteduSavoir.com";
   include("../includes/identifiants.php");
   include("../includes/debut.php");
@@ -11,10 +11,10 @@
   $managerMembre = new ManagerMembre($bdd);
 
   $dateIns = ' IS NOT NULL OR (id = :info AND inscrit IS NULL)';
-  
+
   $donnees = $managerMembre->infosMembre($idMembre , $dateIns);
 
-  
+
   if(empty($donnees))
   {
       $_SESSION['flash']['success'] = "Le membre demander n'existe pas ";
@@ -25,11 +25,10 @@
 
   //On affiche les infos sur le membre
 
-  echo '<div class="fildariane">
-           <ul>
-              <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">'.htmlspecialchars($membre->pseudo()).'</span></li>
-           </ul>
-      </div>';
+  echo '<ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><span>'.htmlspecialchars($membre->pseudo()).'</span></li>
+  </ul>';
 
      echo ' <div class="page">
 
@@ -52,7 +51,7 @@
                                                 Membre depuis le '.$membre->inscrit().'<br/>
                                                 Email : <a href="mailto:'.$membre->email().'">'.htmlspecialchars($membre->email()).'</a>
                                             </p>
-                                            
+
                                        </div>
                                  </div>
 
@@ -66,11 +65,11 @@
                             </div>
 
                             <div class="signature">
-                                 
+
                                     '.$membre->signature().'
-                                 
+
                             </div>
-                  </div>';    
+                  </div>';
   echo '</div>';
   include "../includes/footer.php";
 ?>

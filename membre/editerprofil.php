@@ -9,23 +9,22 @@ require_once '../includes/debut.php';
 require_once '../includes/menu.php';
 
 
-echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black">'.$pseudo.'</span></li>
-         </ul>
-  </div>';
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><span>'.$pseudo.'</span></li>
+</ul>';
 
 $identifiant = (isset($_GET['id']))?$_GET['id'] :0;
 
 if ($id == 0)
-{ 
-	
+{
+
    header('Location:../index.php');
 }
 
 if ($id != $identifiant)
-{ 
-	
+{
+
    header('Location:./editerprofil.php?id='.$id);
 }
 

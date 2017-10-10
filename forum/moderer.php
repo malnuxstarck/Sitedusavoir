@@ -25,27 +25,12 @@ if(!Membre::verif_auth($forum->auth_modo()))
 
 include("../includes/menu.php");
 
-echo '<div class="fildariane">
-
-         <ul>
-         <li>
-              <a href="../index.php"> Accueil </a>
-        </li> 
-              <img class="fleche" src="../images/icones/fleche.png"/>
-            <li>
-                <a href="./index.php">Forum</a>
-            </li>
-
-            <img class="fleche" src="../images/icones/fleche.png"/>
-
-           <li>
-               <a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
-           </li>  <img class="fleche" src="../images/icones/fleche.png"/>   
-           <li>
-            <a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
-            </li>
-         </ul>
-     <div>';
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./index.php">Forum</a></li>
+  <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a></li>
+  <li><a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a></li>
+</ul>';
 
 echo '<div class="page">';
 $action = (isset($_GET['action']))?$_GET['action']:"";
