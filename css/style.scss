@@ -1,0 +1,662 @@
+/****** Les proprietées CSS pour SDS
+ Fait Par : Malnux Starck;
+ ******/
+
+/******************************* Par defaut *******************************/
+/*******************************     CSS    *******************************/
+
+@import 'fonts';
+@import 'scaffolding';
+@import 'components/header';
+@import 'footer';
+@import 'forum';
+@import 'tuto';
+@import 'profil';
+@import 'components/fildariane';
+@import 'components/pagination';
+@import 'components/presentation';
+@import 'components/form';
+@import 'components/new_post';
+@import 'components/ribbon';
+
+.page {
+	display: block;
+	width: 1000px;
+	margin: auto;
+	margin-bottom: 20px;
+	font-family: Ubuntu;
+}
+
+/* **** pour le menu ** */
+
+.fleche {
+	display: inline-block;
+	width: 18px;
+	padding: 8.5px;
+	padding-right: 0;
+	padding-left: 0;
+	vertical-align: top;
+}
+
+.titre {
+	color: #184b5d;
+	font-family: Gadugi;
+	font-size: 35px;
+	text-align: center;
+}
+
+/* Concerne en majorité la partie tutoriels */
+
+.modification {
+	display: inline-block;
+	width: 250px;
+	height: 300px;
+	vertical-align: top;
+
+	ul {
+		display: block;
+		height: 200px;
+		margin-top: 10px;
+		padding-right: 10px;
+		background: #edebeb;
+	}
+
+	li {
+		display: block;
+		width: 200px;
+		height: 40px;
+		margin-bottom: 15px;
+		margin-left: 10px;
+
+		a {
+			display: block;
+			width: 200px;
+			height: 40px;
+			color: #1bbc9b;
+			line-height: 40px;
+			text-align: center;
+		}
+	}
+
+	&-entete {
+		display: block;
+		width: 250px;
+		height: 50px;
+		margin-top: 20px;
+		background: #236b85;
+		color: white;
+		font-family: Gadugi;
+		font-size: 18px;
+		line-height: 50px;
+		text-align: center;
+	}
+}
+
+.titre-partie {
+	font-size: 18px;
+}
+
+.partie-text {
+	overflow: auto;
+	width: auto;
+	height: 300px;
+	margin-bottom: 20px;
+	padding: 10px;
+	background: #edebeb;
+
+	ul {
+		display: block;
+		float: right;
+		height: 50px;
+		margin-top: -10px;
+	}
+
+	li {
+		display: inline-block;
+		background: #1bbc9b;
+	}
+
+	a {
+		display: block;
+		background: #1bbc9b;
+		color: white;
+		line-height: 35px;
+		text-align: center;
+	}
+
+	img, span {
+		display: inline-block;
+		margin: 2px;
+		vertical-align: bottom;
+	}
+
+	img {
+		padding: 8px;
+	}
+
+	p {
+		clear: both;
+		font-family: Euphemia;
+		font-size: 16px;
+	}
+}
+
+/* Lecture de tutoriels */
+
+.liretuto {
+	width: 700px;
+	margin-top: 30px;
+
+	section {
+		font-family: Euphemia;
+	}
+}
+
+.liretutoTitre {
+	display: inline-block;
+	width: 600px;
+	height: 58px;
+	margin-bottom: 20px;
+	padding-left: 10px;
+	border: 1px solid #edebeb;
+	border-bottom: 2px solid #828080;
+	background: #edebeb;
+	font-size: 23px;
+	line-height: 50px;
+	vertical-align: top;
+
+	a {
+		color: #1bbc9b;
+	}
+}
+
+.logo {
+	display: inline-block;
+	width: 60px;
+	height: 60px;
+	vertical-align: top;
+
+	img {
+		display: block;
+		width: 60px;
+		height: 60px;
+		border-radius: 1px;
+	}
+}
+
+.liretutoAut {
+	display: inline-block;
+	height: 60px;
+	margin-top: 10px;
+	margin-left: 5px;
+	color: black;
+	vertical-align: top;
+
+	a {
+		display: inline-block;
+		margin-left: 3px;
+		color: #1bbc9b;
+		font-weight: bold;
+		line-height: 60px;
+		text-decoration: underline;
+		vertical-align: top;
+	}
+
+	img {
+		display: inline-block;
+		width: 40px;
+		height: 40px;
+		margin-left: 3px;
+		vertical-align: top;
+	}
+}
+
+.liretuto-partie-titre {
+	border-bottom: 1px solid;
+	color: #1bbc9b;
+	font-size: 20px;
+}
+
+/* ****** Espace de membre ***** */
+
+.membre {
+	width: 700px;
+}
+
+.entetemembre, .infosmembre, .signature {
+	display: block;
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+
+.avatar, .membre-ins {
+	display: inline-block;
+	margin-left: 20px;
+	vertical-align: bottom;
+}
+
+.avatar img, .badge {
+	display: block;
+}
+
+.badge {
+	height: 40px;
+	background: #1bbc9b;
+	color: white;
+	font-family: Euphemia;
+	font-size: 18px;
+	line-height: 35px;
+	text-align: center;
+}
+
+.membre-edit {
+	display: block;
+	width: 100px;
+	height: 40px;
+
+	a {
+		display: block;
+		width: 100px;
+		height: 40px;
+		border: 2px solid #1bbc9b;
+		color: #1bbc9b;
+		line-height: 40px;
+		text-align: center;
+	}
+}
+
+.membre-ins {
+	color: #2b8bad;
+	font-family: 'Arial';
+	font-size: 16px;
+
+	h4 {
+		color: #1bbc9b;
+	}
+}
+
+.infosmembre li {
+	display: block;
+	height: 40px;
+	font-family: Gadugi;
+	font-size: 16px;
+}
+
+
+.libele {
+	display: inline-block;
+	width: 120px;
+	margin-right: 10px;
+	font-weight: bold;
+}
+
+.infos-content {
+	display: inline-block;
+	color: #2b8bad;
+}
+
+.signature {
+	height: auto;
+	padding: 10px;
+	border: 0;
+	border-top: 2px solid #898686;
+	border-bottom: 2px solid #898686;
+	font-family: Gadugi;
+	font-size: 18px;
+}
+
+/* ********** Forumm **** *********** */
+
+.sujet {
+	height: 70px;
+	margin-bottom: 20px;
+	background: #edebeb;
+	font-family: Gadugi;
+
+	p {
+		display: inline-block;
+		height: 70px;
+		margin-top: 0;
+		margin-right: 5px;
+		padding-right: 5px;
+		padding-left: 5px;
+		vertical-align: bottom;
+	}
+}
+
+.avatar_createur img {
+	display: block;
+	height: 50px;
+	margin: 8px;
+}
+
+.vues, .messages {
+	width: 90px;
+
+	span {
+		display: inline-block;
+		width: 20px;
+		height: 70px;
+		line-height: 62px;
+		text-align: center;
+		vertical-align: top;
+	}
+
+	img {
+		display: block;
+		margin-top: 20px;
+	}
+}
+
+.infossujet {
+	width: 300px;
+
+	span:nth-child(1) a {
+		color: #247997;
+		font-family: Gadugi;
+		font-size: 24px;
+	}
+
+	span:nth-child(2) i {
+		color: #237c9b;
+	}
+}
+
+.infossujet span, .derniermessage span {
+	display: block;
+	overflow: hidden;
+	height: 35px;
+}
+
+.typesujet {
+	display: inline-block;
+	float: right;
+	margin-top: 0;
+	padding: 2px;
+	border: 1px solid;
+	background: #1bbc9b;
+	color: white;
+	vertical-align: top;
+}
+
+/* Accueil Forum ** */
+
+.derniermessage {
+	width: 330px;
+}
+
+/* *** Voir un sujet (Topic) * */
+
+.lesujet {
+	display: block;
+}
+
+.membresujet, .contenu-message {
+	display: inline-block;
+	margin-top: 20px;
+	margin-right: 10px;
+	font-family: Euphemia;
+	vertical-align: top;
+}
+
+.membresujet {
+	width: 80px;
+	height: auto;
+	border: 1px solid #6e6e6e;
+	background: #edebeb;
+
+	 > .badgef {
+		display: block;
+		height: 30px;
+		color: white;
+		font-size: 15px;
+		line-height: 30px;
+		text-align: center;
+	}
+
+	img {
+		display: block;
+		width: 60px;
+		height: 60px;
+		margin-right: 9px;
+		margin-left: 9px;
+	}
+}
+
+.contenu-message {
+	width: 630px;
+	height: auto;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	border-top: 2px solid #c3c0c0;
+	border-bottom: 2px solid #c3c0c0;
+	background: #edebeb;
+}
+
+.lienmod, .top-messagef {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.lienmod {
+	float: right;
+	width: 240px;
+	margin-right: -20px;
+
+	ul {
+		display: block;
+		width: 240px;
+		height: 40px;
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		display: inline-block;
+		width: 100px;
+		height: 40px;
+		margin-left: 2px;
+		background: #1bbc9b;
+	}
+
+	a {
+		display: block;
+		background: #1bbc9b;
+		color: white;
+		line-height: 35px;
+		text-align: center;
+	}
+
+	img, span {
+		display: inline-block;
+		margin: 3px;
+		color: white;
+		vertical-align: top;
+	}
+
+	img {
+		padding-top: 7px;
+	}
+}
+
+.top-messagef {
+	margin: 0;
+	padding: 0;
+
+	a, span {
+		display: inline-block;
+		color: #1bbc9b;
+		vertical-align: top;
+	}
+}
+
+.lemessage, .signatureforum {
+	display: block;
+	margin-top: 10px;
+}
+
+.signatureforum {
+	overflow: hidden;
+	width: 610px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-top: 2px solid #c3c0c0;
+}
+
+.touslesmessages, .administrationf {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.administrationf {
+	width: 230px;
+	height: 150px;
+	height: auto;
+	margin-left: 10px;
+
+	ul {
+		width: 230px;
+		height: auto;
+		margin: 0;
+		margin-top: 10px;
+		padding: 0;
+		background: #edebeb;
+	}
+
+	li span, img {
+		display: inline-block;
+		margin-left: 5px;
+		vertical-align: top;
+	}
+
+	li {
+		display: block;
+		width: 230px;
+		height: 40px;
+		margin: 0;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		padding: 0;
+
+		span {
+			width: 100px;
+			color: #24b194;
+			line-height: 38px;
+			text-align: center;
+		}
+
+		a {
+			height: 40px;
+			color: #24b194;
+		}
+	}
+
+	img {
+		margin-top: 8px;
+	}
+}
+
+.adminf-entete {
+	width: 230px;
+	height: 40px;
+	line-height: 40px;
+}
+
+/* ****** Social ***** */
+
+.gestionac, .fil {
+	display: inline-block;
+	margin-top: 20px;
+	margin-left: 20px;
+	font-family: Gadugi;
+	vertical-align: top;
+}
+
+.gestionac {
+	&, ul {
+		width: 200px;
+	}
+
+	ul {
+		width: 200px;
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.pseudoso {
+	font-family: Gadugi;
+	font-size: 20px;
+	text-align: center;
+
+	a {
+		display: block;
+		color: #24b194;
+	}
+}
+
+.actual, .lgroupes {
+	h3 {
+		height: 30px;
+		border: 1px solid;
+		background: #427f95;
+		color: white;
+		font-family: Euphemia;
+		font-size: 16px;
+		line-height: 25px;
+		text-align: center;
+	}
+
+	li {
+		display: block;
+		overflow: hidden;
+		width: 200px;
+		height: 35px;
+		border-bottom: 1px solid #b0aeae;
+		color: #24b194;
+		line-height: 30px;
+		text-align: center;
+
+		a {
+			display: block;
+			width: 200px;
+			height: 35px;
+			color: #24b194;
+			text-align: center;
+		}
+	}
+}
+
+.lgroupes h3 a {
+	display: block;
+	color: white;
+}
+
+.fichierEtsubmit, .avatarEtstatut {
+	display: block;
+}
+
+.fichierEtsubmit input {
+	width: 117px;
+	height: 35px;
+	margin-left: 190px;
+	border: 1px solid #1bbc9b;
+	background: #1bbc9b;
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.avatarsocial img {
+	display: block;
+	width: 40px;
+	height: 40px;
+	margin-left: 20px;
+}
+
+.avatarsocial, .textarea-soc, .fichier, .submit-statut {
+	display: inline-block;
+	margin-top: 10px;
+	vertical-align: top;
+}

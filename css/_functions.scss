@@ -1,0 +1,19 @@
+@mixin media($min-width: null, $max-width: null) {
+  $media: 'screen';
+
+  @if $min-width == null and $max-width == null {
+    $media: 'print';
+  }
+
+  @if $min-width != null {
+    $media: $media + ' and (min-width: #{$min-width})';
+  }
+
+  @if $max-width != null {
+    $media: $media + ' and (max-width: #{$max-width})';
+  }
+
+  @media #{$media} {
+    @content;
+  }
+}

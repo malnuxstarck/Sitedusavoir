@@ -1,0 +1,146 @@
+header {
+	display: block;
+	width: 100%;
+	height: 70px;
+	margin: auto;
+	background: #2b8bad;
+
+	 > div {
+		display: inline-block;
+		height: 70px;
+		margin-right: 5%;
+		vertical-align: top;
+
+		@media screen and (max-width:1366px) {
+			margin-right: 2%;
+		}
+	}
+
+	li {
+		display: inline-block;
+		width: 110px;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+	}
+}
+
+.header-top {
+	float: left;
+	margin-left: 40px;
+
+	h1 {
+		margin-top: 10px;
+		font-family: Lucida;
+		font-size: 35px;
+	}
+}
+
+.suscribe {
+	float: right;
+	margin-right: 40px;
+
+	li {
+		border: 2px solid white;
+		border-radius: 2px;
+
+		a {
+			display: block;
+			width: 102px;
+			height: 40px;
+			color: white;
+			font-family: Gadugi;
+			font-size: 16px;
+		}
+	}
+}
+
+.form-content > div {
+	display: inline-block;
+	margin-top: 15px;
+}
+
+.input-search input {
+	height: 30px;
+	border: 0;
+	border-bottom: 2px solid white;
+	background: #2b8bad;
+	color: white;
+	font-size: 14px;
+}
+
+.button-search {
+	button {
+		height: 30px;
+		margin-left: -35px;
+		border: 0;
+		background: #2b8bad;
+		cursor: pointer;
+	}
+	img {
+		display: block;
+	}
+}
+
+/*****Membre connecter ****/
+.cercle {
+	img {
+		display: block;
+		width: 35px;
+		height: 35px;
+		margin-top: 5px;
+		margin-left: 7.5px;
+	}
+
+	.first {
+		display: inline-block;
+		width: 50px;
+		height: 50px;
+		margin-top: -5px;
+		margin-right: 100px;
+		border: 1px solid #edebeb;
+		border-radius: 100%;
+		background: #edebeb;
+
+		 > a {
+			display: block;
+			width: 50px;
+			height: 50px;
+		}
+	}
+
+	ul {
+		ul {
+			visibility: hidden;
+			margin: 0;
+			margin-bottom: 50px;
+			padding: 0;
+			transition: visibility .1s ease-out;
+
+			li {
+				display: block;
+				width: 150px;
+				height: 40px;
+				border: 1px solid green;
+				color: yellow;
+				text-align: center;
+
+				a {
+					display: block;
+					display: block;
+					width: 150px;
+					height: 40px;
+					color: green;
+					text-align: center;
+				}
+			}
+		}
+
+		li:hover > ul {
+			z-index: 500;
+			visibility: visible;
+			float: left;
+			transition: all .8s;
+		}
+	}
+}
