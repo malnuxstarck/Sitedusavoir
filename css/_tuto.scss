@@ -1,65 +1,65 @@
 .tutos {
-	display: inline-block;
-	width: 300px;
-	height: 350px;
-	margin-bottom: 20px;
-	margin-left: 30px;
-	background: #edebeb;
+  display: inline-block;
+  width: 300px;
+  height: 350px;
+  margin-bottom: 20px;
+  margin-left: 30px;
+  background: #edebeb;
 }
 
 .banniere span, .banniere img {
-	display: block;
+  display: block;
 }
 
 .titre-tuto {
-	width: auto;
-	font-family: 'Gadugi';
-	font-size: 16px;
-	text-align: center;
+  width: auto;
+  font-family: 'Gadugi';
+  font-size: 16px;
+  text-align: center;
 
-	a {
-		display: block;
-		color: #0b3544;
-	}
+  a {
+    display: block;
+    color: #0b3544;
+  }
 }
 
 .tutos-infos {
-	span {
-		display: inline-block;
-		margin-left: 20px;
-		padding: 3px;
-		font-family: 'Gadugi';
-		font-size: 17px;
-	}
+  span {
+    display: inline-block;
+    margin-left: 20px;
+    padding: 3px;
+    font-family: 'Gadugi';
+    font-size: 17px;
+  }
 
-	.cat-tuto {
-		float: right;
-		margin-right: 10px;
-		color: #d20d24;
-	}
+  .cat-tuto {
+    float: right;
+    margin-right: 10px;
+    color: #d20d24;
+  }
 
-	.auteur-tuto {
-		float: left;
-		margin-left: 10px;
-	}
+  .auteur-tuto {
+    float: left;
+    margin-left: 10px;
+  }
 }
 
 .auteur-tuto a {
-	color: #1bbc9b;
+  color: #1bbc9b;
 }
 
 .edit-btn {
-	width: 100px;
-	height: 30px;
-	background: #1bbc9b;
+  width: 100px;
+  height: 30px;
+  background: #1bbc9b;
 
-	a {
-		display: block;
-		height: 30px;
-		color: white;
-		font-family: Gadugi;
-		line-height: 28px;
-		text-align: center;
-		cursor: pointer;
-	}
+  a {
+    display: block;
+    height: 30px;
+    color: white;
+    font-family: Gadugi;
+    line-height: 28px;
+    text-align: center;
+    cursor: pointer;
+  }
 }

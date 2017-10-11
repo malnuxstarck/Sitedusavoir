@@ -1,145 +1,145 @@
 .formulaire {
-	width: 620px;
-	margin: auto;
-	padding: auto;
+  width: 620px;
+  margin: auto;
+  padding: auto;
 }
 
 .formulaire-tuto {
-	display: inline-block;
-	width: 800px;
-	margin-bottom: 20px;
+  display: inline-block;
+  width: 800px;
+  margin-bottom: 20px;
 }
 
 .formulaire-edition {
-	display: inline-block;
-	margin-bottom: 20px;
-	vertical-align: top;
+  display: inline-block;
+  margin-bottom: 20px;
+  vertical-align: top;
 }
 
 label span {
-	display: block;
-	color: white;
-	font-family: Gadugi;
-	line-height: 40px;
-	text-align: center;
+  display: block;
+  color: white;
+  font-family: Gadugi;
+  line-height: 40px;
+  text-align: center;
 }
 
 .input, .checkbox, .submit, .select {
-	display: block;
-	margin: 20px;
+  display: block;
+  margin: 20px;
 }
 
 .input {
-	img {
-		display: block;
-		padding: 10px;
-		padding-left: 16px;
-	}
+  img {
+    display: block;
+    padding: 10px;
+    padding-left: 16px;
+  }
 
-	input {
-		display: inline-block;
-		width: 500px;
-		height: 40px;
-		margin-left: -4px;
-		border: 1px solid #edebeb;
-		background: #edebeb;
-		color: #176b89;
-		font-family: Euphemia;
-		font-size: 18px;
-		text-align: center;
-		vertical-align: top;
-	}
+  input {
+    display: inline-block;
+    width: 500px;
+    height: 40px;
+    margin-left: -4px;
+    border: 1px solid #edebeb;
+    background: #edebeb;
+    color: #176b89;
+    font-family: Euphemia;
+    font-size: 18px;
+    text-align: center;
+    vertical-align: top;
+  }
 
-	&-tuto input {
-		width: 680px;
-	}
+  &-tuto input {
+    width: 680px;
+  }
 }
 
 .textarea {
-	padding: 20px;
-	padding-top: 0;
+  padding: 20px;
+  padding-top: 0;
 
-	textarea {
-		width: 560px;
-		height: 120px;
-		border: 1px solid #edebeb;
-		background: #edebeb;
-		color: #176b89;
-		font-family: Euphemia;
-	}
+  textarea {
+    width: 560px;
+    height: 120px;
+    border: 1px solid #edebeb;
+    background: #edebeb;
+    color: #176b89;
+    font-family: Euphemia;
+  }
 
-	&-tuto textarea {
-		width: 740px;
-		height: 180px;
-	}
+  &-tuto textarea {
+    width: 740px;
+    height: 180px;
+  }
 }
 
 
 .input label {
-	display: inline-block;
-	width: 60px;
-	height: 43px;
-	background: #1bbc9b;
-	vertical-align: top;
+  display: inline-block;
+  width: 60px;
+  height: 43px;
+  background: #1bbc9b;
+  vertical-align: top;
 }
 
 .checkbox {
-	input {
-		display: inline-block;
-		width: 30px;
-		height: 40px;
-		background: #edebeb;
-		vertical-align: top;
-	}
+  input {
+    display: inline-block;
+    width: 30px;
+    height: 40px;
+    background: #edebeb;
+    vertical-align: top;
+  }
 
-	label {
-		display: inline-block;
-		width: 200px;
-		height: 40px;
-		color: #176b89;
-		font-size: 20px;
-		line-height: 41px;
-		vertical-align: top;
-	}
+  label {
+    display: inline-block;
+    width: 200px;
+    height: 40px;
+    color: #176b89;
+    font-size: 20px;
+    line-height: 41px;
+    vertical-align: top;
+  }
 }
 
 .select select {
-	width: 200px;
-	height: 30px;
-	border: 1px solid #edebeb;
-	background: #edebeb;
-	color: #176b89;
-	font-size: 16px;
+  width: 200px;
+  height: 30px;
+  border: 1px solid #edebeb;
+  background: #edebeb;
+  color: #176b89;
+  font-size: 16px;
 }
 
 .submit {
-	input {
-		width: 570px;
-		height: 43px;
-		border: 1px solid #1bbc9b;
-		background: #1bbc9b;
-		color: white;
-		font-family: Euphemia;
-		font-size: 20px;
-		cursor: pointer;
-	}
+  input {
+    width: 570px;
+    height: 43px;
+    border: 1px solid #1bbc9b;
+    background: #1bbc9b;
+    color: white;
+    font-family: Euphemia;
+    font-size: 20px;
+    cursor: pointer;
+  }
 
-	&-tuto input {
-		float: right;
-		width: 150px;
-		margin-right: 20px;
-	}
+  &-tuto input {
+    float: right;
+    width: 150px;
+    margin-right: 20px;
+  }
 }
 
 .apresformulaire {
-	width: 550px;
-	margin: auto;
-	margin-bottom: 50px;
-	font-size: 20px;
+  width: 550px;
+  margin: auto;
+  margin-bottom: 50px;
+  font-size: 20px;
 
-	a {
-		display: inline-block;
-		width: 200px;
-		font-size: 18px;
-	}
+  a {
+    display: inline-block;
+    width: 200px;
+    font-size: 18px;
+  }
 }
