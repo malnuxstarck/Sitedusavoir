@@ -3,16 +3,15 @@
   $titre="Connexion";
   include_once './includes/identifiants.php';
   include_once'./includes/debut.php';
- 
+
   $managerMembre = new ManagerMembre($bdd);
 
   include_once './includes/menu.php';
 
-  echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Connexion</span></li>
-         </ul>
-  </div>';
+  echo '<ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><span>Connexion</span></li>
+  </ul>';
 
   $managerMembre->reconnected_from_cookie();
 
@@ -39,11 +38,11 @@
                          <div class="input">
                               <label for="password"><img src="images/icones/mdp.png" alt="M"></label>
                               <input type="password" name="password" placeholder="Votre mot de passe" required />
-                          </div>    
+                          </div>
                           <div class="checkbox">
                                 <input type="checkbox" name="souvenir"/><label>Se souvenir de moi </label>
-                         </div>    
-                         
+                         </div>
+
                          <div class="submit">
                                 <input type="submit" value="Connexion"/>
                          </div>
@@ -56,7 +55,7 @@
         </div>';
 
        include './includes/footer.php';
-  			
+
   		echo '</body>
   	</html>';
   }

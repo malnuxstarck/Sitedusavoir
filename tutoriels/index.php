@@ -8,11 +8,10 @@ include("../includes/menu.php");
 
 ?>
 
-<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Tuto's</a></li>
-         </ul>
-  </div>
+<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./index.php">Tuto's</a></li>
+</ul>
 
  <div class="page">
 

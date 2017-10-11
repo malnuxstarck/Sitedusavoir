@@ -1,20 +1,20 @@
 .alert {
-	&-success, &-danger {
-		width: auto;
-		margin-top: 10px;
-		padding: 15px;
-		border: 1px solid transparent;
-		border-radius: 5px;
-		border-radius: 3px;
-		color: white;
-		font-family: Arial;
-	}
+  &-success, &-danger {
+    width: auto;
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    border-radius: 3px;
+    color: white;
+    font-family: Arial;
+  }
 
-	&-success {
-		background-color: #4caf50;
-	}
+  &-success {
+    background-color: #4caf50;
+  }
 
-	&-danger {
-		background-color: #e51c23;
-	}
+  &-danger {
+    background-color: #e51c23;
+  }
 }

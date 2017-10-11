@@ -1,29 +1,29 @@
 .nouveau-sujet {
-	width: 180px;
-	height: 45px;
-	margin: 30px;
-	background: #1bbc9b;
+  width: 180px;
+  height: 45px;
+  margin: 30px;
+  background: #1bbc9b;
 
-	&:hover {
-		background: #28a88e;
-	}
+  &:hover {
+    background: #28a88e;
+  }
 
-	a, img {
-		display: inline-block;
-		color: white;
-		vertical-align: top;
-	}
+  a, img {
+    display: inline-block;
+    color: white;
+    vertical-align: top;
+  }
 
-	a {
-		height: 44px;
-		margin-left: 5px;
-		font-family: Gadugi;
-		font-size: 16px;
-		line-height: 43px;
-		text-align: center;
-	}
+  a {
+    height: 44px;
+    margin-left: 5px;
+    font-family: Gadugi;
+    font-size: 16px;
+    line-height: 43px;
+    text-align: center;
+  }
 
-	img {
-		padding: 12.5px;
-	}
+  img {
+    padding: 12.5px;
+  }
 }

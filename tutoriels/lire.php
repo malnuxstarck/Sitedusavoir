@@ -22,13 +22,13 @@ if(empty($infosTuto))
 
 $tuto = new Contenu($infosTuto);
 
-echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Tuto\'s</a></li><img class="fleche" src="../images/icones/fleche.png" /> <li> <span style="color:black">'.$tuto->titre().' </span></li>
-         </ul>
-  </div>
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./index.php">Tuto\'s</a></li>
+  <li><span>'.$tuto->titre().'</span></li>
+</ul>
 
-  <div class="page">';
+<div class="page">';
 
 
 echo '<div class="liretuto">

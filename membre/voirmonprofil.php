@@ -13,11 +13,10 @@ if( $id == 0)
    header('Location:../index.php');
 }
 
-echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li>'.$titre.'</li>
-         </ul>
-  </div>';
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li>'.$titre.'</li>
+</ul>';
 
 
 $idGet = (int)$_GET['id'];

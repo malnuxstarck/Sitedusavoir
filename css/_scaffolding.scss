@@ -1,48 +1,52 @@
+* {
+  box-sizing: border-box;
+}
+
 body, html {
-	width: 100%;
-	margin: 0;
-	padding: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 h1 a {
-	display: block;
-	color: white;
-	font-family: 'Lucida Sans Unicode';
+  display: block;
+  color: white;
+  font-family: 'Lucida Sans Unicode';
 }
 
 ul {
-	display: block;
-	padding-right: 10px;
-	padding-left: 10px;
-	list-style-type: none;
+  display: block;
+  padding-right: 10px;
+  padding-left: 10px;
+  list-style-type: none;
 }
 
 li > a {
-	display: block;
-	width: 102px;
-	height: 40px;
-	color: white;
-	font-family: Gadugi;
-	font-size: 16px;
+  display: block;
+  width: 102px;
+  height: 40px;
+  color: white;
+  font-family: Gadugi;
+  font-size: 16px;
 }
 
 fieldset {
-	width: 610px;
-	margin-top: 20px;
-	border: 1px solid #1bbc9b;
+  width: 610px;
+  margin-top: 20px;
+  border: 1px solid #1bbc9b;
 }
 
 legend {
-	width: 120px;
-	height: 50px;
-	margin-bottom: 10px;
-	border: 1px solid #1bbc9b;
-	font-family: 'Gadugi';
-	line-height: 50px;
-	text-align: center;
+  width: 120px;
+  height: 50px;
+  margin-bottom: 10px;
+  border: 1px solid #1bbc9b;
+  font-family: 'Gadugi';
+  line-height: 50px;
+  text-align: center;
 }
 
 a {
-	text-decoration: none;
-	cursor: pointer;
+  text-decoration: none;
+  cursor: pointer;
 }

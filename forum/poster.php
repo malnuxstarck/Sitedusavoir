@@ -14,7 +14,7 @@ $action = (isset($_GET['action']))?htmlspecialchars($_GET['action']):'';
 
 //Il faut être connecté pour poster !
 
-if ($id == 0) 
+if ($id == 0)
 	erreur(ManagerMembre::ERR_IS_CO);
 
 //Si on veut poster un nouveau topic, la variable f se trouve dans l'url,
@@ -27,20 +27,15 @@ if(isset($_GET['f'])){
 	$donneesForum = $managerForum->infosForum($idForum);
 	$forum = new Forum($donneesForum);
 
-	echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li>
-            <img class="fleche" src="../images/icones/fleche.png"/>
-            <li><a href="./index.php">Forum</a></li>
-            <img class="fleche" src="../images/icones/fleche.png" /> 
-            <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a></li>
-            <img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Nouveau topic</span>
-            </li>
-         </ul>
-       </div>
+	echo '<ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="./index.php">Forum</a></li>
+    <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a></li>
+    <li><span>Nouveau topic</span></li>
+  </ul>
 
-       <div class="page">';
-}   
+  <div class="page">';
+}
 
 
    //Sinon c'est un nouveau message, on a la variable t et
@@ -57,24 +52,15 @@ elseif (isset($_GET['t']))
 	$forum = new Forum($donneesTopic);
 	$forum->setId($topic->forum());
 
-	echo '<div class="fildariane">
-	           <ul>
-	               <li> <a href="../index.php">Accueil</a></li>
-	               <img class="fleche" src="../images/icones/fleche.png"/>
+	echo '<ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="./index.php">Forum</a></li>
+    <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a></li>
+    <li><a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a></li>
+    <li><span>Répondre</span></li>
+  </ul>
 
-	               <li>
-	                    <a href="./index.php">Forum</a><li> <img class="fleche" src="../images/icones/fleche.png"/> <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
-	               </li>
-	                    <img class="fleche" src="../images/icones/fleche.png"/>
-
-	               <li>
-	                  <a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
-	               </li>
-	                <img class="fleche" src="../images/icones/fleche.png"/>
-	                <li><span style="color:black;">Répondre</span></li>
-	           </ul>     
-	     </div>
-	     <div class="page">';
+  <div class="page">';
 }
 
     //Enfin sinon c'est au sujet de la modération(on verra plus tard en détail)
@@ -93,25 +79,17 @@ elseif (isset ($_GET['p']))
     $forum = new Forum($donneesPost);
     $forum->setID($post->forum());
 
-    $topic = new Topic($donneesPost); 
+    $topic = new Topic($donneesPost);
 
-	echo '<div class="fildariane">
-	           <li>
-	              <a href="./index.php">Forum</a>
-	           </li>
-	           <img class="fleche" src="../images/icones/fleche.png"/>
-	           <li>
-	                 <a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
-	           </li>
-	           <img class="fleche" src="../images/icones/fleche.png"/>
-               <li> 
-                    <a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
-               </li>
-	          <img class="fleche" src="../images/icones/fleche.png"/>
-	               <li><span style="color:black;">Modérer un message</span>
-	          <li>
-	    </div>
-	    <div class="page">';
+	echo '<ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="./index.php">Forum</a></li>
+    <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a></li>
+    <li><a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a></li>
+    <li><span>Modérer un message</span><li>
+  </ul>
+
+  <div class="page">';
 }
 
 
@@ -121,16 +99,16 @@ switch($action)
 		 //Premier cas : on souhaite répondre
 		//Ici, on affiche le formulaire de réponse
 		?>
-		
+
 		<h1 class="titre">Poster une réponse</h1>
 
 		<div class="formulaire">
 
 			<form method="post" name="formulaire"  action="postok.php?action=repondre&amp;t=<?php echo $topic->id() ?>">
-				
+
 
 				    <?php include "../includes/miseenforme.php"; ?>
-				
+
 				<fieldset>
 				      <legend>Message</legend>
 
@@ -160,7 +138,7 @@ switch($action)
 
      <?php
 
-    
+
     case "nouveautopic":
 
 			?>
@@ -178,7 +156,7 @@ switch($action)
 							<div class="input">
 		                       <label for="titre"></label>
 							   <input type="text"  name="titre" placeholder="Votre titre" required />
-							</div>   
+							</div>
 					</fieldset>
 
 					<?php include "../includes/miseenforme.php"; ?>
@@ -188,7 +166,7 @@ switch($action)
 
                           <div class="textarea">
 					          <textarea  name="texte" required ></textarea>
-					       </div>   
+					       </div>
 
 					<?php
 
@@ -207,8 +185,8 @@ switch($action)
 					</div>
 					<div class="submit submit-tuto">
 					   <input type="reset" name ="Effacer" value ="Effacer" />
-					</div> 
-					</fieldset>  
+					</div>
+					</fieldset>
 
 			</form>
 		</div>
@@ -218,7 +196,7 @@ switch($action)
     break;
 
 
-    case "edit": 
+    case "edit":
 
         //Si on veut éditer le post
         //On récupère la valeur de p
@@ -250,9 +228,9 @@ switch($action)
 		<div class="formulaire">
 			<form method="post" name="formulaire" action="postok.php?action=edit&amp;p=<?php echo $post->id(); ?>">
 
-		    
+
 			    <?php include "../includes/miseenforme.php"; ?>
-		     
+
 			<fieldset>
 			    <legend>Message</legend>
 
@@ -263,11 +241,11 @@ switch($action)
 			     <div class="submit submit-tuto">
 			       <input type="submit" value="Editer !" />
 			    </div>
-			   <div class="submit submit-tuto">      
+			   <div class="submit submit-tuto">
 			       <input type="reset" value = "Effacer"/>
-			  </div>  
+			  </div>
 			</fieldset>
-			
+
 			</form>
 		</div>
 
@@ -279,7 +257,7 @@ switch($action)
 
     break;
 
-	case "delete": 
+	case "delete":
 
 	    //Si on veut supprimer le post
 		//On récupère la valeur de p
@@ -318,7 +296,7 @@ switch($action)
 			    </p>';
 		}
 
-		
+
 	break;
 
 

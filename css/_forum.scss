@@ -1,149 +1,149 @@
 
 .categorie-nom {
-	display: block;
-	height: 50px;
-	margin-top: 0;
-	background: #2b8bad;
-	font-family: Euphemia;
+  display: block;
+  height: 50px;
+  margin-top: 0;
+  background: #2b8bad;
+  font-family: Euphemia;
 }
 
 .categorie-nom span {
-	display: inline-block;
-	height: 50px;
-	margin-left: 5px;
-	color: white;
-	font-size: 23px;
-	line-height: 45px;
-	text-align: center;
-	vertical-align: top;
+  display: inline-block;
+  height: 50px;
+  margin-left: 5px;
+  color: white;
+  font-size: 23px;
+  line-height: 45px;
+  text-align: center;
+  vertical-align: top;
 }
 
 .cat {
-	display: block;
-	margin: 4px;
+  display: block;
+  margin: 4px;
 }
 .listesforums p {
-	display: inline-block;
-	height: 69px;
-	margin-top: 0;
-	vertical-align: top;
+  display: inline-block;
+  height: 69px;
+  margin-top: 0;
+  vertical-align: top;
 }
 
 .listesforums p span {
-	display: block;
-	height: 31px;
+  display: block;
+  height: 31px;
 }
 
 .forums {
-	display: inline-block;
-	width: 850px;
-	margin-right: 10px;
-	vertical-align: top;
+  display: inline-block;
+  width: 850px;
+  margin-right: 10px;
+  vertical-align: top;
 }
 .forums span {
-	font-family: Gadugi;
+  font-family: Gadugi;
 }
 
 .pageforum {
-	width: 1150px;
+  width: 1150px;
 }
 
 .forum ul {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 .forum li {
-	height: 70px;
-	margin-top: 15px;
-	background: #edebeb;
+  height: 70px;
+  margin-top: 15px;
+  background: #edebeb;
 }
 
 .forumlogo {
-	width: 35px;
-	margin-left: 5px;
+  width: 35px;
+  margin-left: 5px;
 }
 
 .forumlogo img {
-	display: block;
-	margin-top: 8px;
-	margin-left: 3px;
+  display: block;
+  margin-top: 8px;
+  margin-left: 3px;
 }
 
 .infosforum, .nombremessages, .derniermessagef, .nombresujets {
-	margin-top: 1px;
-	margin-left: 5px;
+  margin-top: 1px;
+  margin-left: 5px;
 }
 
 .infosforum span {
-	padding-right: 5px;
-	padding-left: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 .infosforum {
-	width: 360px;
+  width: 360px;
 }
 
 .infosforum span:nth-child(2) {
-	overflow: hidden;
-	color: #217998;
+  overflow: hidden;
+  color: #217998;
 }
 
 .infosforum span:nth-child(1) a {
-	display: block;
-	color: #217998;
-	font-family: Euphemia;
-	font-size: 20px;
-	font-weight: bold;
+  display: block;
+  color: #217998;
+  font-family: Euphemia;
+  font-size: 20px;
+  font-weight: bold;
 }
 .nombremessages, .derniermessage, .nombresujets {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 
 
 .nombremessages, .nombresujets {
-	color: #217998;
-	text-align: center;
+  color: #217998;
+  text-align: center;
 }
 
 .nombremessages, .nombresujets {
-	width: 60px;
-	font-weight: bold;
+  width: 60px;
+  font-weight: bold;
 }
 
 .derniermessage span:nth-child(1), .derniermessagef span:nth-child(1) {
-	color: #247997;
-	font-size: 20px;
+  color: #247997;
+  font-size: 20px;
 }
 
 .infossujet span:nth-child(2) a, .derniermessage span:nth-child(2) a, .derniermessagef a {
-	color: #1bbc9b;
+  color: #1bbc9b;
 }
 .derniermessagef {
-	width: 265px;
+  width: 265px;
 }
 
 .statistique {
-	display: inline-block;
-	width: 250px;
-	font-family: Euphemia;
-	vertical-align: top;
+  display: inline-block;
+  width: 250px;
+  font-family: Euphemia;
+  vertical-align: top;
 }
 
 .stat-entete {
-	display: block;
-	width: 250px;
-	height: 50px;
-	margin-top: 16px;
-	background: #2b8bad;
-	color: white;
-	font-family: Gadugi;
-	font-size: 18px;
-	line-height: 50px;
-	text-align: center;
+  display: block;
+  width: 250px;
+  height: 50px;
+  margin-top: 16px;
+  background: #2b8bad;
+  color: white;
+  font-family: Gadugi;
+  font-size: 18px;
+  line-height: 50px;
+  text-align: center;
 }
 
 .statistique > div {
-	padding: 5px;
-	padding-top: 0;
-	background: #edebeb;
+  padding: 5px;
+  padding-top: 0;
+  background: #edebeb;
 }

@@ -33,27 +33,13 @@
 	$nombreDeMessagesParPage = 25;
 	$nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 
-		echo '<div class="fildariane">
-		          <ul>
-				       <li> 
-				           <a href="../index.php">Accueil</a>
-				       </li>
-			             <img class="fleche" src="../images/icones/fleche.png"/>
+  echo '<ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="./index.php">Forum</a></li>
+    <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a></li>
+  </ul>
 
-				          <li>
-				             <a href="./index.php">Forum</a>
-				          <li>
-
-				          <img class="fleche" src="../images/icones/fleche.png"/>
-
-				          <li>
-				               <a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
-				          <li>
-		        </ul>
-
-		     </div>
-
-	      <div class="page">';
+  <div class="page">';
 
 
 	      echo '<h1 class="titre">'.stripslashes(htmlspecialchars($forum->name())).'</h1><br/>';
@@ -70,7 +56,7 @@
 
 	//Le titre du forum
 
-	
+
 	//Et le bouton pour poster
 
 
@@ -84,7 +70,7 @@
 
 	$jointures = $managerForum->ajoutJointuresViews($id);
 
-    // cette grosse fonction prends plusieurs fonctions , les jointures pour la table de vus , l'id du forum , l'id du user , le type ('Annonce' ou 'message') , puis le premier message et le nombres :D 
+    // cette grosse fonction prends plusieurs fonctions , les jointures pour la table de vus , l'id du forum , l'id du user , le type ('Annonce' ou 'message') , puis le premier message et le nombres :D
 
 	$toutInfosSurCeForum = $managerForum->obtenirToutSurCeForum($jointures , $forum->id() ,$id, 'Annonce' ,$premierMessageAafficher , $nombreDeMessagesParPage);
 
@@ -93,7 +79,7 @@
 	{
 
 		foreach ($toutInfosSurCeForum as $ligneForum) {
-		
+
 		    $topic_view = new TopicView($ligneForum);
 		    $topic = new Topic($ligneForum);
 		    $createurTopic = new Membre($ligneForum);
@@ -106,7 +92,7 @@
 
 		    $post = new Post($ligneForum);
 		    $post->setId($ligneForum['idPost']);
-		    
+
 
 		    //Pour chaque topic :
 		    //Si le topic est une annonce on l'affiche en haut
@@ -184,9 +170,9 @@
 
 
 			echo '<p class="derniermessage">
-			       <span> 
-			           Dernier message 
-			        </span>   
+			       <span>
+			           Dernier message
+			        </span>
 			           <span> Par <a class="at" href="./voirprofil.php?m='.$post->createur().'&amp;action=consulter">'.stripslashes(htmlspecialchars($posteur->pseudo())).'</a>
 			         A <a  href="./voirtopic.php?t='.$topic->id().'&amp;page='.$page.'#p_'.$post->id().'">'.$post->posttime().'</a>
 			    </span>
@@ -206,7 +192,7 @@
 	{
 
 		foreach ($toutInfosSurCeForum as $ligneForum) {
-		
+
 		    $topic_view = new TopicView($ligneForum);
 		    $topic = new Topic($ligneForum);
 		    $createurTopic = new Membre($ligneForum);
@@ -219,7 +205,7 @@
 
 		    $post = new Post($ligneForum);
 		    $post->setId($ligneForum['idPost']);
-		    
+
 
 		    //Pour chaque topic :
 		    //Si le topic est une annonce on l'affiche en haut
@@ -297,16 +283,16 @@
 
 
 			echo '<p class="derniermessage">
-			       <span> 
-			           Dernier message 
-			        </span>   
+			       <span>
+			           Dernier message
+			        </span>
 			           <span> Par <a class="at" href="./voirprofil.php?m='.$post->createur().'&amp;action=consulter">'.stripslashes(htmlspecialchars($posteur->pseudo())).'</a>
 			         A <a  href="./voirtopic.php?t='.$topic->id().'&amp;page='.$page.'#p_'.$post->id().'">'.$post->posttime().'</a>
 			    </span>
 			    </p>
 			 </div>';
 		}
-	}	
+	}
     else
     {
         echo'<p>Ce forum ne contient aucun sujet actuellement</p>';

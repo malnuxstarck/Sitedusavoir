@@ -13,26 +13,25 @@ include("../includes/menu.php");
 
 		$action = isset($_GET['action'])?htmlspecialchars($_GET['action']):'';
 
-		
 
-		if ($id==0) 
+
+		if ($id==0)
 			erreur(Membre::ERR_IS_CO);
-		
+
 
 		switch($action)
 
 		{
 			case "add":
 
-		             echo '<div class="fildariane">
-		               <ul>
-		                        <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./amis.php">Gestion des amis</a>
-		                        </li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Ajouter un ami </span></li>
-		             </ul>
-               </div>
+        echo '<ul class="fildariane">
+        <li><a href="../index.php">Accueil</a></li>
+        <li><a href="./amis.php">Gestion des amis</a></li>
+        <li><span>Ajouter un ami</span></li>
+        </ul>
 
-               <div class="page">';
-                
+        <div class="page">';
+
                 echo '<h1 class="titre">Gestion des amis</h1><br /><br />';
 
 
@@ -70,15 +69,14 @@ include("../includes/menu.php");
 
 			case "check":
 
-                     echo '<div class="fildariane">
-		               <ul>
-		                        <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./amis.php">Gestion des amis</a>
-		                        </li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Confirmer demande</span></li>
-		             </ul>
-               </div>
+        echo '<ul class="fildariane">
+          <li><a href="../index.php">Accueil</a></li>
+          <li><a href="./amis.php">Gestion des amis</a></li>
+          <li><span>Confirmer demande</span></li>
+        </ul>
 
-               <div class="page">';
-                
+        <div class="page">';
+
                 echo '<h1 class="titre">Gestion des amis</h1><br /><br />';
 
 
@@ -168,21 +166,20 @@ include("../includes/menu.php");
 				break;
 
 			default:
-                   
+
                    $managerAmi = new ManagerAmi($bdd);
                    $donnees = $managerAmi->recupereTousMesAmis($id);
                    $lesPersonnesEnLignes = $managerWhoIsOnline->quiSontEnLigne();
                    $managerMembre = new ManagerMembre($bdd);
 
-                echo '<div class="fildariane">
-		               <ul>
-		                        <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./amis.php">Gestion des amis</a>
-		                        </li><img class="fleche" src="../images/icones/fleche.png"/><li><span style="color:black;">Listes des amis </span></li>
-		             </ul>
-               </div>
+        echo '<ul class="fildariane">
+          <li><a href="../index.php">Accueil</a></li>
+          <li><a href="./amis.php">Gestion des amis</a></li>
+          <li><span>Listes des amis</span></li>
+        </ul>
 
                <div class="page">';
-                
+
                 echo '<h1 class="titre">Gestion des amis</h1><br /><br />';
 
 

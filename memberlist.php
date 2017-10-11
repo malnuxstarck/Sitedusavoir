@@ -33,26 +33,17 @@ include("includes/menu.php");
   $MembreParPage = 25;
   $NombreDePages = ceil($total / $MembreParPage);
 
-  
-echo '<div class="fildariane">
-              <ul>
-               <li> 
-                   <a href="../index.php">Accueil</a>
-               </li>
-                   <img class="fleche" src="../images/icones/fleche.png"/>
 
-                  <li>
-                     <a href="./memberlist.php">Listes des membres</a>
-                  <li>
-            </ul>
+  echo '<ul class="fildariane">
+    <li><a href="../index.php">Accueil</a></li>
+    <li><a href="./memberlist.php">Listes des membres</a></li>
+  </ul>
 
-         </div>
-
-        <div class="page">';
+  <div class="page">';
 
   //Nombre de pages
   $page = (isset($_GET['page']))?intval($_GET['page']):1;
-  
+
   //On affiche les pages 1-2-3, etc.
   echo '<p class="pagination">';
 

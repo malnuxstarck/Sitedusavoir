@@ -24,7 +24,7 @@ if(empty($donneesTopic)) // si on ne trouve rien on redirige sur le premier topi
      $_SESSION["flash"]["success"] = "Le topic n'existe pas ou a été supprimer ";
      header('Location:./index.php');
      exit();
-}     
+}
 
 
 $topic = new Topic($donneesTopic);
@@ -52,9 +52,9 @@ if($id != 0 AND $topic->id() != NULL)
 {
     $nbr_vu = $managerTopicView->nombreVusTopicDuMembre($id , $topic->id());
 
-    $topic_view = new TopicView(array('tv_id' => $id , 
-                                          'tv_forum_id' => $topic->forum() , 
-                                          'tv_topic_id' => $topic->id() , 
+    $topic_view = new TopicView(array('tv_id' => $id ,
+                                          'tv_forum_id' => $topic->forum() ,
+                                          'tv_topic_id' => $topic->id() ,
                                            'tv_poste' => '0',
                                            'tv_post_id' => $topic->last_post()
                                          ));
@@ -63,7 +63,7 @@ if($id != 0 AND $topic->id() != NULL)
     {
         $managerTopicView->nouvellevu($topic_view);
     }
-    else 
+    else
     //Sinon, on met simplement à jour
     {
         $managerTopicView->miseAjoursVu($topic_view);
@@ -71,29 +71,14 @@ if($id != 0 AND $topic->id() != NULL)
 
 }
 
-echo '<div class="fildariane">
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./index.php">Forum</a></li>
+  <li><a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a></li>
+  <li><a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a></li>
+</ul>
 
-         <ul>
-         <li>
-              <a href="../index.php"> Accueil </a>
-        </li> 
-              <img class="fleche" src="../images/icones/fleche.png"/>
-            <li>
-                <a href="./index.php">Forum</a>
-            </li>
-
-            <img class="fleche" src="../images/icones/fleche.png"/>
-
-           <li>
-               <a href="./voirforum.php?f='.$forum->id().'">'.stripslashes(htmlspecialchars($forum->name())).'</a>
-           </li>  <img class="fleche" src="../images/icones/fleche.png"/>   
-           <li>
-            <a href="./voirtopic.php?t='.$topic->id().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
-            </li>
-         </ul>
-     <div>
-
- <div class="page">';
+<div class="page">';
 
       echo '<h1 class="titre">'.stripslashes(htmlspecialchars($topic->titre())).'</h1><br/><br />';
 
@@ -131,8 +116,8 @@ if($id == $topic->createur())
    <img src="../images/icones/mail.png"/><a href="./postok.php?action=resoudre&amp;t='.$topic->id().'">Passer en resolu</a>
    </p>';
 }
- 
- 
+
+
 if (Membre::verif_auth($forum->auth_topic()))
 {
     echo'<p class="nouveau-sujet" style="display:inline-block;" title="Poster un nouveau topic">
@@ -161,7 +146,7 @@ else
 
       //On commence à afficher le pseudo du créateur du message :
       //On vérifie les droits du membre
-      
+
       echo'<div class="lesujet">
 
                 <div class="membresujet">
@@ -184,7 +169,7 @@ else
                     /* Si on est l'auteur du message, on affiche des liens pour
                     Modérer celui-ci.
                     */
-                    
+
                     if ($id == $post->createur() OR Membre::verif_auth(MODO))
                     {
 
@@ -213,7 +198,7 @@ else
 
                 </div>
             </div>';
-    } 
+    }
 
 //Fin de la boucle ! \o/
 
@@ -240,11 +225,11 @@ else
                                     echo'<a href="./postok.php?action=lock&amp;t='.$topic->id().'">
                                     <img src="../images/icones/ver.png" alt="verrouiller" title="Verrouiller ce sujet" /><span>Verrouiller</span></a>';
                                   }
-                      
+
                    echo '</li>
 
                    <li>
-                       <a href="moderer.php?action=autoreponse&f='.$forum->id().'&t='.$topic->id().'"><img src="../images/icones/autorep.png"/><span>Autoreponse</span></a> 
+                       <a href="moderer.php?action=autoreponse&f='.$forum->id().'&t='.$topic->id().'"><img src="../images/icones/autorep.png"/><span>Autoreponse</span></a>
                   </li>
                </ul>
 
@@ -252,7 +237,7 @@ else
        }
 
     echo '<p class="pagination">';
-           paginationListe($page ,$nombreDePages, 'voirtopic.php?t='.$topic->id()); 
+           paginationListe($page ,$nombreDePages, 'voirtopic.php?t='.$topic->id());
     echo'</p>';
 
     if (Membre::verif_auth($forum->auth_post()))
@@ -262,8 +247,8 @@ else
        <img src="../images/icones/mail.png"/><a href="./poster.php?action=repondre&amp;t='.$topic->id().'">Repondre</a>
        </p>';
     }
-     
-     
+
+
     if (Membre::verif_auth($forum->auth_topic()))
     {
     //On affiche l'image nouveau topic

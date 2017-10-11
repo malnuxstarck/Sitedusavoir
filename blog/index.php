@@ -8,13 +8,12 @@ include("../includes/menu.php");
 
 ?>
 
-<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li>
-         </ul>
-  </div>
+<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./index.php">Blog</a></li>
+</ul>
 
- <div class="page">
+<div class="page">
 
 <h2 class="titre" > Listes des Articles </h2>
 

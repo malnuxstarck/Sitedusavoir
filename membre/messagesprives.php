@@ -20,25 +20,17 @@
 			{
 
 
-				case "consulter": 
+				case "consulter":
 
 				//Si on veut lire un message
 
-					echo '<div class="fildariane">
-									         <ul>
-									              <li>
-									                <a href="../index.php">Accueil</a>
-									              </li>
-									                 <img class="fleche" src="../images/icones/fleche.png"/>
-									              <li>
-									                  <a href="./messagesprives.php">Messages prives</a>
-									              </li>
-									                 <img class="fleche" src="../images/icones/fleche.png"/>
-									              <li> Consulter message </li>  
-									         </ul>
-									  </div>';
+					echo '<ul class="fildariane">
+            <li><a href="../index.php">Accueil</a></li>
+            <li><a href="./messagesprives.php">Messages prives</a></li>
+            <li>Consulter message</li>
+          </ul>';
 
-					$idMessage = (int) $_GET['id']; 
+					$idMessage = (int) $_GET['id'];
 
 					//On récupère la valeur de l'id
 
@@ -57,7 +49,7 @@
 
 					// Attention ! Seul le receveur du mp peut le lire !
 
-					if ($id != $leMessage->receveur()) 
+					if ($id != $leMessage->receveur())
 						erreur(ERR_WRONG_USER);
 
 					//bouton de réponse
@@ -115,25 +107,17 @@
 
 					break; //La fin !
 
-				case "repondre": 
+				case "repondre":
 
 				//On veut répondre
 
-					echo '<div class="fildariane">
-									         <ul>
-									              <li>
-									                <a href="../index.php">Accueil</a>
-									              </li>
-									                 <img class="fleche" src="../images/icones/fleche.png"/>
-									              <li>
-									                  <a href="./messagesprives.php">Messages prives</a>
-									              </li>
-									                 <img class="fleche" src="../images/icones/fleche.png"/>
-									              <li><span style="color:black;"> Repondre a un message </span></li>  
-									         </ul>
-									  </div>
+        echo '<ul class="fildariane">
+          <li><a href="../index.php">Accueil</a></li>
+          <li><a href="./messagesprives.php">Messages prives</a></li>
+          <li><span>Repondre a un message</span></li>
+        </ul>
 
-						<div class="page">';
+        <div class="page">';
 
 					echo '<h1 class="titre">Répondre à un message privé</h1>';
 
@@ -147,7 +131,7 @@
 									<div class="input">
 										    <label for="titre"><span>Titre</span></label>
 										    <input type="text" name="titre" />
-								    </div>		    
+								    </div>
 											<?php include "../includes/miseenforme.php"; ?>
 
 									<fieldset>
@@ -164,7 +148,7 @@
 											<div class="submit submit-tuto">
 											     <input type="reset" name="Effacer" value="Effacer"/>
 											</div>
-										
+
 									</fieldset>
 
 							</form>
@@ -175,23 +159,15 @@
 					 break;
 
 
-				case "nouveau": 
+				case "nouveau":
 				//Nouveau mp
 
-					echo '<div class="fildariane">
-									         <ul>
-									              <li>
-									                <a href="../index.php">Accueil</a>
-									              </li>
-									                 <img class="fleche" src="../images/icones/fleche.png"/>
-									              <li>
-									                  <a href="./messagesprives.php">Messages prives</a>
-									              </li>
-									                 <img class="fleche" src="../images/icones/fleche.png"/>
-									              <li> Consulter message </li>  
-									         </ul>
-									  </div>
-							<div class="page">';
+					echo '<ul class="fildariane">
+            <li><a href="../index.php">Accueil</a></li>
+            <li><a href="./messagesprives.php">Messages prives</a></li>
+            <li>Consulter message</li>
+          </ul>
+          <div class="page">';
 
 					echo '<h1 class="titre">Nouveau message privé</h1><br /><br />';
 
@@ -206,7 +182,7 @@
 											<label for="to"><span> A :</span></label>
 											<input type="text" name="to" />
 									</div>
-									
+
 									<div class="input">
 
 											<label for="titre"><span>Titre</span></label>
@@ -216,38 +192,37 @@
                                      	<?php include "../includes/miseenforme.php"; ?>
 
                                     <fieldset>
-                                     
+
                                      	<legend>Message</legend>
 	                                    <div class="textarea">
 
 												<textarea  name="texte"></textarea>
-									    </div>			
-										
+									    </div>
+
 										<div class="submit submit-tuto">
 												<input type="submit" name="submit" value="Envoyer" />
-										</div>	
+										</div>
 
-										<div class="submit submit-tuto">	
+										<div class="submit submit-tuto">
 
 												<input type="reset" name="Effacer" value="Effacer" />
 										</div>
-							   </fieldset>		
+							   </fieldset>
 							</form>
-					   </div>		
+					   </div>
 
 					<?php
 					 break;
 					//Si rien n'est demandé ou s'il y a une erreur dans l'url
 					//On affiche la boite de mp.
-				default: 
+				default:
 
-					echo '<div class="fildariane">
-					         <ul>
-					            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./messagesprives.php">Messages prives </a></li>
-					         </ul>
-                          </div>
+					echo '<ul class="fildariane">
+            <li><a href="../index.php">Accueil</a></li>
+            <li><a href="./messagesprives.php">Messages prives</a></li>
+          </ul>
 
-                            <div class="page">';
+          <div class="page">';
 
 					echo '<h1 class="titre">Messagerie Privée</h1><br />';
 
@@ -266,7 +241,7 @@
 
 							<tr>
 									<th>
-										
+
 									</th>
 
 									<th class="mp_titre">
@@ -338,11 +313,11 @@
 											    </td>
 
 									    </tr>';
-							} 
+							}
 
 							//Fin de la boucle
 
-			
+
 
 					  echo '</table>';
 

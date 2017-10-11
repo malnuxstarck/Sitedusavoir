@@ -22,13 +22,12 @@ if(empty($infosArticle))
 
 $article = new Contenu($infosArticle);
 
-echo '<div class="fildariane">
-         <ul>
-            <li><a href="../index.php">Accueil</a></li><img class="fleche" src="../images/icones/fleche.png"/><li><a href="./index.php">Blog</a></li><img class="fleche" src="../images/icones/fleche.png" /> <li> <span style="color:black">'.$article->titre().' </span></li>
-         </ul>
-  </div>
-
-  <div class="page">';
+echo '<ul class="fildariane">
+  <li><a href="../index.php">Accueil</a></li>
+  <li><a href="./index.php">Blog</a></li>
+  <li><span>'.$article->titre().'</span></li>
+</ul>
+<div class="page">';
 
 
 echo '<div class="liretuto">
