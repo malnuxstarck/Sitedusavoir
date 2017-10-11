@@ -4,7 +4,7 @@
 
 class ManagerMembre
 {
-	// Les constantes de la classe 
+	// Les constantes de la classe
 
     const ERR_IS_CO =  'Vous etes deja connecter';
     const ERR_IS_NOT_CO =  'Vous devez d\'abord vous connecter ';
@@ -20,17 +20,17 @@ class ManagerMembre
 	{
 		$this->setDb($db) ;
 	}
-	
+
 	public function setDb($db)
 	{
 		$this->_db = $db ;
 	}
- 
+
 	public function pseudoLibre($pseudo)
 	{
-		$req = $this->_db->prepare("SELECT COUNT(*) 
-			                 AS nbr 
-			                 FROM membres 
+		$req = $this->_db->prepare("SELECT COUNT(*)
+			                 AS nbr
+			                 FROM membres
 			                 WHERE pseudo = :pseudo");
 		$req->bindValue(":pseudo",$pseudo,PDO::PARAM_STR);
 		$req->execute();
@@ -67,7 +67,7 @@ class ManagerMembre
         	$this->_errors["mail1"] = " Votre email est soit deja prise , soit ne respecte pas le format ";
         }
 
-        
+
 	}
 
     public function verifyPassword(Membre $membreAInscrire)
@@ -104,7 +104,7 @@ class ManagerMembre
 		    $maxwidth = 500; //Largeur de l'image
 		    $maxheight = 500; //Longueur de l'image
 
-		    $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png', 'bmp' ); 
+		    $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png', 'bmp' );
 
 		    //Liste des extensions valides
 
@@ -146,7 +146,7 @@ class ManagerMembre
 
     public function inscription(Membre $membreA)
     {
-    	$query = $this->_db->prepare("INSERT INTO membres(pseudo,password, email, avatar, inscrit,token) 
+    	$query = $this->_db->prepare("INSERT INTO membres(pseudo,password, email, avatar, inscrit,token)
                                       VALUES(:pseudo, :pass, :email , :nomavatar, NULL, :token)");
     	$query->execute(array("pseudo" => $membreA->pseudo(),
     		                  "pass"   => $membreA->password(),
@@ -157,10 +157,10 @@ class ManagerMembre
 
     	$id = $this->_db->lastInsertId();
     	$token = $membreA->token();
-    	
+
     	$membreA->setID($id);
 
-    	$this->envoyerMail($membreA->email() , "Inscription sur le Site du Savoir","Cliquez ou copier le lien dans votre navigateur https://.'$_SERVER["SERVER_NAME"].'/confirm.php?id=$id&token=$token");
+    	$this->envoyerMail($membreA->email() , "Inscription sur le Site du Savoir", "Cliquez ou copier le lien dans votre navigateur https://".$_SERVER['SERVER_NAME']."/confirm.php?id=$id&token=$token");
 
     }
 
@@ -182,17 +182,17 @@ class ManagerMembre
     	  {
     	  	    $query = $this->_db->prepare('
     	  	    	                          SELECT id,pseudo,password,siteweb,email,signature,avatar,localisation,token,cookiee,reset,reset_at,rang,posts,DATE_FORMAT(inscrit ,\'le %d-%m-%Y à %H h : %i min : %s secs\') AS inscrit , DATE_FORMAT(visite ,\'le %d-%m-%Y à %Hh:%imin:%s secs\') AS visite
-    	  	    	                          FROM membres 
+    	  	    	                          FROM membres
     	  	    	                          WHERE pseudo = :info AND inscrit '.$dateInscription);
 
     		    $query->bindValue(':info',$info,PDO::PARAM_STR);
-    		    
+
           }
           else
           {
           	    $query = $this->_db->prepare('
           	    	                          SELECT id,pseudo,password,siteweb,email,avatar,signature,localisation,token,cookiee,reset,reset_at,rang,posts,DATE_FORMAT(inscrit ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS inscrit , DATE_FORMAT(visite ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS visite
-    	  	    	                          FROM membres  
+    	  	    	                          FROM membres
     	  	    	                          WHERE id = :info AND inscrit '.$dateInscription);
 
     		    $query->bindValue(':info',$info,PDO::PARAM_INT);
@@ -206,7 +206,7 @@ class ManagerMembre
             if(!empty($donnees))
                     return $donnees;
             else
-                return array();    
+                return array();
     }
 
     /*
@@ -235,16 +235,16 @@ class ManagerMembre
 
     	$query->closeCursor();
     }
-    
+
     /*
     *@function confrirmerCompte
     **@param Membre
     ** Permet de confirmer un compte d'utilisateur
     */
-  
+
     public function confirmerCompte(Membre $membre)
     {
-        $query = $this->_db->prepare('UPDATE membres SET visite = NOW() ,inscrit = NOW() ,token = NULL 
+        $query = $this->_db->prepare('UPDATE membres SET visite = NOW() ,inscrit = NOW() ,token = NULL
         	                          WHERE id = :id');
         $query->bindValue(":id",$membre->id(),PDO::PARAM_INT);
         $query->execute();
@@ -272,7 +272,7 @@ class ManagerMembre
 	       $parts =  explode('==',$cookie);
 	       $user_id = $parts[0];
 
-	        
+
 	       $donnees = $this->infosMembre($user_id);
 
 	       $membre = new Membre($donnees);
@@ -280,17 +280,17 @@ class ManagerMembre
 	       if($membre)
 	       {
 	            $expected = $user_id.'=='.$membre->cookiee().sha1($membre->id().'MALNUX667');
-	              
+
 	            if($expected == $cookie)
 	            {
-	               
+
 	                setcookie('souvenir',$cookie,time()+60*60*24*7);
 
 	                $_SESSION['pseudo'] = $membre->pseudo();
 	                $_SESSION['level'] = $membre->rang();
 	                $_SESSION['id'] = $membre->id();
 
-	        
+
 	                $this->derniereVisite($membre->id());
 	            }
 	            else
@@ -380,7 +380,7 @@ class ManagerMembre
     				$_SESSION["flash"]["success"] = 'Bienvenue '.$membreAEnvoyer->pseudo().', vous êtes maintenant connecté ! ';
 
     				$this->derniereVisite($membreAEnvoyer->id());
-				}		
+				}
 
 
 			}
@@ -389,11 +389,11 @@ class ManagerMembre
 				$this->nombresErreurs++;
 				$this->_errors["Motdepasse"] = "Mot de passe ou pseudo incorrecte veuillez reessayez";
 			}
-            
-          
+
+
 		}
 
-        
+
 		if($this->nombresErreurs != 0)
 		{
 			return NULL;
@@ -402,7 +402,7 @@ class ManagerMembre
 		{
 			return $membreAEnvoyer;
 		}
-		
+
 	}
 
 	public function totalDesMembres()
@@ -445,11 +445,11 @@ class ManagerMembre
 
 	public function listeDesMembres($premier , $membreParPage , $champOrdre , $ordre)
 	{
-		$query = $this->_db->prepare('SELECT id, pseudo,inscrit, posts, visite, online_id 
-                          FROM membres 
-                          LEFT JOIN whoisonline 
-                          ON online_id = id 
-                          ORDER BY '.$champOrdre.' '.$ordre.' 
+		$query = $this->_db->prepare('SELECT id, pseudo,inscrit, posts, visite, online_id
+                          FROM membres
+                          LEFT JOIN whoisonline
+                          ON online_id = id
+                          ORDER BY '.$champOrdre.' '.$ordre.'
                           LIMIT :premier, :membreparpage');
 
         $query->bindValue(':premier',$premier,PDO::PARAM_INT);
@@ -471,7 +471,7 @@ class ManagerMembre
         if(!empty($user))
                return $user;
         else
-            return array();   
+            return array();
 	}
 
 	public function prepareInitialisationPassword($idM)
@@ -481,7 +481,7 @@ class ManagerMembre
 
         $req->execute(array(
                             'token'=> $token,
-                            'id'  => $idM 
+                            'id'  => $idM
       ));
 
         return $token;
@@ -513,7 +513,7 @@ class ManagerMembre
 
 	public function promouvoirMembre(Membre $membre)
 	{
-		 $query = $this->_db->prepare('UPDATE membres 
+		 $query = $this->_db->prepare('UPDATE membres
                                   SET rang = :rang
                                   WHERE LOWER(pseudo) = :pseudo');
 
