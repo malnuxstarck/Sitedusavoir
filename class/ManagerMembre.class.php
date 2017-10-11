@@ -160,7 +160,7 @@ class ManagerMembre
     	
     	$membreA->setID($id);
 
-    	$this->envoyerMail($membreA->email() , "Inscription sur le Site du Savoir","Cliquez ou copier le lien dans votre navigateur https://sitedusavoir.com/confirm.php?id=$id&token=$token");
+    	$this->envoyerMail($membreA->email() , "Inscription sur le Site du Savoir","Cliquez ou copier le lien dans votre navigateur https://.'$_SERVER["SERVER_NAME"].'/confirm.php?id=$id&token=$token");
 
     }
 
