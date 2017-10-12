@@ -48,7 +48,7 @@
                                         <div class="membre-ins">
                                             <h4 class="nommembre">'.$membre->pseudo().'</h4>
                                             <p>
-                                                Membre depuis le '.$membre->inscrit().'<br/>
+                                                Membre depuis le '.afficherDate($membre->inscrit()).'<br/>
                                                 Email : <a href="mailto:'.$membre->email().'">'.htmlspecialchars($membre->email()).'</a>
                                             </p>
 
@@ -60,7 +60,7 @@
                                       <li> <span class="libele">Site Web </span>       :  <span class="infos-content"><a href="'.htmlspecialchars($membre->siteweb()).'">'.htmlspecialchars($membre->siteweb()).'</a></span>  </li>
                                       <li> <span class="libele"> Localisation </span>  :  <span class="infos-content"> '.$membre->localisation().' </span> </li>
                                       <li> <span class="libele"> Messages </span>      :  <span class="infos-content"> '.$membre->posts().'</span> </li>
-                                      <li> <span class="libele">Derniere Visite </span>:  <span class="infos-content"> '.$membre->visite().'</span> </li>
+                                      <li> <span class="libele">Derniere Visite </span>:  <span class="infos-content"> '.afficherDate($membre->visite()).'</span> </li>
                                   </ul>
                             </div>
 
