@@ -144,10 +144,10 @@
 				     </p>
 
 				     <p class="infossujet">
-	                     <span> <a href="./voirtopic.php?t='.$topic->id().'" title="Topic commencé à '.$topic->topictime().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
+	                     <span> <a href="./voirtopic.php?t='.$topic->id().'" title="Topic commencé il y\'a '.afficherDate($topic->topictime()).'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
 	                     </span>
 
-	                     <span><a class="at" href="./voirprofil.php?m='.$topic->createur().'&amp;action=consulter">'.stripslashes(htmlspecialchars($createurTopic->pseudo())).'</a> <i> '.$topic->topictime().'</i>
+	                     <span><a class="at" href="./voirprofil.php?m='.$topic->createur().'&amp;action=consulter">'.stripslashes(htmlspecialchars($createurTopic->pseudo())).'</a> <i> '.afficherDate($topic->topictime()).'</i>
 	                     </span>
 
 	                 </p>
@@ -257,10 +257,10 @@
 				     </p>
 
 				     <p class="infossujet">
-	                     <span> <a href="./voirtopic.php?t='.$topic->id().'" title="Topic commencé à '.$topic->topictime().'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
+	                     <span> <a href="./voirtopic.php?t='.$topic->id().'" title="Topic commencé il y\'a '.afficherDate($topic->topictime()).'">'.stripslashes(htmlspecialchars($topic->titre())).'</a>
 	                     </span>
 
-	                     <span><a class="at" href="./voirprofil.php?m='.$topic->createur().'&amp;action=consulter">'.stripslashes(htmlspecialchars($createurTopic->pseudo())).'</a> <i> '.$topic->topictime().'</i>
+	                     <span><a class="at" href="./voirprofil.php?m='.$topic->createur().'&amp;action=consulter">'.stripslashes(htmlspecialchars($createurTopic->pseudo())).'</a> <i> '.afficherDate($topic->topictime()).'</i>
 	                     </span>
 
 	                 </p>
@@ -287,7 +287,7 @@
 			           Dernier message
 			        </span>
 			           <span> Par <a class="at" href="./voirprofil.php?m='.$post->createur().'&amp;action=consulter">'.stripslashes(htmlspecialchars($posteur->pseudo())).'</a>
-			         A <a  href="./voirtopic.php?t='.$topic->id().'&amp;page='.$page.'#p_'.$post->id().'">'.$post->posttime().'</a>
+			         A <a  href="./voirtopic.php?t='.$topic->id().'&amp;page='.$page.'#p_'.$post->id().'">'.afficherDate($post->posttime()).'</a>
 			    </span>
 			    </p>
 			 </div>';

@@ -163,7 +163,7 @@ else
 
                <p class="top-messagef">
                   <a href="./voirprofil.php?m='.$membre->id().'&amp;action=consulter">
-                    '.stripslashes(htmlspecialchars($membre->pseudo())).'</a> <span>  le '.$post->posttime().'</span>
+                    '.stripslashes(htmlspecialchars($membre->pseudo())).'</a> <span> Il y\'a '.afficherDate($post->posttime()).'</span>
                </p>';
 
                     /* Si on est l'auteur du message, on affiche des liens pour

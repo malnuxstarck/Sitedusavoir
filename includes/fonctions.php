@@ -55,14 +55,14 @@ function afficherDate($date)
     $resteJours = ($resteMois % (3600*24));
     $heures = (int)($resteJours /3600);
     if($années > 0)
-        $texteFinal.= $années .'années';
+        $texteFinal.= $années .' années';
     else if($années > 0 AND $mois > 0)
-          $texteFinal.= $années .'années et '. $mois .' mois';
+          $texteFinal.= $années .' années et '. $mois .' mois';
     else if($mois > 0 AND $jours > 0)
-            $texteFinal.= $mois .'mois et '. $jours .' jours';
+            $texteFinal.= $mois .' mois et '. $jours .' jours';
     else if($jours > 0 AND $heures > 0)
-          $texteFinal.= $jours .'jours et '. $heures .' heures';
+          $texteFinal.= $jours .' jours et '. $heures .' heures';
     else
-        $texteFinal.= "Quelques Instants";
+        $texteFinal.= "Quelques Minutes";
         return $texteFinal;    
 }

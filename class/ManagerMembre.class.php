@@ -181,7 +181,7 @@ class ManagerMembre
     	  if($id == 0)
     	  {
     	  	    $query = $this->_db->prepare('
-    	  	    	                          SELECT id,pseudo,password,siteweb,email,signature,avatar,localisation,token,cookiee,reset,reset_at,rang,posts,DATE_FORMAT(inscrit ,\'le %d-%m-%Y à %H h : %i min : %s secs\') AS inscrit , DATE_FORMAT(visite ,\'le %d-%m-%Y à %Hh:%imin:%s secs\') AS visite
+    	  	    	                          SELECT id,pseudo,password,siteweb,email,signature,avatar,localisation,token,cookiee,reset,reset_at,rang,posts,inscrit, visite
     	  	    	                          FROM membres
     	  	    	                          WHERE pseudo = :info AND inscrit '.$dateInscription);
 
@@ -191,7 +191,7 @@ class ManagerMembre
           else
           {
           	    $query = $this->_db->prepare('
-          	    	                          SELECT id,pseudo,password,siteweb,email,avatar,signature,localisation,token,cookiee,reset,reset_at,rang,posts,DATE_FORMAT(inscrit ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS inscrit , DATE_FORMAT(visite ,\'le %d - %m - %Y à %H h : %i min : %s secs\') AS visite
+          	    	                          SELECT id,pseudo,password,siteweb,email,avatar,signature,localisation,token,cookiee,reset,reset_at,rang,posts, inscrit , visite
     	  	    	                          FROM membres
     	  	    	                          WHERE id = :info AND inscrit '.$dateInscription);
 

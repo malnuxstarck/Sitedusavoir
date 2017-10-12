@@ -167,8 +167,7 @@ class ManagerPost
 
 	public function tousLesPostsDuTopic($idTopic , $debut , $nombre)
 	{
-		$query = $this->_db->prepare('SELECT post.id As id, post.createur AS createur ,rang, texte ,DATE_FORMAT(posttime ,\'%d/%m/%Y à %H:%i:%s\') AS posttime,membres.id AS idMembre, pseudo, DATE_FORMAT(inscrit, \'%d/%m/%Y à %H:%i:%s\') 
-                        AS inscrit, avatar,localisation, membres.posts AS posts, signature
+		$query = $this->_db->prepare('SELECT post.id As id, post.createur AS createur ,rang, texte , posttime,membres.id AS idMembre, pseudo, inscrit, avatar,localisation, membres.posts AS posts, signature
                        FROM post
                        LEFT JOIN membres ON membres.id = post.createur
                        WHERE topic =:topic

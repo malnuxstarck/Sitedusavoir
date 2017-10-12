@@ -48,7 +48,7 @@
                                         <div class="membre-ins">
                                             <h4 class="nommembre">'.$membre->pseudo().'</h4>
                                             <p>
-                                                Membre depuis le '.afficherDate($membre->inscrit()).'<br/>
+                                                Membre depuis '.afficherDate($membre->inscrit()).'<br/>
                                                 Email : <a href="mailto:'.$membre->email().'">'.htmlspecialchars($membre->email()).'</a>
                                             </p>
 
